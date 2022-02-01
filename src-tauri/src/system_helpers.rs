@@ -25,7 +25,7 @@ pub fn run_command(command: String) {
   } else {
     Command::new("sh")
       .arg("-c")
-      .arg(command)
+      .arg(command.as_str())
       .output()
       .expect("failed to execute process")
   };
