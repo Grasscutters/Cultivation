@@ -176,7 +176,6 @@ pub fn generate_ca_files(path: &str) {
     Ok(_) => {},
     Err(e) => {
       println!("{}", e);
-      return;
     }
   };
 
@@ -203,7 +202,7 @@ pub fn generate_ca_files(path: &str) {
  */
 pub fn install_ca_files(path: &str) {
   if cfg!(target_os = "windows") {
-    run_command(format!("certutil -addstore -f \"ROOT\" {}\\ca\\certificate.crt", path).to_string());
+    run_command(format!("certutil -addstore -f \"ROOT\" {}\\ca\\cert.crt", path).to_string());
   } else {
     run_command(format!("sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain {}/ca/certificate.crt", path).to_string());
   }

@@ -17,7 +17,7 @@ pub fn run_program(path: String) {
 #[tauri::command]
 pub fn run_command(command: String) {
   // Run the specified command.
-  let output = if cfg!(target_os = "windows") {
+  if cfg!(target_os = "windows") {
     Command::new("cmd")
       .args(["/C", command.as_str()])
       .output()
