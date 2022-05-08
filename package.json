@@ -23,7 +23,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "tauri": "tauri",
-    
     "start:dev": "tauri dev"
   },
   "eslintConfig": {
@@ -46,6 +45,10 @@
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.0.0-rc.10",
-    "cross-env": "^7.0.3"
+    "@typescript-eslint/eslint-plugin": "^5.22.0",
+    "@typescript-eslint/parser": "^5.22.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.15.0",
+    "eslint-plugin-react": "^7.29.4"
   }
 }
