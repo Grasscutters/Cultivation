@@ -2,14 +2,14 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-function buttonFunctionality() {
-  alert('Button clicked!');
-}
+// Major Components
+import Topbar from './components/TopBar'
 
 function App() {
   return (
     <div className="App">
-      <button onClick={buttonFunctionality}>Cool button</button>
+      <Topbar />
+      <button onClick={() => console.log("cum")}>Cool button</button>
     </div>
   );
 }
