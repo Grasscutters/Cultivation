@@ -1,7 +1,8 @@
 import React from 'react'
 
 interface IProps {
-  label: string
+  label: string,
+  onChange: () => void,
 }
 
 interface IState {
@@ -13,12 +14,13 @@ export default class Checkbox extends React.Component<IProps, IState> {
     super(props)
 
     this.state = {
-      checked: false,
+      checked: false
     }
   }
 
   handleChange = () => {
     this.setState({ checked: !this.state.checked })
+    this.props.onChange()
   }
 
   render() {

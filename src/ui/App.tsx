@@ -4,7 +4,7 @@ import './App.css'
 import './custom.css'
 
 // Config
-import { getConfig } from '../utils/configuration'
+import { getConfig, saveConfig } from '../utils/configuration'
 
 // Major Components
 import Topbar from './components/TopBar'
@@ -20,13 +20,21 @@ async function playGame() {
   await invoke('run_program', { path: config.game_path })
 }
 
+async function toggleGrasscutter() {
+  const config = await getConfig()
+
+  config.toggle_grasscutter = !config.toggle_grasscutter
+
+  await saveConfig(config)
+}
+
 function App() {
   return (
     <div className="App">
       <Topbar />
       <div id="playButton">
         <div id="serverControls">
-          <Checkbox label="Connect via Grasscutter" />
+          <Checkbox label="Connect via Grasscutter" onChange={toggleGrasscutter} />
         </div>
         <BigButton text="PLAY DA GAME :D" onClick={playGame} id="officialPlay" />
       </div>

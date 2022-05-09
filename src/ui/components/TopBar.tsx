@@ -4,6 +4,7 @@ import './TopBar.css'
 import closeIcon from '../../resources/icons/close.svg'
 import minIcon from '../../resources/icons/min.svg'
 import cogBtn from '../../resources/icons/cog.svg'
+import downBtn from '../../resources/icons/download.svg'
 import { app } from '@tauri-apps/api'
 
 interface IProps {
@@ -46,6 +47,9 @@ export default class TopBar extends React.Component<IProps, IState> {
           </div>
           <div id="settingsBtn" className='TopButton'>
             <img src={cogBtn} alt="settings" />
+          </div>
+          <div id="downloadsBtn" className='TopButton'>
+            <img src={downBtn} alt="downloads" />
           </div>
         </div>
       </div>
