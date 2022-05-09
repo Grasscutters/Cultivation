@@ -51,6 +51,8 @@ async function readConfigFile() {
       path: local + 'cultivation\\configuration.json',
       contents: '{}'
     }
+
+    await fs.writeFile(file)
   }
 
   // Finally read the file
