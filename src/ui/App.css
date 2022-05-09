@@ -28,4 +28,5 @@ body {
 
 .TopButton img {
   height: 80%;
+  vertical-align: super;
 }
