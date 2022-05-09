@@ -12,7 +12,22 @@
   },
   "tauri": {
     "allowlist": {
-      "all": true
+      "fs": {
+        "scope": [
+          "$DATA",
+          "$DATA/cultivation/*"
+        ],
+        "readDir": true,
+        "readFile": true,
+        "writeFile": true,
+        "createDir": true
+      },
+      "path": {
+        "all": true
+      },
+      "dialog": {
+        "all": true
+      }
     },
     "bundle": {
       "active": true,
