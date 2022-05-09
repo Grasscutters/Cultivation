@@ -20,11 +20,17 @@ export default class TopBar extends React.Component {
   render() {
     return (
       <div className="TopBar" data-tauri-drag-region >
-        <div id="closeBtn" onClick={this.handleClose} className='TopButton'>
-          <img src={closeIcon} alt="close" />
+        <div id="title">
+          <span>Cultivation</span>
+          <span id="version">v0.0.1</span>
         </div>
-        <div id="minBtn" onClick={this.handleMinimize} className='TopButton'>
-          <img src={minIcon} alt="minimize" />
+        <div className="TopBtns">
+          <div id="closeBtn" onClick={this.handleClose} className='TopButton'>
+            <img src={closeIcon} alt="close" />
+          </div>
+          <div id="minBtn" onClick={this.handleMinimize} className='TopButton'>
+            <img src={minIcon} alt="minimize" />
+          </div>
         </div>
       </div>
     )
