@@ -1,6 +1,6 @@
 .TopBar {
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   align-items: center;
   width: 100%;
   height: 34px;
