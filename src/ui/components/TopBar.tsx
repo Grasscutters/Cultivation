@@ -4,10 +4,22 @@ import './TopBar.css'
 import closeIcon from '../../resources/icons/close.svg'
 import minIcon from '../../resources/icons/min.svg'
 import cogBtn from '../../resources/icons/cog.svg'
+import { app } from '@tauri-apps/api'
 
-export default class TopBar extends React.Component {
-  constructor(props: unknown[]) {
+interface IProps {
+  [key: string]: never
+}
+
+interface IState {
+  version: string
+}
+export default class TopBar extends React.Component<IProps, IState> {
+  constructor(props: Record<string, never>) {
     super(props)
+
+    app.getVersion().then(version => {
+      this.setState({ version })
+    })
   }
 
   handleClose() {
@@ -22,8 +34,8 @@ export default class TopBar extends React.Component {
     return (
       <div className="TopBar" data-tauri-drag-region >
         <div id="title">
-          <span>Cultivation</span>
-          <span id="version">v0.1.0</span>
+          <span data-tauri-drag-region>Cultivation</span>
+          <span data-tauri-drag-region id="version">{this.state?.version}</span>
         </div>
         <div className="TopBtns">
           <div id="closeBtn" onClick={this.handleClose} className='TopButton'>

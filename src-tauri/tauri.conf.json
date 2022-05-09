@@ -12,7 +12,22 @@
   },
   "tauri": {
     "allowlist": {
-      "all": true
+      "fs": {
+        "scope": [
+          "$DATA",
+          "$DATA/cultivation/*"
+        ],
+        "readDir": true,
+        "readFile": true,
+        "writeFile": true,
+        "createDir": true
+      },
+      "path": {
+        "all": true
+      },
+      "dialog": {
+        "all": true
+      }
     },
     "bundle": {
       "active": true,
@@ -29,7 +44,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.cultivation.grasscutters",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -56,10 +71,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 730,
         "resizable": true,
         "title": "Cultivation",
-        "width": 800,
+        "width": 1280,
         "decorations": false
       }
     ]
