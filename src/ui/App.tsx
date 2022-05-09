@@ -21,7 +21,6 @@ function App() {
       <Topbar />
       <div id="playButtons">
         <BigButton text="PLAY DA GAME :D" onClick={playGame} id="officialPlay" />
-        <BigButton text="PLAY PRIV GAME :D" onClick={playGame} id="privatePlay" />
       </div>
     </div>
   )

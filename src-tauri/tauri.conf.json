@@ -17,18 +17,9 @@
           "$DATA",
           "$DATA/cultivation",
           "$DATA/cultivation/*"
-        ],
-        "readDir": true,
-        "readFile": true,
-        "writeFile": true,
-        "createDir": true
+        ]
       },
-      "path": {
-        "all": true
-      },
-      "dialog": {
-        "all": true
-      }
+      "all": true
     },
     "bundle": {
       "active": true,
