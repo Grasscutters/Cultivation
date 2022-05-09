@@ -1,5 +1,17 @@
-#officialPlay {
+#playButtons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
   position: absolute;
-  top: 75%;
-  left: 60%;
+  top: 80%;
+  left: 40%;
+
+  width: 50%;
+  height: 10%;
+}
+
+#playButtons .BigButton {
+  height: 100%;
 }
