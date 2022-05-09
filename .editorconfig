@@ -1,0 +1,20 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = crlf
+indent_size = 4
+indent_style = space
+insert_final_newline = false
+max_line_length = 120
+tab_width = 4
+trim_trailing_whitespace = false
+
+[*.rs]
+max_line_length = 100
+
+[{*.ats,*.cts,*.mts,*.ts}]
+indent_size = 2
+
+[*.json]
+indent_size = 2
