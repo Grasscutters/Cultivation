@@ -29,7 +29,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "xyz.grasscutters",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -56,10 +56,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 730,
         "resizable": true,
         "title": "Cultivation",
-        "width": 800,
+        "width": 1280,
         "decorations": false
       }
     ]
