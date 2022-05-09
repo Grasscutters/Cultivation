@@ -9,6 +9,7 @@ import { getConfig } from '../utils/configuration'
 // Major Components
 import Topbar from './components/TopBar'
 import BigButton from './components/common/BigButton'
+import Checkbox from './components/common/Checkbox'
 
 async function playGame() {
   const config = await getConfig()
@@ -23,7 +24,10 @@ function App() {
   return (
     <div className="App">
       <Topbar />
-      <div id="playButtons">
+      <div id="playButton">
+        <div id="serverControls">
+          <Checkbox label="Connect via Grasscutter" />
+        </div>
         <BigButton text="PLAY DA GAME :D" onClick={playGame} id="officialPlay" />
       </div>
     </div>

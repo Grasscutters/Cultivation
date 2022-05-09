@@ -1,17 +1,21 @@
-#playButtons {
+#playButton {
   display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
+  flex-direction: column;
+  align-items: left;
   justify-content: space-between;
 
   position: absolute;
   top: 80%;
-  left: 40%;
+  left: 60%;
 
-  width: 50%;
-  height: 10%;
+  width: 30%;
+  height: 12%;
 }
 
-#playButtons .BigButton {
+#playButton .BigButton {
   height: 100%;
+}
+
+#serverControls {
+  color: white;
 }
