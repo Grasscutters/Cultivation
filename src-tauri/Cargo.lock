@@ -258,7 +258,9 @@ version = "0.2.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ba3569f383e8f1598449f1a423e72e99569137b47740b1da11ef19af3d5c3223"
 dependencies = [
+ "lazy_static",
  "memchr",
+ "regex-automata",
 ]
 
 [[package]]
@@ -640,6 +642,7 @@ name = "cultivation"
 version = "0.1.0"
 dependencies = [
  "hudsucker",
+ "opener",
  "rustls-pemfile",
  "serde",
  "serde_json",
@@ -2162,6 +2165,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e0524af9508f9b5c4eb41dce095860456727748f63b478d625f119a70e0d764a"
 dependencies = [
  "pathdiff",
+ "winapi",
+]
+
+[[package]]
+name = "opener"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4ea3ebcd72a54701f56345f16785a6d3ac2df7e986d273eb4395c0b01db17952"
+dependencies = [
+ "bstr",
  "winapi",
 ]
 

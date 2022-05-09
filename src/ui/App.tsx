@@ -1,17 +1,22 @@
 import React from 'react'
-import logo from './logo.svg'
+import { invoke } from '@tauri-apps/api/tauri'
 import './App.css'
 import './custom.css'
 
 // Config
-import { getConfigOption, getConfig, saveConfig, setConfigOption } from '../utils/configuration'
+import { getConfig } from '../utils/configuration'
 
 // Major Components
 import Topbar from './components/TopBar'
 import BigButton from './components/common/BigButton'
 
-function playGame() {
+async function playGame() {
+  const config = await getConfig()
 
+  if (!config.game_path) return
+
+  // Launch the program
+  await invoke('run_program', { path: config.game_path })
 }
 
 function App() {
