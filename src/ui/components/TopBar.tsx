@@ -22,7 +22,7 @@ export default class TopBar extends React.Component {
       <div className="TopBar" data-tauri-drag-region >
         <div id="title">
           <span>Cultivation</span>
-          <span id="version">v0.0.1</span>
+          <span id="version">v0.1.0</span>
         </div>
         <div className="TopBtns">
           <div id="closeBtn" onClick={this.handleClose} className='TopButton'>
