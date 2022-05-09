@@ -3,6 +3,7 @@ import { appWindow } from '@tauri-apps/api/window'
 import './TopBar.css'
 import closeIcon from '../../resources/icons/close.svg'
 import minIcon from '../../resources/icons/min.svg'
+import cogBtn from '../../resources/icons/cog.svg'
 
 export default class TopBar extends React.Component {
   constructor(props: unknown[]) {
@@ -30,6 +31,9 @@ export default class TopBar extends React.Component {
           </div>
           <div id="minBtn" onClick={this.handleMinimize} className='TopButton'>
             <img src={minIcon} alt="minimize" />
+          </div>
+          <div id="settingsBtn" className='TopButton'>
+            <img src={cogBtn} alt="settings" />
           </div>
         </div>
       </div>
