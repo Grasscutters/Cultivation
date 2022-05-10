@@ -10,23 +10,23 @@ mod proxy;
 
 fn main() {
   tauri::Builder::default()
-      .invoke_handler(tauri::generate_handler![downloader::download_file])
-      .invoke_handler(tauri::generate_handler![run_program])
-      .invoke_handler(tauri::generate_handler![connect, disconnect])
-      .run(tauri::generate_context!())
-      .expect("error while running tauri application");
+    .invoke_handler(tauri::generate_handler![downloader::download_file])
+    .invoke_handler(tauri::generate_handler![run_program])
+    .invoke_handler(tauri::generate_handler![connect, disconnect])
+    .run(tauri::generate_context!())
+    .expect("error while running tauri application");
 }
 
 #[tauri::command]
-async fn connect() {
+async fn connect(port: u16) {
   // Log message to console.
   println!("Connecting to proxy...");
 
   // Create and start a proxy.
-  proxy::create_proxy().await;
+  proxy::create_proxy(port).await;
 
   // Change proxy settings.
-  proxy::connect_to_proxy();
+  proxy::connect_to_proxy(port);
 }
 
 #[tauri::command]
@@ -38,5 +38,6 @@ fn disconnect() {
 #[tauri::command]
 fn run_program(path: String) {
   // Open the program from the specified path.
-  opener::open(path.clone()).expect("Failed to open program");
+  opener::open(path.clone())
+    .expect("Failed to open program");
 }
