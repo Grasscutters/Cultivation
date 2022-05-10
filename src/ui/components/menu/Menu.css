@@ -21,5 +21,25 @@
 
 .MenuHeading {
   font-size: 2rem;
+  margin: 16px;
+}
+
+.MenuTop {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.MenuExit {
+  height: 30px;
   margin: 20px;
+}
+
+.MenuExit:hover {
+  cursor: pointer;
+}
+
+.MenuExit img {
+  height: 100%;
 }

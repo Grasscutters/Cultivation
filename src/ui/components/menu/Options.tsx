@@ -5,14 +5,18 @@ import DirInput from '../common/DirInput'
 import Menu from './Menu'
 import './Options.css'
 
-export default class Options extends React.Component<Record<string, never>, never> {
-  constructor(props: Record<string, never>) {
+interface IProps {
+  closeFn: () => void;
+}
+
+export default class Options extends React.Component<IProps, never> {
+  constructor(props: IProps) {
     super(props)
   }
 
   render() {
     return (
-      <Menu className="Options" heading="Options">
+      <Menu closeFn={this.props.closeFn} className="Options" heading="Options">
         <div className='OptionSection'>
           <div className='OptionLabel'>Test Option</div>
           <div className='OptionValue'>

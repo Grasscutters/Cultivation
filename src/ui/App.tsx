@@ -56,7 +56,7 @@ class App extends React.Component<IProps, IState> {
         />
 
         {
-          this.state.optionsOpen ? <Options /> : null
+          this.state.optionsOpen ? <Options closeFn={() => this.setState({ optionsOpen: !this.state.optionsOpen })}/> : null
         }
 
         <button onClick={TESTDOWNLOAD}>download file test</button>
