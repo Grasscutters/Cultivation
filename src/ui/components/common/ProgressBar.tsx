@@ -33,8 +33,6 @@ export default class ProgressBar extends React.Component<IProps, IState> {
         total: prog?.total || 0,
       })
 
-      console.log(prog)
-
       if (this.state.status === 'finished' /* || this.state.status === 'error' */) {
         // Ensure progress is 100%
 

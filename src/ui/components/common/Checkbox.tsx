@@ -2,6 +2,7 @@ import React from 'react'
 
 interface IProps {
   label: string,
+  checked: boolean,
   onChange: () => void,
 }
 
@@ -14,7 +15,7 @@ export default class Checkbox extends React.Component<IProps, IState> {
     super(props)
 
     this.state = {
-      checked: false
+      checked: props.checked
     }
   }
 
