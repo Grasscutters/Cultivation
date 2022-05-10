@@ -1,0 +1,11 @@
+.TextInput {
+  border: none;
+  border-bottom: 2px solid #cecece;
+
+  transition: border-bottom-color 0.1s ease-in-out;
+}
+
+.TextInput:focus {
+  outline: none;
+  border-bottom-color: #ffd326;
+}
