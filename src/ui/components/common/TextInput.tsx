@@ -21,6 +21,10 @@ export default class TextInput extends React.Component<IProps, IState> {
     }
   }
 
+  static getDerivedStateFromProps(props: IProps, state: IState) {
+    return { value: props.value || '' }
+  }
+
   render() {
     return (
       <input readOnly={this.props.readOnly || false} placeholder={this.props.placeholder || ''} className="TextInput" value={this.state.value} onChange={(e) => {

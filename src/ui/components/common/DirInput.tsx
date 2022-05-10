@@ -7,6 +7,7 @@ import './DirInput.css'
 
 interface IProps {
   value?: string
+  onChange?: (value: string) => void
 }
 
 interface IState {
@@ -24,10 +25,23 @@ export default class DirInput extends React.Component<IProps, IState> {
     this.handleIconClick = this.handleIconClick.bind(this)
   }
 
-  handleIconClick() {
-    open().then(path => {
-      console.log(path)
+  async handleIconClick() {
+    let path = await open({
+      filters: [
+        { name: 'Executable files', extensions: ['exe'] }
+      ]
     })
+
+    if (Array.isArray(path)) path = path[0]
+    if (!path) return
+
+    this.setState({
+      value: path
+    })
+
+    console.log(this.state)
+
+    if (this.props.onChange) this.props.onChange(path)
   }
 
   render() {

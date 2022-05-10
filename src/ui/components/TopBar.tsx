@@ -20,7 +20,7 @@ export default class TopBar extends React.Component<IProps, IState> {
     super(props)
 
     app.getVersion().then(version => {
-      this.setState({ version })
+      this.state = { version }
     })
   }
 
