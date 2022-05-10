@@ -7,15 +7,21 @@ use hudsucker::{
     async_trait::async_trait,
     certificate_authority::RcgenAuthority,
     hyper::{Body, Request, Response},
-    tungstenite::Message,
-    tungstenite::protocol::WebSocketContext,
-    http::HttpsConnector,
     *
 };
+
 use std::net::SocketAddr;
-use hudsucker::hyper::client::HttpConnector;
 use registry::{Hive, Data, Security};
+use tracing::*;
+
 use rustls_pemfile as pemfile;
+
+/**
+ * Application shutdown handler.
+ */
+async fn shutdown_signal() {
+
+}
 
 #[derive(Clone)]
 struct ProxyHandler;
@@ -39,7 +45,7 @@ impl HttpHandler for ProxyHandler {
 /**
  * Starts an HTTP(S) proxy server.
  */
-pub(crate) async fn create_proxy() -> Proxy<HttpsConnector, RcgenAuthority, ProxyHandler, NoopMessageHandler, NoopMessageHandler> {
+pub(crate) async fn create_proxy() {
     // Get the certificate and private key.
     let mut private_key_bytes: &[u8] = include_bytes!("../resources/private-key.pem");
     let mut ca_cert_bytes: &[u8] = include_bytes!("../resources/ca-certificate.pem");
@@ -62,12 +68,17 @@ pub(crate) async fn create_proxy() -> Proxy<HttpsConnector, RcgenAuthority, Prox
         .expect("Failed to create Certificate Authority");
     
     // Create an instance of the proxy.
-    return ProxyBuilder::new()
-        .with_addr(SocketAddr::from([127, 0, 0, 1], 8080))
+    let proxy = ProxyBuilder::new()
+        .with_addr(SocketAddr::from(([127, 0, 0, 1], 8080)))
         .with_rustls_client()
         .with_ca(authority)
         .with_http_handler(ProxyHandler)
         .build();
+    
+    // Create the proxy & listen for errors.
+    if let Err(e) = proxy.start(shutdown_signal()).await {
+        error!("{}", e);
+    }
 }
 
 /**
@@ -76,7 +87,7 @@ pub(crate) async fn create_proxy() -> Proxy<HttpsConnector, RcgenAuthority, Prox
 pub(crate) fn connect_to_proxy() {
     if cfg!(target_os = "windows") {
         // Fetch the 'Internet Settings' registry key.
-        let settings = Hive::CurrentUser.open(r"Software\Microsoft\Windows\CurrentVersion\Internet Settings", Security::Write);
+        let settings = Hive::CurrentUser.open(r"Software\Microsoft\Windows\CurrentVersion\Internet Settings", Security::Write).unwrap();
         
         // Set registry values.
         settings.set_value("ProxyServer", &Data::String("http=127.0.0.1:8080;https=127.0.0.1:8080;ftp=127.0.0.1:8080".parse().unwrap()));
@@ -90,7 +101,7 @@ pub(crate) fn connect_to_proxy() {
 pub(crate) fn disconnect_from_proxy() {
     if cfg!(target_os = "windows") {
         // Fetch the 'Internet Settings' registry key.
-        let settings = Hive::CurrentUser.open(r"Software\Microsoft\Windows\CurrentVersion\Internet Settings", Security::Write);
+        let settings = Hive::CurrentUser.open(r"Software\Microsoft\Windows\CurrentVersion\Internet Settings", Security::Write).unwrap();
 
         // Set registry values.
         settings.set_value("ProxyEnable", &Data::U32(0));

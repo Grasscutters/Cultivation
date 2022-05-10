@@ -3,18 +3,10 @@ all(not(debug_assertions), target_os = "windows"),
 windows_subsystem = "windows"
 )]
 
-use tracing::log::error;
 use opener;
 
 mod downloader;
 mod proxy;
-
-/**
- * Application shutdown handler.
- */
-async fn shutdown_signal() {
-
-}
 
 fn main() {
   tauri::Builder::default()
@@ -26,14 +18,8 @@ fn main() {
 
 #[tauri::command]
 async fn connect() {
-  // Create a proxy instance.
-  let proxy_server = proxy::create_proxy().await;
-
-  // Create the proxy & listen for errors.
-  let result = proxy_server.start(shutdown_signal()).await;
-  if result {
-    error!("Unable to start proxy");
-  }
+  // Create and start a proxy.
+  proxy::create_proxy().await;
 
   // Change proxy settings.
   proxy::connect_to_proxy();
