@@ -30,15 +30,6 @@ async function download() {
   const path = 'S:/Cultivation/grassclipper.zip'
   const url = 'https://github.com/Grasscutters/GrassClipper/releases/download/v0.9.7/GrassClipper.zip'
   downloadHandler.addDownload(url, path)
-
-  const intv = setInterval(() => {
-    const prog = downloadHandler.getDownloadProgress(path)
-    console.log(prog)
-
-    if (prog.status === 'finished') {
-      clearInterval(intv)
-    }
-  }, 500)
 }
 
 async function toggleGrasscutter() {
@@ -61,16 +52,16 @@ function App() {
           <Checkbox label="Connect via Grasscutter" onChange={toggleGrasscutter} />
         </div>
         <BigButton text="PLAY DA GAME :D" onClick={playGame} id="officialPlay" />
+      </div>
 
-        <div id="downloadProgress" style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-        }}>
+      <div id="downloadProgress" style={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        width: '50%'
+      }}>
 
-          <ProgressBar path="S:/Cultivation/grassclipper.zip" downloadManager={downloadHandler} />
-
-        </div>
+        <ProgressBar path="S:/Cultivation/grassclipper.zip" downloadManager={downloadHandler} />
       </div>
     </div>
   )

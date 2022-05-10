@@ -1,4 +1,5 @@
 import React from 'react'
+import './ProgressBar.css'
 
 interface IProps {
   path: string,
@@ -18,7 +19,7 @@ export default class ProgressBar extends React.Component<IProps, IState> {
     this.state = {
       progress: 0,
       status: '',
-      total: this.props.downloadManager.getDownloadProgress(this.props.path).total,
+      total: this.props.downloadManager.getDownloadProgress(this.props.path)?.total || 0,
     }
   }
 
@@ -27,22 +28,41 @@ export default class ProgressBar extends React.Component<IProps, IState> {
     const intv = setInterval(() => {
       const prog = this.props.downloadManager.getDownloadProgress(this.props.path)
       this.setState({
-        progress: prog.progress,
-        status: prog.status,
+        progress: parseInt(prog?.progress || 0, 10),
+        status: prog?.status || 'error',
+        total: prog?.total || 0,
       })
 
-      if (prog.status === 'finished') {
+      console.log(prog)
+
+      if (this.state.status === 'finished' /* || this.state.status === 'error' */) {
+        // Ensure progress is 100%
+
         clearInterval(intv)
       }
-    }, 100)
+    }, 500)
   }
 
   render() {
     return (
-      <div className="ProgressBar">
-        <div className="InnerProgress" style={{
-          width: `${this.state.progress / this.state.total}%`,
-        }}></div>
+      <div className="ProgressBarWrapper">
+        <div className="ProgressBar">
+          <div className="InnerProgress" style={{
+            width: `${(() => {
+              // Handles files with content-lengths of 0
+              if (this.state.status === 'finished') {
+                return '100'
+              }
+
+              if (this.state.total <= 0) {
+                return '0'
+              }
+
+              return this.state.progress / this.state.total * 100
+            })()}%`,
+          }}></div>
+        </div>
+
         <div className="ProgressText">
           {this.state.status}
         </div>

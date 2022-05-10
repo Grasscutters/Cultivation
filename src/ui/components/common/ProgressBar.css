@@ -1,0 +1,21 @@
+.ProgressBar, .InnerProgress {
+  border-radius: 20px;
+}
+
+.ProgressBarWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.ProgressBar {
+  height: 20px;
+  width: 80%;
+  background-color: #fff;
+  color: #fff;
+}
+
+.InnerProgress {
+  height: 100%;
+  background-color: #00a8ff;
+}
