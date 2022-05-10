@@ -9,13 +9,13 @@ import DownloadHandler from '../utils/download'
 import Topbar from './components/TopBar'
 import ServerLaunchSection from './components/ServerLaunchSection'
 import ProgressBar from './components/common/ProgressBar'
+import MainProgressBar from './components/common/MainProgressBar'
 
 const downloadHandler = new DownloadHandler()
 
-async function download() {
-  const path = 'S:/Cultivation/grassclipper.zip'
-  const url = 'https://github.com/Grasscutters/GrassClipper/releases/download/v0.9.7/GrassClipper.zip'
-  downloadHandler.addDownload(url, path)
+async function download(url: string, filename: string, path: string) {
+  const completePath = `${path}/${filename}`
+  downloadHandler.addDownload(url, completePath)
 }
 
 function App() {
@@ -23,13 +23,12 @@ function App() {
     <div className="App">
       <Topbar />
 
-      <button onClick={download}>download file test</button>
+      <button>download file test</button>
 
       <ServerLaunchSection />
 
       <div id="DownloadProgress">
-
-        <ProgressBar path="S:/Cultivation/grassclipper.zip" downloadManager={downloadHandler} />
+        <MainProgressBar downloadManager={downloadHandler} />
       </div>
     </div>
   )

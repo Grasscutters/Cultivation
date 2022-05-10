@@ -54,4 +54,16 @@ export default class DownloadHandler {
     const index = this.downloads.findIndex(download => download.path === path)
     return this.downloads[index] || null
   }
+
+  getTotalAverage() {
+    const files = this.downloads.filter(d => d.status !== 'finished')
+    const total = files.reduce((acc, d) => acc + d.total, 0)
+    const progress = files.reduce((acc, d) => acc + d.progress, 0)
+
+    return {
+      average: (progress / total) * 100,
+      files: this.downloads.filter(d => d.status !== 'finished').length,
+      totalSize: total,
+    }
+  }
 }
