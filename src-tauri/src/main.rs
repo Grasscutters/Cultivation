@@ -14,6 +14,7 @@ use opener;
 fn main() {
   tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![run_program])
+    .invoke_handler(tauri::generate_handler![downloader::download_file])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }

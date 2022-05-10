@@ -13,7 +13,7 @@ use tauri::{
 // and docs ofc
 
 #[tauri::command]
-pub async fn download_file(url: &str, path: &str) -> Result<(), String> {
+pub async fn download_file(window: tauri::Window, url: &str, path: &str) -> Result<(), String> {
     // Reqwest setup
     let res = reqwest::get(url)
         .await
@@ -42,10 +42,29 @@ pub async fn download_file(url: &str, path: &str) -> Result<(), String> {
         let new = min(downloaded + (chunk.len() as u64), total_size);
         downloaded = new;
 
+        let mut resHash = std::collections::HashMap::new();
+
+        resHash.insert(
+            "downloaded".to_string(),
+            downloaded.to_string()
+        );
+
+        resHash.insert(
+            "total".to_string(),
+            total_size.to_string()
+        );
+
+        resHash.insert(
+            "path".to_string(),
+            path.to_string()
+        );
+
         // Create event to send to frontend
+        window.emit("download_progress", &resHash);
     }
 
     // One more "finish" event
+    window.emit("download_finished", &path);
 
     // We are done
     return Ok(());
