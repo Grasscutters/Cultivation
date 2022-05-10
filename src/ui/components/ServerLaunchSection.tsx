@@ -56,7 +56,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
         <div id="serverControls">
           <Checkbox id="enableGC" label="Connect via Grasscutter" onChange={this.toggleGrasscutter} checked={this.state.grasscutterEnabled}/>
         </div>
-        <BigButton text="PLAY DA GAME :D" onClick={this.playGame} id="officialPlay" />
+        <BigButton text="Launch" onClick={this.playGame} id="officialPlay" />
       </div>
     )
   }
