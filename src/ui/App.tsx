@@ -13,6 +13,7 @@ import { getConfig, saveConfig } from '../utils/configuration'
 import Topbar from './components/TopBar'
 import BigButton from './components/common/BigButton'
 import Checkbox from './components/common/Checkbox'
+import ProgressBar from './components/common/ProgressBar'
 
 const downloadHandler = new DownloadHandler()
 
@@ -60,6 +61,16 @@ function App() {
           <Checkbox label="Connect via Grasscutter" onChange={toggleGrasscutter} />
         </div>
         <BigButton text="PLAY DA GAME :D" onClick={playGame} id="officialPlay" />
+
+        <div id="downloadProgress" style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+        }}>
+
+          <ProgressBar path="S:/Cultivation/grassclipper.zip" downloadManager={downloadHandler} />
+
+        </div>
       </div>
     </div>
   )

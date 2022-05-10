@@ -12,8 +12,7 @@ interface IState {
 }
 
 export default class BigButton extends React.Component<IProps, IState> {
-
-  constructor(props: { text: string, onClick: () => any, id: string }) {
+  constructor(props: IProps) {
     super(props)
 
     this.state = {
