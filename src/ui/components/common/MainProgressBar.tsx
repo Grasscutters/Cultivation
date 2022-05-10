@@ -36,8 +36,6 @@ export default class ProgressBar extends React.Component<IProps, IState> {
         files: prog?.files,
         total: prog?.total || 0,
       })
-
-      console.log(prog)
     }, 500)
   }
 
