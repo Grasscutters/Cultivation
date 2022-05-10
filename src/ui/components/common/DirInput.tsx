@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { RefObject } from 'react'
+import { open } from '@tauri-apps/api/dialog'
 import TextInput from './TextInput'
 import File from '../../../resources/icons/folder.svg'
 
 import './DirInput.css'
 
 interface IProps {
-  value?: string;
+  value?: string
 }
 
 interface IState {
@@ -19,17 +20,21 @@ export default class DirInput extends React.Component<IProps, IState> {
     this.state = {
       value: props.value || ''
     }
+
+    this.handleIconClick = this.handleIconClick.bind(this)
   }
 
-  handleFileSelect() {
-    console.log('piss')
+  handleIconClick() {
+    open().then(path => {
+      console.log(path)
+    })
   }
 
   render() {
     return (
       <div className='DirInput'>
         <TextInput value={this.state.value} placeholder='Set Game Location...' readOnly={true} />
-        <div className="FileSelectIcon">
+        <div className="FileSelectIcon" onClick={this.handleIconClick}>
           <img src={File} />
         </div>
       </div>
