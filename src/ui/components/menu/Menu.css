@@ -1,0 +1,25 @@
+.Menu {
+  position: fixed;
+  z-index: 99;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  height: 70%;
+  width: 60%;
+
+  background-color: #fff;
+}
+
+.MenuInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.MenuHeading {
+  font-size: 2rem;
+  margin: 20px;
+}

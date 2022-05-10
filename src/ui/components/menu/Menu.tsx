@@ -1,4 +1,5 @@
 import React from 'react'
+import './Menu.css'
 
 interface IProps {
   children: React.ReactNode[] | React.ReactNode;
@@ -15,7 +16,9 @@ export default class Menu extends React.Component<IProps, never> {
     return (
       <div className={'Menu ' + this.props.className}>
         <div className="MenuHeading">{this.props.heading}</div>
-        {this.props.children}
+        <div className='MenuInner'>
+          {this.props.children}
+        </div>
       </div>
     )
   }

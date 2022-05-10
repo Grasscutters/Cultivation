@@ -1,8 +1,9 @@
 import React from 'react'
+import Checkbox from '../common/Checkbox'
 import Menu from './Menu'
 import './Options.css'
 
-export default class Options extends React.Component<{}, never> {
+export default class Options extends React.Component<Record<string, never>, never> {
   constructor(props: Record<string, never>) {
     super(props)
   }
@@ -13,7 +14,7 @@ export default class Options extends React.Component<{}, never> {
         <div className='OptionSection'>
           <div className='OptionLabel'>Test Option</div>
           <div className='OptionValue'>
-            <input type="checkbox" />
+            <Checkbox id="testOption" label="" checked={true} onChange={() => console.log('Test Option Changed')} />
           </div>
         </div>
       </Menu>

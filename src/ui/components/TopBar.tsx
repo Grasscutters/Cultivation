@@ -8,14 +8,15 @@ import downBtn from '../../resources/icons/download.svg'
 import { app } from '@tauri-apps/api'
 
 interface IProps {
-  [key: string]: never
+  optFunc: () => void;
+  downFunc: () => void;
 }
 
 interface IState {
   version: string
 }
 export default class TopBar extends React.Component<IProps, IState> {
-  constructor(props: Record<string, never>) {
+  constructor(props: IProps) {
     super(props)
 
     app.getVersion().then(version => {
@@ -45,7 +46,7 @@ export default class TopBar extends React.Component<IProps, IState> {
           <div id="minBtn" onClick={this.handleMinimize} className='TopButton'>
             <img src={minIcon} alt="minimize" />
           </div>
-          <div id="settingsBtn" className='TopButton'>
+          <div id="settingsBtn" onClick={this.props.optFunc} className='TopButton'>
             <img src={cogBtn} alt="settings" />
           </div>
           <div id="downloadsBtn" className='TopButton'>

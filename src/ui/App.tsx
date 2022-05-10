@@ -6,17 +6,19 @@ import './custom.css'
 import DownloadHandler from '../utils/download'
 
 // Major Components
-import Topbar from './components/TopBar'
+import TopBar from './components/TopBar'
 import ServerLaunchSection from './components/ServerLaunchSection'
 import ProgressBar from './components/common/ProgressBar'
 import MainProgressBar from './components/common/MainProgressBar'
+import Options from './components/menu/Options'
 
 interface IProps {
-  [key: string]: never
+  [key: string]: never;
 }
 
 interface IState {
-  isDownloading: boolean
+  isDownloading: boolean;
+  optionsOpen: boolean;
 }
 
 const downloadHandler = new DownloadHandler()
@@ -39,13 +41,23 @@ class App extends React.Component<IProps, IState> {
     super(props)
     this.state = {
       isDownloading: false,
+      optionsOpen: false
     }
   }
 
   render() {
     return (
       <div className="App">
-        <Topbar />
+        <TopBar
+          optFunc={() => {
+            this.setState({ optionsOpen: !this.state.optionsOpen })
+          }}
+          downFunc={() => null}
+        />
+
+        {
+          this.state.optionsOpen ? <Options /> : null
+        }
 
         <button onClick={TESTDOWNLOAD}>download file test</button>
 

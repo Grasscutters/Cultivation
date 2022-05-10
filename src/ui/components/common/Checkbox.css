@@ -1,0 +1,21 @@
+.Checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.CheckboxDisplay {
+  height: 20px;
+  width: 20px;
+
+  border: 2px solid #ebebec;
+  border-radius: 2px;
+}
+
+.CheckboxDisplay:hover {
+  cursor: pointer;
+  border-color: #cecece;
+}
+
+.CheckboxDisplay img {
+  height: 100%;
+  /* filter: invert(78%) sepia(91%) saturate(923%) hue-rotate(334deg) brightness(106%) contrast(102%); */
+}
