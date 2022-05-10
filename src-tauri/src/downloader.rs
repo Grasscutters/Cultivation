@@ -15,7 +15,9 @@ use tauri::{
 #[tauri::command]
 pub async fn download_file(url: &str, path: &str) -> Result<(), String> {
     // Reqwest setup
-    let res = reqwest::get(url).await.or(Err(format!("Failed to get {}", url)))?;
+    let res = reqwest::get(url)
+        .await
+        .or(Err(format!("Failed to get {}", url)))?;
     let total_size = res
         .content_length()
         .ok_or(format!("Failed to get content length from '{}'", &url))?;
@@ -29,14 +31,21 @@ pub async fn download_file(url: &str, path: &str) -> Result<(), String> {
 
     // Await chunks
     while let Some(item) = stream.next().await {
-        let chunk = item.or(Err(format!("Error while downloading file")));
-        // Write chunk
-        file.write_all(&chunk)
-            .or(Err(format!("Error while writing to file")))?;
+        let chunk = item.or(Err(format!("Error while downloading file"))).unwrap();
+        let vect = &chunk.to_vec()[..];
+
+        // Write bytes
+        file.write_all(&vect)
+            .or(Err(format!("Error while writing file")))?;
+
         // New progress
         let new = min(downloaded + (chunk.len() as u64), total_size);
         downloaded = new;
+
+        // Create event to send to frontend
     }
+
+    // One more "finish" event
 
     // We are done
     return Ok(());

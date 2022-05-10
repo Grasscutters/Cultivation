@@ -3,6 +3,7 @@
   windows_subsystem = "windows"
 )]
 
+mod downloader;
 mod proxy;
 
 use tauri::{
