@@ -27,12 +27,7 @@ function App() {
 
       <ServerLaunchSection />
 
-      <div id="downloadProgress" style={{
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        width: '50%'
-      }}>
+      <div id="DownloadProgress">
 
         <ProgressBar path="S:/Cultivation/grassclipper.zip" downloadManager={downloadHandler} />
       </div>
