@@ -3,18 +3,36 @@ import { invoke } from '@tauri-apps/api/tauri'
 import { listen } from '@tauri-apps/api/event'
 
 export default class DownloadHandler {
-  downloads: Array<string>
+  downloads: {
+    path: string,
+    progress: number,
+    total: number,
+    status: string,
+  }[]
 
   // Pass tauri invoke function
   constructor() {
     this.downloads = []
 
     listen('download_progress', (...payload) => {
-      console.log(payload)
+      // @ts-expect-error Payload may be unknown but backend always returns this object
+      const obj: {
+        downloaded: number,
+        total: number,
+        path: string,
+      } = payload[0].payload
+
+      const index = this.downloads.findIndex(download => download.path === obj.path)
+      this.downloads[index].progress = obj.downloaded
     })
 
     listen('download_finished', (...payload) => {
-      console.log(payload)
+      // Remove from array
+      const filename = payload[0]?.payload
+
+      // set status to finished
+      const index = this.downloads.findIndex(download => download.path === filename)
+      this.downloads[index].status = 'finished'
     })
   }
   
@@ -22,7 +40,18 @@ export default class DownloadHandler {
     // Begin download from rust backend
     invoke('download_file', { url, path })
 
-    // Register event handler
-    this.downloads.push(path)
+    const obj = {
+      path,
+      progress: 0,
+      total: 0,
+      status: 'downloading'
+    }
+
+    this.downloads.push(obj)
+  }
+
+  getDownloadProgress(path: string) {
+    const index = this.downloads.findIndex(download => download.path === path)
+    return this.downloads[index] || null
   }
 }

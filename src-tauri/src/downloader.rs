@@ -20,7 +20,7 @@ pub async fn download_file(window: tauri::Window, url: &str, path: &str) -> Resu
         .or(Err(format!("Failed to get {}", url)))?;
     let total_size = res
         .content_length()
-        .ok_or(format!("Failed to get content length from '{}'", &url))?;
+        .unwrap_or(0);
 
     // Create file path
     let mut file = File::create(path).or(Err(format!("Failed to create file '{}'", path)))?;
