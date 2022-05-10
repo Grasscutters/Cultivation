@@ -37,9 +37,7 @@ export default class ProgressBar extends React.Component<IProps, IState> {
         total: prog?.total || 0,
       })
 
-      if (this.state.files === 0 /* || this.state.status === 'error' */) {
-        clearInterval(intv)
-      }
+      console.log(prog)
     }, 500)
   }
 

@@ -18,12 +18,20 @@ async function download(url: string, filename: string, path: string) {
   downloadHandler.addDownload(url, completePath)
 }
 
+async function TESTDOWNLOAD() {
+  download(
+    'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/stable.zip',
+    'grasscutter.zip',
+    'S:/Cultivation'
+  )
+}
+
 function App() {
   return (
     <div className="App">
       <Topbar />
 
-      <button>download file test</button>
+      <button onClick={TESTDOWNLOAD}>download file test</button>
 
       <ServerLaunchSection />
 

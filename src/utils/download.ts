@@ -61,7 +61,7 @@ export default class DownloadHandler {
     const progress = files.reduce((acc, d) => acc + d.progress, 0)
 
     return {
-      average: (progress / total) * 100,
+      average: (progress / total) * 100 || 0,
       files: this.downloads.filter(d => d.status !== 'finished').length,
       totalSize: total,
     }
