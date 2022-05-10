@@ -12,7 +12,6 @@ use hudsucker::{
 
 use std::net::SocketAddr;
 use registry::{Hive, Data, Security};
-use tracing::*;
 
 use rustls_pemfile as pemfile;
 
@@ -20,7 +19,7 @@ use rustls_pemfile as pemfile;
  * Application shutdown handler.
  */
 async fn shutdown_signal() {
-
+    disconnect_from_proxy();
 }
 
 #[derive(Clone)]
@@ -29,16 +28,16 @@ struct ProxyHandler;
 #[async_trait]
 impl HttpHandler for ProxyHandler {
     async fn handle_request(&mut self, 
-                      context: &HttpContext, 
-                      request: Request<Body>
+                    _context: &HttpContext, 
+                    request: Request<Body>
     ) -> RequestOrResponse {
         println!("{:?}", request.uri().path());
         RequestOrResponse::Request(request)
     }
     
     async fn handle_response(&mut self, 
-                             context: &HttpContext, 
-                             response: Response<Body>
+                    _context: &HttpContext, 
+                    response: Response<Body>
     ) -> Response<Body> { response }
 }
 
@@ -69,16 +68,15 @@ pub(crate) async fn create_proxy() {
     
     // Create an instance of the proxy.
     let proxy = ProxyBuilder::new()
-        .with_addr(SocketAddr::from(([127, 0, 0, 1], 8080)))
+        .with_addr(SocketAddr::from(([127, 0, 0, 1], 8537)))
         .with_rustls_client()
         .with_ca(authority)
         .with_http_handler(ProxyHandler)
         .build();
     
     // Create the proxy & listen for errors.
-    if let Err(e) = proxy.start(shutdown_signal()).await {
-        error!("{}", e);
-    }
+    proxy.start(shutdown_signal()).await
+        .expect("Failed to start proxy");
 }
 
 /**
@@ -90,8 +88,8 @@ pub(crate) fn connect_to_proxy() {
         let settings = Hive::CurrentUser.open(r"Software\Microsoft\Windows\CurrentVersion\Internet Settings", Security::Write).unwrap();
         
         // Set registry values.
-        settings.set_value("ProxyServer", &Data::String("http=127.0.0.1:8080;https=127.0.0.1:8080;ftp=127.0.0.1:8080".parse().unwrap()));
-        settings.set_value("ProxyEnable", &Data::U32(1));
+        settings.set_value("ProxyServer", &Data::String("http=127.0.0.1:8537;https=127.0.0.1:8537;ftp=127.0.0.1:8537".parse().unwrap())).unwrap();
+        settings.set_value("ProxyEnable", &Data::U32(1)).unwrap();
     }
 }
 
@@ -104,6 +102,6 @@ pub(crate) fn disconnect_from_proxy() {
         let settings = Hive::CurrentUser.open(r"Software\Microsoft\Windows\CurrentVersion\Internet Settings", Security::Write).unwrap();
 
         // Set registry values.
-        settings.set_value("ProxyEnable", &Data::U32(0));
+        settings.set_value("ProxyEnable", &Data::U32(0)).unwrap();
     }
 }

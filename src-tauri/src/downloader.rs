@@ -37,29 +37,29 @@ pub async fn download_file(window: tauri::Window, url: &str, path: &str) -> Resu
         let new = min(downloaded + (chunk.len() as u64), total_size);
         downloaded = new;
 
-        let mut resHash = std::collections::HashMap::new();
+        let mut res_hash = std::collections::HashMap::new();
 
-        resHash.insert(
+        res_hash.insert(
             "downloaded".to_string(),
             downloaded.to_string()
         );
 
-        resHash.insert(
+        res_hash.insert(
             "total".to_string(),
             total_size.to_string()
         );
 
-        resHash.insert(
+        res_hash.insert(
             "path".to_string(),
             path.to_string()
         );
 
         // Create event to send to frontend
-        window.emit("download_progress", &resHash);
+        window.emit("download_progress", &res_hash).unwrap();
     }
 
     // One more "finish" event
-    window.emit("download_finished", &path);
+    window.emit("download_finished", &path).unwrap();
 
     // We are done
     return Ok(());
