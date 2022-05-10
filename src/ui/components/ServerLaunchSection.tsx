@@ -44,11 +44,13 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     const config = await getConfig()
   
     if (!config.game_path) return
+    
+    // Connect to proxy
+    await invoke('connect', { port: 8365 })
   
     // Launch the program
     await invoke('run_program', { path: config.game_path })
   }
-  
 
   render() {
     return (
