@@ -32,9 +32,9 @@ export default class ProgressBar extends React.Component<IProps, IState> {
     const intv = setInterval(() => {
       const prog = this.props.downloadManager.getTotalAverage()
       this.setState({
-        average: parseInt(prog?.avergae || 0, 10),
+        average: parseInt(prog?.average || 0, 10),
         files: prog?.files,
-        total: prog?.total || 0,
+        total: prog?.totalSize || 0,
       })
     }, 500)
   }

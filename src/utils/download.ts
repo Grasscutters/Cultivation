@@ -17,13 +17,14 @@ export default class DownloadHandler {
     listen('download_progress', (...payload) => {
       // @ts-expect-error Payload may be unknown but backend always returns this object
       const obj: {
-        downloaded: number,
-        total: number,
+        downloaded: string,
+        total: string,
         path: string,
       } = payload[0].payload
 
       const index = this.downloads.findIndex(download => download.path === obj.path)
-      this.downloads[index].progress = obj.downloaded
+      this.downloads[index].progress = parseInt(obj.downloaded, 10)
+      this.downloads[index].total = parseInt(obj.total, 10)
     })
 
     listen('download_finished', (...payload) => {
