@@ -1,5 +1,5 @@
 .ProgressBar, .InnerProgress {
-  border-radius: 20px;
+  border-radius: 4px;
 }
 
 .ProgressBarWrapper {
@@ -11,7 +11,7 @@
 .ProgressBar {
   height: 20px;
   width: 80%;
-  background-color: #fff;
+  background-color: rgba(204, 204, 204, 0.5);
   color: #c5c5c5;
 
   border: 1px solid #ccc;
@@ -19,10 +19,25 @@
 
 .InnerProgress {
   height: 100%;
-  background-color: #00a8ff;
+  background-color: #ffc61e;
 }
 
 .ProgressText {
   color: #c5c5c5;
   padding: 0px 10px;
+}
+
+.MainProgressBarWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  color: #fff;
+}
+
+.MainProgressBarWrapper .ProgressText {
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff !important;
 }
