@@ -32,3 +32,7 @@
 .MiniDialogTop:hover {
   cursor: pointer;
 }
+
+.MiniDialog .ProgressText {
+  color: #000;
+}

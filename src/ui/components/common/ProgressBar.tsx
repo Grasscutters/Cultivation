@@ -1,4 +1,6 @@
 import React from 'react'
+import { capitalize } from '../../../utils/string'
+
 import './ProgressBar.css'
 
 interface IProps {
@@ -61,7 +63,7 @@ export default class ProgressBar extends React.Component<IProps, IState> {
         </div>
 
         <div className="ProgressText">
-          {this.state.status}
+          {capitalize(this.state.status)}
         </div>
       </div>
     )
