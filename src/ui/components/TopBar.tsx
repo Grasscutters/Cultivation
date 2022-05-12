@@ -1,11 +1,12 @@
 import React from 'react'
+import { app } from '@tauri-apps/api'
 import { appWindow } from '@tauri-apps/api/window'
-import './TopBar.css'
 import closeIcon from '../../resources/icons/close.svg'
 import minIcon from '../../resources/icons/min.svg'
 import cogBtn from '../../resources/icons/cog.svg'
 import downBtn from '../../resources/icons/download.svg'
-import { app } from '@tauri-apps/api'
+
+import './TopBar.css'
 
 interface IProps {
   optFunc: () => void;
@@ -13,7 +14,7 @@ interface IProps {
 }
 
 interface IState {
-  version: string
+  version: string;
 }
 export default class TopBar extends React.Component<IProps, IState> {
   constructor(props: IProps) {
@@ -49,7 +50,7 @@ export default class TopBar extends React.Component<IProps, IState> {
           <div id="settingsBtn" onClick={this.props.optFunc} className='TopButton'>
             <img src={cogBtn} alt="settings" />
           </div>
-          <div id="downloadsBtn" className='TopButton'>
+          <div id="downloadsBtn" className='TopButton' onClick={this.props.downFunc}>
             <img src={downBtn} alt="downloads" />
           </div>
         </div>

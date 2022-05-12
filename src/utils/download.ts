@@ -36,6 +36,10 @@ export default class DownloadHandler {
       this.downloads[index].status = 'finished'
     })
   }
+
+  getDownloads() {
+    return this.downloads
+  }
   
   addDownload(url: string, path: string) {
     // Begin download from rust backend

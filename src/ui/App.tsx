@@ -11,6 +11,8 @@ import ServerLaunchSection from './components/ServerLaunchSection'
 import ProgressBar from './components/common/ProgressBar'
 import MainProgressBar from './components/common/MainProgressBar'
 import Options from './components/menu/Options'
+import MiniDialog from './components/MiniDialog'
+import DownloadList from './components/common/DownloadList'
 
 interface IProps {
   [key: string]: never;
@@ -19,6 +21,7 @@ interface IProps {
 interface IState {
   isDownloading: boolean;
   optionsOpen: boolean;
+  miniDownloadsOpen: boolean;
 }
 
 const downloadHandler = new DownloadHandler()
@@ -41,7 +44,8 @@ class App extends React.Component<IProps, IState> {
     super(props)
     this.state = {
       isDownloading: false,
-      optionsOpen: false
+      optionsOpen: false,
+      miniDownloadsOpen: false,
     }
   }
 
@@ -52,8 +56,19 @@ class App extends React.Component<IProps, IState> {
           optFunc={() => {
             this.setState({ optionsOpen: !this.state.optionsOpen })
           }}
-          downFunc={() => null}
+          downFunc={() => {
+            this.setState({ miniDownloadsOpen: !this.state.miniDownloadsOpen })
+            console.log(this.state.miniDownloadsOpen)
+          }}
         />
+
+        {
+          // Mini downloads section
+          this.state.miniDownloadsOpen ? 
+            <MiniDialog>
+              <DownloadList downloadManager={downloadHandler} />
+            </MiniDialog> : null
+        }
 
         {
           this.state.optionsOpen ? <Options closeFn={() => this.setState({ optionsOpen: !this.state.optionsOpen })}/> : null

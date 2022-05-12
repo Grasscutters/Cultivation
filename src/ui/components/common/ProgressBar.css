@@ -13,6 +13,8 @@
   width: 80%;
   background-color: #fff;
   color: #fff;
+
+  border: 1px solid #ccc;
 }
 
 .InnerProgress {

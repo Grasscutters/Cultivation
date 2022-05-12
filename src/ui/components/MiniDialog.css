@@ -1,0 +1,18 @@
+.MiniDialog {
+  position: fixed;
+  z-index: 99;
+
+  /* Temp positions */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* Len and width */
+  height: 30%;
+  width: 30%;
+
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+}
+
