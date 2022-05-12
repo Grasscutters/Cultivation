@@ -45,8 +45,6 @@ export default class Tr extends React.Component<IProps, IState> {
             }
           }
 
-          console.log(translation)
-
           this.setState({
             translated_text: translation as string,
           })
