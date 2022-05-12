@@ -1,6 +1,7 @@
 
 import { invoke } from '@tauri-apps/api/tauri'
 import { listen } from '@tauri-apps/api/event'
+import { byteToString } from './string'
 
 export default class DownloadHandler {
   downloads: {
@@ -71,6 +72,11 @@ export default class DownloadHandler {
   getDownloadProgress(path: string) {
     const index = this.downloads.findIndex(download => download.path === path)
     return this.downloads[index] || null
+  }
+
+  getDownloadSize(path: string) {
+    const index = this.downloads.findIndex(download => download.path === path)
+    return byteToString(this.downloads[index].total) || null
   }
 
   getTotalAverage() {

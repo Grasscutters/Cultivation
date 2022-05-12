@@ -17,7 +17,7 @@ export default class MiniDialog extends React.Component<IProps, never> {
   render() {
     return (
       <div className="DownloadSection">
-        <span>{this.props.downloadName}</span>
+        <span>{this.props.downloadName} - {this.props.downloadManager.getDownloadSize(this.props.downloadName)}</span>
         <div className="DownloadSectionInner">
           <ProgressBar path={this.props.downloadName} downloadManager={this.props.downloadManager} />
         </div>
