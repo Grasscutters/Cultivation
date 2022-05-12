@@ -4,6 +4,8 @@ import BigButton from './common/BigButton'
 import { getConfig, saveConfig } from '../../utils/configuration'
 import { invoke } from '@tauri-apps/api/tauri'
 
+import './ServerLaunchSection.css'
+
 interface IProps {
   [key: string]: any
 }

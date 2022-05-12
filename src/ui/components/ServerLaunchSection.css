@@ -1,0 +1,16 @@
+#serverControls .CheckboxDisplay {
+  border-color: #fff;
+  background: #fff;
+}
+
+#serverControls .Checkbox {
+  margin-bottom: 6px;
+}
+
+#serverControls .CheckboxDisplay {
+  margin-right: 6px;
+}
+
+#serverControls .Checkbox label {
+  color: #000;
+}

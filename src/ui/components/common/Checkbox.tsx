@@ -36,6 +36,7 @@ export default class Checkbox extends React.Component<IProps, IState> {
           <div className="CheckboxDisplay">
             {this.state.checked ? <img src={checkmark} alt='Checkmark' /> : null}
           </div>
+          <span>{this.props.label}</span>
         </label>
       </div>
     )

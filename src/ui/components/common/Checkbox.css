@@ -19,3 +19,8 @@
   height: 100%;
   /* filter: invert(78%) sepia(91%) saturate(923%) hue-rotate(334deg) brightness(106%) contrast(102%); */
 }
+
+.Checkbox label {
+  display: flex;
+  flex-direction: row;
+}
