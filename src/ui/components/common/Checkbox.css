@@ -17,7 +17,7 @@
 
 .CheckboxDisplay img {
   height: 100%;
-  /* filter: invert(78%) sepia(91%) saturate(923%) hue-rotate(334deg) brightness(106%) contrast(102%); */
+  filter: invert(99%) sepia(0%) saturate(1188%) hue-rotate(186deg) brightness(97%) contrast(67%)
 }
 
 .Checkbox label {
