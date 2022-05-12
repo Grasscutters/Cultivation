@@ -30,8 +30,6 @@ export default class Tr extends React.Component<IProps, IState> {
       invoke('get_lang', { lang: language }).then((response) => {
         const translation_obj = JSON.parse(response as string || '{}')
 
-        console.log(translation_obj)
-
         // Traversal
         if (text.includes('.')) {
           const keys = text.split('.')
@@ -65,17 +63,19 @@ export default class Tr extends React.Component<IProps, IState> {
 export async function translate(text: string) {
   const language = await getConfigOption('language') || 'en'
   const translation_json = JSON.parse(await invoke('get_lang', { lang: language }) || '{}')
+
+  console.log(translation_json)
   
   // Traversal
   if (text.includes('.')) {
     const keys = text.split('.')
-    let translation = ''
+    let translation: string | Record<string, string> = translation_json
 
     for (let i = 0; i < keys.length; i++) {
       if (!translation) {
         translation = ''
       } else {
-        translation = translation_json[keys[i]] || ''
+        translation = typeof translation !== 'string' ? translation[keys[i]] : translation as string
       }
     }
 

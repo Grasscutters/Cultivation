@@ -2,6 +2,7 @@ import React from 'react'
 import Checkbox from './common/Checkbox'
 import BigButton from './common/BigButton'
 import { getConfig, saveConfig } from '../../utils/configuration'
+import Tr, { translate } from '../../utils/language'
 import { invoke } from '@tauri-apps/api/tauri'
 
 import './ServerLaunchSection.css'
@@ -11,7 +12,9 @@ interface IProps {
 }
 
 interface IState {
-  grasscutterEnabled: boolean
+  grasscutterEnabled: boolean;
+  buttonLabel: string;
+  checkboxLabel: string;
 }
 
 export default class ServerLaunchSection extends React.Component<IProps, IState> {
@@ -19,7 +22,9 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     super(props)
 
     this.state = {
-      grasscutterEnabled: false
+      grasscutterEnabled: false,
+      buttonLabel: '',
+      checkboxLabel: ''
     }
 
     this.toggleGrasscutter = this.toggleGrasscutter.bind(this)
@@ -30,8 +35,12 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     const config = await getConfig()
 
     this.setState({
-      grasscutterEnabled: config.toggle_grasscutter
+      grasscutterEnabled: config.toggle_grasscutter,
+      buttonLabel: await translate('main.launch_button'),
+      checkboxLabel: await translate('main.gc_enable')
     })
+
+    console.log(this.state)
   }
 
   async toggleGrasscutter() {
@@ -48,7 +57,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     if (!config.game_path) return
     
     // Connect to proxy
-    await invoke('connect', { port: 8365 })
+    if (config.toggle_grasscutter) await invoke('connect', { port: 8365 })
   
     // Launch the program
     await invoke('run_program', { path: config.game_path })
@@ -58,9 +67,9 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     return (
       <div id="playButton">
         <div id="serverControls">
-          <Checkbox id="enableGC" label="Connect via Grasscutter" onChange={this.toggleGrasscutter} checked={this.state.grasscutterEnabled}/>
+          <Checkbox id="enableGC" label={this.state.checkboxLabel} onChange={this.toggleGrasscutter} checked={this.state.grasscutterEnabled}/>
         </div>
-        <BigButton text="Launch" onClick={this.playGame} id="officialPlay" />
+        <BigButton text={this.state.buttonLabel} onClick={this.playGame} id="officialPlay" />
       </div>
     )
   }

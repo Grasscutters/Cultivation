@@ -7,17 +7,9 @@ interface IProps {
   id: string;
 }
 
-interface IState {
-  text: string;
-}
-
-export default class BigButton extends React.Component<IProps, IState> {
+export default class BigButton extends React.Component<IProps, never> {
   constructor(props: IProps) {
     super(props)
-
-    this.state = {
-      text: props.text
-    }
 
     this.handleClick = this.handleClick.bind(this)
   }
@@ -29,7 +21,7 @@ export default class BigButton extends React.Component<IProps, IState> {
   render() {
     return (
       <div className="BigButton" onClick={this.handleClick} id={this.props.id}>
-        <div className="BigButtonText">{this.state.text}</div>
+        <div className="BigButtonText">{this.props.text}</div>
       </div>
     )
   }
