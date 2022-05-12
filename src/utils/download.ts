@@ -8,6 +8,7 @@ export default class DownloadHandler {
     progress: number,
     total: number,
     status: string,
+    error?: string,
   }[]
 
   // Pass tauri invoke function
@@ -34,6 +35,19 @@ export default class DownloadHandler {
       // set status to finished
       const index = this.downloads.findIndex(download => download.path === filename)
       this.downloads[index].status = 'finished'
+    })
+
+    listen('download_error', (...payload) => {
+      // @ts-expect-error shut up typescript
+      const errorData: {
+        path: string,
+        error: string,
+      } = payload[0]?.payload
+
+      // Set download to error
+      const index = this.downloads.findIndex(download => download.path === errorData.path)
+      this.downloads[index].status = 'error'
+      this.downloads[index].error = errorData.error
     })
   }
 

@@ -10,15 +10,26 @@ use futures_util::StreamExt;
 #[tauri::command]
 pub async fn download_file(window: tauri::Window, url: &str, path: &str) -> Result<(), String> {
     // Reqwest setup
-    let res = reqwest::get(url)
-        .await
-        .or(Err(format!("Failed to get {}", url)))?;
+    let res = match reqwest::get(url)
+        .await {
+            Ok(r) => r,
+            Err(e) => {
+                emit_download_err(window, format!("Failed to request {}", url), url);
+                return Err(format!("Failed to request {}", url));
+            },
+        };
     let total_size = res
         .content_length()
         .unwrap_or(0);
 
     // Create file path
-    let mut file = File::create(path).or(Err(format!("Failed to create file '{}'", path)))?;
+    let mut file = match File::create(path) {
+        Ok(f) => f,
+        Err(e) => {
+            emit_download_err(window, format!("Failed to create file '{}'", path), path);
+            return Err(format!("Failed to create file '{}'", path));
+        },
+    };
     let mut downloaded: u64 = 0;
 
     // File stream
@@ -26,12 +37,23 @@ pub async fn download_file(window: tauri::Window, url: &str, path: &str) -> Resu
 
     // Await chunks
     while let Some(item) = stream.next().await {
-        let chunk = item.or(Err(format!("Error while downloading file"))).unwrap();
+        let chunk = match item {
+            Ok(itm) => itm,
+            Err(e) => {
+                emit_download_err(window, format!("Error while downloading file"), path);
+                return Err(format!("Error while downloading file: {}", e));
+            },
+        };
         let vect = &chunk.to_vec()[..];
 
         // Write bytes
-        file.write_all(&vect)
-            .or(Err(format!("Error while writing file")))?;
+        match file.write_all(&vect) {
+            Ok(x) => x,
+            Err(e) => {
+                emit_download_err(window, format!("Error while writing file"), path);
+                return Err(format!("Error while writing file: {}", e));
+            },
+        }
 
         // New progress
         let new = min(downloaded + (chunk.len() as u64), total_size);
@@ -63,4 +85,20 @@ pub async fn download_file(window: tauri::Window, url: &str, path: &str) -> Resu
 
     // We are done
     return Ok(());
+}
+
+pub fn emit_download_err(window: tauri::Window, msg: std::string::String, path: &str) {
+    let mut res_hash = std::collections::HashMap::new();
+
+    res_hash.insert(
+        "error".to_string(),
+        msg.to_string()
+    );
+
+    res_hash.insert(
+        "path".to_string(),
+        path.to_string()
+    );
+
+    window.emit("download_error", &res_hash).unwrap();
 }

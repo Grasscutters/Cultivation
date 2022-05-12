@@ -64,7 +64,7 @@ class App extends React.Component<IProps, IState> {
         {
           // Mini downloads section
           this.state.miniDownloadsOpen ? 
-            <MiniDialog closeFn={() => {
+            <MiniDialog title="Downloads" closeFn={() => {
               this.setState({ miniDownloadsOpen: false })
             }}>
               <DownloadList downloadManager={downloadHandler} />
