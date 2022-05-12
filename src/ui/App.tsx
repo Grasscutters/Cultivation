@@ -35,7 +35,7 @@ async function TESTDOWNLOAD() {
   download(
     'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/stable.zip',
     'grasscutter.zip',
-    'S:/Cultivation'
+    'C:\\Users\\spike\\Documents\\dev\\Cultivation'
   )
 }
 

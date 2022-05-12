@@ -1,0 +1,12 @@
+.DownloadSection span {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+
+  width: 100%;
+}
+
+.DownloadSection {
+  overflow: hidden;
+  width: 100%;
+}
