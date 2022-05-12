@@ -1,4 +1,5 @@
 import React from 'react'
+import { listen } from '@tauri-apps/api/event'
 import './App.css'
 import './custom.css'
 
@@ -47,6 +48,10 @@ class App extends React.Component<IProps, IState> {
       optionsOpen: false,
       miniDownloadsOpen: false,
     }
+
+    listen('lang_error', (payload) => {
+      console.log(payload)
+    })
   }
 
   render() {

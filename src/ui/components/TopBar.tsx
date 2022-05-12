@@ -6,7 +6,10 @@ import minIcon from '../../resources/icons/min.svg'
 import cogBtn from '../../resources/icons/cog.svg'
 import downBtn from '../../resources/icons/download.svg'
 
+import Tr, { translate } from '../../utils/language'
+
 import './TopBar.css'
+import { listen } from '@tauri-apps/api/event'
 
 interface IProps {
   optFunc: () => void;
@@ -37,7 +40,9 @@ export default class TopBar extends React.Component<IProps, IState> {
     return (
       <div className="TopBar" data-tauri-drag-region >
         <div id="title">
-          <span data-tauri-drag-region>Cultivation</span>
+          <span data-tauri-drag-region>
+            <Tr text="main.title" />
+          </span>
           <span data-tauri-drag-region id="version">{this.state?.version}</span>
         </div>
         <div className="TopBtns">

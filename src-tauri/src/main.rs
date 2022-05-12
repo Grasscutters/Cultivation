@@ -6,6 +6,7 @@ windows_subsystem = "windows"
 use opener;
 
 mod downloader;
+mod lang;
 mod proxy;
 
 fn main() {
@@ -14,7 +15,8 @@ fn main() {
       connect,
       disconnect,
       run_program,
-      downloader::download_file
+      downloader::download_file,
+      lang::get_lang
     ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
