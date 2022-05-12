@@ -16,3 +16,19 @@
   border-radius: 10px;
 }
 
+.MiniDialogTop {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  height: 20px;
+}
+
+.MiniDialogTop img {
+  height: 100%;
+}
+
+.MiniDialogTop:hover {
+  cursor: pointer;
+}

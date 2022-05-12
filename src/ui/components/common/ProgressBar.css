@@ -12,7 +12,7 @@
   height: 20px;
   width: 80%;
   background-color: #fff;
-  color: #fff;
+  color: #c5c5c5;
 
   border: 1px solid #ccc;
 }
@@ -23,5 +23,5 @@
 }
 
 .ProgressText {
-  color: #fff;
+  color: #c5c5c5;
 }

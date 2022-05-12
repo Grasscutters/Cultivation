@@ -42,9 +42,8 @@ export default class DownloadHandler {
   }
   
   addDownload(url: string, path: string) {
-    // Begin download from rust backend
+    // Begin download from rust backend, don't add if the download addition fails
     invoke('download_file', { url, path })
-
     const obj = {
       path,
       progress: 0,

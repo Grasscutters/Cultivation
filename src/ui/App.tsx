@@ -58,14 +58,15 @@ class App extends React.Component<IProps, IState> {
           }}
           downFunc={() => {
             this.setState({ miniDownloadsOpen: !this.state.miniDownloadsOpen })
-            console.log(this.state.miniDownloadsOpen)
           }}
         />
 
         {
           // Mini downloads section
           this.state.miniDownloadsOpen ? 
-            <MiniDialog>
+            <MiniDialog closeFn={() => {
+              this.setState({ miniDownloadsOpen: false })
+            }}>
               <DownloadList downloadManager={downloadHandler} />
             </MiniDialog> : null
         }
