@@ -1,5 +1,6 @@
 import React from 'react'
 import { open } from '@tauri-apps/api/dialog'
+import { translate } from '../../../utils/language'
 import TextInput from './TextInput'
 import File from '../../../resources/icons/folder.svg'
 
@@ -12,6 +13,7 @@ interface IProps {
 
 interface IState {
   value: string
+  placeholder: string
 }
 
 export default class DirInput extends React.Component<IProps, IState> {
@@ -19,10 +21,18 @@ export default class DirInput extends React.Component<IProps, IState> {
     super(props)
 
     this.state = {
-      value: props.value || ''
+      value: props.value || '',
+      placeholder: 'Select file or folder...'
     }
 
     this.handleIconClick = this.handleIconClick.bind(this)
+  }
+
+  async componentDidMount() {
+    const translation = await translate('components.select_file')
+    this.setState( {
+      placeholder: translation
+    })
   }
 
   async handleIconClick() {
@@ -45,7 +55,7 @@ export default class DirInput extends React.Component<IProps, IState> {
   render() {
     return (
       <div className='DirInput'>
-        <TextInput value={this.state.value} placeholder='Set Game Location...' readOnly={true} />
+        <TextInput value={this.state.value} placeholder={this.state.placeholder} readOnly={true} />
         <div className="FileSelectIcon" onClick={this.handleIconClick}>
           <img src={File} />
         </div>

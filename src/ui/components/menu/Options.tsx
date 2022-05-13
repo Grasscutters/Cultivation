@@ -1,9 +1,9 @@
 import React from 'react'
-import Checkbox from '../common/Checkbox'
-import TextInput from '../common/TextInput'
 import DirInput from '../common/DirInput'
 import Menu from './Menu'
+import Tr from '../../../utils/language'
 import './Options.css'
+import { setConfigOption } from '../../../utils/configuration'
 
 interface IProps {
   closeFn: () => void;
@@ -14,25 +14,19 @@ export default class Options extends React.Component<IProps, never> {
     super(props)
   }
 
+  setGameExec(value: string) {
+    setConfigOption('game_path', value)
+  }
+
   render() {
     return (
       <Menu closeFn={this.props.closeFn} className="Options" heading="Options">
         <div className='OptionSection'>
-          <div className='OptionLabel'>Test Option</div>
-          <div className='OptionValue'>
-            <Checkbox id="testOption" label="" checked={true} onChange={() => console.log('Test Option Changed')} />
+          <div className='OptionLabel'>
+            <Tr text="options.game_exec" />
           </div>
-        </div>
-        <div className='OptionSection'>
-          <div className='OptionLabel'>Test Input</div>
           <div className='OptionValue'>
-            <TextInput placeholder='Test Value...' />
-          </div>
-        </div>
-        <div className='OptionSection'>
-          <div className='OptionLabel'>Test File Input</div>
-          <div className='OptionValue'>
-            <DirInput />
+            <DirInput onChange={this.setGameExec} />
           </div>
         </div>
       </Menu>

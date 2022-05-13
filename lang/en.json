@@ -4,5 +4,11 @@
     "title": "Cultivation",
     "launch_button": "Launch",
     "gc_enable": "Connect via Grasscutter"
+  },
+  "options": {
+    "game_exec": "Set Game Executable"
+  },
+  "components": {
+    "select_file": "Select file or folder..."
   }
 }
