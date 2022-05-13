@@ -89,13 +89,13 @@ export default class DownloadHandler {
   }
 
   getTotalAverage() {
-    const files = this.downloads.filter(d => d.status !== 'finished')
+    const files = this.downloads.filter(d => d.status === 'downloading')
     const total = files.reduce((acc, d) => acc + d.total, 0)
     const progress = files.reduce((acc, d) => acc + d.progress, 0)
 
     return {
       average: (progress / total) * 100 || 0,
-      files: this.downloads.filter(d => d.status !== 'finished' && d.status !== 'error').length,
+      files: this.downloads.filter(d => d.status === 'downloading').length,
       totalSize: total,
     }
   }

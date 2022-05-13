@@ -33,8 +33,8 @@ async function download(url: string, filename: string, path: string) {
 
 async function TESTDOWNLOAD() {
   download(
-    'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/stable.zip',
-    'grasscutter.zip',
+    'https://github.com/Koko-boya/Grasscutter_Resources/archive/refs/heads/main.zip',
+    'resources.zip',
     'S:\\Cultivation'
   )
 }

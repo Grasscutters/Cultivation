@@ -50,6 +50,11 @@ pub async fn download_file(window: tauri::Window, url: &str, path: &str) -> Resu
 
     // Await chunks
     while let Some(item) = stream.next().await {
+        // Stop the loop if the download is removed from the list
+        if !DOWNLOADS.lock().unwrap().contains(&path.to_string()) {
+            break;
+        }
+
         let chunk = match item {
             Ok(itm) => itm,
             Err(e) => {
