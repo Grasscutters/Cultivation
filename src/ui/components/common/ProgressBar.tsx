@@ -46,7 +46,9 @@ export default class ProgressBar extends React.Component<IProps, IState> {
   render() {
     return (
       <div className="ProgressBarWrapper">
-        <div>
+        <div style={{
+          width: '100%'
+        }}>
           <div className="ProgressBar">
             <div className="InnerProgress" style={{
               width: `${(() => {

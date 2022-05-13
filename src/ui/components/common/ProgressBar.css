@@ -42,7 +42,7 @@
   color: #fff !important;
 }
 
-.ProgressBarWrapper {
+.ProgressBarWrapper div {
   display: flex;
   flex-direction: row;
   align-items: center;
