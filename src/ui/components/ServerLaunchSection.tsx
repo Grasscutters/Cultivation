@@ -39,8 +39,6 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       buttonLabel: await translate('main.launch_button'),
       checkboxLabel: await translate('main.gc_enable')
     })
-
-    console.log(this.state)
   }
 
   async toggleGrasscutter() {

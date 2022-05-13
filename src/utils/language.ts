@@ -63,8 +63,6 @@ export default class Tr extends React.Component<IProps, IState> {
 export async function translate(text: string) {
   const language = await getConfigOption('language') || 'en'
   const translation_json = JSON.parse(await invoke('get_lang', { lang: language }) || '{}')
-
-  console.log(translation_json)
   
   // Traversal
   if (text.includes('.')) {

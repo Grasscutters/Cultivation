@@ -39,8 +39,6 @@ export default class DirInput extends React.Component<IProps, IState> {
       value: path
     })
 
-    console.log(this.state)
-
     if (this.props.onChange) this.props.onChange(path)
   }
 
