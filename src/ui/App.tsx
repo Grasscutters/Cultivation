@@ -9,7 +9,6 @@ import DownloadHandler from '../utils/download'
 // Major Components
 import TopBar from './components/TopBar'
 import ServerLaunchSection from './components/ServerLaunchSection'
-import ProgressBar from './components/common/ProgressBar'
 import MainProgressBar from './components/common/MainProgressBar'
 import Options from './components/menu/Options'
 import MiniDialog from './components/MiniDialog'

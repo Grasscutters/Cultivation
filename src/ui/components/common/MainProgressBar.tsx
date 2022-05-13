@@ -30,7 +30,7 @@ export default class ProgressBar extends React.Component<IProps, IState> {
 
   componentDidMount() {
     // Periodically check the progress of passed file path
-    const intv = setInterval(() => {
+    setInterval(() => {
       const prog = this.props.downloadManager.getTotalAverage()
       this.setState({
         average: prog?.average || 0,

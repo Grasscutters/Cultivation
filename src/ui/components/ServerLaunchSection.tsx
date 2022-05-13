@@ -2,7 +2,7 @@ import React from 'react'
 import Checkbox from './common/Checkbox'
 import BigButton from './common/BigButton'
 import { getConfig, saveConfig } from '../../utils/configuration'
-import Tr, { translate } from '../../utils/language'
+import { translate } from '../../utils/language'
 import { invoke } from '@tauri-apps/api/tauri'
 
 import './ServerLaunchSection.css'

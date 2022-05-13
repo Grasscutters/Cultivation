@@ -1,4 +1,4 @@
-import React, { RefObject } from 'react'
+import React from 'react'
 import { open } from '@tauri-apps/api/dialog'
 import TextInput from './TextInput'
 import File from '../../../resources/icons/folder.svg'

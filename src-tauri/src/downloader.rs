@@ -1,11 +1,7 @@
 use lazy_static::lazy_static;
 
-use tauri::App;
-use tauri::Manager;
-
 use std::sync::Mutex;
 use std::cmp::min;
-use std::collections::HashMap;
 use std::fs::File;
 use std::io::Write;
 
@@ -14,7 +10,7 @@ use futures_util::StreamExt;
 // This will create a downloads list that will be used to check if we should continue downloading the file
 lazy_static!{
     static ref DOWNLOADS: Mutex<Vec<String>> = {
-        let mut m = Vec::new();
+        let m = Vec::new();
         Mutex::new(m)
     };
 }
