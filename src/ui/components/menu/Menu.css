@@ -9,7 +9,9 @@
   height: 70%;
   width: 60%;
 
-  background-color: #fff;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
 }
 
 .MenuInner {

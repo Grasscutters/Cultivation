@@ -5,9 +5,13 @@
   justify-content: center;
 }
 
+.DirInput input {
+  text-overflow: ellipsis;
+}
+
 .FileSelectIcon {
   height: 20px;
-  margin: 10px;
+  margin-left: 10px;
   filter: invert(99%) sepia(0%) saturate(1188%) hue-rotate(186deg) brightness(97%) contrast(67%);
 
   transition: filter 0.1s ease-in-out;
