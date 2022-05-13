@@ -28,6 +28,12 @@ export default class DirInput extends React.Component<IProps, IState> {
     this.handleIconClick = this.handleIconClick.bind(this)
   }
 
+  static getDerivedStateFromProps(props: IProps, state: IState) {
+    if (!props.value || state.value !== '') return state
+
+    return { value: props.value || '' }
+  }
+
   async componentDidMount() {
     const translation = await translate('components.select_file')
     this.setState( {

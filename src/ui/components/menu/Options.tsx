@@ -3,15 +3,33 @@ import DirInput from '../common/DirInput'
 import Menu from './Menu'
 import Tr from '../../../utils/language'
 import './Options.css'
-import { setConfigOption } from '../../../utils/configuration'
+import { getConfigOption, setConfigOption } from '../../../utils/configuration'
 
 interface IProps {
   closeFn: () => void;
 }
 
-export default class Options extends React.Component<IProps, never> {
+interface IState {
+  game_path: string
+}
+
+export default class Options extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
+
+    this.state = {
+      game_path: '',
+    }
+  }
+
+  componentDidMount() {
+    getConfigOption('game_path').then((value: string) => {
+      this.setState({
+        game_path: value || ''
+      })
+    })
+
+    this.forceUpdate()
   }
 
   setGameExec(value: string) {
@@ -26,7 +44,7 @@ export default class Options extends React.Component<IProps, never> {
             <Tr text="options.game_exec" />
           </div>
           <div className='OptionValue'>
-            <DirInput onChange={this.setGameExec} />
+            <DirInput onChange={this.setGameExec} value={this.state?.game_path}/>
           </div>
         </div>
       </Menu>
