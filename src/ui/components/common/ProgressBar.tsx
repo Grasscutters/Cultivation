@@ -3,10 +3,11 @@ import { capitalize } from '../../../utils/string'
 
 import Stop from '../../../resources/icons/close.svg' 
 import './ProgressBar.css'
+import DownloadHandler from '../../../utils/download'
 
 interface IProps {
   path: string,
-  downloadManager: any,
+  downloadManager: DownloadHandler,
 }
 
 interface IState {
@@ -31,7 +32,7 @@ export default class ProgressBar extends React.Component<IProps, IState> {
     const intv = setInterval(() => {
       const prog = this.props.downloadManager.getDownloadProgress(this.props.path)
       this.setState({
-        progress: parseInt(prog?.progress || 0, 10),
+        progress: prog?.progress || 0,
         status: prog?.status || 'error',
         total: prog?.total || 0,
       })
@@ -41,6 +42,10 @@ export default class ProgressBar extends React.Component<IProps, IState> {
         clearInterval(intv)
       }
     }, 500)
+  }
+
+  stopDownload() {
+    this.props.downloadManager.stopDownload(this.props.path)
   }
 
   render() {
@@ -66,7 +71,7 @@ export default class ProgressBar extends React.Component<IProps, IState> {
             }}></div>
           </div>
           <div className="DownloadControls">
-            <div>
+            <div onClick={this.stopDownload}>
               <img src={Stop}></img>
             </div>
           </div>

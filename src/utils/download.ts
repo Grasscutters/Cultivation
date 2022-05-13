@@ -69,6 +69,15 @@ export default class DownloadHandler {
     this.downloads.push(obj)
   }
 
+  stopDownload(path: string) {
+    // Stop download and remove from list.
+    invoke('stop_download', { path })
+
+    // Remove from list
+    const index = this.downloads.findIndex(download => download.path === path)
+    this.downloads.splice(index, 1)
+  }
+
   getDownloadProgress(path: string) {
     const index = this.downloads.findIndex(download => download.path === path)
     return this.downloads[index] || null
