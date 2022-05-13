@@ -3,7 +3,7 @@ import DirInput from '../common/DirInput'
 import Menu from './Menu'
 import Tr from '../../../utils/language'
 import './Options.css'
-import { getConfigOption, setConfigOption } from '../../../utils/configuration'
+import { setConfigOption, getConfig } from '../../../utils/configuration'
 
 interface IProps {
   closeFn: () => void;
@@ -11,6 +11,7 @@ interface IProps {
 
 interface IState {
   game_path: string
+  grasscutter_path: string
 }
 
 export default class Options extends React.Component<IProps, IState> {
@@ -19,13 +20,15 @@ export default class Options extends React.Component<IProps, IState> {
 
     this.state = {
       game_path: '',
+      grasscutter_path: ''
     }
   }
 
   componentDidMount() {
-    getConfigOption('game_path').then((value: string) => {
+    getConfig().then(config => {
       this.setState({
-        game_path: value || ''
+        game_path: config.game_path || '',
+        grasscutter_path: config.grasscutter_path || ''
       })
     })
 
@@ -36,6 +39,10 @@ export default class Options extends React.Component<IProps, IState> {
     setConfigOption('game_path', value)
   }
 
+  setGrasscutterJar(value: string) {
+    setConfigOption('grasscutter_path', value)
+  }
+
   render() {
     return (
       <Menu closeFn={this.props.closeFn} className="Options" heading="Options">
@@ -44,7 +51,15 @@ export default class Options extends React.Component<IProps, IState> {
             <Tr text="options.game_exec" />
           </div>
           <div className='OptionValue'>
-            <DirInput onChange={this.setGameExec} value={this.state?.game_path}/>
+            <DirInput onChange={this.setGameExec} value={this.state?.game_path} extensions={['exe']} />
+          </div>
+        </div>
+        <div className='OptionSection'>
+          <div className='OptionLabel'>
+            <Tr text="options.grasscutter_jar" />
+          </div>
+          <div className='OptionValue'>
+            <DirInput onChange={this.setGrasscutterJar} value={this.state?.grasscutter_path} extensions={['jar']} />
           </div>
         </div>
       </Menu>

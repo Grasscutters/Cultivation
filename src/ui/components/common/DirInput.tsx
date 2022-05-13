@@ -9,6 +9,7 @@ import './DirInput.css'
 interface IProps {
   value?: string
   onChange?: (value: string) => void
+  extensions?: string[]
 }
 
 interface IState {
@@ -44,7 +45,7 @@ export default class DirInput extends React.Component<IProps, IState> {
   async handleIconClick() {
     let path = await open({
       filters: [
-        { name: 'Executable files', extensions: ['exe'] }
+        { name: 'Files', extensions: this.props.extensions || ['*'] }
       ]
     })
 

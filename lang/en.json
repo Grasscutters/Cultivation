@@ -6,7 +6,8 @@
     "gc_enable": "Connect via Grasscutter"
   },
   "options": {
-    "game_exec": "Set Game Executable"
+    "game_exec": "Set Game Executable",
+    "grasscutter_jar": "Set Grasscutter Jar"
   },
   "components": {
     "select_file": "Select file or folder..."
