@@ -1,6 +1,7 @@
 import React from 'react'
 import { capitalize } from '../../../utils/string'
 
+import Stop from '../../../resources/icons/close.svg' 
 import './ProgressBar.css'
 
 interface IProps {
@@ -45,22 +46,30 @@ export default class ProgressBar extends React.Component<IProps, IState> {
   render() {
     return (
       <div className="ProgressBarWrapper">
-        <div className="ProgressBar">
-          <div className="InnerProgress" style={{
-            width: `${(() => {
-              // Handles files with content-lengths of 0
-              if (this.state.status === 'finished') {
-                return '100'
-              }
+        <div>
+          <div className="ProgressBar">
+            <div className="InnerProgress" style={{
+              width: `${(() => {
+                // Handles files with content-lengths of 0
+                if (this.state.status === 'finished') {
+                  return '100'
+                }
 
-              if (this.state.total <= 0) {
-                return '0'
-              }
+                if (this.state.total <= 0) {
+                  return '0'
+                }
 
-              return this.state.progress / this.state.total * 100
-            })()}%`,
-          }}></div>
+                return this.state.progress / this.state.total * 100
+              })()}%`,
+            }}></div>
+          </div>
+          <div className="DownloadControls">
+            <div>
+              <img src={Stop}></img>
+            </div>
+          </div>
         </div>
+
 
         <div className="ProgressText">
           {capitalize(this.state.status)}

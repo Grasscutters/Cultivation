@@ -34,5 +34,6 @@ body {
 #DownloadProgress {
   position: absolute;
   top: 85%;
+  left: 5%;
   width: 60%;
 }

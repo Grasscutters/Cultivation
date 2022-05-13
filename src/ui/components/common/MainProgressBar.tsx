@@ -1,8 +1,9 @@
 import React from 'react'
+import DownloadHandler from '../../../utils/download'
 import './ProgressBar.css'
 
 interface IProps {
-  downloadManager: any,
+  downloadManager: DownloadHandler,
 }
 
 interface IState {
@@ -18,12 +19,12 @@ export default class ProgressBar extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
 
-    const { average, files, total } = this.props.downloadManager.getTotalAverage()
+    const { average, files, totalSize } = this.props.downloadManager.getTotalAverage()
 
     this.state = {
       average,
       files,
-      total
+      total: totalSize
     }
   }
 
@@ -32,7 +33,7 @@ export default class ProgressBar extends React.Component<IProps, IState> {
     const intv = setInterval(() => {
       const prog = this.props.downloadManager.getTotalAverage()
       this.setState({
-        average: parseInt(prog?.average || 0, 10),
+        average: prog?.average || 0,
         files: prog?.files,
         total: prog?.totalSize || 0,
       })

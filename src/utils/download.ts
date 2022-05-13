@@ -86,7 +86,7 @@ export default class DownloadHandler {
 
     return {
       average: (progress / total) * 100 || 0,
-      files: this.downloads.filter(d => d.status !== 'finished').length,
+      files: this.downloads.filter(d => d.status !== 'finished' && d.status !== 'error').length,
       totalSize: total,
     }
   }

@@ -19,7 +19,7 @@
 
 .InnerProgress {
   height: 100%;
-  background-color: #ffc61e;
+  background-color: #fff;
 }
 
 .ProgressText {
@@ -30,7 +30,7 @@
 .MainProgressBarWrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 
   color: #fff;
@@ -40,4 +40,28 @@
   font-size: 20px;
   font-weight: bold;
   color: #fff !important;
+}
+
+.ProgressBarWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.DownloadControls {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  margin-left: 10px;
+}
+
+.DownloadControls div {
+  height: 20px;
+}
+
+.DownloadControls div img {
+  height: 100%;
 }

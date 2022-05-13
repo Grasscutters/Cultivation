@@ -13,7 +13,7 @@ pub async fn download_file(window: tauri::Window, url: &str, path: &str) -> Resu
     let res = match reqwest::get(url)
         .await {
             Ok(r) => r,
-            Err(e) => {
+            Err(_e) => {
                 emit_download_err(window, format!("Failed to request {}", url), url);
                 return Err(format!("Failed to request {}", url));
             },
@@ -25,7 +25,7 @@ pub async fn download_file(window: tauri::Window, url: &str, path: &str) -> Resu
     // Create file path
     let mut file = match File::create(path) {
         Ok(f) => f,
-        Err(e) => {
+        Err(_e) => {
             emit_download_err(window, format!("Failed to create file '{}'", path), path);
             return Err(format!("Failed to create file '{}'", path));
         },
