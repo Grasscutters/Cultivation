@@ -25,6 +25,8 @@ export default class ProgressBar extends React.Component<IProps, IState> {
       status: '',
       total: this.props.downloadManager.getDownloadProgress(this.props.path)?.total || 0,
     }
+
+    this.stopDownload = this.stopDownload.bind(this)
   }
 
   componentDidMount() {
@@ -33,7 +35,7 @@ export default class ProgressBar extends React.Component<IProps, IState> {
       const prog = this.props.downloadManager.getDownloadProgress(this.props.path)
       this.setState({
         progress: prog?.progress || 0,
-        status: prog?.status || 'error',
+        status: prog?.status || 'stopped',
         total: prog?.total || 0,
       })
 
@@ -71,7 +73,7 @@ export default class ProgressBar extends React.Component<IProps, IState> {
             }}></div>
           </div>
           <div className="DownloadControls">
-            <div onClick={this.stopDownload}>
+            <div onClick={this.stopDownload} className="downloadStop">
               <img src={Stop}></img>
             </div>
           </div>
@@ -79,7 +81,7 @@ export default class ProgressBar extends React.Component<IProps, IState> {
 
 
         <div className="ProgressText">
-          {capitalize(this.state.status)}
+          {capitalize(this.state.status) || 'Waiting'}
         </div>
       </div>
     )

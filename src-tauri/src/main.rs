@@ -16,6 +16,7 @@ fn main() {
       disconnect,
       run_program,
       downloader::download_file,
+      downloader::stop_download,
       lang::get_lang
     ])
     .run(tauri::generate_context!())

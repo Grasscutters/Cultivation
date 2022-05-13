@@ -1,12 +1,26 @@
+use lazy_static::lazy_static;
+
+use tauri::App;
+use tauri::Manager;
+
+use std::sync::Mutex;
 use std::cmp::min;
+use std::collections::HashMap;
 use std::fs::File;
 use std::io::Write;
 
 use futures_util::StreamExt;
 
+// This will create a downloads list that will be used to check if we should continue downloading the file
+lazy_static!{
+    static ref DOWNLOADS: Mutex<Vec<String>> = {
+        let mut m = Vec::new();
+        Mutex::new(m)
+    };
+}
+
 // Lots of help from: https://gist.github.com/giuliano-oliveira/4d11d6b3bb003dba3a1b53f43d81b30d
 // and docs ofc
-
 #[tauri::command]
 pub async fn download_file(window: tauri::Window, url: &str, path: &str) -> Result<(), String> {
     // Reqwest setup
@@ -34,6 +48,9 @@ pub async fn download_file(window: tauri::Window, url: &str, path: &str) -> Resu
 
     // File stream
     let mut stream = res.bytes_stream();
+
+    // Assuming all goes well, add to the downloads list
+    DOWNLOADS.lock().unwrap().push(path.to_string());
 
     // Await chunks
     while let Some(item) = stream.next().await {
@@ -101,4 +118,21 @@ pub fn emit_download_err(window: tauri::Window, msg: std::string::String, path: 
     );
 
     window.emit("download_error", &res_hash).unwrap();
+}
+
+#[tauri::command]
+pub fn stop_download(path: String) {
+    // Check if the path is in the downloads list
+    let mut downloads = DOWNLOADS.lock().unwrap();
+    let index = downloads.iter().position(|x| x == &path);
+
+    // Remove from list
+    if let Some(i) = index {
+        downloads.remove(i);
+    }
+
+    // Delete the file from disk
+    if let Err(_e) = std::fs::remove_file(&path) {
+        // Do nothing
+    }
 }

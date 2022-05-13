@@ -25,6 +25,7 @@
 .ProgressText {
   color: #c5c5c5;
   padding: 0px 10px;
+  width: 30%;
 }
 
 .MainProgressBarWrapper {
@@ -46,7 +47,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .DownloadControls {
@@ -64,4 +65,8 @@
 
 .DownloadControls div img {
   height: 100%;
+}
+
+.downloadStop:hover {
+  cursor: pointer;
 }
