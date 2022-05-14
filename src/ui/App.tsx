@@ -80,12 +80,14 @@ class App extends React.Component<IProps, IState> {
           this.state.optionsOpen ? <Options closeFn={() => this.setState({ optionsOpen: !this.state.optionsOpen })}/> : null
         }
 
-        <ServerLaunchSection />
+        <div className="BottomSection">
+          <ServerLaunchSection />
 
-        <div id="DownloadProgress"
-          onClick={() => this.setState({ miniDownloadsOpen: !this.state.miniDownloadsOpen })}
-        >
-          <MainProgressBar downloadManager={downloadHandler} />
+          <div id="DownloadProgress"
+            onClick={() => this.setState({ miniDownloadsOpen: !this.state.miniDownloadsOpen })}
+          >
+            <MainProgressBar downloadManager={downloadHandler} />
+          </div>
         </div>
       </div>
     )

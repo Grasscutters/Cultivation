@@ -35,9 +35,9 @@ body {
 
 #DownloadProgress {
   position: absolute;
-  top: 85%;
+  top: 15%;
   left: 5%;
-  width: 60%;
+  width: 50%;
 }
 
 .MiniDownloads {
@@ -59,5 +59,15 @@ body {
   position: fixed;
   top: 73%;
   left: 15%;
-  
+}
+
+.BottomSection {
+  position: absolute;
+  top: 80%;
+
+  height: 30%;
+  width: 100%;
+
+  backdrop-filter: blur(8px);
+  box-shadow: inset 0px 5px 12px -3px rgb(50 50 50 / 75%);
 }

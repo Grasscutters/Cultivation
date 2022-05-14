@@ -10,7 +10,7 @@
 
 .ProgressBar {
   height: 20px;
-  width: 80%;
+  width: 100%;
   background-color: rgba(204, 204, 204, 0.5);
   color: #c5c5c5;
 
@@ -30,7 +30,7 @@
 }
 
 .MainProgressText {
-  width: 100%;
+  width: 80%;
 }
 
 .MainProgressBarWrapper {

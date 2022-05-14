@@ -130,7 +130,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
         </div>
 
         <div className="ServerConfig">
-          <TextInput id="ip" key="ip" placeholder={this.state.ipPlaceholder} onChange={this.setIp} />,
+          <TextInput id="ip" key="ip" placeholder={this.state.ipPlaceholder} onChange={this.setIp} />
           <TextInput id="port" key="port" placeholder={this.state.portPlaceholder} onChange={this.setPort}/> 
         </div>
 
