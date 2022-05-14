@@ -42,7 +42,7 @@
 }
 
 .NewsTab.selected {
-  border-bottom: 1px solid #ffc61e;
+  border-bottom: 2px solid #ffc61e;
 }
 
 .NewsContent {
@@ -50,6 +50,10 @@
   scrollbar-width: none;
 
   color: #fff;
+}
+
+.NewsContent::-webkit-scrollbar {
+  display: none;
 }
 
 .Commit {

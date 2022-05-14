@@ -53,14 +53,14 @@ export default class Downloads extends React.Component<IProps, IState> {
 
   async downloadGrasscutterStable() {
     const folder = await this.getGrasscutterFolder()
-    this.props.downloadManager.addDownload(STABLE_DOWNLOAD, folder + '\\grasscutter.jar')
-    
+    this.props.downloadManager.addDownload(STABLE_DOWNLOAD, folder + '\\grasscutter.zip')
+
     this.disableButtons()
   } 
 
   async downloadGrasscutterLatest() {
     const folder = await this.getGrasscutterFolder()
-    this.props.downloadManager.addDownload(DEV_DOWNLOAD, folder + '\\grasscutter.jar')
+    this.props.downloadManager.addDownload(DEV_DOWNLOAD, folder + '\\grasscutter.zip')
 
     this.disableButtons()
   }
