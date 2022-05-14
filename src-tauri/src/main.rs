@@ -3,6 +3,7 @@ all(not(debug_assertions), target_os = "windows"),
 windows_subsystem = "windows"
 )]
 
+use std::process::Command;
 use open;
 
 mod downloader;
@@ -15,6 +16,7 @@ fn main() {
       connect,
       disconnect,
       run_program,
+      run_jar,
       downloader::download_file,
       downloader::stop_download,
       lang::get_lang
@@ -44,5 +46,17 @@ fn disconnect() {
 #[tauri::command]
 fn run_program(path: String) {
   // Open the program from the specified path.
-  open::that(path).expect("Failed to open program");
+  match open::that(path) {
+    Ok(_) => (),
+    Err(e) => println!("Failed to open program: {}", e),
+  };
+}
+
+#[tauri::command]
+fn run_jar(path: String) {
+  // Open the program from the specified path.
+  match open::with("/k java -jar ".to_string() + &path, "C:\\Windows\\System32\\cmd.exe") {
+    Ok(_) => (),
+    Err(e) => println!("Failed to open jar ({}): {}", &path, e),
+  };
 }

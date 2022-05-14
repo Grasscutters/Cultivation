@@ -5,6 +5,7 @@ import { getConfig, saveConfig } from '../../utils/configuration'
 import { translate } from '../../utils/language'
 import { invoke } from '@tauri-apps/api/tauri'
 
+import Server from '../../resources/icons/server.svg'
 import './ServerLaunchSection.css'
 
 interface IProps {
@@ -61,13 +62,28 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     await invoke('run_program', { path: config.game_path })
   }
 
+  async launchServer() {
+    const config = await getConfig()
+
+    if (!config.grasscutter_path) return
+
+    // Launch the jar
+    await invoke('run_jar', { path: config.grasscutter_path })
+  }
+
   render() {
     return (
       <div id="playButton">
         <div id="serverControls">
           <Checkbox id="enableGC" label={this.state.checkboxLabel} onChange={this.toggleGrasscutter} checked={this.state.grasscutterEnabled}/>
         </div>
-        <BigButton text={this.state.buttonLabel} onClick={this.playGame} id="officialPlay" />
+        <div className="ServerLaunchButtons">
+          <BigButton onClick={this.playGame} id="officialPlay">{this.state.buttonLabel}</BigButton>
+          <BigButton onClick={this.launchServer} id="serverLaunch">
+            <img className="ServerIcon" src={Server} />
+          </BigButton>
+        </div>
+
       </div>
     )
   }

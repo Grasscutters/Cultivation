@@ -2,7 +2,7 @@ import React from 'react'
 import './BigButton.css'
 
 interface IProps {
-  text: string;
+  children: React.ReactNode;
   onClick: () => any;
   id: string;
 }
@@ -21,7 +21,7 @@ export default class BigButton extends React.Component<IProps, never> {
   render() {
     return (
       <div className="BigButton" onClick={this.handleClick} id={this.props.id}>
-        <div className="BigButtonText">{this.props.text}</div>
+        <div className="BigButtonText">{this.props.children}</div>
       </div>
     )
   }

@@ -15,3 +15,25 @@
   color: #fff;
   font-weight: bold;
 }
+
+.ServerLaunchButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  height: 100%;
+}
+
+#officialPlay {
+  width: 60%
+}
+
+#serverLaunch {
+  width: 5%;
+}
+
+.ServerIcon {
+  height: 20px;
+  filter: invert(28%) sepia(28%) saturate(1141%) hue-rotate(352deg) brightness(96%) contrast(88%);
+}
