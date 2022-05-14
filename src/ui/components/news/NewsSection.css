@@ -48,6 +48,8 @@
 .NewsContent {
   overflow-y: auto;
   scrollbar-width: none;
+
+  color: #fff;
 }
 
 .Commit {

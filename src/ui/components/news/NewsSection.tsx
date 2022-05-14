@@ -35,9 +35,9 @@ export default class NewsSection extends React.Component<IProps, IState> {
   }
 
   setSelected(item: string) {
-    this.setState({ selected: item })
-
-    this.showNews()
+    this.setState({ selected: item }, () => {
+      this.showNews()
+    })
   }
 
   async showLatestCommits() {
