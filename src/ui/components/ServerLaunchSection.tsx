@@ -67,8 +67,21 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
 
     if (!config.grasscutter_path) return
 
+    let jarFolder = config.grasscutter_path
+
+    if (jarFolder.includes('/')) {
+      jarFolder = jarFolder.substring(0, config.grasscutter_path.lastIndexOf('/'))
+    } else {
+      jarFolder = jarFolder.substring(0, config.grasscutter_path.lastIndexOf('\\'))
+    }
+
+    console.log(jarFolder)
+
     // Launch the jar
-    await invoke('run_jar', { path: config.grasscutter_path })
+    await invoke('run_jar', {
+      path: config.grasscutter_path,
+      executeIn: jarFolder
+    })
   }
 
   render() {
