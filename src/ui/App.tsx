@@ -2,7 +2,6 @@ import React from 'react'
 import { listen } from '@tauri-apps/api/event'
 import './App.css'
 
-/* FOR TESTING */
 import DownloadHandler from '../utils/download'
 
 // Major Components
@@ -51,8 +50,6 @@ class App extends React.Component<IProps, IState> {
           }}
           downFunc={() => this.setState({ downloadsOpen: !this.state.downloadsOpen })}
         />
-
-
 
         {
           // Mini downloads section
