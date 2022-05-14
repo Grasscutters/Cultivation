@@ -13,6 +13,7 @@ import MiniDialog from './components/MiniDialog'
 import DownloadList from './components/common/DownloadList'
 import Downloads from './components/menu/Downloads'
 import NewsSection from './components/news/NewsSection'
+import RightBar from './components/RightBar'
 
 interface IProps {
   [key: string]: never;
@@ -51,6 +52,8 @@ class App extends React.Component<IProps, IState> {
           }}
           downFunc={() => this.setState({ downloadsOpen: !this.state.downloadsOpen })}
         />
+
+        <RightBar />
 
         <NewsSection />
 
