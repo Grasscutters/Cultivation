@@ -8,6 +8,7 @@ use open;
 mod downloader;
 mod lang;
 mod proxy;
+mod web;
 
 fn main() {
   tauri::Builder::default()
@@ -20,14 +21,14 @@ fn main() {
       downloader::stop_download,
       lang::get_lang
     ])
-    .run(tauri::generate_context!())
+    .run(tauri::generate_context!()) 
     .expect("error while running tauri application");
 }
 
 #[tauri::command]
 async fn connect(port: u16) {
   // Log message to console.
-  println!("Connecting to proxy...");
+  println!("Connecting to proxy..."); 
 
   // Create and start a proxy.
   proxy::create_proxy(port).await;
@@ -58,4 +59,10 @@ fn run_jar(path: String, execute_in: String) {
     Ok(_) => (),
     Err(e) => println!("Failed to open jar ({} from {}): {}", &path, &execute_in, e),
   };
+}
+
+#[tauri::command]
+async fn get_bg_file() -> String {
+    let query = web::query("https://api.grasscutters.xyz/cultivation/query").await;
+    let response_data = object!json::parse(&query);
 }

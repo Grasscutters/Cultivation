@@ -26,6 +26,8 @@ lazy_static = "1.4.0"
 registry = "1.2.1"
 # Program opener.
 open = "2.1.2"
+# JSON parser.
+json = "0.12.4"
 
 # Dependencies for the HTTP(S) proxy.
 hudsucker = "0.17.2"
