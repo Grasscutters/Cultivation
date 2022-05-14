@@ -47,6 +47,7 @@
 
 .NewsContent {
   overflow-y: auto;
+  scrollbar-width: none;
 }
 
 .Commit {

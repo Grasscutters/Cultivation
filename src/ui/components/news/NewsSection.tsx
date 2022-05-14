@@ -12,6 +12,7 @@ interface IProps {
 interface IState {
   selected: string;
   news: any;
+  commitList: any;
 }
 
 export default class NewsSection extends React.Component<IProps, IState> {
@@ -20,11 +21,17 @@ export default class NewsSection extends React.Component<IProps, IState> {
 
     this.state = {
       selected: props.selected || 'commits',
-      news: null
+      news: null,
+      commitList: null
     }
 
     this.setSelected = this.setSelected.bind(this)
     this.showNews = this.showNews.bind(this)
+  }
+
+  componentDidMount() {
+    // Call showNews off the bat
+    this.showNews()
   }
 
   setSelected(item: string) {
@@ -34,21 +41,31 @@ export default class NewsSection extends React.Component<IProps, IState> {
   }
 
   async showLatestCommits() {
-    const commits: string = await invoke('req_get', { url: 'https://api.github.com/repos/Grasscutters/Grasscutter/commits' })
-    const obj = JSON.parse(commits)
-    
-    // Get only first 5
-    const commitsList = obj.slice(0, 5)
-    const commitsListHtml = commitsList.map((commit: any) => {
-      return (
-        <div className="Commit" key={commit.sha}>
-          <div className="CommitAuthor">{commit.commit.author.name}</div>
-          <div className="CommitMessage">{commit.commit.message.substring(0, 50) + '...'}</div>
-        </div>
-      )
-    })
+    if (!this.state.commitList) {
+      const commits: string = await invoke('req_get', { url: 'https://api.github.com/repos/Grasscutters/Grasscutter/commits' })
+      const obj = JSON.parse(commits)
 
-    return commitsListHtml
+      // Probably rate-limited
+      if (!Array.isArray(obj)) return
+  
+      // Get only first 5
+      const commitsList = obj.slice(0, 5)
+      const commitsListHtml = commitsList.map((commit: any) => {
+        return (
+          <div className="Commit" key={commit.sha}>
+            <div className="CommitAuthor">{commit.commit.author.name}</div>
+            <div className="CommitMessage">{commit.commit.message.substring(0, 50) + '...'}</div>
+          </div>
+        )
+      })
+
+      this.setState({
+        commitList: commitsListHtml,
+        news: commitsListHtml
+      })
+    }
+
+    return this.state.commitList
   }
 
   async showNews() {
