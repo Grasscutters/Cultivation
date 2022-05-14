@@ -2,36 +2,53 @@ import { fs } from '@tauri-apps/api'
 import { dataDir } from '@tauri-apps/api/path'
 
 let configFilePath: string
+let roamingAppData: string
+let defaultConfig: Configuration
+
+(async() => {
+  roamingAppData = await dataDir()
+
+  defaultConfig = {
+    toggle_grasscutter: false,
+    game_install_path: 'C:\\Program Files\\Genshin Impact\\Genshin Impact game\\Genshin Impact.exe',
+    grasscutter_with_game: false,
+    grasscutter_path: roamingAppData + '\\cultivation\\grasscutter.jar',
+    close_action: 0,
+    startup_launch: false
+  }
+})()
 
 export async function setConfigOption(key: string, value: any): Promise<void> {
   const config = await getConfig()
 
-  config[key] = value
-
+  Object.assign(config, { [key]: value })
+  
   await saveConfig(config)
 }
 
 export async function getConfigOption(key: string): Promise<any> {
-  const config = await getConfig()
+  const config: any = await getConfig()
 
   return config[key] || null
 }
 
 export async function getConfig() {
   const raw = await readConfigFile()
-  let parsed
+  let parsed: Configuration = defaultConfig
   
   try {
-    parsed = JSON.parse(raw)
+    parsed = <Configuration> JSON.parse(raw)
   } catch(e) {
     // We could not open the file
     console.log(e)
+    
+    // TODO: Create a popup saying the config file is corrupted.
   }
 
   return parsed
 }
 
-export async function saveConfig(obj: { [key: string]: any }) {
+export async function saveConfig(obj: Configuration) {
   const raw = JSON.stringify(obj)
 
   await writeConfigFile(raw)
@@ -63,7 +80,7 @@ async function readConfigFile() {
     await fs.writeFile(file)
   }
 
-  // Finally read the file 
+  // Finally, read the file 
   return await fs.readTextFile(configFilePath)
 }
 
@@ -73,4 +90,16 @@ async function writeConfigFile(raw: string) {
     path: configFilePath,
     contents: raw
   })
+}
+
+/**
+ * 'close_action': 0 = close, 1 = tray
+ */
+export interface Configuration {
+  toggle_grasscutter: boolean
+  game_install_path: string
+  grasscutter_with_game: boolean
+  grasscutter_path: string
+  close_action: number
+  startup_launch: boolean
 }
