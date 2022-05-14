@@ -24,6 +24,7 @@ export default class BigButton extends React.Component<IProps, IState> {
   }
 
   static getDerivedStateFromProps(props: IProps, state: IState) {
+    console.log(props)
     return {
       disabled: props.disabled
     }

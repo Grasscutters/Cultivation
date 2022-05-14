@@ -35,6 +35,7 @@ export default class Downloads extends React.Component<IProps, IState> {
     this.downloadGrasscutterStable = this.downloadGrasscutterStable.bind(this)
     this.downloadGrasscutterLatest = this.downloadGrasscutterLatest.bind(this)
     this.downloadResources = this.downloadResources.bind(this)
+    this.disableButtons = this.disableButtons.bind(this)
   }
 
   async getGrasscutterFolder() {
@@ -47,28 +48,36 @@ export default class Downloads extends React.Component<IProps, IState> {
       folderPath = path.substring(0, path.lastIndexOf('\\'))
     }
 
-    // Set states since we know we are downloading something if this is called
-    this.setState({
-      grasscutter_downloading: this.props.downloadManager.downloadingJar(),
-      resources_downloading: this.props.downloadManager.downloadingResources()
-    })
-
     return folderPath
   }
 
   async downloadGrasscutterStable() {
     const folder = await this.getGrasscutterFolder()
     this.props.downloadManager.addDownload(STABLE_DOWNLOAD, folder + '\\grasscutter.jar')
+    
+    this.disableButtons()
   } 
 
   async downloadGrasscutterLatest() {
     const folder = await this.getGrasscutterFolder()
     this.props.downloadManager.addDownload(DEV_DOWNLOAD, folder + '\\grasscutter.jar')
+
+    this.disableButtons()
   }
 
   async downloadResources() {
     const folder = await this.getGrasscutterFolder()
     this.props.downloadManager.addDownload(RESOURCES_DOWNLOAD, folder + '\\resources.zip')
+
+    this.disableButtons()
+  }
+
+  disableButtons() {
+    // Set states since we know we are downloading something if this is called
+    this.setState({
+      grasscutter_downloading: this.props.downloadManager.downloadingJar(),
+      resources_downloading: this.props.downloadManager.downloadingResources()
+    })
   }
 
   render() {
