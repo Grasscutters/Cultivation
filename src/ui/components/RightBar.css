@@ -26,4 +26,10 @@
 .RightBar img {
   height: 40px;
   filter: invert(100%) sepia(0%) saturate(11%) hue-rotate(227deg) brightness(103%) contrast(105%);
+
+  transition: filter 0.2s ease-in-out;
+}
+
+.RightBar img:hover {
+  filter: invert(75%) sepia(0%) saturate(100%) hue-rotate(0deg) brightness(100%) contrast(100%);
 }
