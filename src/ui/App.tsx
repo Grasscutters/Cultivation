@@ -1,7 +1,6 @@
 import React from 'react'
 import { listen } from '@tauri-apps/api/event'
 import './App.css'
-import './custom.css'
 
 /* FOR TESTING */
 import DownloadHandler from '../utils/download'
@@ -60,19 +59,19 @@ class App extends React.Component<IProps, IState> {
           optFunc={() => {
             this.setState({ optionsOpen: !this.state.optionsOpen })
           }}
-          downFunc={() => {
-            this.setState({ miniDownloadsOpen: !this.state.miniDownloadsOpen })
-          }}
+          downFunc={() => { console.log('Shit is changing dw') }}
         />
 
         {
           // Mini downloads section
           this.state.miniDownloadsOpen ? 
-            <MiniDialog title="Downloads" closeFn={() => {
-              this.setState({ miniDownloadsOpen: false })
-            }}>
-              <DownloadList downloadManager={downloadHandler} />
-            </MiniDialog> : null
+            <div className="MiniDownloads">
+              <MiniDialog title="Downloads" closeFn={() => {
+                this.setState({ miniDownloadsOpen: false })
+              }}>
+                <DownloadList downloadManager={downloadHandler} />
+              </MiniDialog>
+            </div> : null
         }
 
         {
@@ -83,7 +82,9 @@ class App extends React.Component<IProps, IState> {
 
         <ServerLaunchSection />
 
-        <div id="DownloadProgress">
+        <div id="DownloadProgress"
+          onClick={() => this.setState({ miniDownloadsOpen: !this.state.miniDownloadsOpen })}
+        >
           <MainProgressBar downloadManager={downloadHandler} />
         </div>
       </div>

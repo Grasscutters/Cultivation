@@ -22,10 +22,15 @@
   background-color: #fff;
 }
 
+.MainProgressText,
 .ProgressText {
   color: #c5c5c5;
   padding: 0px 10px;
   width: 30%;
+}
+
+.MainProgressText {
+  width: 100%;
 }
 
 .MainProgressBarWrapper {
@@ -37,7 +42,7 @@
   color: #fff;
 }
 
-.MainProgressBarWrapper .ProgressText {
+.MainProgressBarWrapper .MainProgressText {
   font-size: 20px;
   font-weight: bold;
   color: #fff !important;

@@ -9,7 +9,8 @@ interface IProps {
 interface IState {
   average: number,
   files: number,
-  total: number
+  total: number,
+  speed: string,
 }
 
 /**
@@ -24,7 +25,8 @@ export default class ProgressBar extends React.Component<IProps, IState> {
     this.state = {
       average,
       files,
-      total: totalSize
+      total: totalSize,
+      speed: '0 B/s'
     }
   }
 
@@ -36,6 +38,7 @@ export default class ProgressBar extends React.Component<IProps, IState> {
         average: prog?.average || 0,
         files: prog?.files,
         total: prog?.totalSize || 0,
+        speed: prog?.speed || '0 B/s',
       })
     }, 200)
   }
@@ -60,8 +63,8 @@ export default class ProgressBar extends React.Component<IProps, IState> {
           }}></div>
         </div>
 
-        <div className="ProgressText">
-          Files Downloading: {this.state.files}
+        <div className="MainProgressText">
+          Files Downloading: {this.state.files} ({this.state.speed})
         </div>
       </div>
     )

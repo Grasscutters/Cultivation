@@ -37,3 +37,9 @@ body {
   left: 5%;
   width: 60%;
 }
+
+.MiniDownloads {
+  position: absolute;
+  top: 40%;
+  left: 12%;
+}

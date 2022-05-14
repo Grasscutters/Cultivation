@@ -9,7 +9,9 @@ export default class DownloadHandler {
     progress: number,
     total: number,
     status: string,
+    startTime: number,
     error?: string,
+    speed?: string,
   }[]
 
   // Pass tauri invoke function
@@ -27,6 +29,12 @@ export default class DownloadHandler {
       const index = this.downloads.findIndex(download => download.path === obj.path)
       this.downloads[index].progress = parseInt(obj.downloaded, 10)
       this.downloads[index].total = parseInt(obj.total, 10)
+
+      // Set download speed based on startTime
+      const now = Date.now()
+      const timeDiff = now - this.downloads[index].startTime
+      const speed = (this.downloads[index].progress / timeDiff) * 1000
+      this.downloads[index].speed = byteToString(speed) + '/s'
     })
 
     listen('download_finished', (...payload) => {
@@ -63,7 +71,8 @@ export default class DownloadHandler {
       path,
       progress: 0,
       total: 0,
-      status: 'downloading'
+      status: 'downloading',
+      startTime: Date.now(),
     }
 
     this.downloads.push(obj)
@@ -92,11 +101,21 @@ export default class DownloadHandler {
     const files = this.downloads.filter(d => d.status === 'downloading')
     const total = files.reduce((acc, d) => acc + d.total, 0)
     const progress = files.reduce((acc, d) => acc + d.progress, 0)
+    let speedStr = '0 B/s'
+
+    // Get download speed based on startTimes
+    if (files.length > 0) {
+      const now = Date.now()
+      const timeDiff = now - files[0].startTime
+      const speed = (progress / timeDiff) * 1000
+      speedStr = byteToString(speed) + '/s'
+    }
 
     return {
       average: (progress / total) * 100 || 0,
       files: this.downloads.filter(d => d.status === 'downloading').length,
       totalSize: total,
+      speed: speedStr
     }
   }
 }

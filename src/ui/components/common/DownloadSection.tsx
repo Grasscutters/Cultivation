@@ -9,7 +9,7 @@ interface IProps {
   downloadName: string;
 }
 
-export default class MiniDialog extends React.Component<IProps, never> {
+export default class DownloadSection extends React.Component<IProps, never> {
   constructor(props: IProps) {
     super(props)
   }
