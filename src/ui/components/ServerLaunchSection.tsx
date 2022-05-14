@@ -1,7 +1,7 @@
 import React from 'react'
 import Checkbox from './common/Checkbox'
 import BigButton from './common/BigButton'
-import { getConfig, saveConfig } from '../../utils/configuration'
+import { getConfig, saveConfig, setConfigOption } from '../../utils/configuration'
 import { translate } from '../../utils/language'
 import { invoke } from '@tauri-apps/api/tauri'
 
@@ -40,6 +40,8 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
 
     this.toggleGrasscutter = this.toggleGrasscutter.bind(this)
     this.playGame = this.playGame.bind(this)
+    this.setIp = this.setIp.bind(this)
+    this.setPort = this.setPort.bind(this)
   }
 
   async componentDidMount() {
@@ -49,6 +51,8 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       grasscutterEnabled: config.toggle_grasscutter,
       buttonLabel: await translate('main.launch_button'),
       checkboxLabel: await translate('main.gc_enable'),
+      ip: config.last_ip || '',
+      port: config.last_port || '',
       ipPlaceholder: await translate('main.ip_placeholder'),
       portPlaceholder: await translate('main.port_placeholder')
     })
@@ -73,7 +77,14 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     if (!config.game_path) return
     
     // Connect to proxy
-    if (config.toggle_grasscutter) await invoke('connect', { port: 8365 })
+    if (config.toggle_grasscutter) {
+      // Save last connected server and port
+      await setConfigOption('last_ip', this.state.ip)
+      await setConfigOption('last_port', this.state.port)
+
+      // Connect to proxy
+      await invoke('connect', { port: 8365 })
+    }
   
     // Launch the program
     await invoke('run_program', { path: config.game_path })
@@ -111,7 +122,6 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     })
   }
 
-
   render() {
     return (
       <div id="playButton">
@@ -120,8 +130,8 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
         </div>
 
         <div className="ServerConfig">
-          <TextInput readOnly={this.state.grasscutterEnabled} id="ip" key="ip" placeholder={this.state.ipPlaceholder} onChange={this.setIp} />,
-          <TextInput readOnly={this.state.grasscutterEnabled} id="port" key="port" placeholder={this.state.portPlaceholder} onChange={this.setPort}/> 
+          <TextInput id="ip" key="ip" placeholder={this.state.ipPlaceholder} onChange={this.setIp} />,
+          <TextInput id="port" key="port" placeholder={this.state.portPlaceholder} onChange={this.setPort}/> 
         </div>
 
         <div className="ServerLaunchButtons">
