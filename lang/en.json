@@ -3,7 +3,9 @@
   "main": {
     "title": "Cultivation",
     "launch_button": "Launch",
-    "gc_enable": "Connect via Grasscutter"
+    "gc_enable": "Connect via Grasscutter",
+    "ip_placeholder": "Server Address...",
+    "port_placeholder": "Port..."
   },
   "options": {
     "game_exec": "Set Game Executable",

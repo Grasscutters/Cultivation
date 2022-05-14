@@ -19,6 +19,9 @@ interface IState {
   checkboxLabel: string;
   ip: string;
   port: string;
+
+  ipPlaceholder: string;
+  portPlaceholder: string;
 }
 
 export default class ServerLaunchSection extends React.Component<IProps, IState> {
@@ -30,7 +33,9 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       buttonLabel: '',
       checkboxLabel: '',
       ip: '',
-      port: ''
+      port: '',
+      ipPlaceholder: '',
+      portPlaceholder: ''
     }
 
     this.toggleGrasscutter = this.toggleGrasscutter.bind(this)
@@ -43,7 +48,9 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     this.setState({
       grasscutterEnabled: config.toggle_grasscutter,
       buttonLabel: await translate('main.launch_button'),
-      checkboxLabel: await translate('main.gc_enable')
+      checkboxLabel: await translate('main.gc_enable'),
+      ipPlaceholder: await translate('main.ip_placeholder'),
+      portPlaceholder: await translate('main.port_placeholder')
     })
   }
 
@@ -113,8 +120,8 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
         </div>
 
         <div className="ServerConfig">
-          <TextInput readOnly={this.state.grasscutterEnabled} id="ip" key="ip" placeholder="Server Address..." onChange={this.setIp} />,
-          <TextInput readOnly={this.state.grasscutterEnabled} id="port" key="port" placeholder="Port..." onChange={this.setPort}/> 
+          <TextInput readOnly={this.state.grasscutterEnabled} id="ip" key="ip" placeholder={this.state.ipPlaceholder} onChange={this.setIp} />,
+          <TextInput readOnly={this.state.grasscutterEnabled} id="port" key="port" placeholder={this.state.portPlaceholder} onChange={this.setPort}/> 
         </div>
 
         <div className="ServerLaunchButtons">
