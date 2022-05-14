@@ -2,6 +2,7 @@
   background-color: rgba(106, 105, 106, 0.6);
 
   display: flex;
+  flex-direction: column;
   
   position: absolute;
 
@@ -17,7 +18,7 @@
 
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
 
   font-weight: bold;
@@ -42,4 +43,27 @@
 
 .NewsTab.selected {
   border-bottom: 1px solid #ffc61e;
+}
+
+.NewsContent {
+  overflow-y: auto;
+}
+
+.Commit {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  color: #fff;
+
+  margin: 8px;
+}
+
+.CommitAuthor {
+  font-weight: bold;
+}
+
+.CommitMessage {
+  width: 60%;
 }

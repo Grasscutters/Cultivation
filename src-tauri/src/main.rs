@@ -3,7 +3,6 @@ all(not(debug_assertions), target_os = "windows"),
 windows_subsystem = "windows"
 )]
 
-use std::borrow::Borrow;
 use open;
 use structs::{APIQuery};
 
@@ -20,6 +19,7 @@ fn main() {
       disconnect,
       run_program,
       run_jar,
+      req_get,
       get_bg_file,
       downloader::download_file,
       downloader::stop_download,
@@ -63,6 +63,15 @@ fn run_jar(path: String, execute_in: String) {
     Ok(_) => (),
     Err(e) => println!("Failed to open jar ({} from {}): {}", &path, &execute_in, e),
   };
+}
+
+#[tauri::command]
+async fn req_get(url: String) -> String {
+  // Send a GET request to the specified URL.
+  let response = web::query(&url.to_string()).await;
+
+  // Send the response body back to the client.
+  return response;
 }
 
 #[tauri::command]
