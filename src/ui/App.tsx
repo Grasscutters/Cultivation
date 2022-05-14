@@ -27,19 +27,6 @@ interface IState {
 
 const downloadHandler = new DownloadHandler()
 
-async function download(url: string, filename: string, path: string) {
-  const completePath = `${path}/${filename}`
-  downloadHandler.addDownload(url, completePath)
-}
-
-async function TESTDOWNLOAD() {
-  download(
-    'https://github.com/Koko-boya/Grasscutter_Resources/archive/refs/heads/main.zip',
-    'resources.zip',
-    'S:\\Cultivation'
-  )
-}
-
 class App extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
@@ -89,8 +76,6 @@ class App extends React.Component<IProps, IState> {
           // Options menu
           this.state.optionsOpen ? <Options closeFn={() => this.setState({ optionsOpen: !this.state.optionsOpen })}/> : null
         }
-
-        <button onClick={TESTDOWNLOAD}>download file test</button>
 
         <ServerLaunchSection />
 
