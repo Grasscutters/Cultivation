@@ -1,3 +1,28 @@
+#playButton {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  position: absolute;
+  top: 75%;
+  left: 60%;
+
+  width: 30%;
+  height: 18%;
+}
+
+#playButton > div {
+  margin-top: 4px;
+}
+
+#playButton .BigButton {
+  height: 100%;
+}
+
+#serverControls {
+  color: white;
+}
+
 #serverControls .CheckboxDisplay {
   border-color: #fff;
   background: #fff;
@@ -23,6 +48,7 @@
   align-items: center;
 
   height: 100%;
+  max-height: 60px;
 }
 
 #officialPlay {
@@ -36,4 +62,17 @@
 .ServerIcon {
   height: 20px;
   filter: invert(28%) sepia(28%) saturate(1141%) hue-rotate(352deg) brightness(96%) contrast(88%);
+}
+
+.ServerConfig input {
+  padding: 6px;
+  border-radius: 6px;
+}
+
+#ip {
+  margin-right: 6px;
+}
+
+#port {
+  width: 15%;
 }

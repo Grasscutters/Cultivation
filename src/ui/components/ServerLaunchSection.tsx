@@ -7,6 +7,7 @@ import { invoke } from '@tauri-apps/api/tauri'
 
 import Server from '../../resources/icons/server.svg'
 import './ServerLaunchSection.css'
+import TextInput from './common/TextInput'
 
 interface IProps {
   [key: string]: any
@@ -46,6 +47,11 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     const config = await getConfig()
 
     config.toggle_grasscutter = !config.toggle_grasscutter
+
+    // Set state as well
+    this.setState({
+      grasscutterEnabled: config.toggle_grasscutter
+    })
 
     await saveConfig(config)
   }
@@ -88,6 +94,16 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
         <div id="serverControls">
           <Checkbox id="enableGC" label={this.state.checkboxLabel} onChange={this.toggleGrasscutter} checked={this.state.grasscutterEnabled}/>
         </div>
+
+        <div className="ServerConfig">
+          {
+            this.state.grasscutterEnabled ?
+              [ <TextInput id="ip" key="ip" placeholder="IP Address..." />,
+                <TextInput id="port" key="port" placeholder="Port..." /> ]
+              : null
+          }
+        </div>
+
         <div className="ServerLaunchButtons">
           <BigButton onClick={this.playGame} id="officialPlay">{this.state.buttonLabel}</BigButton>
           <BigButton onClick={this.launchServer} id="serverLaunch">

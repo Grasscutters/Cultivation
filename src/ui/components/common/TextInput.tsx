@@ -6,6 +6,7 @@ interface IProps {
   placeholder?: string;
   onChange?: (value: string) => void;
   readOnly?: boolean;
+  id?: string;
 }
 
 interface IState {
@@ -33,7 +34,7 @@ export default class TextInput extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <input readOnly={this.props.readOnly || false} placeholder={this.props.placeholder || ''} className="TextInput" value={this.state.value} onChange={(e) => {
+      <input id={this.props?.id} readOnly={this.props.readOnly || false} placeholder={this.props.placeholder || ''} className="TextInput" value={this.state.value} onChange={(e) => {
         this.setState({ value: e.target.value })
         if (this.props.onChange) this.props.onChange(e.target.value)
       }} />
