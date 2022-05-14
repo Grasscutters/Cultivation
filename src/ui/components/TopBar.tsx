@@ -19,13 +19,19 @@ interface IProps {
 interface IState {
   version: string;
 }
+
 export default class TopBar extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
 
-    app.getVersion().then(version => {
-      this.state = { version }
-    })
+    this.state = { version: '0.0.0' }
+
+
+  }
+
+  async componentDidMount() {
+    const version = await app.getVersion()
+    this.setState({ version })
   }
 
   handleClose() {
