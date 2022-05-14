@@ -140,7 +140,6 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
             <img className="ServerIcon" src={Server} />
           </BigButton>
         </div>
-
       </div>
     )
   }

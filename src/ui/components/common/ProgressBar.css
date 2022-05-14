@@ -48,6 +48,10 @@
   color: #fff !important;
 }
 
+.MainProgressBarWrapper:hover {
+  cursor: pointer;
+}
+
 .ProgressBarWrapper div {
   display: flex;
   flex-direction: row;
