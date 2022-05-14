@@ -12,6 +12,7 @@ trim_trailing_whitespace = false
 
 [*.rs]
 max_line_length = 100
+indent_size = 2
 
 [{*.ats,*.cts,*.mts,*.ts}]
 indent_size = 2

@@ -1,4 +1,3 @@
-
 #[tauri::command]
 pub async fn get_lang(window: tauri::Window, lang: String) -> String {
   let lang = lang.to_lowercase();
@@ -14,7 +13,6 @@ pub async fn get_lang(window: tauri::Window, lang: String) -> String {
 
   return contents;
 }
-
 
 pub fn emit_lang_err(window: tauri::Window, msg: std::string::String) {
   let mut res_hash = std::collections::HashMap::new();

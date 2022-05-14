@@ -3,12 +3,15 @@ all(not(debug_assertions), target_os = "windows"),
 windows_subsystem = "windows"
 )]
 
+use std::borrow::Borrow;
 use open;
+use structs::{APIQuery};
 
 mod downloader;
 mod lang;
 mod proxy;
 mod web;
+mod structs;
 
 fn main() {
   tauri::Builder::default()
@@ -17,6 +20,7 @@ fn main() {
       disconnect,
       run_program,
       run_jar,
+      get_bg_file,
       downloader::download_file,
       downloader::stop_download,
       lang::get_lang
@@ -64,5 +68,6 @@ fn run_jar(path: String, execute_in: String) {
 #[tauri::command]
 async fn get_bg_file() -> String {
     let query = web::query("https://api.grasscutters.xyz/cultivation/query").await;
-    let response_data = object!json::parse(&query);
+    let response_data: APIQuery = serde_json::from_str(&query).unwrap();
+    return response_data.backgroundFile;
 }
