@@ -74,7 +74,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
   async playGame() {
     const config = await getConfig()
   
-    if (!config.game_path) return
+    if (!config.game_install_path) return
     
     // Connect to proxy
     if (config.toggle_grasscutter) {
@@ -87,7 +87,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     }
   
     // Launch the program
-    await invoke('run_program', { path: config.game_path })
+    await invoke('run_program', { path: config.game_install_path })
   }
 
   async launchServer() {

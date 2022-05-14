@@ -14,9 +14,25 @@ let defaultConfig: Configuration
     grasscutter_with_game: false,
     grasscutter_path: roamingAppData + '\\cultivation\\grasscutter.jar',
     close_action: 0,
-    startup_launch: false
+    startup_launch: false,
+    last_ip: '',
+    last_port: '',
   }
 })()
+
+/**
+ * 'close_action': 0 = close, 1 = tray
+ */
+export interface Configuration {
+  toggle_grasscutter: boolean
+  game_install_path: string
+  grasscutter_with_game: boolean
+  grasscutter_path: string
+  close_action: number
+  startup_launch: boolean
+  last_ip: string
+  last_port: string
+}
 
 export async function setConfigOption(key: string, value: any): Promise<void> {
   const config = await getConfig()
@@ -90,16 +106,4 @@ async function writeConfigFile(raw: string) {
     path: configFilePath,
     contents: raw
   })
-}
-
-/**
- * 'close_action': 0 = close, 1 = tray
- */
-export interface Configuration {
-  toggle_grasscutter: boolean
-  game_install_path: string
-  grasscutter_with_game: boolean
-  grasscutter_path: string
-  close_action: number
-  startup_launch: boolean
 }

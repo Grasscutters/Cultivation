@@ -11,7 +11,7 @@ interface IProps {
 }
 
 interface IState {
-  game_path: string
+  game_install_path: string
   grasscutter_path: string
   grasscutter_with_game: boolean
 }
@@ -21,7 +21,7 @@ export default class Options extends React.Component<IProps, IState> {
     super(props)
 
     this.state = {
-      game_path: '',
+      game_install_path: '',
       grasscutter_path: '',
       grasscutter_with_game: false
     }
@@ -30,7 +30,7 @@ export default class Options extends React.Component<IProps, IState> {
   componentDidMount() {
     getConfig().then(config => {
       this.setState({
-        game_path: config.game_path || '',
+        game_install_path: config.game_install_path || '',
         grasscutter_path: config.grasscutter_path || '',
         grasscutter_with_game: config.grasscutter_with_game || false
       })
@@ -40,7 +40,7 @@ export default class Options extends React.Component<IProps, IState> {
   }
 
   setGameExec(value: string) {
-    setConfigOption('game_path', value)
+    setConfigOption('game_install_path', value)
   }
 
   setGrasscutterJar(value: string) {
@@ -59,7 +59,7 @@ export default class Options extends React.Component<IProps, IState> {
             <Tr text="options.game_exec" />
           </div>
           <div className='OptionValue'>
-            <DirInput onChange={this.setGameExec} value={this.state?.game_path} extensions={['exe']} />
+            <DirInput onChange={this.setGameExec} value={this.state?.game_install_path} extensions={['exe']} />
           </div>
         </div>
         <div className='OptionSection'>
