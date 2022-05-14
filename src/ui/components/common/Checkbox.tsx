@@ -4,7 +4,7 @@ import checkmark from '../../../resources/icons/check.svg'
 import './Checkbox.css'
 
 interface IProps {
-  label: string,
+  label?: string,
   checked: boolean,
   onChange: () => void,
   id: string
@@ -36,7 +36,7 @@ export default class Checkbox extends React.Component<IProps, IState> {
           <div className="CheckboxDisplay">
             {this.state.checked ? <img src={checkmark} alt='Checkmark' /> : null}
           </div>
-          <span>{this.props.label}</span>
+          <span>{this.props.label || ''}</span>
         </label>
       </div>
     )

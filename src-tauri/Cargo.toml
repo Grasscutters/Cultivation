@@ -25,7 +25,7 @@ lazy_static = "1.4.0"
 # Access to the Windows Registry.
 registry = "1.2.1"
 # Program opener.
-opener = "0.5.0"
+open = "2.1.2"
 
 # Dependencies for the HTTP(S) proxy.
 hudsucker = "0.17.2"

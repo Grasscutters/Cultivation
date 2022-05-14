@@ -3,7 +3,7 @@ all(not(debug_assertions), target_os = "windows"),
 windows_subsystem = "windows"
 )]
 
-use opener;
+use open;
 
 mod downloader;
 mod lang;
@@ -44,6 +44,5 @@ fn disconnect() {
 #[tauri::command]
 fn run_program(path: String) {
   // Open the program from the specified path.
-  opener::open(path.clone())
-    .expect("Failed to open program");
+  open::that(path).expect("Failed to open program");
 }

@@ -7,7 +7,8 @@
   },
   "options": {
     "game_exec": "Set Game Executable",
-    "grasscutter_jar": "Set Grasscutter Jar"
+    "grasscutter_jar": "Set Grasscutter Jar",
+    "grasscutter_with_game": "Automatically launch Grasscutter with the game"
   },
   "components": {
     "select_file": "Select file or folder..."
