@@ -21,10 +21,12 @@
 
 #serverControls {
   color: white;
+
+  text-shadow: 1px 1px 8px black;
 }
 
 #serverControls .CheckboxDisplay {
-  border-color: #fff;
+  border-color: #c5c5c5;
   background: #fff;
 }
 
