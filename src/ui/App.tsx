@@ -12,6 +12,7 @@ import MainProgressBar from './components/common/MainProgressBar'
 import Options from './components/menu/Options'
 import MiniDialog from './components/MiniDialog'
 import DownloadList from './components/common/DownloadList'
+import Downloads from './components/menu/Downloads'
 
 interface IProps {
   [key: string]: never;
@@ -21,6 +22,7 @@ interface IState {
   isDownloading: boolean;
   optionsOpen: boolean;
   miniDownloadsOpen: boolean;
+  downloadsOpen: boolean;
 }
 
 const downloadHandler = new DownloadHandler()
@@ -45,6 +47,7 @@ class App extends React.Component<IProps, IState> {
       isDownloading: false,
       optionsOpen: false,
       miniDownloadsOpen: false,
+      downloadsOpen: false
     }
 
     listen('lang_error', (payload) => {
@@ -59,8 +62,10 @@ class App extends React.Component<IProps, IState> {
           optFunc={() => {
             this.setState({ optionsOpen: !this.state.optionsOpen })
           }}
-          downFunc={() => { console.log('Shit is changing dw') }}
+          downFunc={() => this.setState({ downloadsOpen: !this.state.downloadsOpen })}
         />
+
+
 
         {
           // Mini downloads section
@@ -76,6 +81,12 @@ class App extends React.Component<IProps, IState> {
         }
 
         {
+          // Download menu
+          this.state.downloadsOpen ? <Downloads downloadManager={downloadHandler} closeFn={() => this.setState({ downloadsOpen: false }) } /> : null
+        }
+
+        {
+          // Options menu
           this.state.optionsOpen ? <Options closeFn={() => this.setState({ optionsOpen: !this.state.optionsOpen })}/> : null
         }
 

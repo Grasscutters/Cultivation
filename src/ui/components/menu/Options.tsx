@@ -5,6 +5,7 @@ import Tr from '../../../utils/language'
 import './Options.css'
 import { setConfigOption, getConfig, getConfigOption } from '../../../utils/configuration'
 import Checkbox from '../common/Checkbox'
+import Divider from './Divider'
 
 interface IProps {
   closeFn: () => void;
@@ -70,6 +71,9 @@ export default class Options extends React.Component<IProps, IState> {
             <DirInput onChange={this.setGrasscutterJar} value={this.state?.grasscutter_path} extensions={['jar']} />
           </div>
         </div>
+
+        <Divider />
+        
         <div className='OptionSection'>
           <div className='OptionLabel'>
             <Tr text="options.grasscutter_with_game" />

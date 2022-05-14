@@ -12,7 +12,13 @@
     "grasscutter_jar": "Set Grasscutter Jar",
     "grasscutter_with_game": "Automatically launch Grasscutter with game"
   },
+  "downloads": {
+    "grasscutter_stable": "Download Grasscutter Stable",
+    "grasscutter_latest": "Download Grasscutter Latest",
+    "resources": "Download Grasscutter Resources"
+  },
   "components": {
-    "select_file": "Select file or folder..."
+    "select_file": "Select file or folder...",
+    "download": "Download"
   }
 }
