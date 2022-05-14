@@ -1,0 +1,45 @@
+.NewsSection {
+  background-color: rgba(106, 105, 106, 0.6);
+
+  display: flex;
+  
+  position: absolute;
+
+  height: 30%;
+  width: 40%;
+
+  top: 35%;
+  left: 5%;
+}
+
+.NewsTabs {
+  background-color: rgba(77, 77, 77, 0.6);
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  font-weight: bold;
+  color: #fff;
+
+  width: 100%;
+  height: 20%;
+}
+
+.NewsTab {
+  height: 50%;
+
+  margin: 0 10px;
+
+  text-align: center;
+  border-bottom: 1px solid transparent;
+}
+
+.NewsTab:hover {
+  cursor: pointer;
+}
+
+.NewsTab.selected {
+  border-bottom: 1px solid #ffc61e;
+}

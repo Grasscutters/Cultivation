@@ -12,6 +12,7 @@ import Options from './components/menu/Options'
 import MiniDialog from './components/MiniDialog'
 import DownloadList from './components/common/DownloadList'
 import Downloads from './components/menu/Downloads'
+import NewsSection from './components/news/NewsSection'
 
 interface IProps {
   [key: string]: never;
@@ -50,6 +51,8 @@ class App extends React.Component<IProps, IState> {
           }}
           downFunc={() => this.setState({ downloadsOpen: !this.state.downloadsOpen })}
         />
+
+        <NewsSection />
 
         {
           // Mini downloads section

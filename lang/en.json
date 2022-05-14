@@ -20,5 +20,9 @@
   "components": {
     "select_file": "Select file or folder...",
     "download": "Download"
+  },
+  "news": {
+    "latest_commits": "Commits",
+    "latest_version": "Latest Version"
   }
 }
