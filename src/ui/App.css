@@ -43,3 +43,19 @@ body {
   top: 40%;
   left: 12%;
 }
+
+.arrow-down {
+  width: 0; 
+  height: 0; 
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-top: 50px solid transparent;
+
+  /* Colored section */
+  border-top: 50px solid #fff;
+
+  position: fixed;
+  top: 73%;
+  left: 15%;
+  
+}

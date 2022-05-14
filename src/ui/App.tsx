@@ -71,6 +71,7 @@ class App extends React.Component<IProps, IState> {
               }}>
                 <DownloadList downloadManager={downloadHandler} />
               </MiniDialog>
+              <div className="arrow-down"></div>
             </div> : null
         }
 
