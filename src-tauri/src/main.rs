@@ -6,6 +6,7 @@ windows_subsystem = "windows"
 use open;
 use structs::{APIQuery};
 
+mod unzip;
 mod downloader;
 mod lang;
 mod proxy;
@@ -19,6 +20,7 @@ fn main() {
       disconnect,
       run_program,
       run_jar,
+      unzip::unzip,
       open_in_browser,
       req_get,
       get_bg_file,

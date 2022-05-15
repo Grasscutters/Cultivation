@@ -2,6 +2,7 @@ import React from 'react'
 import Menu from './Menu'
 import Tr from '../../../utils/language'
 import DownloadHandler from '../../../utils/download'
+import { unzip } from '../../../utils/zip_utils'
 import BigButton from '../common/BigButton'
 
 import './Downloads.css'
@@ -20,6 +21,7 @@ interface IProps {
 interface IState {
   grasscutter_downloading: boolean
   resources_downloading: boolean
+  grasscutter_set: boolean
 }
 
 export default class Downloads extends React.Component<IProps, IState> {
@@ -28,7 +30,8 @@ export default class Downloads extends React.Component<IProps, IState> {
 
     this.state = {
       grasscutter_downloading: this.props.downloadManager.downloadingJar(),
-      resources_downloading: this.props.downloadManager.downloadingResources()
+      resources_downloading: this.props.downloadManager.downloadingResources(),
+      grasscutter_set: false
     }
 
     this.getGrasscutterFolder = this.getGrasscutterFolder.bind(this)
@@ -36,6 +39,15 @@ export default class Downloads extends React.Component<IProps, IState> {
     this.downloadGrasscutterLatest = this.downloadGrasscutterLatest.bind(this)
     this.downloadResources = this.downloadResources.bind(this)
     this.disableButtons = this.disableButtons.bind(this)
+  }
+
+  async componentDidMount() {
+    const gc_path = await getConfigOption('grasscutter_path')
+    if (gc_path) {
+      this.setState({
+        grasscutter_set: gc_path !== ''
+      })
+    }
   }
 
   async getGrasscutterFolder() {
@@ -67,7 +79,9 @@ export default class Downloads extends React.Component<IProps, IState> {
 
   async downloadResources() {
     const folder = await this.getGrasscutterFolder()
-    this.props.downloadManager.addDownload(RESOURCES_DOWNLOAD, folder + '\\resources.zip')
+    this.props.downloadManager.addDownload(RESOURCES_DOWNLOAD, folder + '\\resources.zip', () => {
+      unzip(folder + '\\resources.zip', 'Grasscutter_Resources/Resources/', folder + '/resources')
+    })
 
     this.disableButtons()
   }
@@ -111,7 +125,7 @@ export default class Downloads extends React.Component<IProps, IState> {
             <Tr text="downloads.resources" />
           </div>
           <div className='DownloadValue'>
-            <BigButton disabled={this.state.resources_downloading} onClick={this.downloadResources} id="resourcesBtn" >
+            <BigButton disabled={this.state.resources_downloading || !this.state.grasscutter_set} onClick={this.downloadResources} id="resourcesBtn" >
               <Tr text="components.download" />
             </BigButton>
           </div>

@@ -1,4 +1,3 @@
-
 import { invoke } from '@tauri-apps/api/tauri'
 import { listen } from '@tauri-apps/api/event'
 import { byteToString } from './string'
@@ -12,6 +11,7 @@ export default class DownloadHandler {
     startTime: number,
     error?: string,
     speed?: string,
+    onFinish?: () => void,
   }[]
 
   // Pass tauri invoke function
@@ -44,6 +44,12 @@ export default class DownloadHandler {
       // set status to finished
       const index = this.downloads.findIndex(download => download.path === filename)
       this.downloads[index].status = 'finished'
+
+      // Call onFinish callback
+      if (this.downloads[index]?.onFinish) {
+        // @ts-expect-error onFinish is checked for existence before being called
+        this.downloads[index]?.onFinish()
+      }
     })
 
     listen('download_error', (...payload) => {
@@ -74,7 +80,7 @@ export default class DownloadHandler {
     return this.downloads.some(d => d.path.includes('resources'))
   }
   
-  addDownload(url: string, path: string) {
+  addDownload(url: string, path: string, onFinish?: () => void) {
     // Begin download from rust backend, don't add if the download addition fails
     invoke('download_file', { url, path })
     const obj = {
@@ -83,6 +89,7 @@ export default class DownloadHandler {
       total: 0,
       status: 'downloading',
       startTime: Date.now(),
+      onFinish,
     }
 
     this.downloads.push(obj)
