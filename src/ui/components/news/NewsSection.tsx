@@ -43,7 +43,13 @@ export default class NewsSection extends React.Component<IProps, IState> {
   async showLatestCommits() {
     if (!this.state.commitList) {
       const commits: string = await invoke('req_get', { url: 'https://api.grasscutters.xyz/cultivation/query' })
-      let obj = JSON.parse(commits)
+      let obj
+
+      try {
+        obj = JSON.parse(commits)
+      } catch(e) {
+        obj = {}
+      }
 
       // If it didn't work, use official API
       if (!obj.commits) {
