@@ -24,10 +24,22 @@ pub fn unzip(zipfile: &str, zippath: &str, destpath: &str) {
 
   for i in 0..zip.len()
   {
-      let mut file = zip.by_index(i).unwrap();
+      let mut file = match zip.by_index(i) {
+        Ok(file) => file,
+        Err(e) => {
+          println!("Could not open zip file: {}", e);
+          return;
+        }
+      };
 
       println!("Filename: {}", file.name());
-      let first_byte = file.bytes().next().unwrap();
+      let first_byte = match file.bytes().next() {
+        Some(b) => b.unwrap(),
+        None => {
+          println!("File is empty: {}", &zipfile);
+          continue;
+        }
+      };
       println!("{:?}", first_byte);
   }
 }
