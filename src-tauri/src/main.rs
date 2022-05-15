@@ -51,7 +51,11 @@ fn disconnect() {
 #[tauri::command]
 fn run_program(path: String) {
   // Open the program from the specified path.
-  match open::that(path) {
+  // match open::that(path) {
+  //   Ok(_) => (),
+  //   Err(e) => println!("Failed to open program: {}", e),
+  // };
+  match open::with(format!("/c \"{}\"", &path), "C:\\Windows\\System32\\cmd.exe") {
     Ok(_) => (),
     Err(e) => println!("Failed to open program: {}", e),
   };
