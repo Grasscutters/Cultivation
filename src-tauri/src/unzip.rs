@@ -34,4 +34,6 @@ pub fn unzip(zipfile: &str, zippath: &str, destpath: &str) {
   };
 
   println!("Zip: {}", zipData.size());
+  println!("Name: {}", zipData.name());
+  println!("Directory? {}", zipData.is_dir());
 }
