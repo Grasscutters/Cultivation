@@ -5,7 +5,9 @@
     "launch_button": "Launch",
     "gc_enable": "Connect via Grasscutter",
     "ip_placeholder": "Server Address...",
-    "port_placeholder": "Port..."
+    "port_placeholder": "Port...",
+    "files_downloading": "Files Downloading: ",
+    "files_extracting": "Files Extracting: "
   },
   "options": {
     "game_exec": "Set Game Executable",
