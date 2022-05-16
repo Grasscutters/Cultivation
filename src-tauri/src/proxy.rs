@@ -3,6 +3,7 @@
  * https://github.com/omjadas/hudsucker/blob/main/examples/log.rs
  */
 
+use std::borrow::Borrow;
 use hudsucker::{
     async_trait::async_trait,
     certificate_authority::RcgenAuthority,
@@ -14,12 +15,12 @@ use std::net::SocketAddr;
 use registry::{Hive, Data, Security};
 
 use rustls_pemfile as pemfile;
+use tauri::http::Uri;
+use tokio::sync::oneshot::Sender;
 
-/**
- * Application shutdown handler.
- */
-async fn shutdown_signal() {
-    disconnect_from_proxy();
+async unsafe fn shutdown_signal() {
+    tokio::signal::ctrl_c().await
+        .expect("Failed to install CTRL+C signal handler");
 }
 
 #[derive(Clone)]
@@ -31,11 +32,32 @@ impl HttpHandler for ProxyHandler {
                     _context: &HttpContext, 
                     request: Request<Body>
     ) -> RequestOrResponse {
-        println!("{:?}", request.uri().path());
-        RequestOrResponse::Request(request)
+        // Get request parts.
+        let (parts, body) = request.into_parts();
+
+        // Parse request URI.
+        let mut uri = parts.uri.clone();
+        let path = uri.to_string();
+
+        // Check URI against constraints.
+        if path.contains("hoyoverse.com") || path.contains("mihoyo.com") || path.contains("yuanshen.com") {
+            let mut new_uri = String::new();
+            new_uri.push_str("127.0.0.1");
+            new_uri.push_str(uri.path());
+
+            uri = Uri::from_static(new_uri.as_str());
+        }
+
+        let builder = Request::builder()
+            .method(&parts.method)
+            .uri(&uri)
+            .version(parts.version);
+        let modified = builder.body(body).unwrap();
+
+        RequestOrResponse::Request(modified)
     }
     
-    async fn handle_response(&mut self, 
+    async fn handle_response(&mut self,
                     _context: &HttpContext, 
                     response: Response<Body>
     ) -> Response<Body> { response }
@@ -73,10 +95,11 @@ pub(crate) async fn create_proxy(proxy_port: u16) {
         .with_ca(authority)
         .with_http_handler(ProxyHandler)
         .build();
-    
-    // Create the proxy & listen for errors.
-    proxy.start(shutdown_signal()).await
-        .expect("Failed to start proxy");
+
+    // Start the proxy.
+    unsafe {
+        tokio::spawn(proxy.start(shutdown_signal()));
+    }
 }
 
 /**
@@ -109,4 +132,6 @@ pub(crate) fn disconnect_from_proxy() {
         // Set registry values.
         settings.set_value("ProxyEnable", &Data::U32(0)).unwrap();
     }
+
+    println!("Disconnected from proxy.");
 }

@@ -3,7 +3,7 @@ import React from 'react'
 import {invoke} from '@tauri-apps/api/tauri'
 
 async function startProxy() {
-  await invoke('connect')
+  await invoke('connect', { port: 2222 })
 }
 
 async function stopProxy() {

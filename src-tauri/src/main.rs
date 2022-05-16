@@ -4,6 +4,7 @@ windows_subsystem = "windows"
 )]
 
 use open;
+use tokio::sync::oneshot::Sender;
 use structs::{APIQuery};
 
 mod file_helpers;
@@ -38,17 +39,20 @@ fn main() {
 #[tauri::command]
 async fn connect(port: u16) {
   // Log message to console.
-  println!("Connecting to proxy..."); 
-
-  // Create and start a proxy.
-  proxy::create_proxy(port).await;
+  println!("Connecting to proxy...");
 
   // Change proxy settings.
   proxy::connect_to_proxy(port);
+
+  // Create and start a proxy.
+  proxy::create_proxy(port).await;
 }
 
 #[tauri::command]
 fn disconnect() {
+  // Log message to console.
+  println!("Disconnecting from proxy...");
+
   // Change proxy settings.
   proxy::disconnect_from_proxy();
 }
