@@ -61,7 +61,7 @@ export default class NewsSection extends React.Component<IProps, IState> {
       if (!Array.isArray(obj)) return
   
       // Get only first 5
-      const commitsList = obj.slice(0, 5)
+      const commitsList = obj.slice(0, 10)
       const commitsListHtml = commitsList.map((commit: any) => {
         return (
           <tr className="Commit" key={commit.sha}>
