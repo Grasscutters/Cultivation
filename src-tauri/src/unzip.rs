@@ -28,7 +28,10 @@ pub fn unzip(zipfile: &str, zippath: &str, destpath: &str) {
     Ok(zipData) => zipData,
     Err(e) => {
       println!("Could not find zip file: {}", e);
+      println!("Path: {}", zippath);
       return;
     }
   };
+
+  println!("Zip: {}", zipData.size());
 }
