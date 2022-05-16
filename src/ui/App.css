@@ -62,6 +62,8 @@ body {
   position: fixed;
   top: 73%;
   left: 15%;
+
+  z-index: 99;
 }
 
 .BottomSection {
