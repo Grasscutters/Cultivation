@@ -4,7 +4,8 @@ use std::io::Read;
 
 #[tauri::command]
 pub fn unzip(zipfile: &str, zippath: &str, destpath: &str) {
-  let mut f = match File::open(zipfile) {
+  // Read file
+  let f = match File::open(zipfile) {
     Ok(f) => f,
     Err(e) => {
       println!("Failed to open zip file: {}", e);
@@ -12,8 +13,9 @@ pub fn unzip(zipfile: &str, zippath: &str, destpath: &str) {
     }
   };
 
-  let mut reader = std::io::Cursor::new(&f);
+  let reader = std::io::Cursor::new(&f);
 
+  // Init zip reader
   let mut zip = match zip::ZipArchive::new(&f) {
     Ok(zip) => zip,
     Err(e) => {
@@ -22,24 +24,30 @@ pub fn unzip(zipfile: &str, zippath: &str, destpath: &str) {
     }
   };
 
+  // Iterate zip files
   for i in 0..zip.len()
   {
-      let mut file = match zip.by_index(i) {
-        Ok(file) => file,
-        Err(e) => {
-          println!("Could not open zip file: {}", e);
-          return;
-        }
-      };
+    // Get file  
+    let mut file = match zip.by_index(i) {
+      Ok(file) => file,
+      Err(e) => {
+        println!("Could not open zip file: {}", e);
+        return;
+      }
+    };
 
-      println!("Filename: {}", file.name());
-      let first_byte = match file.bytes().next() {
-        Some(b) => b.unwrap(),
-        None => {
-          println!("File is empty: {}", &zipfile);
-          continue;
-        }
-      };
-      println!("{:?}", first_byte);
+    println!("Filename: {}", file.name());
+
+    // Read the first byte if it is a file
+    let first_byte = match file.bytes().next() {
+      Some(b) => b,
+      None => {
+        println!("Could not read first byte of file");
+        return;
+      }
+    };
+
+    // Output first byte
+    println!("{:?}", first_byte);
   }
 }
