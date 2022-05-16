@@ -14,6 +14,7 @@ interface IProps {
 interface IState {
   game_install_path: string
   grasscutter_path: string
+  java_path: string
   grasscutter_with_game: boolean
 }
 
@@ -24,6 +25,7 @@ export default class Options extends React.Component<IProps, IState> {
     this.state = {
       game_install_path: '',
       grasscutter_path: '',
+      java_path: '',
       grasscutter_with_game: false
     }
   }
@@ -33,6 +35,7 @@ export default class Options extends React.Component<IProps, IState> {
       this.setState({
         game_install_path: config.game_install_path || '',
         grasscutter_path: config.grasscutter_path || '',
+        java_path: config.java_path || '',
         grasscutter_with_game: config.grasscutter_with_game || false
       })
     })
@@ -46,6 +49,10 @@ export default class Options extends React.Component<IProps, IState> {
 
   setGrasscutterJar(value: string) {
     setConfigOption('grasscutter_path', value)
+  }
+
+  setJavaPath(value: string) {
+    setConfigOption('java_path', value)
   }
 
   async toggleGrasscutterWithGame() {
@@ -80,6 +87,17 @@ export default class Options extends React.Component<IProps, IState> {
           </div>
           <div className='OptionValue'>
             <Checkbox onChange={this.toggleGrasscutterWithGame} checked={this.state?.grasscutter_with_game} id="gcWithGame" />
+          </div>
+        </div>
+
+        <Divider />
+
+        <div className='OptionSection'>
+          <div className='OptionLabel'>
+            <Tr text="options.java_path" />
+          </div>
+          <div className='OptionValue'>
+            <DirInput onChange={this.setJavaPath} value={this.state?.java_path} extensions={['exe']} />
           </div>
         </div>
       </Menu>

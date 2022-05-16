@@ -12,6 +12,7 @@
   "options": {
     "game_exec": "Set Game Executable",
     "grasscutter_jar": "Set Grasscutter Jar",
+    "java_path": "Set Custom Java Path",
     "grasscutter_with_game": "Automatically launch Grasscutter with game"
   },
   "downloads": {

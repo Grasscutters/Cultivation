@@ -12,7 +12,8 @@ let defaultConfig: Configuration
     toggle_grasscutter: false,
     game_install_path: 'C:\\Program Files\\Genshin Impact\\Genshin Impact game\\Genshin Impact.exe',
     grasscutter_with_game: false,
-    grasscutter_path: roamingAppData + '\\cultivation\\grasscutter.jar',
+    grasscutter_path: roamingAppData + '\\cultivation\\grasscutter\\grasscutter.jar',
+    java_path: '',
     close_action: 0,
     startup_launch: false,
     last_ip: '',
@@ -28,6 +29,7 @@ export interface Configuration {
   game_install_path: string
   grasscutter_with_game: boolean
   grasscutter_path: string
+  java_path: string
   close_action: number
   startup_launch: boolean
   last_ip: string

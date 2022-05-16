@@ -106,7 +106,8 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     // Launch the jar
     await invoke('run_jar', {
       path: config.grasscutter_path,
-      executeIn: jarFolder
+      executeIn: jarFolder,
+      javaPath: config.java_path || ''
     })
   }
 

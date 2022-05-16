@@ -71,9 +71,15 @@ fn run_program(path: String) {
 }
 
 #[tauri::command]
-fn run_jar(path: String, execute_in: String) {
+fn run_jar(path: String, execute_in: String, java_path: String) {
+  let mut command = if java_path.is_empty() {
+    format!("java -jar {}", path)
+  } else {
+    format!("\"{}\" -jar {}", java_path, path)
+  };
+
   // Open the program from the specified path.
-  match open::with(format!("/k cd /D \"{}\" & java -jar {}", &execute_in, &path).to_string(), "C:\\Windows\\System32\\cmd.exe") {
+  match open::with(format!("/k cd /D \"{}\" & {}", &execute_in, &command).to_string(), "C:\\Windows\\System32\\cmd.exe") {
     Ok(_) => (),
     Err(e) => println!("Failed to open jar ({} from {}): {}", &path, &execute_in, e),
   };
