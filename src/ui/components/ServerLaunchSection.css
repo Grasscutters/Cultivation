@@ -4,19 +4,22 @@
   justify-content: space-between;
 
   position: absolute;
-  left: 60%;
-  top: 5%;
+  transform: translate(0%, -50%);
+  right: 10%;
+  top: 50%;
 
   width: 30%;
-  height: 55%;
+  height: 80%;
+  min-width: 357px;
 }
 
 #playButton > div {
-  margin-top: 4px;
+  margin-bottom: 6px;
 }
 
 #playButton .BigButton {
   height: 100%;
+  box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.2);
 }
 
 #serverControls {
@@ -36,11 +39,17 @@
 
 #serverControls .CheckboxDisplay {
   margin-right: 6px;
+  box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.2);
 }
 
 #serverControls .Checkbox label {
   color: #fff;
   font-weight: bold;
+  text-shadow: #222222 1px 0 10px;
+}
+
+#serverControls .Checkbox label span {
+  padding-left: 4px;
 }
 
 .ServerLaunchButtons {
@@ -69,6 +78,9 @@
 .ServerConfig input {
   padding: 6px;
   border-radius: 6px;
+  height: 18px;
+
+  box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.2);
 }
 
 #ip {
@@ -77,4 +89,20 @@
 
 #port {
   width: 15%;
+}
+
+@media (max-width: 1040px) {
+    #playButton {
+        right: 5%;
+    }
+}
+
+@media (max-width: 870px) {
+    #playButton {
+        min-width: 235px;
+    }
+
+    #officialPlay {
+        width: 40%;
+    }
 }

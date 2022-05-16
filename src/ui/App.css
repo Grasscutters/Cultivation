@@ -10,8 +10,10 @@ body {
 }
 
 .App {
-  background-image: url("https://webstatic.hoyoverse.com/upload/event/2020/11/04/7fd661b5184e1734f91f628b6f89a31f_7367318474207189623.png");
-  background-repeat: no-repeat;
+  background: url("https://webstatic.hoyoverse.com/upload/event/2020/11/04/7fd661b5184e1734f91f628b6f89a31f_7367318474207189623.png") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
   background-size: cover;
 }
 
@@ -35,7 +37,8 @@ body {
 
 #DownloadProgress {
   position: absolute;
-  top: 15%;
+  transform: translate(0%, -50%);
+  top: 50%;
   left: 5%;
   width: 50%;
 }
@@ -63,11 +66,28 @@ body {
 
 .BottomSection {
   position: absolute;
-  top: 80%;
+	bottom: 0%;
+	left: 50%;
+	transform: translate(-50%, 0%);
 
-  height: 30%;
-  width: 100%;
+	width: 100%;
+	height: 160px;
 
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
   box-shadow: inset 0px 5px 12px -3px rgb(50 50 50 / 75%);
+
+	margin: 0;
+	padding: 0;
+}
+
+@media(max-height: 580px) {
+    .BottomSection {
+        height: 150px;
+    }
+}
+
+@media(max-height: 500px) {
+    .BottomSection {
+        height: 140px;
+    }
 }

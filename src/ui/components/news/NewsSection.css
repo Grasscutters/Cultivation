@@ -1,76 +1,97 @@
 .NewsSection {
-  background-color: rgba(106, 105, 106, 0.6);
+    background-color: rgba(106, 105, 106, 0.6);
 
-  display: flex;
-  flex-direction: column;
-  
-  position: absolute;
+    position: absolute;
 
-  height: 30%;
-  width: 40%;
+    min-height: 219px;
+    height: 30%;
+    width: 512px;
 
-  top: 20%;
-  left: 5%;
+    bottom: 35%;
+    left: 5%;
+}
+
+@media (max-width: 830px) {
+    .NewsSection {
+        width: 61%;
+    }
 }
 
 .NewsTabs {
-  background-color: rgba(77, 77, 77, 0.6);
+    background-color: rgba(77, 77, 77, 0.6);
 
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
 
-  font-weight: bold;
-  color: #fff;
+    font-weight: bold;
+    color: #fff;
 
-  width: 100%;
-  height: 20%;
+    width: 100%;
+    height: 43px;
 }
 
 .NewsTab {
-  height: 50%;
+    height: 50%;
 
-  margin: 0 10px;
+    margin: 0 10px;
 
-  text-align: center;
-  border-bottom: 1px solid transparent;
+    text-align: center;
+    border-bottom: 1px solid transparent;
 }
 
 .NewsTab:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .NewsTab.selected {
-  border-bottom: 2px solid #ffc61e;
+    border-bottom: 2px solid #ffc61e;
 }
 
 .NewsContent {
-  overflow-y: auto;
-  scrollbar-width: none;
-
-  color: #fff;
+    display: block;
+    height: calc(100% - 43px);
+    width: 100%;
+    color: #fff;
 }
 
-.NewsContent::-webkit-scrollbar {
-  display: none;
+.NewsContent tbody {
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.NewsContent  tbody::-webkit-scrollbar {
+    display: none;
 }
 
 .Commit {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-
-  color: #fff;
-
-  margin: 8px;
+    margin: 0;
+    color: #fff;
+    max-height: 42px;
 }
 
 .CommitAuthor {
-  font-weight: bold;
+    width: calc(100% * 0.4);
+    padding-left: 5px;
+    vertical-align: top;
+    font-weight: bold;
 }
 
 .CommitMessage {
-  width: 60%;
+    width: calc(100% * 0.6);
+}
+
+.CommitMessage span {
+    display: -webkit-box;
+    width: 100%;
+    max-height: 42px;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 5px;
 }

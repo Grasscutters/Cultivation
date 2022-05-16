@@ -16,14 +16,14 @@ import NewsSection from './components/news/NewsSection'
 import RightBar from './components/RightBar'
 
 interface IProps {
-  [key: string]: never;
+    [key: string]: never;
 }
 
 interface IState {
-  isDownloading: boolean;
-  optionsOpen: boolean;
-  miniDownloadsOpen: boolean;
-  downloadsOpen: boolean;
+    isDownloading: boolean;
+    optionsOpen: boolean;
+    miniDownloadsOpen: boolean;
+    downloadsOpen: boolean;
 }
 
 const downloadHandler = new DownloadHandler()
@@ -35,7 +35,7 @@ class App extends React.Component<IProps, IState> {
       isDownloading: false,
       optionsOpen: false,
       miniDownloadsOpen: false,
-      downloadsOpen: false
+      downloadsOpen: false,
     }
 
     listen('lang_error', (payload) => {
@@ -59,25 +59,38 @@ class App extends React.Component<IProps, IState> {
 
         {
           // Mini downloads section
-          this.state.miniDownloadsOpen ? 
+          this.state.miniDownloadsOpen ? (
             <div className="MiniDownloads">
-              <MiniDialog title="Downloads" closeFn={() => {
-                this.setState({ miniDownloadsOpen: false })
-              }}>
+              <MiniDialog
+                title="Downloads"
+                closeFn={() => {
+                  this.setState({ miniDownloadsOpen: false })
+                }}
+              >
                 <DownloadList downloadManager={downloadHandler} />
               </MiniDialog>
               <div className="arrow-down"></div>
-            </div> : null
+            </div>
+          ) : null
         }
 
         {
           // Download menu
-          this.state.downloadsOpen ? <Downloads downloadManager={downloadHandler} closeFn={() => this.setState({ downloadsOpen: false }) } /> : null
+          this.state.downloadsOpen ? (
+            <Downloads
+              downloadManager={downloadHandler}
+              closeFn={() => this.setState({ downloadsOpen: false })}
+            />
+          ) : null
         }
 
         {
           // Options menu
-          this.state.optionsOpen ? <Options closeFn={() => this.setState({ optionsOpen: !this.state.optionsOpen })}/> : null
+          this.state.optionsOpen ? (
+            <Options
+              closeFn={() => this.setState({ optionsOpen: !this.state.optionsOpen })}
+            />
+          ) : null
         }
 
         <div className="BottomSection">

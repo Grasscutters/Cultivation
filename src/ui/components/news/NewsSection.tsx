@@ -64,10 +64,10 @@ export default class NewsSection extends React.Component<IProps, IState> {
       const commitsList = obj.slice(0, 5)
       const commitsListHtml = commitsList.map((commit: any) => {
         return (
-          <div className="Commit" key={commit.sha}>
-            <div className="CommitAuthor">{commit.commit.author.name}</div>
-            <div className="CommitMessage">{commit.commit.message.substring(0, 50) + '...'}</div>
-          </div>
+          <tr className="Commit" key={commit.sha}>
+            <td className="CommitAuthor"><span>{commit.commit.author.name}</span></td>
+            <td className="CommitMessage"><span>{commit.commit.message}</span></td>
+          </tr>
         )
       })
 
@@ -113,9 +113,11 @@ export default class NewsSection extends React.Component<IProps, IState> {
             <Tr text="news.latest_version" />
           </div>
         </div>
-        <div className="NewsContent">
-          {this.state.news}
-        </div>
+        <table className="NewsContent">
+            <tbody>
+                {this.state.news}
+            </tbody>
+        </table>
       </div>
     )
   }
