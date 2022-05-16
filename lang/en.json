@@ -19,6 +19,13 @@
     "grasscutter_latest": "Download Grasscutter Latest",
     "resources": "Download Grasscutter Resources"
   },
+  "download_status": {
+    "downloading": "Downloading",
+    "extracting": "Extracting",
+    "error": "Error",
+    "finished": "Finished",
+    "stopped": "Stopped"
+  },
   "components": {
     "select_file": "Select file or folder...",
     "download": "Download"

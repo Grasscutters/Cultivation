@@ -4,6 +4,7 @@ import { capitalize } from '../../../utils/string'
 import Stop from '../../../resources/icons/close.svg' 
 import './ProgressBar.css'
 import DownloadHandler from '../../../utils/download'
+import { translate } from '../../../utils/language'
 
 interface IProps {
   path: string,
@@ -31,11 +32,11 @@ export default class ProgressBar extends React.Component<IProps, IState> {
 
   componentDidMount() {
     // Periodically check the progress of passed file path
-    const intv = setInterval(() => {
+    const intv = setInterval(async () => {
       const prog = this.props.downloadManager.getDownloadProgress(this.props.path)
       this.setState({
         progress: prog?.progress || 0,
-        status: prog?.status || 'stopped',
+        status: await translate(`download_status.${prog?.status || 'stopped'}`) || 'stopped',
         total: prog?.total || 0,
       })
 
