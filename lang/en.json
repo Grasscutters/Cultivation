@@ -5,7 +5,9 @@
     "launch_button": "Launch",
     "gc_enable": "Connect via Grasscutter",
     "ip_placeholder": "Server Address...",
-    "port_placeholder": "Port..."
+    "port_placeholder": "Port...",
+    "files_downloading": "Files Downloading: ",
+    "files_extracting": "Files Extracting: "
   },
   "options": {
     "game_exec": "Set Game Executable",
@@ -16,6 +18,13 @@
     "grasscutter_stable": "Download Grasscutter Stable",
     "grasscutter_latest": "Download Grasscutter Latest",
     "resources": "Download Grasscutter Resources"
+  },
+  "download_status": {
+    "downloading": "Downloading",
+    "extracting": "Extracting",
+    "error": "Error",
+    "finished": "Finished",
+    "stopped": "Stopped"
   },
   "components": {
     "select_file": "Select file or folder...",

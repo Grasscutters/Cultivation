@@ -1,5 +1,6 @@
 import React from 'react'
 import DownloadHandler from '../../../utils/download'
+import Tr from '../../../utils/language'
 import './ProgressBar.css'
 
 interface IProps {
@@ -67,9 +68,9 @@ export default class ProgressBar extends React.Component<IProps, IState> {
         </div>
 
         <div className="MainProgressText">
-          Files Downloading: {this.state.files} ({this.state.speed})
+          <Tr text="main.files_downloading" /> {this.state.files} ({this.state.speed})
           <br />
-          Files Extracting: {this.state.extracting}
+          <Tr text="main.files_extracting" /> {this.state.extracting}
         </div>
       </div>
     )
