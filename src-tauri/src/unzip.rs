@@ -1,11 +1,12 @@
-use zip;
+use zip_extract;
 use std::fs::File;
-use std::io::Read;
+use std::path;
+use std::thread;
 
 #[tauri::command]
-pub fn unzip(zipfile: &str, zippath: &str, destpath: &str) {
-  // Read file
-  let f = match File::open(zipfile) {
+pub fn unzip(window: tauri::Window, zipfile: String, destpath: String) {
+  // Read file TODO: replace test file
+  let f = match File::open(&zipfile) {
     Ok(f) => f,
     Err(e) => {
       println!("Failed to open zip file: {}", e);
@@ -13,27 +14,27 @@ pub fn unzip(zipfile: &str, zippath: &str, destpath: &str) {
     }
   };
 
-  let reader = std::io::Cursor::new(&f);
+  let writePath = path::PathBuf::from(&destpath);
 
-  // Init zip reader
-  let mut zip = match zip::ZipArchive::new(&f) {
-    Ok(zip) => zip,
-    Err(e) => {
-      println!("Could not open zip file: {}", e);
-      return;
-    }
-  };
+  // Run extraction in seperate thread
+  thread::spawn(move || {
+    let fullPath = writePath;
 
-  let zipData = match zip.by_name(zippath) {
-    Ok(zipData) => zipData,
-    Err(e) => {
-      println!("Could not find zip file: {}", e);
-      println!("Path: {}", zippath);
-      return;
-    }
-  };
+    println!("Unzipping file! {}", &zipfile);
 
-  println!("Zip: {}", zipData.size());
-  println!("Name: {}", zipData.name());
-  println!("Directory? {}", zipData.is_dir());
+    window.emit("extract_start", &zipfile);
+
+    match zip_extract::extract(f, &fullPath, true) {
+      Ok(_) => {
+        println!("Extracted zip file to: {}", fullPath.to_str().unwrap_or("Error"));
+      },
+      Err(e) => {
+        println!("Failed to extract zip file: {}", e);
+      }
+    };
+
+    println!("Unzipping done!");
+
+    window.emit("extract_end", &zipfile);
+  });
 }

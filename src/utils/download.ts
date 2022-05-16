@@ -18,13 +18,13 @@ export default class DownloadHandler {
   constructor() {
     this.downloads = []
 
-    listen('download_progress', (...payload) => {
+    listen('download_progress', ({ payload }) => {
       // @ts-expect-error Payload may be unknown but backend always returns this object
       const obj: {
         downloaded: string,
         total: string,
         path: string,
-      } = payload[0].payload
+      } = payload
 
       const index = this.downloads.findIndex(download => download.path === obj.path)
       this.downloads[index].progress = parseInt(obj.downloaded, 10)
@@ -37,9 +37,9 @@ export default class DownloadHandler {
       this.downloads[index].speed = byteToString(speed) + '/s'
     })
 
-    listen('download_finished', (...payload) => {
+    listen('download_finished', ({ payload }) => {
       // Remove from array
-      const filename = payload[0]?.payload
+      const filename = payload
 
       // set status to finished
       const index = this.downloads.findIndex(download => download.path === filename)
@@ -52,17 +52,30 @@ export default class DownloadHandler {
       }
     })
 
-    listen('download_error', (...payload) => {
+    listen('download_error', ({ payload }) => {
       // @ts-expect-error shut up typescript
       const errorData: {
         path: string,
         error: string,
-      } = payload[0]?.payload
+      } = payload
 
       // Set download to error
       const index = this.downloads.findIndex(download => download.path === errorData.path)
       this.downloads[index].status = 'error'
       this.downloads[index].error = errorData.error
+    })
+
+    // Extraction events
+    listen('extract_start', ({ payload }) => {
+      // Find the download that is no extracting and set it's status as such
+      const index = this.downloads.findIndex(download => download.path === payload)
+      this.downloads[index].status = 'extracting'
+    })
+
+    listen('extract_end', ({ payload }) => {
+      // Find the download that is no extracting and set it's status as such
+      const index = this.downloads.findIndex(download => download.path === payload)
+      this.downloads[index].status = 'finished'
     })
   }
 

@@ -19,7 +19,7 @@ serde = { version = "1.0", features = ["derive"] }
 tauri = { version = "1.0.0-rc.9", features = ["api-all"] }
 
 # zip library
-zip = "0.6.2"
+zip-extract = "0.1.1"
 
 # For creating a "global" downloads list
 lazy_static = "1.4.0"

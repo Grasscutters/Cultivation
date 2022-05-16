@@ -65,14 +65,18 @@ export default class Downloads extends React.Component<IProps, IState> {
 
   async downloadGrasscutterStable() {
     const folder = await this.getGrasscutterFolder()
-    this.props.downloadManager.addDownload(STABLE_DOWNLOAD, folder + '\\grasscutter.zip')
+    this.props.downloadManager.addDownload(STABLE_DOWNLOAD, folder + '\\grasscutter.zip', () =>{
+      unzip(folder + '\\grasscutter.zip', folder + '\\')
+    })
 
     this.disableButtons()
   } 
 
   async downloadGrasscutterLatest() {
     const folder = await this.getGrasscutterFolder()
-    this.props.downloadManager.addDownload(DEV_DOWNLOAD, folder + '\\grasscutter.zip')
+    this.props.downloadManager.addDownload(DEV_DOWNLOAD, folder + '\\grasscutter.zip', () =>{
+      unzip(folder + '\\grasscutter.zip', folder + '\\')
+    })
 
     this.disableButtons()
   }
@@ -80,7 +84,7 @@ export default class Downloads extends React.Component<IProps, IState> {
   async downloadResources() {
     const folder = await this.getGrasscutterFolder()
     this.props.downloadManager.addDownload(RESOURCES_DOWNLOAD, folder + '\\resources.zip', () => {
-      unzip(folder + '\\resources.zip', 'Grasscutter_Resources-main/Resources/', folder + '/resources')
+      unzip(folder + '\\resources.zip', folder + '\\')
     })
 
     this.disableButtons()
