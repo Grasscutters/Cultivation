@@ -64,6 +64,14 @@
   justify-content: flex-start;
 }
 
+.ProgressBarWrapper .InnerProgress {
+  background-color: #ffc61e;
+}
+
+.ProgressBarWrapper .ProgressBar {
+  border: none;
+}
+
 .DownloadControls {
   display: flex;
   flex-direction: row;
