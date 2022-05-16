@@ -8,6 +8,7 @@ import BigButton from '../common/BigButton'
 import './Downloads.css'
 import Divider from './Divider'
 import { getConfigOption } from '../../../utils/configuration'
+import { invoke } from '@tauri-apps/api'
 
 const STABLE_DOWNLOAD = 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/stable/Grasscutter.zip'
 const DEV_DOWNLOAD = 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/development/Grasscutter.zip'
@@ -22,6 +23,7 @@ interface IState {
   grasscutter_downloading: boolean
   resources_downloading: boolean
   grasscutter_set: boolean
+  resources_exist: boolean
 }
 
 export default class Downloads extends React.Component<IProps, IState> {
@@ -31,7 +33,8 @@ export default class Downloads extends React.Component<IProps, IState> {
     this.state = {
       grasscutter_downloading: this.props.downloadManager.downloadingJar(),
       resources_downloading: this.props.downloadManager.downloadingResources(),
-      grasscutter_set: false
+      grasscutter_set: false,
+      resources_exist: false
     }
 
     this.getGrasscutterFolder = this.getGrasscutterFolder.bind(this)
@@ -43,9 +46,16 @@ export default class Downloads extends React.Component<IProps, IState> {
 
   async componentDidMount() {
     const gc_path = await getConfigOption('grasscutter_path')
+    const path = gc_path.substring(0, gc_path.lastIndexOf('\\'))
+
     if (gc_path) {
+      const resources_exist: boolean = await invoke('dir_exists', {
+        path: path + '\\resources'
+      })
+
       this.setState({
-        grasscutter_set: gc_path !== ''
+        grasscutter_set: gc_path !== '',
+        resources_exist
       })
     }
   }
@@ -83,8 +93,14 @@ export default class Downloads extends React.Component<IProps, IState> {
 
   async downloadResources() {
     const folder = await this.getGrasscutterFolder()
-    this.props.downloadManager.addDownload(RESOURCES_DOWNLOAD, folder + '\\resources.zip', () => {
-      unzip(folder + '\\resources.zip', folder + '\\')
+    this.props.downloadManager.addDownload(RESOURCES_DOWNLOAD, folder + '\\resources.zip', async () => {
+      await unzip(folder + '\\resources.zip', folder + '\\', () => {
+        // Rename folder to resources
+        invoke('rename', {
+          path: folder + '\\Resources',
+          newName: 'resources'
+        })
+      })
     })
 
     this.disableButtons()
@@ -129,7 +145,7 @@ export default class Downloads extends React.Component<IProps, IState> {
             <Tr text="downloads.resources" />
           </div>
           <div className='DownloadValue'>
-            <BigButton disabled={this.state.resources_downloading || !this.state.grasscutter_set} onClick={this.downloadResources} id="resourcesBtn" >
+            <BigButton disabled={this.state.resources_downloading || !this.state.grasscutter_set || this.state.resources_exist} onClick={this.downloadResources} id="resourcesBtn" >
               <Tr text="components.download" />
             </BigButton>
           </div>

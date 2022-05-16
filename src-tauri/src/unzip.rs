@@ -20,8 +20,6 @@ pub fn unzip(window: tauri::Window, zipfile: String, destpath: String) {
   thread::spawn(move || {
     let fullPath = writePath;
 
-    println!("Unzipping file! {}", &zipfile);
-
     window.emit("extract_start", &zipfile);
 
     match zip_extract::extract(f, &fullPath, true) {
@@ -32,8 +30,6 @@ pub fn unzip(window: tauri::Window, zipfile: String, destpath: String) {
         println!("Failed to extract zip file: {}", e);
       }
     };
-
-    println!("Unzipping done!");
 
     window.emit("extract_end", &zipfile);
   });

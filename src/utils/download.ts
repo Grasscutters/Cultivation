@@ -144,6 +144,7 @@ export default class DownloadHandler {
     return {
       average: (progress / total) * 100 || 0,
       files: this.downloads.filter(d => d.status === 'downloading').length,
+      extracting: this.downloads.filter(d => d.status === 'extracting').length,
       totalSize: total,
       speed: speedStr
     }
