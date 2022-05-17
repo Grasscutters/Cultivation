@@ -148,10 +148,9 @@ export default class Downloads extends React.Component<IProps, IState> {
       <Menu closeFn={this.props.closeFn} className="Downloads" heading="Downloads">
         <div className='DownloadMenuSection'>
           <div className='DownloadLabel'>
-            {
-              this.state.grasscutter_set ?
-                <Tr text="downloads.grasscutter_stable_update" /> : <Tr text="downloads.grasscutter_stable" />
-            }
+            <Tr text={
+              this.state.grasscutter_set ? 'downloads.grasscutter_stable' : 'downloads.grasscutter_stable_update'
+            } />
           </div>
           <div className='DownloadValue'>
             <BigButton disabled={this.state.grasscutter_downloading} onClick={this.downloadGrasscutterStable} id="grasscutterStableBtn" >
@@ -161,10 +160,9 @@ export default class Downloads extends React.Component<IProps, IState> {
         </div>
         <div className='DownloadMenuSection'>
           <div className='DownloadLabel'>
-            {
-              this.state.grasscutter_set ?
-                <Tr text="downloads.grasscutter_latest_update" /> : <Tr text="downloads.grasscutter_latest" />
-            }
+            <Tr text={
+              this.state.grasscutter_set ? 'downloads.grasscutter_latest' : 'downloads.grasscutter_latest_update'
+            } />
           </div>
           <div className='DownloadValue'>
             <BigButton disabled={this.state.grasscutter_downloading} onClick={this.downloadGrasscutterLatest} id="grasscutterLatestBtn" >
@@ -177,10 +175,9 @@ export default class Downloads extends React.Component<IProps, IState> {
 
         <div className='DownloadMenuSection'>
           <div className='DownloadLabel'>
-            {
-              this.state.grasscutter_set ?
-                <Tr text="downloads.grasscutter_stable_data_update" /> : <Tr text="downloads.grasscutter_stable_data" />
-            }
+            <Tr text={
+              this.state.grasscutter_set ? 'downloads.grasscutter_stable_data' : 'downloads.grasscutter_stable_data_update'
+            } />
           </div>
           <div className='DownloadValue'>
             <BigButton disabled={this.state.repo_downloading} onClick={this.downloadGrasscutterStableRepo} id="grasscutterStableRepo" >
@@ -190,10 +187,9 @@ export default class Downloads extends React.Component<IProps, IState> {
         </div>
         <div className='DownloadMenuSection'>
           <div className='DownloadLabel'>
-            {
-              this.state.grasscutter_set ?
-                <Tr text="downloads.grasscutter_dev_data_update" /> : <Tr text="downloads.grasscutter_dev_data" />
-            }
+            <Tr text={
+              this.state.grasscutter_set ? 'downloads.grasscutter_latest_data' : 'downloads.grasscutter_latest_data_update'
+            } />
           </div>
           <div className='DownloadValue'>
             <BigButton disabled={this.state.repo_downloading} onClick={this.downloadGrasscutterStableRepo} id="grasscutterDevRepo" >
