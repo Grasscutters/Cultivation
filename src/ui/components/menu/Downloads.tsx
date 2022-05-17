@@ -4,10 +4,11 @@ import Tr from '../../../utils/language'
 import DownloadHandler from '../../../utils/download'
 import { unzip } from '../../../utils/zip_utils'
 import BigButton from '../common/BigButton'
+import { dataDir } from '@tauri-apps/api/path'
 
 import './Downloads.css'
 import Divider from './Divider'
-import { getConfigOption } from '../../../utils/configuration'
+import { getConfigOption, setConfigOption } from '../../../utils/configuration'
 import { invoke } from '@tauri-apps/api'
 
 const STABLE_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/stable.zip'
@@ -52,6 +53,16 @@ export default class Downloads extends React.Component<IProps, IState> {
 
   async componentDidMount() {
     const gc_path = await getConfigOption('grasscutter_path')
+
+    if (!gc_path || gc_path === '') {
+      this.setState({
+        grasscutter_set: false,
+        resources_exist: false
+      })
+
+      return
+    }
+
     const path = gc_path.substring(0, gc_path.lastIndexOf('\\'))
 
     if (gc_path) {
@@ -69,6 +80,15 @@ export default class Downloads extends React.Component<IProps, IState> {
   async getGrasscutterFolder() {
     const path = await getConfigOption('grasscutter_path')
     let folderPath
+
+    // Set to default if not set
+    if (!path || path === '') {
+      const appdata = await dataDir()
+      folderPath = appdata + 'cultivation\\grasscutter'
+
+      // Early return since its formatted properly
+      return folderPath
+    }
 
     if (path.includes('/')) {
       folderPath = path.substring(0, path.lastIndexOf('/'))
