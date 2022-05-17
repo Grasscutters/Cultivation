@@ -59,8 +59,12 @@ export default class DownloadHandler {
         error: string,
       } = payload
 
+      console.log(payload)
+
       // Set download to error
       const index = this.downloads.findIndex(download => download.path === errorData.path)
+      console.log(index)
+      console.log(this.downloads[index])
       this.downloads[index].status = 'error'
       this.downloads[index].error = errorData.error
     })

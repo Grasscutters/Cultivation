@@ -24,7 +24,7 @@ pub async fn download_file(window: tauri::Window, url: &str, path: &str) -> Resu
         .await {
             Ok(r) => r,
             Err(_e) => {
-                emit_download_err(window, format!("Failed to request {}", url), url);
+                emit_download_err(window, format!("Failed to request {}", url), path);
                 return Err(format!("Failed to request {}", url));
             },
         };
