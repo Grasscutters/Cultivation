@@ -81,7 +81,7 @@ export default class NewsSection extends React.Component<IProps, IState> {
   }
 
   async showNews() {
-    let news = <div></div>
+    let news = <tr></tr>
 
     switch(this.state.selected) {
       case 'commits':
@@ -89,11 +89,11 @@ export default class NewsSection extends React.Component<IProps, IState> {
         break
 
       case 'latest_version':
-        news = <div>Latest version</div>
+        news = <tr><td>Latest version</td></tr>
         break
 
       default:
-        news = <div>Unknown</div>
+        news = <tr><td>Unknown</td></tr>
         break
     }
 
