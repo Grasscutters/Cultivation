@@ -1,5 +1,7 @@
 import React from 'react'
+
 import './TextInput.css'
+import Close from '../../../resources/icons/close.svg'
 
 interface IProps {
   value?: string;
@@ -7,6 +9,7 @@ interface IProps {
   onChange?: (value: string) => void;
   readOnly?: boolean;
   id?: string;
+  clearable?: boolean;
 }
 
 interface IState {
@@ -34,10 +37,17 @@ export default class TextInput extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <input id={this.props?.id} readOnly={this.props.readOnly || false} placeholder={this.props.placeholder || ''} className="TextInput" value={this.state.value} onChange={(e) => {
-        this.setState({ value: e.target.value })
-        if (this.props.onChange) this.props.onChange(e.target.value)
-      }} />
+      <div className="TextInputWrapper">
+        <input id={this.props?.id} readOnly={this.props.readOnly || false} placeholder={this.props.placeholder || ''} className="TextInput" value={this.state.value} onChange={(e) => {
+          this.setState({ value: e.target.value })
+          if (this.props.onChange) this.props.onChange(e.target.value)
+        }} />
+        <div className="TextClear" onClick={() => {
+          this.setState({ value: '' })
+        }}>
+          <img src={Close} className="TextInputClear" />
+        </div>
+      </div>
     )
   }
 }
