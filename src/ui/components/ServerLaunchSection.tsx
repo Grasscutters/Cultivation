@@ -78,12 +78,23 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     
     // Connect to proxy
     if (config.toggle_grasscutter) {
+      let game_exe = config.game_install_path
+
+      if (game_exe.includes('\\')) {
+        game_exe = game_exe.substring(config.game_install_path.lastIndexOf('\\') + 1)
+      } else {
+        game_exe = game_exe.substring(config.game_install_path.lastIndexOf('/') + 1)
+      }
+
       // Save last connected server and port
       await setConfigOption('last_ip', this.state.ip)
       await setConfigOption('last_port', this.state.port)
 
       // Set IP
       await invoke('set_proxy_addr', { addr: this.state.ip + ':' + this.state.port })
+      await invoke('enable_process_watcher', {
+        process: game_exe
+      })
 
       // Connect to proxy
       await invoke('connect', { port: 8365 })

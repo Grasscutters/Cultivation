@@ -3,6 +3,12 @@ all(not(debug_assertions), target_os = "windows"),
 windows_subsystem = "windows"
 )]
 
+use lazy_static::lazy_static;
+use std::sync::Mutex;
+
+use std::thread;
+use sysinfo::{ProcessExt, System, SystemExt};
+
 use open;
 use structs::{APIQuery};
 
@@ -14,20 +20,30 @@ mod proxy;
 mod web;
 mod structs;
 
+lazy_static!{
+  static ref WATCH_GAME_PROCESS: Mutex<String> = {
+      let m = "".to_string();
+      Mutex::new(m)
+  };
+}
+
 fn main() {
+  process_watcher();
+
   tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![
+      enable_process_watcher,
       connect,
       disconnect,
-      proxy::set_proxy_addr,
       run_program,
       run_jar,
-      unzip::unzip,
-      file_helpers::rename,
-      file_helpers::dir_exists,
       open_in_browser,
       req_get,
       get_bg_file,
+      proxy::set_proxy_addr,
+      unzip::unzip,
+      file_helpers::rename,
+      file_helpers::dir_exists,
       downloader::download_file,
       downloader::stop_download,
       lang::get_lang,
@@ -35,6 +51,47 @@ fn main() {
     ])
     .run(tauri::generate_context!()) 
     .expect("error while running tauri application");
+}
+
+fn process_watcher() {
+  // Every 5 seconds, see if the game process is still running.
+  // If it is not, then we assume the game has closed and disable the proxy
+  // to prevent any requests from being sent to the game.
+
+  // Start in thread so as to not block the main thread.
+  thread::spawn(|| {
+    let mut s = System::new_all();
+  
+    loop {
+      // Refresh system info
+      s.refresh_all();
+  
+      // Grab the game process name
+      let mut proc = WATCH_GAME_PROCESS.lock().unwrap().to_string();
+    
+      if !&proc.is_empty() {
+        let mut proc_with_name = s.processes_by_exact_name(&proc);
+        let mut exists = false;
+
+        for p in proc_with_name {
+          exists = true;
+          break;
+        }
+
+        // If the game process closes, disable the proxy.
+        if !exists {
+          *WATCH_GAME_PROCESS.lock().unwrap() = "".to_string();
+          disconnect();
+        }
+      }
+      std::thread::sleep(std::time::Duration::from_secs(5));
+    }
+  });
+}
+
+#[tauri::command]
+fn enable_process_watcher(process: String) {
+  *WATCH_GAME_PROCESS.lock().unwrap() = process;
 }
 
 #[tauri::command]
