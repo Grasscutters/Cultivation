@@ -39,7 +39,8 @@ impl HttpHandler for ProxyHandler {
 
         // Check URI against constraints.
         if path.contains("hoyoverse.com") || path.contains("mihoyo.com") || path.contains("yuanshen.com") {
-            uri = ("127.0.0.1".to_string() + uri.path()).parse::<Uri>().unwrap();
+            println!("uri path: {}", uri.path());
+            uri = format!("https://127.0.0.1:443{}", uri.path()).parse::<Uri>().unwrap();
         }
 
         let builder = Request::builder()
