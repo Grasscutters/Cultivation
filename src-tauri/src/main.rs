@@ -19,6 +19,7 @@ fn main() {
     .invoke_handler(tauri::generate_handler![
       connect,
       disconnect,
+      proxy::set_proxy_addr,
       run_program,
       run_jar,
       unzip::unzip,

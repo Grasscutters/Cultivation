@@ -3,6 +3,9 @@
  * https://github.com/omjadas/hudsucker/blob/main/examples/log.rs
  */
 
+use lazy_static::lazy_static;
+use std::sync::Mutex;
+
 use hudsucker::{
     async_trait::async_trait,
     certificate_authority::RcgenAuthority,
@@ -21,8 +24,21 @@ async unsafe fn shutdown_signal() {
         .expect("Failed to install CTRL+C signal handler");
 }
 
+// Global ver for getting server address
+lazy_static!{
+    static ref SERVER: Mutex<String> = {
+        let m = "localhost:443".to_string();
+        Mutex::new(m)
+    };
+}
+
 #[derive(Clone)]
 struct ProxyHandler;
+
+#[tauri::command]
+pub fn set_proxy_addr(addr: String){
+    *SERVER.lock().unwrap() = addr;
+}
 
 #[async_trait]
 impl HttpHandler for ProxyHandler {
@@ -39,8 +55,8 @@ impl HttpHandler for ProxyHandler {
 
         // Check URI against constraints.
         if path.contains("hoyoverse.com") || path.contains("mihoyo.com") || path.contains("yuanshen.com") {
-            println!("uri path: {}", uri.path());
-            uri = format!("https://127.0.0.1:443{}", uri.path()).parse::<Uri>().unwrap();
+            println!("uri path: {}{}", *SERVER.lock().unwrap(), uri.path());
+            uri = format!("https://{}{}", *SERVER.lock().unwrap(), uri.path()).parse::<Uri>().unwrap();
         }
 
         let builder = Request::builder()
