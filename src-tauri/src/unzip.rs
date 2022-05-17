@@ -28,6 +28,19 @@ pub fn unzip(window: tauri::Window, zipfile: String, destpath: String) {
       },
       Err(e) => {
         println!("Failed to extract zip file: {}", e);
+        let mut res_hash = std::collections::HashMap::new();
+
+        res_hash.insert(
+            "error".to_string(),
+            e.to_string()
+        );
+    
+        res_hash.insert(
+            "path".to_string(),
+            zipfile.to_string()
+        );
+    
+        window.emit("download_error", &res_hash).unwrap();
       }
     };
 
