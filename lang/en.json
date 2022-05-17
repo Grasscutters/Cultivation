@@ -14,7 +14,7 @@
     "grasscutter_jar": "Set Grasscutter Jar",
     "java_path": "Set Custom Java Path",
     "grasscutter_with_game": "Automatically launch Grasscutter with game",
-    "language": "Select Language"
+    "language": "Select Language (requires restart)"
   },
   "downloads": {
     "grasscutter_stable_data": "Download Grasscutter Stable Data",

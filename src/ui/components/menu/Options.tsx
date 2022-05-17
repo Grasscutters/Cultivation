@@ -17,7 +17,8 @@ interface IState {
   grasscutter_path: string
   java_path: string
   grasscutter_with_game: boolean
-  language_options: { [key: string]: string }[]
+  language_options: { [key: string]: string }[],
+  current_language: string
 }
 
 export default class Options extends React.Component<IProps, IState> {
@@ -29,7 +30,8 @@ export default class Options extends React.Component<IProps, IState> {
       grasscutter_path: '',
       java_path: '',
       grasscutter_with_game: false,
-      language_options: []
+      language_options: [],
+      current_language: 'en'
     }
   }
 
@@ -42,7 +44,8 @@ export default class Options extends React.Component<IProps, IState> {
       grasscutter_path: config.grasscutter_path || '',
       java_path: config.java_path || '',
       grasscutter_with_game: config.grasscutter_with_game || false,
-      language_options: languages
+      language_options: languages,
+      current_language: config.language || 'en'
     })
 
     this.forceUpdate()
@@ -115,11 +118,16 @@ export default class Options extends React.Component<IProps, IState> {
             <Tr text="options.language" />
           </div>
           <div className='OptionValue'>
-            <select onChange={(event) => {
+            <select defaultValue={this.state.current_language} onChange={(event) => {
               this.setLanguage(event.target.value)
             }}>
               {this.state.language_options.map(lang => (
-                <option key={Object.keys(lang)[0]} value={Object.keys(lang)[0]}>{lang[Object.keys(lang)[0]]}</option>
+                <option
+                  key={Object.keys(lang)[0]}
+                  value={Object.keys(lang)[0]}>
+
+                  {lang[Object.keys(lang)[0]]}
+                </option>
               ))}
             </select>
           </div>

@@ -18,6 +18,7 @@ let defaultConfig: Configuration
     startup_launch: false,
     last_ip: '',
     last_port: '',
+    language: 'en',
   }
 })()
 
@@ -34,6 +35,7 @@ export interface Configuration {
   startup_launch: boolean
   last_ip: string
   last_port: string
+  language: string
 }
 
 export async function setConfigOption(key: string, value: any): Promise<void> {
