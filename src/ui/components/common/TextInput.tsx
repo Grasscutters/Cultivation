@@ -42,13 +42,16 @@ export default class TextInput extends React.Component<IProps, IState> {
           this.setState({ value: e.target.value })
           if (this.props.onChange) this.props.onChange(e.target.value)
         }} />
-        <div className="TextClear" onClick={() => {
-          this.setState({ value: '' })
-
-          if (this.props.onChange) this.props.onChange('')
-        }}>
-          <img src={Close} className="TextInputClear" />
-        </div>
+        {
+          this.props.clearable ?
+            <div className="TextClear" onClick={() => {
+              this.setState({ value: '' })
+    
+              if (this.props.onChange) this.props.onChange('')
+            }}>
+              <img src={Close} className="TextInputClear" />
+            </div> : null
+        }
       </div>
     )
   }

@@ -62,11 +62,16 @@ export default class DirInput extends React.Component<IProps, IState> {
   render() {
     return (
       <div className='DirInput'>
-        <TextInput value={this.state.value} placeholder={this.state.placeholder} readOnly={true} onChange={(text: string) => {
-          this.setState({ value: text })
+        <TextInput
+          value={this.state.value}
+          placeholder={this.state.placeholder}
+          clearable={true}
+          readOnly={true} onChange={(text: string) => {
+            this.setState({ value: text })
 
-          if (this.props.onChange) this.props.onChange(text)
-        }}/>
+            if (this.props.onChange) this.props.onChange(text)
+          }}
+        />
         <div className="FileSelectIcon" onClick={this.handleIconClick}>
           <img src={File} />
         </div>
