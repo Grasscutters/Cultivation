@@ -44,28 +44,25 @@ pub fn set_proxy_addr(addr: String){
 impl HttpHandler for ProxyHandler {
     async fn handle_request(&mut self, 
                     _context: &HttpContext, 
-                    request: Request<Body>
+                    mut request: Request<Body>
     ) -> RequestOrResponse {
-        // Get request parts.
-        let (parts, body) = request.into_parts();
+        println!("Request: {}", &request.uri());
 
-        // Parse request URI.
-        let mut uri = parts.uri.clone();
-        let path = uri.to_string();
+        // Get request URI
+        let uri = request.uri().to_string();
+        let uri_path = request.uri().path();
 
-        // Check URI against constraints.
-        if path.contains("hoyoverse.com") || path.contains("mihoyo.com") || path.contains("yuanshen.com") {
-            println!("uri path: {}{}", *SERVER.lock().unwrap(), uri.path());
-            uri = format!("https://{}{}", *SERVER.lock().unwrap(), uri.path()).parse::<Uri>().unwrap();
+        // Only switch up if request is to the game servers
+        if uri.contains("hoyoverse.com") || uri.contains("mihoyo.com") || uri.contains("yuanshen.com") {
+            // Copy the request and just change the URI
+            let uri = format!("https://{}{}", SERVER.lock().unwrap(), uri_path).parse::<Uri>().unwrap();
+
+            *request.uri_mut() = uri;
         }
 
-        let builder = Request::builder()
-            .method(&parts.method)
-            .uri(&uri)
-            .version(parts.version);
-        let modified = builder.body(body).unwrap();
+        println!("New request: {}", &request.uri());
 
-        RequestOrResponse::Request(modified)
+        RequestOrResponse::Request(request)
     }
     
     async fn handle_response(&mut self,
