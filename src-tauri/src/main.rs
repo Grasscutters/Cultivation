@@ -4,7 +4,6 @@ windows_subsystem = "windows"
 )]
 
 use open;
-use tokio::sync::oneshot::Sender;
 use structs::{APIQuery};
 
 mod file_helpers;
@@ -72,7 +71,7 @@ fn run_program(path: String) {
 
 #[tauri::command]
 fn run_jar(path: String, execute_in: String, java_path: String) {
-  let mut command = if java_path.is_empty() {
+  let command = if java_path.is_empty() {
     format!("java -jar {}", path)
   } else {
     format!("\"{}\" -jar {}", java_path, path)

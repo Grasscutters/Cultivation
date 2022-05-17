@@ -42,6 +42,8 @@ export default class Downloads extends React.Component<IProps, IState> {
     }
 
     this.getGrasscutterFolder = this.getGrasscutterFolder.bind(this)
+    this.downloadGrasscutterStableRepo = this.downloadGrasscutterStableRepo.bind(this)
+    this.downloadGrasscutterDevRepo = this.downloadGrasscutterDevRepo.bind(this)
     this.downloadGrasscutterStable = this.downloadGrasscutterStable.bind(this)
     this.downloadGrasscutterLatest = this.downloadGrasscutterLatest.bind(this)
     this.downloadResources = this.downloadResources.bind(this)

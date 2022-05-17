@@ -3,7 +3,6 @@
  * https://github.com/omjadas/hudsucker/blob/main/examples/log.rs
  */
 
-use std::borrow::Borrow;
 use hudsucker::{
     async_trait::async_trait,
     certificate_authority::RcgenAuthority,
@@ -16,7 +15,6 @@ use registry::{Hive, Data, Security};
 
 use rustls_pemfile as pemfile;
 use tauri::http::Uri;
-use tokio::sync::oneshot::Sender;
 
 async unsafe fn shutdown_signal() {
     tokio::signal::ctrl_c().await
