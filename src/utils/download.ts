@@ -85,7 +85,7 @@ export default class DownloadHandler {
 
   downloadingJar() {
     // Kinda hacky but it works
-    return this.downloads.some(d => d.path.includes('grasscutter'))
+    return this.downloads.some(d => d.path.includes('grasscutter.zip'))
   }
 
   downloadingResources() {
@@ -93,6 +93,10 @@ export default class DownloadHandler {
     return this.downloads.some(d => d.path.includes('resources'))
   }
   
+  downloadingRepo() {
+    return this.downloads.some(d => d.path.includes('grasscutter_repo.zip'))
+  }
+
   addDownload(url: string, path: string, onFinish?: () => void) {
     // Begin download from rust backend, don't add if the download addition fails
     invoke('download_file', { url, path })

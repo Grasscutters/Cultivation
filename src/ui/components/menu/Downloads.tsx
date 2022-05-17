@@ -10,6 +10,8 @@ import Divider from './Divider'
 import { getConfigOption } from '../../../utils/configuration'
 import { invoke } from '@tauri-apps/api'
 
+const STABLE_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/stable.zip'
+const DEV_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/development.zip'
 const STABLE_DOWNLOAD = 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/stable/Grasscutter.zip'
 const DEV_DOWNLOAD = 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/development/Grasscutter.zip'
 const RESOURCES_DOWNLOAD = 'https://github.com/Koko-boya/Grasscutter_Resources/archive/refs/heads/main.zip'
@@ -22,6 +24,7 @@ interface IProps {
 interface IState {
   grasscutter_downloading: boolean
   resources_downloading: boolean
+  repo_downloading: boolean
   grasscutter_set: boolean
   resources_exist: boolean
 }
@@ -33,6 +36,7 @@ export default class Downloads extends React.Component<IProps, IState> {
     this.state = {
       grasscutter_downloading: this.props.downloadManager.downloadingJar(),
       resources_downloading: this.props.downloadManager.downloadingResources(),
+      repo_downloading: this.props.downloadManager.downloadingRepo(),
       grasscutter_set: false,
       resources_exist: false
     }
@@ -73,11 +77,32 @@ export default class Downloads extends React.Component<IProps, IState> {
     return folderPath
   }
 
+  async downloadGrasscutterStableRepo() {
+    const folder = await this.getGrasscutterFolder()
+    this.props.downloadManager.addDownload(STABLE_REPO_DOWNLOAD, folder + '\\grasscutter_repo.zip', () =>{
+      unzip(folder + '\\grasscutter_repo.zip', folder + '\\')
+    })
+
+    this.disableButtons()
+  }
+
+  async downloadGrasscutterDevRepo() {
+    const folder = await this.getGrasscutterFolder()
+    this.props.downloadManager.addDownload(DEV_REPO_DOWNLOAD, folder + '\\grasscutter_repo.zip', () =>{
+      unzip(folder + '\\grasscutter_repo.zip', folder + '\\')
+    })
+
+    this.disableButtons()
+  }
+
   async downloadGrasscutterStable() {
     const folder = await this.getGrasscutterFolder()
     this.props.downloadManager.addDownload(STABLE_DOWNLOAD, folder + '\\grasscutter.zip', () =>{
       unzip(folder + '\\grasscutter.zip', folder + '\\')
     })
+
+    // Also add repo download
+    this.downloadGrasscutterStableRepo()
 
     this.disableButtons()
   } 
@@ -87,6 +112,9 @@ export default class Downloads extends React.Component<IProps, IState> {
     this.props.downloadManager.addDownload(DEV_DOWNLOAD, folder + '\\grasscutter.zip', () =>{
       unzip(folder + '\\grasscutter.zip', folder + '\\')
     })
+
+    // Also add repo download
+    this.downloadGrasscutterDevRepo()
 
     this.disableButtons()
   }
@@ -110,7 +138,8 @@ export default class Downloads extends React.Component<IProps, IState> {
     // Set states since we know we are downloading something if this is called
     this.setState({
       grasscutter_downloading: this.props.downloadManager.downloadingJar(),
-      resources_downloading: this.props.downloadManager.downloadingResources()
+      resources_downloading: this.props.downloadManager.downloadingResources(),
+      repo_downloading: this.props.downloadManager.downloadingRepo()
     })
   }
 
@@ -119,7 +148,10 @@ export default class Downloads extends React.Component<IProps, IState> {
       <Menu closeFn={this.props.closeFn} className="Downloads" heading="Downloads">
         <div className='DownloadMenuSection'>
           <div className='DownloadLabel'>
-            <Tr text="downloads.grasscutter_stable" />
+            {
+              this.state.grasscutter_set ?
+                <Tr text="downloads.grasscutter_stable_update" /> : <Tr text="downloads.grasscutter_stable" />
+            }
           </div>
           <div className='DownloadValue'>
             <BigButton disabled={this.state.grasscutter_downloading} onClick={this.downloadGrasscutterStable} id="grasscutterStableBtn" >
@@ -129,10 +161,42 @@ export default class Downloads extends React.Component<IProps, IState> {
         </div>
         <div className='DownloadMenuSection'>
           <div className='DownloadLabel'>
-            <Tr text="downloads.grasscutter_latest" />
+            {
+              this.state.grasscutter_set ?
+                <Tr text="downloads.grasscutter_latest_update" /> : <Tr text="downloads.grasscutter_latest" />
+            }
           </div>
           <div className='DownloadValue'>
             <BigButton disabled={this.state.grasscutter_downloading} onClick={this.downloadGrasscutterLatest} id="grasscutterLatestBtn" >
+              <Tr text="components.download" />
+            </BigButton>
+          </div>
+        </div>
+
+        <Divider />
+
+        <div className='DownloadMenuSection'>
+          <div className='DownloadLabel'>
+            {
+              this.state.grasscutter_set ?
+                <Tr text="downloads.grasscutter_stable_data_update" /> : <Tr text="downloads.grasscutter_stable_data" />
+            }
+          </div>
+          <div className='DownloadValue'>
+            <BigButton disabled={this.state.repo_downloading} onClick={this.downloadGrasscutterStableRepo} id="grasscutterStableRepo" >
+              <Tr text="components.download" />
+            </BigButton>
+          </div>
+        </div>
+        <div className='DownloadMenuSection'>
+          <div className='DownloadLabel'>
+            {
+              this.state.grasscutter_set ?
+                <Tr text="downloads.grasscutter_dev_data_update" /> : <Tr text="downloads.grasscutter_dev_data" />
+            }
+          </div>
+          <div className='DownloadValue'>
+            <BigButton disabled={this.state.repo_downloading} onClick={this.downloadGrasscutterStableRepo} id="grasscutterDevRepo" >
               <Tr text="components.download" />
             </BigButton>
           </div>

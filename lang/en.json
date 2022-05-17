@@ -16,8 +16,14 @@
     "grasscutter_with_game": "Automatically launch Grasscutter with game"
   },
   "downloads": {
+    "grasscutter_stable_data": "Download Grasscutter Stable Data",
+    "grasscutter_dev_data": "Download Grasscutter Latest Data",
+    "grasscutter_stable_data_update": "Update Grasscutter Stable Data",
+    "grasscutter_dev_data_update": "Update Grasscutter Latest Data",
     "grasscutter_stable": "Download Grasscutter Stable",
     "grasscutter_latest": "Download Grasscutter Latest",
+    "grasscutter_stable_update": "Update Grasscutter Stable",
+    "grasscutter_latest_update": "Update Grasscutter Latest",
     "resources": "Download Grasscutter Resources"
   },
   "download_status": {
