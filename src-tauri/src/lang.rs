@@ -14,6 +14,32 @@ pub async fn get_lang(window: tauri::Window, lang: String) -> String {
   return contents;
 }
 
+#[tauri::command]
+pub async fn get_languages() -> std::collections::HashMap<String, String> {
+  // for each lang file, set the key as the filename and the value as the lang_name contained in the file
+  let mut languages = std::collections::HashMap::new();
+
+  let mut lang_files = std::fs::read_dir("../lang").unwrap();
+
+  while let Some(entry) = lang_files.next() {
+    let entry = entry.unwrap();
+    let path = entry.path();
+    let filename = path.file_name().unwrap().to_str().unwrap();
+
+    let content = match std::fs::read_to_string(path.to_str().unwrap()) {
+      Ok(x) => x,
+      Err(e) => {
+        println!("Failed to read language file: {}", e);
+        break;
+      }
+    };
+
+    languages.insert(filename.to_string(), content);
+  }
+
+  return languages;
+}
+
 pub fn emit_lang_err(window: tauri::Window, msg: std::string::String) {
   let mut res_hash = std::collections::HashMap::new();
 

@@ -60,6 +60,25 @@ export default class Tr extends React.Component<IProps, IState> {
   }
 }
 
+export async function getLanguages() {
+  const resp: {
+    [key: string]: string;
+  } = await invoke('get_languages')
+  const lang_list: {
+    [key: string]: string;
+  }[] = []
+
+  Object.keys(resp).forEach(k => {
+    const parsed = JSON.parse(resp[k])
+
+    if (parsed.lang_name) {
+      lang_list.push({ [k.split('.json')[0]]: parsed.lang_name })
+    }
+  })
+
+  return lang_list
+}
+
 export async function translate(text: string) {
   const language = await getConfigOption('language') || 'en'
   const translation_json = JSON.parse(await invoke('get_lang', { lang: language }) || '{}')

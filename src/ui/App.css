@@ -5,6 +5,23 @@ body {
   overflow: hidden;
 }
 
+select {
+  width: 217px;
+  border: none;
+  border-bottom: 2px solid #cecece;
+
+  padding-right: 16px;
+
+  text-decoration-color: #000;
+
+  transition: border-bottom-color 0.1s ease-in-out;
+}
+
+select:focus {
+  outline: none;
+  border-bottom-color: #ffd326;
+}
+
 #root, .App {
   height: 100%;
 }

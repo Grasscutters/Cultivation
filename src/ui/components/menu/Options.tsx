@@ -1,11 +1,12 @@
 import React from 'react'
 import DirInput from '../common/DirInput'
 import Menu from './Menu'
-import Tr from '../../../utils/language'
+import Tr, { getLanguages } from '../../../utils/language'
 import './Options.css'
 import { setConfigOption, getConfig, getConfigOption } from '../../../utils/configuration'
 import Checkbox from '../common/Checkbox'
 import Divider from './Divider'
+import { invoke } from '@tauri-apps/api'
 
 interface IProps {
   closeFn: () => void;
@@ -16,6 +17,7 @@ interface IState {
   grasscutter_path: string
   java_path: string
   grasscutter_with_game: boolean
+  language_options: { [key: string]: string }[]
 }
 
 export default class Options extends React.Component<IProps, IState> {
@@ -26,18 +28,21 @@ export default class Options extends React.Component<IProps, IState> {
       game_install_path: '',
       grasscutter_path: '',
       java_path: '',
-      grasscutter_with_game: false
+      grasscutter_with_game: false,
+      language_options: []
     }
   }
 
-  componentDidMount() {
-    getConfig().then(config => {
-      this.setState({
-        game_install_path: config.game_install_path || '',
-        grasscutter_path: config.grasscutter_path || '',
-        java_path: config.java_path || '',
-        grasscutter_with_game: config.grasscutter_with_game || false
-      })
+  async componentDidMount() {
+    const config = await getConfig()
+    const languages = await getLanguages()
+
+    this.setState({
+      game_install_path: config.game_install_path || '',
+      grasscutter_path: config.grasscutter_path || '',
+      java_path: config.java_path || '',
+      grasscutter_with_game: config.grasscutter_with_game || false,
+      language_options: languages
     })
 
     this.forceUpdate()
@@ -53,6 +58,10 @@ export default class Options extends React.Component<IProps, IState> {
 
   setJavaPath(value: string) {
     setConfigOption('java_path', value)
+  }
+
+  setLanguage(value: string) {
+    setConfigOption('language', value)
   }
 
   async toggleGrasscutterWithGame() {
@@ -98,6 +107,21 @@ export default class Options extends React.Component<IProps, IState> {
           </div>
           <div className='OptionValue'>
             <DirInput onChange={this.setJavaPath} value={this.state?.java_path} extensions={['exe']} />
+          </div>
+        </div>
+
+        <div className='OptionSection'>
+          <div className='OptionLabel'>
+            <Tr text="options.language" />
+          </div>
+          <div className='OptionValue'>
+            <select onChange={(event) => {
+              this.setLanguage(event.target.value)
+            }}>
+              {this.state.language_options.map(lang => (
+                <option key={Object.keys(lang)[0]} value={Object.keys(lang)[0]}>{lang[Object.keys(lang)[0]]}</option>
+              ))}
+            </select>
           </div>
         </div>
       </Menu>

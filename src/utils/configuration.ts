@@ -92,7 +92,7 @@ async function readConfigFile() {
     // Create config file
     const file: fs.FsTextFileOption = {
       path: configFilePath,
-      contents: '{}'
+      contents: JSON.stringify(defaultConfig)
     }
 
     await fs.writeFile(file)
