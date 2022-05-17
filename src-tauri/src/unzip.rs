@@ -1,4 +1,5 @@
 use zip_extract;
+use zip;
 use std::fs::File;
 use std::path;
 use std::thread;
@@ -14,17 +15,17 @@ pub fn unzip(window: tauri::Window, zipfile: String, destpath: String) {
     }
   };
 
-  let writePath = path::PathBuf::from(&destpath);
+  let write_path = path::PathBuf::from(&destpath);
 
   // Run extraction in seperate thread
   thread::spawn(move || {
-    let fullPath = writePath;
+    let full_path = write_path;
 
-    window.emit("extract_start", &zipfile);
+    window.emit("extract_start", &zipfile).unwrap();
 
-    match zip_extract::extract(f, &fullPath, true) {
+    match zip_extract::extract(&f, &full_path, true) {
       Ok(_) => {
-        println!("Extracted zip file to: {}", fullPath.to_str().unwrap_or("Error"));
+        println!("Extracted zip file to: {}", full_path.to_str().unwrap_or("Error"));
       },
       Err(e) => {
         println!("Failed to extract zip file: {}", e);
@@ -44,6 +45,26 @@ pub fn unzip(window: tauri::Window, zipfile: String, destpath: String) {
       }
     };
 
-    window.emit("extract_end", &zipfile);
+    // Get the name of the inenr file in the zip file
+    let mut zip = zip::ZipArchive::new(&f).unwrap();
+    let file = zip.by_index(0).unwrap();
+    let name = file.name();
+
+    // If the contents is a jar file, emit that we have extracted a new jar file
+    if name.ends_with(".jar") {
+      window.emit("jar_extracted", destpath.to_string() + name).unwrap();
+    }
+
+    // Delete zip file
+    match std::fs::remove_file(&zipfile) {
+      Ok(_) => {
+        println!("Deleted zip file: {}", zipfile);
+      },
+      Err(e) => {
+        println!("Failed to delete zip file: {}", e);
+      }
+    };
+
+    window.emit("extract_end", &zipfile).unwrap();
   });
 }

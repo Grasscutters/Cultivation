@@ -14,6 +14,7 @@ import DownloadList from './components/common/DownloadList'
 import Downloads from './components/menu/Downloads'
 import NewsSection from './components/news/NewsSection'
 import RightBar from './components/RightBar'
+import { setConfigOption } from '../utils/configuration'
 
 interface IProps {
     [key: string]: never;
@@ -40,6 +41,10 @@ class App extends React.Component<IProps, IState> {
 
     listen('lang_error', (payload) => {
       console.log(payload)
+    })
+
+    listen('jar_extracted', ({ payload }) => {
+      setConfigOption('grasscutter_path', payload)
     })
   }
 

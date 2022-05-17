@@ -20,6 +20,7 @@ tauri = { version = "1.0.0-rc.9", features = ["api-all"] }
 
 # ZIP-archive library.
 zip-extract = "0.1.1"
+zip = "0.6.2"
 
 # For creating a "global" downloads list.
 lazy_static = "1.4.0"
