@@ -9,4 +9,21 @@
 .DownloadSection {
   overflow: hidden;
   width: 100%;
+
+  margin: 6px 0px;
+}
+
+.DownloadTitle {
+  display: flex;
+  flex-direction: row;
+}
+
+.DownloadPath {
+  text-overflow: ellipsis;
+  width: 250px;
+  overflow: hidden;
+}
+
+.DownloadStatus {
+  text-align: right;
 }

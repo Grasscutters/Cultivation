@@ -21,7 +21,10 @@ export default class DownloadSection extends React.Component<IProps, never> {
   render() {
     return (
       <div className="DownloadSection">
-        <span>{this.getFilenameFromPath()} - {this.props.downloadManager.getDownloadSize(this.props.downloadName)}</span>
+        <div className="DownloadTitle">
+          <div className="DownloadPath">{this.getFilenameFromPath()}</div>
+          <div className="DownloadStatus"> - {this.props.downloadManager.getDownloadSize(this.props.downloadName)}</div>
+        </div>
         <div className="DownloadSectionInner">
           <ProgressBar path={this.props.downloadName} downloadManager={this.props.downloadManager} />
         </div>
