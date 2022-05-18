@@ -7,7 +7,7 @@ use lazy_static::lazy_static;
 use std::sync::Mutex;
 
 use std::thread;
-use sysinfo::{ProcessExt, System, SystemExt};
+use sysinfo::{System, SystemExt};
 
 use open;
 use structs::{APIQuery};
@@ -67,13 +67,13 @@ fn process_watcher() {
       s.refresh_all();
   
       // Grab the game process name
-      let mut proc = WATCH_GAME_PROCESS.lock().unwrap().to_string();
+      let proc = WATCH_GAME_PROCESS.lock().unwrap().to_string();
     
       if !&proc.is_empty() {
-        let mut proc_with_name = s.processes_by_exact_name(&proc);
+        let proc_with_name = s.processes_by_exact_name(&proc);
         let mut exists = false;
 
-        for p in proc_with_name {
+        for _p in proc_with_name {
           exists = true;
           break;
         }

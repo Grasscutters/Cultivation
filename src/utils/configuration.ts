@@ -2,12 +2,9 @@ import { fs } from '@tauri-apps/api'
 import { dataDir } from '@tauri-apps/api/path'
 
 let configFilePath: string
-let roamingAppData: string
 let defaultConfig: Configuration
 
 (async() => {
-  roamingAppData = await dataDir()
-
   defaultConfig = {
     toggle_grasscutter: false,
     game_install_path: 'C:\\Program Files\\Genshin Impact\\Genshin Impact game\\Genshin Impact.exe',
