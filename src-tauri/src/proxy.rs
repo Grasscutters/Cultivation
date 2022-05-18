@@ -60,8 +60,6 @@ impl HttpHandler for ProxyHandler {
             let uri = format!("https://{}{}", SERVER.lock().unwrap(), uri_path).parse::<Uri>().unwrap();
 
             *request.uri_mut() = uri;
-            
-            request.headers_mut().remove(http::header::HOST);
         }
 
         println!("New request: {}", &request.uri());
