@@ -74,7 +74,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
   async playGame() {
     const config = await getConfig()
   
-    if (!config.game_install_path) return
+    if (!config.game_install_path) return alert('Game path not set!')
     
     // Connect to proxy
     if (config.toggle_grasscutter) {
@@ -107,7 +107,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
   async launchServer() {
     const config = await getConfig()
 
-    if (!config.grasscutter_path) return
+    if (!config.grasscutter_path) return alert('Grasscutter not installed or set!')
 
     let jarFolder = config.grasscutter_path
 
