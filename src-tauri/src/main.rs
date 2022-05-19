@@ -8,17 +8,16 @@ use std::sync::Mutex;
 
 use std::thread;
 use sysinfo::{System, SystemExt};
-
-use open;
 use structs::{APIQuery};
 
+mod structs;
+mod system_helpers;
 mod file_helpers;
 mod unzip;
 mod downloader;
 mod lang;
 mod proxy;
 mod web;
-mod structs;
 
 lazy_static!{
   static ref WATCH_GAME_PROCESS: Mutex<String> = {
@@ -35,11 +34,11 @@ fn main() {
       enable_process_watcher,
       connect,
       disconnect,
-      run_program,
-      run_jar,
-      open_in_browser,
       req_get,
       get_bg_file,
+      system_helpers::run_program,
+      system_helpers::run_jar,
+      system_helpers::open_in_browser,
       proxy::set_proxy_addr,
       unzip::unzip,
       file_helpers::rename,
@@ -113,43 +112,6 @@ fn disconnect() {
 
   // Change proxy settings.
   proxy::disconnect_from_proxy();
-}
-
-#[tauri::command]
-fn run_program(path: String) {
-  // Open the program from the specified path.
-  // match open::that(path) {
-  //   Ok(_) => (),
-  //   Err(e) => println!("Failed to open program: {}", e),
-  // };
-  match open::with(format!("/c \"{}\"", &path), "C:\\Windows\\System32\\cmd.exe") {
-    Ok(_) => (),
-    Err(e) => println!("Failed to open program: {}", e),
-  };
-}
-
-#[tauri::command]
-fn run_jar(path: String, execute_in: String, java_path: String) {
-  let command = if java_path.is_empty() {
-    format!("java -jar {}", path)
-  } else {
-    format!("\"{}\" -jar {}", java_path, path)
-  };
-
-  // Open the program from the specified path.
-  match open::with(format!("/k cd /D \"{}\" & {}", &execute_in, &command).to_string(), "C:\\Windows\\System32\\cmd.exe") {
-    Ok(_) => (),
-    Err(e) => println!("Failed to open jar ({} from {}): {}", &path, &execute_in, e),
-  };
-}
-
-#[tauri::command]
-fn open_in_browser(url: String) {
-  // Open the URL in the default browser.
-  match open::that(url) {
-    Ok(_) => (),
-    Err(e) => println!("Failed to open URL: {}", e),
-  };
 }
 
 #[tauri::command]
