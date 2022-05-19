@@ -162,8 +162,51 @@ async fn req_get(url: String) -> String {
 }
 
 #[tauri::command]
-async fn get_bg_file() -> String {
-    let query = web::query("https://api.grasscutters.xyz/cultivation/query").await;
-    let response_data: APIQuery = serde_json::from_str(&query).unwrap();
-    return response_data.backgroundFile;
+async fn get_bg_file(bg_path: String) -> String {
+  let query = web::query("https://api.grasscutters.xyz/cultivation/query").await;
+  let response_data: APIQuery = match serde_json::from_str(&query) {
+    Ok(data) => data,
+    Err(e) => {
+      println!("Failed to parse response: {}", e);
+      return "".to_string();
+    }
+  };
+  
+  let file_name = response_data.backgroundFile.to_string() + ".png";
+
+  // First we see if the file already exists in our local bg folder
+  if file_helpers::dir_exists(format!(".\\bg\\{}", file_name).as_str()) {
+    let cwd = std::env::current_dir().unwrap();
+    return format!("{}\\{}", cwd.display(), response_data.backgroundFile.as_str());
+  }
+    
+  // Now we check if the bg folder, which is one directory above the game_path, exists.
+  let bg_img_path = format!("{}\\{}", bg_path.clone().to_string(), file_name.as_str());
+
+  // If it doesn't, then we do not have backgrounds to grab.
+  if !file_helpers::dir_exists(&bg_path) {
+    return "".to_string();
+  }
+
+  // BG folder does exist, lets see if the image exists
+  if !file_helpers::dir_exists(&bg_img_path) {
+    // Image doesn't exist
+    return "".to_string();
+  }
+
+  // The image exists, lets copy it to our local \bg folder
+  let bg_img_path_local = format!(".\\bg\\{}", file_name.as_str());
+
+  match std::fs::copy(bg_img_path, bg_img_path_local) {
+    Ok(_) => {
+      // Copy was successful, lets return true
+      let cwd = std::env::current_dir().unwrap();
+      return format!("{}\\{}", cwd.display(), response_data.backgroundFile.as_str());
+    },
+    Err(e) => {
+      // Copy failed, lets return false
+      println!("Failed to copy background image: {}", e);
+      return "".to_string();
+    }
+  };
 }

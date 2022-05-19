@@ -14,17 +14,19 @@ import DownloadList from './components/common/DownloadList'
 import Downloads from './components/menu/Downloads'
 import NewsSection from './components/news/NewsSection'
 import RightBar from './components/RightBar'
-import { setConfigOption } from '../utils/configuration'
+import { getConfigOption, setConfigOption } from '../utils/configuration'
+import { invoke } from '@tauri-apps/api'
 
 interface IProps {
-    [key: string]: never;
+  [key: string]: never;
 }
 
 interface IState {
-    isDownloading: boolean;
-    optionsOpen: boolean;
-    miniDownloadsOpen: boolean;
-    downloadsOpen: boolean;
+  isDownloading: boolean;
+  optionsOpen: boolean;
+  miniDownloadsOpen: boolean;
+  downloadsOpen: boolean;
+  bgFile: string;
 }
 
 const downloadHandler = new DownloadHandler()
@@ -37,6 +39,7 @@ class App extends React.Component<IProps, IState> {
       optionsOpen: false,
       miniDownloadsOpen: false,
       downloadsOpen: false,
+      bgFile: '',
     }
 
     listen('lang_error', (payload) => {
@@ -48,9 +51,32 @@ class App extends React.Component<IProps, IState> {
     })
   }
 
+  async componentDidMount() {
+    const game_exe = await getConfigOption('game_install_path')
+    const game_path = game_exe.substring(0, game_exe.lastIndexOf('\\'))
+    const root_path = game_path.substring(0, game_path.lastIndexOf('\\'))
+
+    if (game_path) {
+      // Get the bg by invoking, then set the background to that bg
+      const bgLoc: string = await invoke('get_bg_file', {
+        bgPath: root_path,
+      })
+
+      if (bgLoc) {
+        this.setState({
+          bgFile: bgLoc
+        })
+      }
+    }
+  }
+
   render() {
     return (
-      <div className="App">
+      <div className="App" style={
+        this.state.bgFile ? {
+          backgroundImage: `url(${this.state.bgFile})`,
+        } : {}
+      }>
         <TopBar
           optFunc={() => {
             this.setState({ optionsOpen: !this.state.optionsOpen })

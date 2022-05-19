@@ -20,6 +20,6 @@ pub fn rename(path: String, new_name: String) {
 }
 
 #[tauri::command]
-pub fn dir_exists(path: String) -> bool {
+pub fn dir_exists(path: &str) -> bool {
   return fs::metadata(&path).is_ok();
 }
