@@ -28,8 +28,6 @@ export default class DirInput extends React.Component<IProps, IState> {
     }
 
     this.handleIconClick = this.handleIconClick.bind(this)
-
-    console.log(this.props)
   }
 
   static getDerivedStateFromProps(props: IProps, state: IState) {

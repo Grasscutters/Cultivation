@@ -30,7 +30,7 @@ export default class Checkbox extends React.Component<IProps, IState> {
       }
     }
 
-    return null
+    return { checked: props.checked }
   }
 
   handleChange = () => {

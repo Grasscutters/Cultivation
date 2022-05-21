@@ -35,6 +35,8 @@ export default class Options extends React.Component<IProps, IState> {
       current_language: 'en',
       bg_url_or_path: ''
     }
+
+    this.toggleGrasscutterWithGame = this.toggleGrasscutterWithGame.bind(this)
   }
 
   async componentDidMount() {
@@ -71,7 +73,12 @@ export default class Options extends React.Component<IProps, IState> {
   }
 
   async toggleGrasscutterWithGame() {
-    setConfigOption('grasscutter_with_game', !(await getConfigOption('grasscutter_with_game')))
+    const changedVal = !(await getConfigOption('grasscutter_with_game'))
+    setConfigOption('grasscutter_with_game', changedVal)
+
+    this.setState({
+      grasscutter_with_game: changedVal
+    })
   }
 
   setCustomBackground() {
