@@ -80,7 +80,6 @@ export default class ProgressBar extends React.Component<IProps, IState> {
           </div>
         </div>
 
-
         <div className="ProgressText">
           {capitalize(this.state.status) || 'Waiting'}
         </div>

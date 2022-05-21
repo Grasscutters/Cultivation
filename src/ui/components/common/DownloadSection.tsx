@@ -15,7 +15,8 @@ export default class DownloadSection extends React.Component<IProps, never> {
   }
 
   getFilenameFromPath() {
-    return this.props.downloadName.split('/').pop()
+    const name = this.props.downloadName.replace(/\\/g, '/')
+    return name.split('/').pop()
   }
 
   render() {
