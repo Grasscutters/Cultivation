@@ -10,6 +10,7 @@ interface IProps {
   value?: string
   onChange?: (value: string) => void
   extensions?: string[]
+  readonly?: boolean
 }
 
 interface IState {
@@ -23,10 +24,12 @@ export default class DirInput extends React.Component<IProps, IState> {
 
     this.state = {
       value: props.value || '',
-      placeholder: 'Select file or folder...'
+      placeholder: 'Select file or folder...',
     }
 
     this.handleIconClick = this.handleIconClick.bind(this)
+
+    console.log(this.props)
   }
 
   static getDerivedStateFromProps(props: IProps, state: IState) {
@@ -66,7 +69,7 @@ export default class DirInput extends React.Component<IProps, IState> {
           value={this.state.value}
           placeholder={this.state.placeholder}
           clearable={true}
-          readOnly={true} onChange={(text: string) => {
+          readOnly={this.props.readonly !== undefined ? this.props.readonly : true } onChange={(text: string) => {
             this.setState({ value: text })
 
             if (this.props.onChange) this.props.onChange(text)

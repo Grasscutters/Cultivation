@@ -48,6 +48,8 @@ export default class TextInput extends React.Component<IProps, IState> {
               this.setState({ value: '' })
     
               if (this.props.onChange) this.props.onChange('')
+
+              this.forceUpdate()
             }}>
               <img src={Close} className="TextInputClear" />
             </div> : null

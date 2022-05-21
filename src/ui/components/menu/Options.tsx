@@ -19,6 +19,7 @@ interface IState {
   grasscutter_with_game: boolean
   language_options: { [key: string]: string }[],
   current_language: string
+  bg_url_or_path: string
 }
 
 export default class Options extends React.Component<IProps, IState> {
@@ -31,7 +32,8 @@ export default class Options extends React.Component<IProps, IState> {
       java_path: '',
       grasscutter_with_game: false,
       language_options: [],
-      current_language: 'en'
+      current_language: 'en',
+      bg_url_or_path: ''
     }
   }
 
@@ -45,7 +47,8 @@ export default class Options extends React.Component<IProps, IState> {
       java_path: config.java_path || '',
       grasscutter_with_game: config.grasscutter_with_game || false,
       language_options: languages,
-      current_language: config.language || 'en'
+      current_language: config.language || 'en',
+      bg_url_or_path: config.customBackground || ''
     })
 
     this.forceUpdate()
@@ -69,6 +72,10 @@ export default class Options extends React.Component<IProps, IState> {
 
   async toggleGrasscutterWithGame() {
     setConfigOption('grasscutter_with_game', !(await getConfigOption('grasscutter_with_game')))
+  }
+
+  setCustomBackground() {
+    setConfigOption('customBackground', this.state.bg_url_or_path)
   }
 
   render() {
@@ -110,6 +117,15 @@ export default class Options extends React.Component<IProps, IState> {
           </div>
           <div className='OptionValue'>
             <DirInput onChange={this.setJavaPath} value={this.state?.java_path} extensions={['exe']} />
+          </div>
+        </div>
+
+        <div className='OptionSection'>
+          <div className='OptionLabel'>
+            <Tr text="options.background" />
+          </div>
+          <div className='OptionValue'>
+            <DirInput onChange={this.setCustomBackground} readonly={false} value={this.state?.bg_url_or_path} extensions={['exe']} />
           </div>
         </div>
 

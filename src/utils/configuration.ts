@@ -16,6 +16,7 @@ let defaultConfig: Configuration
     last_ip: '',
     last_port: '',
     language: 'en',
+    customBackground: '',
   }
 })()
 
@@ -33,6 +34,7 @@ export interface Configuration {
   last_ip: string
   last_port: string
   language: string
+  customBackground: string
 }
 
 export async function setConfigOption(key: string, value: any): Promise<void> {
