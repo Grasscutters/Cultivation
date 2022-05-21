@@ -4,5 +4,5 @@ use serde::Deserialize;
 
 #[derive(Deserialize)]
 pub(crate) struct APIQuery {
-    pub backgroundFile: String,
+  pub backgroundFile: String,
 }

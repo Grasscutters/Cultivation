@@ -26,21 +26,21 @@ pub fn unzip(window: tauri::Window, zipfile: String, destpath: String) {
     match zip_extract::extract(&f, &full_path, true) {
       Ok(_) => {
         println!("Extracted zip file to: {}", full_path.to_str().unwrap_or("Error"));
-      },
+      }
       Err(e) => {
         println!("Failed to extract zip file: {}", e);
         let mut res_hash = std::collections::HashMap::new();
 
         res_hash.insert(
-            "error".to_string(),
-            e.to_string()
+          "error".to_string(),
+          e.to_string(),
         );
-    
+
         res_hash.insert(
-            "path".to_string(),
-            zipfile.to_string()
+          "path".to_string(),
+          zipfile.to_string(),
         );
-    
+
         window.emit("download_error", &res_hash).unwrap();
       }
     };
@@ -59,7 +59,7 @@ pub fn unzip(window: tauri::Window, zipfile: String, destpath: String) {
     match std::fs::remove_file(&zipfile) {
       Ok(_) => {
         println!("Deleted zip file: {}", zipfile);
-      },
+      }
       Err(e) => {
         println!("Failed to delete zip file: {}", e);
       }

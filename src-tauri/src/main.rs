@@ -19,7 +19,7 @@ mod lang;
 mod proxy;
 mod web;
 
-lazy_static!{
+lazy_static! {
   static ref WATCH_GAME_PROCESS: Mutex<String> = {
       let m = "".to_string();
       Mutex::new(m)
@@ -48,7 +48,7 @@ fn main() {
       lang::get_lang,
       lang::get_languages
     ])
-    .run(tauri::generate_context!()) 
+    .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
 
@@ -60,14 +60,14 @@ fn process_watcher() {
   // Start in thread so as to not block the main thread.
   thread::spawn(|| {
     let mut s = System::new_all();
-  
+
     loop {
       // Refresh system info
       s.refresh_all();
-  
+
       // Grab the game process name
       let proc = WATCH_GAME_PROCESS.lock().unwrap().to_string();
-    
+
       if !&proc.is_empty() {
         let proc_with_name = s.processes_by_exact_name(&proc);
         let mut exists = false;
@@ -133,7 +133,7 @@ async fn get_bg_file(bg_path: String) -> String {
       return "".to_string();
     }
   };
-  
+
   let file_name = response_data.backgroundFile.to_string() + ".png";
 
   // First we see if the file already exists in our local bg folder
@@ -141,7 +141,7 @@ async fn get_bg_file(bg_path: String) -> String {
     let cwd = std::env::current_dir().unwrap();
     return format!("{}\\{}", cwd.display(), response_data.backgroundFile.as_str());
   }
-    
+
   // Now we check if the bg folder, which is one directory above the game_path, exists.
   let bg_img_path = format!("{}\\{}", bg_path.clone().to_string(), file_name.as_str());
 
@@ -164,7 +164,7 @@ async fn get_bg_file(bg_path: String) -> String {
       // Copy was successful, lets return true
       let cwd = std::env::current_dir().unwrap();
       return format!("{}\\{}", cwd.display(), response_data.backgroundFile.as_str());
-    },
+    }
     Err(e) => {
       // Copy failed, lets return false
       println!("Failed to copy background image: {}", e);

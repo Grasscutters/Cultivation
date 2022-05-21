@@ -44,8 +44,8 @@ pub fn emit_lang_err(window: tauri::Window, msg: std::string::String) {
   let mut res_hash = std::collections::HashMap::new();
 
   res_hash.insert(
-      "error".to_string(),
-      msg.to_string()
+    "error".to_string(),
+    msg.to_string(),
   );
 
   window.emit("lang_error", &res_hash).unwrap();
