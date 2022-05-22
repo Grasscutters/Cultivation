@@ -103,9 +103,7 @@ pub(crate) async fn create_proxy(proxy_port: u16) {
     .build();
 
   // Start the proxy.
-  unsafe {
-    tokio::spawn(proxy.start(shutdown_signal()));
-  }
+  tokio::spawn(proxy.start(shutdown_signal()));
 }
 
 /**
@@ -114,7 +112,7 @@ pub(crate) async fn create_proxy(proxy_port: u16) {
 pub(crate) fn connect_to_proxy(proxy_port: u16) {
   if cfg!(target_os = "windows") {
     // Create 'ProxyServer' string.
-    let server_string: String = format!("http=127.0.0.1:{};https=127.0.0.1:{};ftp=127.0.0.1:{}", proxy_port, proxy_port, proxy_port);
+    let server_string: String = format!("http=127.0.0.1:{};https=127.0.0.1:{}", proxy_port, proxy_port);
 
     // Fetch the 'Internet Settings' registry key.
     let settings = Hive::CurrentUser.open(r"Software\Microsoft\Windows\CurrentVersion\Internet Settings", Security::Write).unwrap();
@@ -142,8 +140,9 @@ pub(crate) fn disconnect_from_proxy() {
   println!("Disconnected from proxy.");
 }
 
-/**
+/*
  * Generates a private key and certificate used by the certificate authority.
+ * Additionally installs the certificate and private key in the Root CA store.
  * Source: https://github.com/zu1k/good-mitm/raw/master/src/ca/gen.rs
  */
 pub(crate) fn generate_ca_files() {
@@ -157,7 +156,7 @@ pub(crate) fn generate_ca_files() {
   details.push(DnType::LocalityName, "CN");
   
   // Set details in the parameter.
-  params.distinguished_name = distinguished_name;
+  params.distinguished_name = details;
   // Set other properties.
   params.is_ca = IsCa::Ca(BasicConstraints::Unconstrained);
   params.key_usages = vec![
@@ -169,4 +168,7 @@ pub(crate) fn generate_ca_files() {
   // Create certificate.
   let cert = Certificate::from_params(params).unwrap();
   let cert_crt = cert.serialize_pem().unwrap();
+  
+  // TODO: Save certificates.
+  // TODO: Install certificates.
 }
