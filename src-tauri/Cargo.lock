@@ -723,6 +723,7 @@ dependencies = [
  "hudsucker",
  "lazy_static",
  "open",
+ "rcgen",
  "registry",
  "reqwest",
  "rustls-pemfile",

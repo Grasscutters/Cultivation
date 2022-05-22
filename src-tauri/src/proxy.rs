@@ -6,6 +6,7 @@
 use lazy_static::lazy_static;
 use std::sync::Mutex;
 
+use rcgen::*;
 use hudsucker::{
   async_trait::async_trait,
   certificate_authority::RcgenAuthority,
@@ -13,18 +14,19 @@ use hudsucker::{
   *,
 };
 
+use std::fs;
 use std::net::SocketAddr;
 use registry::{Hive, Data, Security};
 
 use rustls_pemfile as pemfile;
 use tauri::http::Uri;
 
-async unsafe fn shutdown_signal() {
+async fn shutdown_signal() {
   tokio::signal::ctrl_c().await
     .expect("Failed to install CTRL+C signal handler");
 }
 
-// Global ver for getting server address
+// Global ver for getting server address.
 lazy_static! {
     static ref SERVER: Mutex<String> = {
         let m = "localhost:443".to_string();
@@ -138,4 +140,33 @@ pub(crate) fn disconnect_from_proxy() {
   }
 
   println!("Disconnected from proxy.");
+}
+
+/**
+ * Generates a private key and certificate used by the certificate authority.
+ * Source: https://github.com/zu1k/good-mitm/raw/master/src/ca/gen.rs
+ */
+pub(crate) fn generate_ca_files() {
+  let mut params = CertificateParams::default();
+  let mut details = DistinguishedName::new();
+
+  // Set certificate details.
+  details.push(DnType::CommonName, "Cultivation");
+  details.push(DnType::OrganizationName, "Grasscutters");
+  details.push(DnType::CountryName, "CN");
+  details.push(DnType::LocalityName, "CN");
+  
+  // Set details in the parameter.
+  params.distinguished_name = distinguished_name;
+  // Set other properties.
+  params.is_ca = IsCa::Ca(BasicConstraints::Unconstrained);
+  params.key_usages = vec![
+    KeyUsagePurpose::DigitalSignature,
+    KeyUsagePurpose::KeyCertSign,
+    KeyUsagePurpose::CrlSign,
+  ];
+  
+  // Create certificate.
+  let cert = Certificate::from_params(params).unwrap();
+  let cert_crt = cert.serialize_pem().unwrap();
 }

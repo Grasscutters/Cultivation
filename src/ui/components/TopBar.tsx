@@ -25,8 +25,6 @@ export default class TopBar extends React.Component<IProps, IState> {
     super(props)
 
     this.state = { version: '0.0.0' }
-
-
   }
 
   async componentDidMount() {
@@ -44,7 +42,7 @@ export default class TopBar extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div className="TopBar" data-tauri-drag-region >
+      <div className="TopBar" data-tauri-drag-region>
         <div id="title">
           <span data-tauri-drag-region>
             <Tr text="main.title" />
