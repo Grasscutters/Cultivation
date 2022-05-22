@@ -145,13 +145,18 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
           <Checkbox id="enableGC" label={this.state.checkboxLabel} onChange={this.toggleGrasscutter} checked={this.state.grasscutterEnabled}/>
         </div>
 
-        <div className="ServerConfig">
-          <TextInput id="ip" key="ip" placeholder={this.state.ipPlaceholder} onChange={this.setIp} />
-          <TextInput style={{
-            width: '10%',
-          }} id="port" key="port" placeholder={this.state.portPlaceholder} onChange={this.setPort}/>
-          <HelpButton contents="Ensure this is the Dispatch server port, not the Game server port. This is almost always '443'." />
-        </div>
+        {
+          this.state.grasscutterEnabled && (
+            <div className="ServerConfig">
+              <TextInput id="ip" key="ip" placeholder={this.state.ipPlaceholder} onChange={this.setIp} />
+              <TextInput style={{
+                width: '10%',
+              }} id="port" key="port" placeholder={this.state.portPlaceholder} onChange={this.setPort}/>
+              <HelpButton contents="Ensure this is the Dispatch server port, not the Game server port. This is almost always '443'." />
+            </div>
+          )
+        }
+
 
         <div className="ServerLaunchButtons">
           <BigButton onClick={this.playGame} id="officialPlay">{this.state.buttonLabel}</BigButton>
