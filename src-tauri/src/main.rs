@@ -57,7 +57,7 @@ fn process_watcher() {
   // If it is not, then we assume the game has closed and disable the proxy
   // to prevent any requests from being sent to the game.
 
-  // Start in thread so as to not block the main thread.
+  // Start a thread so as to not block the main thread.
   thread::spawn(|| {
     let mut s = System::new_all();
 
@@ -83,7 +83,7 @@ fn process_watcher() {
           disconnect();
         }
       }
-      std::thread::sleep(std::time::Duration::from_secs(5));
+      thread::sleep(std::time::Duration::from_secs(5));
     }
   });
 }
