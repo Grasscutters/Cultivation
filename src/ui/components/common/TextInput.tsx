@@ -10,6 +10,9 @@ interface IProps {
   readOnly?: boolean;
   id?: string;
   clearable?: boolean;
+  style?: {
+    [key: string]: any;
+  }
 }
 
 interface IState {
@@ -37,7 +40,7 @@ export default class TextInput extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div className="TextInputWrapper">
+      <div className="TextInputWrapper" style={this.props.style || {}}>
         <input id={this.props?.id} readOnly={this.props.readOnly || false} placeholder={this.props.placeholder || ''} className="TextInput" value={this.state.value} onChange={(e) => {
           this.setState({ value: e.target.value })
           if (this.props.onChange) this.props.onChange(e.target.value)

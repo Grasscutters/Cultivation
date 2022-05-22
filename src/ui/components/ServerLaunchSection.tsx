@@ -1,13 +1,14 @@
 import React from 'react'
 import Checkbox from './common/Checkbox'
 import BigButton from './common/BigButton'
+import TextInput from './common/TextInput'
+import HelpButton from './common/HelpButton'
 import { getConfig, saveConfig, setConfigOption } from '../../utils/configuration'
 import { translate } from '../../utils/language'
 import { invoke } from '@tauri-apps/api/tauri'
 
 import Server from '../../resources/icons/server.svg'
 import './ServerLaunchSection.css'
-import TextInput from './common/TextInput'
 
 interface IProps {
   [key: string]: any
@@ -146,7 +147,10 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
 
         <div className="ServerConfig">
           <TextInput id="ip" key="ip" placeholder={this.state.ipPlaceholder} onChange={this.setIp} />
-          <TextInput id="port" key="port" placeholder={this.state.portPlaceholder} onChange={this.setPort}/> 
+          <TextInput style={{
+            width: '10%',
+          }} id="port" key="port" placeholder={this.state.portPlaceholder} onChange={this.setPort}/>
+          <HelpButton />
         </div>
 
         <div className="ServerLaunchButtons">
