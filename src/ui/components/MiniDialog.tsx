@@ -6,6 +6,7 @@ import './MiniDialog.css'
 interface IProps {
   children: React.ReactNode[] | React.ReactNode;
   title?: string;
+  closeable?: boolean;
   closeFn: () => void;
 }
 
@@ -17,10 +18,14 @@ export default class MiniDialog extends React.Component<IProps, never> {
   render() {
     return (
       <div className="MiniDialog">
-        <div className="MiniDialogTop" onClick={this.props.closeFn}>
-          <span>{this.props?.title}</span>
-          <img src={Close} className="MiniDialogClose" />
-        </div>
+        {
+          this.props.closeable !== undefined && this.props.closeable ?
+            <div className="MiniDialogTop" onClick={this.props.closeFn}>
+              <span>{this.props?.title}</span>
+              <img src={Close} className="MiniDialogClose" />
+            </div> : null
+        }
+
         <div className="MiniDialogInner">
           {this.props.children}
         </div>

@@ -150,7 +150,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
           <TextInput style={{
             width: '10%',
           }} id="port" key="port" placeholder={this.state.portPlaceholder} onChange={this.setPort}/>
-          <HelpButton />
+          <HelpButton contents="Ensure this is the Dispatch server port, not the Game server port. This is almost always '443'." />
         </div>
 
         <div className="ServerLaunchButtons">
