@@ -132,7 +132,7 @@ export default class Options extends React.Component<IProps, IState> {
             <Tr text="options.background" />
           </div>
           <div className='OptionValue'>
-            <DirInput onChange={this.setCustomBackground} readonly={false} value={this.state?.bg_url_or_path} extensions={['exe']} />
+            <DirInput onChange={this.setCustomBackground} readonly={false} value={this.state?.bg_url_or_path} extensions={['png', 'jpg', 'jpeg']} />
           </div>
         </div>
 
