@@ -7,7 +7,8 @@
     "ip_placeholder": "Server Address...",
     "port_placeholder": "Port...",
     "files_downloading": "Files Downloading: ",
-    "files_extracting": "Files Extracting: "
+    "files_extracting": "Files Extracting: ",
+    "port_help_text": "Ensure this is the Dispatch server port, not the Game server port. This is almost always '443'."
   },
   "options": {
     "game_exec": "Set Game Executable",

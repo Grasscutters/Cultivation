@@ -1,7 +1,7 @@
 #playButton {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
 
   position: absolute;
   transform: translate(0%, -50%);

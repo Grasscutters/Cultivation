@@ -23,6 +23,8 @@ interface IState {
 
   ipPlaceholder: string;
   portPlaceholder: string;
+
+  portHelpText: string;
 }
 
 export default class ServerLaunchSection extends React.Component<IProps, IState> {
@@ -36,7 +38,8 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       ip: '',
       port: '',
       ipPlaceholder: '',
-      portPlaceholder: ''
+      portPlaceholder: '',
+      portHelpText: ''
     }
 
     this.toggleGrasscutter = this.toggleGrasscutter.bind(this)
@@ -55,7 +58,8 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       ip: config.last_ip || '',
       port: config.last_port || '',
       ipPlaceholder: await translate('main.ip_placeholder'),
-      portPlaceholder: await translate('main.port_placeholder')
+      portPlaceholder: await translate('main.port_placeholder'),
+      portHelpText: await translate('main.port_help_text')
     })
   }
 
@@ -152,7 +156,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
               <TextInput style={{
                 width: '10%',
               }} id="port" key="port" placeholder={this.state.portPlaceholder} onChange={this.setPort}/>
-              <HelpButton contents="Ensure this is the Dispatch server port, not the Game server port. This is almost always '443'." />
+              <HelpButton contents={this.state.portHelpText} />
             </div>
           )
         }
