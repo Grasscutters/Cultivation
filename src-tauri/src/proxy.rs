@@ -146,7 +146,8 @@ pub(crate) fn disconnect_from_proxy() {
  * Additionally installs the certificate and private key in the Root CA store.
  * Source: https://github.com/zu1k/good-mitm/raw/master/src/ca/gen.rs
  */
-pub(crate) fn generate_ca_files() {
+#[tauri::command]
+pub(crate) fn generate_ca_files(path: &str) {
   let mut params = CertificateParams::default();
   let mut details = DistinguishedName::new();
 
@@ -169,8 +170,23 @@ pub(crate) fn generate_ca_files() {
   // Create certificate.
   let cert = Certificate::from_params(params).unwrap();
   let cert_crt = cert.serialize_pem().unwrap();
+  let cert_path = format!("{}\\ca", path);
+
+  fs::create_dir(&cert_path).unwrap();
+
+  println!("{}", cert_crt);
   
-  // TODO: Save certificates.
+  match fs::write(format!("{}\\cert.crt", &cert_path), cert_crt) {
+    Ok(_) => println!("Wrote certificate to {}", &cert_path),
+    Err(e) => println!("Error writing certificate to {}: {}", &cert_path, e),
+  }
+
+  let private_key = cert.serialize_private_key_pem();
+
+  match fs::write(format!("{}\\private.key", &cert_path), private_key) {
+    Ok(_) => println!("Wrote private key to {}", &cert_path),
+    Err(e) => println!("Error writing private key to {}: {}", &cert_path, e),
+  }
   
   // Install certificate into the system's Root CA store.
   install_ca_files();

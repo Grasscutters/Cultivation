@@ -15,11 +15,11 @@ pub fn run_program(path: String) {
 }
 
 #[tauri::command]
-pub fn run_command(command: String) -> String {
+pub fn run_command(command: String) {
   // Run the specified command.
   let output = if cfg!(target_os = "windows") {
     Command::new("cmd")
-      .args(["/C", command])
+      .args(["/C", command.as_str()])
       .output()
       .expect("failed to execute process")
   } else {
@@ -29,8 +29,6 @@ pub fn run_command(command: String) -> String {
       .output()
       .expect("failed to execute process")
   };
-  
-  output.stdout.to_string()
 }
 
 #[tauri::command]
