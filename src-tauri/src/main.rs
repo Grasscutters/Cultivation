@@ -36,6 +36,7 @@ fn main() {
       disconnect,
       req_get,
       get_bg_file,
+      base64_decode,
       system_helpers::run_program,
       system_helpers::run_jar,
       system_helpers::open_in_browser,
@@ -171,4 +172,10 @@ async fn get_bg_file(bg_path: String) -> String {
       "".to_string()
     }
   };
+}
+
+#[tauri::command]
+fn base64_decode(encoded: String) -> String {
+  let decoded = base64::decode(&encoded).unwrap();
+  return String::from_utf8(decoded).unwrap();
 }

@@ -34,8 +34,9 @@ registry = "1.2.1"
 # Program opener.
 open = "2.1.2"
 
-# Serialization library.
+# Serialization.
 serde_json = "1"
+base64 = "0.13.0"
 
 # Dependencies for the HTTP(S) proxy.
 http = "0.2"
