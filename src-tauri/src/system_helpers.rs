@@ -1,5 +1,6 @@
 
 use std::thread;
+use std::process::Command;
 use tauri;
 use open;
 
@@ -7,10 +8,29 @@ use open;
 pub fn run_program(path: String) {
   // Open the program from the specified path.
 
-  // Open in new thread to prevent blocking
+  // Open in new thread to prevent blocking.
   thread::spawn(move || {
     open::that(&path).unwrap();
   });
+}
+
+#[tauri::command]
+pub fn run_command(command: String) -> String {
+  // Run the specified command.
+  let output = if cfg!(target_os = "windows") {
+    Command::new("cmd")
+      .args(["/C", command])
+      .output()
+      .expect("failed to execute process")
+  } else {
+    Command::new("sh")
+      .arg("-c")
+      .arg(command)
+      .output()
+      .expect("failed to execute process")
+  };
+  
+  output.stdout.to_string()
 }
 
 #[tauri::command]

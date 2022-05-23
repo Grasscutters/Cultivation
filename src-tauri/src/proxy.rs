@@ -20,6 +20,7 @@ use registry::{Hive, Data, Security};
 
 use rustls_pemfile as pemfile;
 use tauri::http::Uri;
+use crate::system_helpers::run_command;
 
 async fn shutdown_signal() {
   tokio::signal::ctrl_c().await
@@ -170,5 +171,20 @@ pub(crate) fn generate_ca_files() {
   let cert_crt = cert.serialize_pem().unwrap();
   
   // TODO: Save certificates.
-  // TODO: Install certificates.
+  
+  // Install certificate into the system's Root CA store.
+  install_ca_files();
+}
+
+/*
+ * Attempts to install the certificate authority's certificate into the Root CA store.
+ */
+pub(crate) fn install_ca_files() {
+  if cfg!(target_os = "windows") {
+    run_command("certutil -addstore -f \"ROOT\" ca/certificate.crt".to_string());
+  } else {
+    run_command("sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ca/certificate.crt".to_string());
+  }
+
+  println!("Installed certificate.");
 }
