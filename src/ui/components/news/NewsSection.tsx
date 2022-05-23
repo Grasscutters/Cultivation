@@ -4,6 +4,7 @@ import React from 'react'
 import Tr from '../../../utils/language'
 
 import './NewsSection.css'
+import {base64Decode} from '../../../utils/string'
 
 interface IProps {
   selected?: string;
@@ -55,6 +56,9 @@ export default class NewsSection extends React.Component<IProps, IState> {
       if (!obj.commits) {
         const commits: string = await invoke('req_get', { url: 'https://api.github.com/repos/Grasscutters/Grasscutter/commits' })
         obj = JSON.parse(commits)
+      } else {
+        const commitData = JSON.parse(base64Decode(obj.commits))
+        obj = commitData.gc_stable
       }
 
       // Probably rate-limited

@@ -134,12 +134,12 @@ async fn get_bg_file(bg_path: String) -> String {
     }
   };
 
-  let file_name = response_data.backgroundFile.to_string() + ".png";
+  let file_name = response_data.bg_file.to_string();
 
   // First we see if the file already exists in our local bg folder
   if file_helpers::dir_exists(format!(".\\bg\\{}", file_name).as_str()) {
     let cwd = std::env::current_dir().unwrap();
-    return format!("{}\\{}", cwd.display(), response_data.backgroundFile.as_str());
+    return format!("{}\\{}", cwd.display(), response_data.bg_file.as_str());
   }
 
   // Now we check if the bg folder, which is one directory above the game_path, exists.
@@ -159,16 +159,16 @@ async fn get_bg_file(bg_path: String) -> String {
   // The image exists, lets copy it to our local \bg folder
   let bg_img_path_local = format!(".\\bg\\{}", file_name.as_str());
 
-  match std::fs::copy(bg_img_path, bg_img_path_local) {
+  return match std::fs::copy(bg_img_path, bg_img_path_local) {
     Ok(_) => {
       // Copy was successful, lets return true
       let cwd = std::env::current_dir().unwrap();
-      return format!("{}\\{}", cwd.display(), response_data.backgroundFile.as_str());
+      format!("{}\\{}", cwd.display(), response_data.bg_file.as_str())
     }
     Err(e) => {
       // Copy failed, lets return false
       println!("Failed to copy background image: {}", e);
-      return "".to_string();
+      "".to_string()
     }
   };
 }

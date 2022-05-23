@@ -2,7 +2,7 @@ import React from 'react'
 import Menu from './Menu'
 import Tr from '../../../utils/language'
 import DownloadHandler from '../../../utils/download'
-import { unzip } from '../../../utils/zip_utils'
+import { unzip } from '../../../utils/zipUtils'
 import BigButton from '../common/BigButton'
 import { dataDir } from '@tauri-apps/api/path'
 
