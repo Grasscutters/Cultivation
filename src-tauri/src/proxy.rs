@@ -172,7 +172,13 @@ pub(crate) fn generate_ca_files(path: &str) {
   let cert_crt = cert.serialize_pem().unwrap();
   let cert_path = format!("{}\\ca", path);
 
-  fs::create_dir(&cert_path).unwrap();
+  match fs::create_dir(&cert_path) {
+    Ok(_) => {},
+    Err(e) => {
+      println!("{}", e);
+      return;
+    }
+  };
 
   println!("{}", cert_crt);
   
@@ -189,17 +195,17 @@ pub(crate) fn generate_ca_files(path: &str) {
   }
   
   // Install certificate into the system's Root CA store.
-  install_ca_files();
+  install_ca_files(path);
 }
 
 /*
  * Attempts to install the certificate authority's certificate into the Root CA store.
  */
-pub(crate) fn install_ca_files() {
+pub(crate) fn install_ca_files(path: &str) {
   if cfg!(target_os = "windows") {
-    run_command("certutil -addstore -f \"ROOT\" ca/certificate.crt".to_string());
+    run_command(format!("certutil -addstore -f \"ROOT\" {}\\ca\\certificate.crt", path).to_string());
   } else {
-    run_command("sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain ca/certificate.crt".to_string());
+    run_command(format!("sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain {}/ca/certificate.crt", path).to_string());
   }
 
   println!("Installed certificate.");

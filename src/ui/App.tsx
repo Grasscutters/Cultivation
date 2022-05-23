@@ -16,6 +16,7 @@ import NewsSection from './components/news/NewsSection'
 import RightBar from './components/RightBar'
 import { getConfigOption, setConfigOption } from '../utils/configuration'
 import { invoke } from '@tauri-apps/api'
+import { dataDir } from '@tauri-apps/api/path'
 
 interface IProps {
   [key: string]: never;
@@ -52,6 +53,7 @@ class App extends React.Component<IProps, IState> {
   }
 
   async componentDidMount() {
+    const cert_generated = await getConfigOption('cert_generated')
     const game_exe = await getConfigOption('game_install_path')
     const game_path = game_exe.substring(0, game_exe.lastIndexOf('\\'))
     const root_path = game_path.substring(0, game_path.lastIndexOf('\\'))
@@ -67,6 +69,15 @@ class App extends React.Component<IProps, IState> {
           bgFile: bgLoc
         })
       }
+    }
+
+    if (!cert_generated) {
+      // Generate the certificate
+      await invoke('generate_ca_files', {
+        path: await dataDir() + 'cultivation'
+      })
+
+      await setConfigOption('cert_generated', true)
     }
   }
 

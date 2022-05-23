@@ -17,6 +17,7 @@ let defaultConfig: Configuration
     last_port: '',
     language: 'en',
     customBackground: '',
+    cert_generated: false,
   }
 })()
 
@@ -35,6 +36,7 @@ export interface Configuration {
   last_port: string
   language: string
   customBackground: string
+  cert_generated: boolean
 }
 
 export async function setConfigOption(key: string, value: any): Promise<void> {
@@ -93,7 +95,6 @@ async function readConfigFile() {
     // Create dir
     await fs.createDir(local + 'cultivation\\grasscutter')
   }
-
 
   const dataFiles = await fs.readDir(local + 'cultivation')
 
