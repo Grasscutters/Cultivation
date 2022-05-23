@@ -137,7 +137,7 @@ async fn get_bg_file(bg_path: String) -> String {
 
   let file_name = response_data.bg_file.to_string();
 
-  // First we see if the file already exists in our local bg folder
+  // First we see if the file already exists in our local bg folder.
   if file_helpers::dir_exists(format!(".\\bg\\{}", file_name).as_str()) {
     let cwd = std::env::current_dir().unwrap();
     return format!("{}\\{}", cwd.display(), response_data.bg_file.as_str());
@@ -151,18 +151,18 @@ async fn get_bg_file(bg_path: String) -> String {
     return "".to_string();
   }
 
-  // BG folder does exist, lets see if the image exists
+  // BG folder does exist, lets see if the image exists.
   if !file_helpers::dir_exists(&bg_img_path) {
     // Image doesn't exist
     return "".to_string();
   }
 
-  // The image exists, lets copy it to our local \bg folder
+  // The image exists, lets copy it to our local '\bg' folder.
   let bg_img_path_local = format!(".\\bg\\{}", file_name.as_str());
 
   return match std::fs::copy(bg_img_path, bg_img_path_local) {
     Ok(_) => {
-      // Copy was successful, lets return true
+      // Copy was successful, lets return true.
       let cwd = std::env::current_dir().unwrap();
       format!("{}\\{}", cwd.display(), response_data.bg_file.as_str())
     }
