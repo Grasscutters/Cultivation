@@ -5,15 +5,16 @@ import closeIcon from '../../resources/icons/close.svg'
 import minIcon from '../../resources/icons/min.svg'
 import cogBtn from '../../resources/icons/cog.svg'
 import downBtn from '../../resources/icons/download.svg'
+import gameBtn from '../../resources/icons/game.svg'
 
-import Tr, { translate } from '../../utils/language'
+import Tr from '../../utils/language'
 
 import './TopBar.css'
-import { listen } from '@tauri-apps/api/event'
 
 interface IProps {
   optFunc: () => void;
   downFunc: () => void;
+  gameFunc: () => void;
 }
 
 interface IState {
@@ -61,6 +62,9 @@ export default class TopBar extends React.Component<IProps, IState> {
           </div>
           <div id="downloadsBtn" className='TopButton' onClick={this.props.downFunc}>
             <img src={downBtn} alt="downloads" />
+          </div>
+          <div id="gameBtn" className="TopButton" onClick={this.props.gameFunc}>
+            <img src={gameBtn} alt="game" />
           </div>
         </div>
       </div>

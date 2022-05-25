@@ -8,9 +8,11 @@ import './DirInput.css'
 
 interface IProps {
   value?: string
+  clearable?: boolean
   onChange?: (value: string) => void
   extensions?: string[]
   readonly?: boolean
+  placeholder?: string
 }
 
 interface IState {
@@ -24,23 +26,33 @@ export default class DirInput extends React.Component<IProps, IState> {
 
     this.state = {
       value: props.value || '',
-      placeholder: 'Select file or folder...',
+      placeholder: this.props.placeholder || 'Select file or folder...',
     }
 
     this.handleIconClick = this.handleIconClick.bind(this)
   }
 
   static getDerivedStateFromProps(props: IProps, state: IState) {
-    if (!props.value || state.value !== '') return state
+    const newState = state
 
-    return { value: props.value || '' }
+    if (props.value && state.value === '') {
+      newState.value = props.value || ''
+    }
+
+    if (props.placeholder) {
+      newState.placeholder = props.placeholder
+    }
+
+    return newState
   }
 
   async componentDidMount() {
-    const translation = await translate('components.select_file')
-    this.setState( {
-      placeholder: translation
-    })
+    if (!this.props.placeholder) {
+      const translation = await translate('components.select_file')
+      this.setState( {
+        placeholder: translation
+      })
+    }
   }
 
   async handleIconClick() {
@@ -66,7 +78,7 @@ export default class DirInput extends React.Component<IProps, IState> {
         <TextInput
           value={this.state.value}
           placeholder={this.state.placeholder}
-          clearable={true}
+          clearable={this.props.clearable !== undefined ? this.props.clearable : true}
           readOnly={this.props.readonly !== undefined ? this.props.readonly : true } onChange={(text: string) => {
             this.setState({ value: text })
 

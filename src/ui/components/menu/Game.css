@@ -1,0 +1,28 @@
+.GameDownloadMenu {
+  width: 40%;
+  height: 40%;
+}
+
+.GameDownload {
+  padding: 18px;
+}
+
+.GameDownload .BigButton {
+  height: 50px;
+}
+
+.GameDownloadDir {
+  width: 70%;
+}
+
+.GameDownloadDir .DirInput {
+  width: 100%;
+}
+
+.GameDownloadDir .DirInput .TextInputWrapper {
+  width: 100%;
+}
+
+.GameDownloadDir .DirInput .TextInputWrapper input {
+  width: 80%;
+}

@@ -13,6 +13,8 @@ import MiniDialog from './components/MiniDialog'
 import DownloadList from './components/common/DownloadList'
 import Downloads from './components/menu/Downloads'
 import NewsSection from './components/news/NewsSection'
+import Game from './components/menu/Game'
+
 import RightBar from './components/RightBar'
 import { getConfigOption, setConfigOption } from '../utils/configuration'
 import { invoke } from '@tauri-apps/api'
@@ -27,6 +29,7 @@ interface IState {
   optionsOpen: boolean;
   miniDownloadsOpen: boolean;
   downloadsOpen: boolean;
+  gameDownloadsOpen: boolean;
   bgFile: string;
 }
 
@@ -40,6 +43,7 @@ class App extends React.Component<IProps, IState> {
       optionsOpen: false,
       miniDownloadsOpen: false,
       downloadsOpen: false,
+      gameDownloadsOpen: false,
       bgFile: 'https://webstatic.hoyoverse.com/upload/event/2020/11/04/7fd661b5184e1734f91f628b6f89a31f_7367318474207189623.png',
     }
 
@@ -93,6 +97,7 @@ class App extends React.Component<IProps, IState> {
             this.setState({ optionsOpen: !this.state.optionsOpen })
           }}
           downFunc={() => this.setState({ downloadsOpen: !this.state.downloadsOpen })}
+          gameFunc={() => this.setState({ gameDownloadsOpen: !this.state.gameDownloadsOpen })}
         />
 
         <RightBar />
@@ -131,6 +136,16 @@ class App extends React.Component<IProps, IState> {
           this.state.optionsOpen ? (
             <Options
               closeFn={() => this.setState({ optionsOpen: !this.state.optionsOpen })}
+            />
+          ) : null
+        }
+
+        {
+          // Game downloads menu
+          this.state.gameDownloadsOpen ? (
+            <Game
+              downloadManager={downloadHandler}
+              closeFn={() => this.setState({ gameDownloadsOpen: false })}
             />
           ) : null
         }
