@@ -13,11 +13,13 @@ interface IProps {
   extensions?: string[]
   readonly?: boolean
   placeholder?: string
+  folder?: boolean
 }
 
 interface IState {
   value: string
   placeholder: string
+  folder: boolean
 }
 
 export default class DirInput extends React.Component<IProps, IState> {
@@ -27,6 +29,7 @@ export default class DirInput extends React.Component<IProps, IState> {
     this.state = {
       value: props.value || '',
       placeholder: this.props.placeholder || 'Select file or folder...',
+      folder: this.props.folder || false
     }
 
     this.handleIconClick = this.handleIconClick.bind(this)
@@ -56,11 +59,21 @@ export default class DirInput extends React.Component<IProps, IState> {
   }
 
   async handleIconClick() {
-    let path = await open({
-      filters: [
-        { name: 'Files', extensions: this.props.extensions || ['*'] }
-      ]
-    })
+    let path
+
+    if (this.state.folder) {
+      path = await open({
+        directory: true
+      })
+    } else {
+      path = await open({
+        filters: [
+          { name: 'Files', extensions: this.props.extensions || ['*'] }
+        ]
+      })
+    }
+    
+
 
     if (Array.isArray(path)) path = path[0]
     if (!path) return

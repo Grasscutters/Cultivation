@@ -7,6 +7,9 @@ import './Game.css'
 import DirInput from '../common/DirInput'
 import BigButton from '../common/BigButton'
 import HelpButton from '../common/HelpButton'
+import { unzip } from '../../../utils/zipUtils'
+
+const GAME_DOWNLOAD = ''
 
 interface IProps {
   closeFn: () => void;
@@ -28,31 +31,49 @@ export default class Downloads extends React.Component<IProps, IState> {
       gameDownloadFolder: '',
       dirPlaceholder: ''
     }
+
+    this.downloadGame = this.downloadGame.bind(this)
   }
 
   async componentDidMount() {
     this.setState({
       dirPlaceholder: await translate('components.select_folder')
     })
+
+    console.log(this.state)
   }
 
-  downloadGame() {
-    console.log('Download!')
+  async downloadGame() {
+    const folder = this.state.gameDownloadFolder
+    this.props.downloadManager.addDownload(GAME_DOWNLOAD, folder + '\\game.zip', () =>{
+      unzip(folder + '\\game.zip', folder + '\\', () => {
+        this.setState({
+          gameDownloading: false
+        })
+      })
+    })
+
+    this.setState({
+      gameDownloading: true
+    })
   }
 
   render() {
     return (
       <Menu heading='Download Game' closeFn={this.props.closeFn} className="GameDownloadMenu">
         <div className="GameDownload">
-          <BigButton id="downloadGameBtn" onClick={this.downloadGame}>Download Game</BigButton>
+          {
+            this.state.gameDownloadFolder !== '' && !this.state.gameDownloading ?
+              <BigButton id="downloadGameBtn" onClick={this.downloadGame}>Download Game</BigButton>
+              : <BigButton id="disabledGameBtn" onClick={() => null} disabled>Download Game</BigButton>
+          }
           <HelpButton>
             <Tr text="main.game_help_text" />
           </HelpButton>
         </div>
         
         <div className="GameDownloadDir">
-          <DirInput placeholder={this.state.dirPlaceholder} clearable={false} readonly={false} onChange={(value: string) => this.setState({
-            gameDownloading: true,
+          <DirInput folder placeholder={this.state.dirPlaceholder} clearable={false} readonly={true} onChange={(value: string) => this.setState({
             gameDownloadFolder: value
           })}/>
         </div>
