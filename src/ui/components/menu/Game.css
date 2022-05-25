@@ -4,22 +4,31 @@
 }
 
 .GameDownload {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
   padding: 18px;
+}
+
+.GameDownload .MiniDialog {
+  height: 30%;
 }
 
 .GameDownload .BigButton {
   height: 50px;
 }
 
+.GameDownload .HelpButton img {
+  filter: invert(0%) sepia(91%) saturate(7464%) hue-rotate(101deg) brightness(0%) contrast(107%);
+}
+
 .GameDownloadDir {
   width: 70%;
 }
 
+.GameDownloadDir .DirInput .TextInputWrapper,
 .GameDownloadDir .DirInput {
-  width: 100%;
-}
-
-.GameDownloadDir .DirInput .TextInputWrapper {
   width: 100%;
 }
 

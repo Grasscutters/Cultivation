@@ -6,6 +6,7 @@ import DownloadHandler from '../../../utils/download'
 import './Game.css'
 import DirInput from '../common/DirInput'
 import BigButton from '../common/BigButton'
+import HelpButton from '../common/HelpButton'
 
 interface IProps {
   closeFn: () => void;
@@ -44,6 +45,9 @@ export default class Downloads extends React.Component<IProps, IState> {
       <Menu heading='Download Game' closeFn={this.props.closeFn} className="GameDownloadMenu">
         <div className="GameDownload">
           <BigButton id="downloadGameBtn" onClick={this.downloadGame}>Download Game</BigButton>
+          <HelpButton>
+            <Tr text="main.game_help_text" />
+          </HelpButton>
         </div>
         
         <div className="GameDownloadDir">
