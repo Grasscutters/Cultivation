@@ -19,7 +19,10 @@
   },
   "scripts": {
     "start": "cross-env BROWSER=none react-scripts start",
-    "build": "react-scripts build",
+    "postbuild:windows": "xcopy /E /H /C /I /Y \".\\src-tauri\\lang\" \".\\src-tauri\\target\\release\\lang\"",
+    "postbuild:linux": "cp -r \".\\src-tauri\\lang\" \".\\lang\"",
+    "build:windows": "react-scripts build && tauri build",
+    "build:linux": "react-scripts build & tauri build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "tauri": "tauri",
@@ -49,6 +52,7 @@
     "@typescript-eslint/parser": "^5.22.0",
     "cross-env": "^7.0.3",
     "eslint": "^8.15.0",
-    "eslint-plugin-react": "^7.29.4"
+    "eslint-plugin-react": "^7.29.4",
+    "run-script-os": "^1.1.6"
   }
 }
