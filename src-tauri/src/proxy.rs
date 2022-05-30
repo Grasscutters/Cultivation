@@ -75,8 +75,8 @@ impl HttpHandler for ProxyHandler {
  */
 pub async fn create_proxy(proxy_port: u16, certificate_path: String) {
   // Get the certificate and private key.
-  let mut private_key_bytes: &[u8] = &fs::read(format!("{}/private.key", certificate_path)).expect("Could not read private key");
-  let mut ca_cert_bytes: &[u8] = &fs::read(format!("{}/cert.crt", certificate_path)).expect("Could not read certificate");
+  let mut private_key_bytes: &[u8] = &fs::read(format!("{}\\private.key", certificate_path)).expect("Could not read private key");
+  let mut ca_cert_bytes: &[u8] = &fs::read(format!("{}\\cert.crt", certificate_path)).expect("Could not read certificate");
 
   // Parse the private key and certificate.
   let private_key = rustls::PrivateKey(

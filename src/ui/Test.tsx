@@ -4,7 +4,7 @@ import {invoke} from '@tauri-apps/api/tauri'
 import {dataDir} from '@tauri-apps/api/path'
 
 async function startProxy() {
-  await invoke('connect', { port: 2222, certificatePath: await dataDir() + '\\ca' })
+  await invoke('connect', { port: 2222, certificatePath: await dataDir() + '\\cultivation\\ca' })
 }
 
 async function stopProxy() {
