@@ -85,7 +85,7 @@ async function readConfigFile() {
 
   if (!dirs.find((fileOrDir) => fileOrDir?.name === 'cultivation')) {
     // Create dir
-    await fs.createDir(local + 'cultivation')
+    await fs.createDir(local + 'cultivation').catch(e => console.log(e))
   }
 
   const innerDirs = await fs.readDir(local + '\\cultivation')
@@ -93,7 +93,7 @@ async function readConfigFile() {
   // Create grasscutter dir for potential installation
   if (!innerDirs.find((fileOrDir) => fileOrDir?.name === 'grasscutter')) {
     // Create dir
-    await fs.createDir(local + 'cultivation\\grasscutter')
+    await fs.createDir(local + 'cultivation\\grasscutter').catch(e => console.log(e))
   }
 
   const dataFiles = await fs.readDir(local + 'cultivation')
