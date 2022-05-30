@@ -19,6 +19,7 @@ import RightBar from './components/RightBar'
 import { getConfigOption, setConfigOption } from '../utils/configuration'
 import { invoke } from '@tauri-apps/api'
 import { dataDir } from '@tauri-apps/api/path'
+import { appWindow } from '@tauri-apps/api/window'
 
 interface IProps {
   [key: string]: never;
@@ -54,6 +55,21 @@ class App extends React.Component<IProps, IState> {
     listen('jar_extracted', ({ payload }) => {
       setConfigOption('grasscutter_path', payload)
     })
+
+    let min = false
+
+    // periodically check if we need to min/max based on whether the game is open
+    setInterval(async () => {
+      const gameOpen = await invoke('is_game_running')
+
+      if (gameOpen && !min) {
+        appWindow.minimize()
+        min = true
+      } else if (!gameOpen && min) {
+        appWindow.unminimize()
+        min = false
+      }
+    }, 1000)
   }
 
   async componentDidMount() {
@@ -89,8 +105,6 @@ class App extends React.Component<IProps, IState> {
       this.setState({
         isDownloading: downloadHandler.getDownloads().filter(d => d.status !== 'finished')?.length > 0
       })
-
-      console.log(downloadHandler.getDownloads())
     }, 1000)
   }
 
