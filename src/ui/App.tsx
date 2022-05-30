@@ -83,6 +83,15 @@ class App extends React.Component<IProps, IState> {
 
       await setConfigOption('cert_generated', true)
     }
+
+    // Period check to only show progress bar when downloading files
+    setInterval(() => {
+      this.setState({
+        isDownloading: downloadHandler.getDownloads().filter(d => d.status !== 'finished')?.length > 0
+      })
+
+      console.log(downloadHandler.getDownloads())
+    }, 1000)
   }
 
   render() {
@@ -156,7 +165,9 @@ class App extends React.Component<IProps, IState> {
           <div id="DownloadProgress"
             onClick={() => this.setState({ miniDownloadsOpen: !this.state.miniDownloadsOpen })}
           >
-            <MainProgressBar downloadManager={downloadHandler} />
+            { this.state.isDownloading ?
+              <MainProgressBar downloadManager={downloadHandler} />
+              : null }
           </div>
         </div>
       </div>
