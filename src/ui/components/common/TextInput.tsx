@@ -5,6 +5,7 @@ import Close from '../../../resources/icons/close.svg'
 
 interface IProps {
   value?: string;
+  initalValue?: string;
   placeholder?: string;
   onChange?: (value: string) => void;
   readOnly?: boolean;
@@ -36,6 +37,14 @@ export default class TextInput extends React.Component<IProps, IState> {
     }
 
     return { value: props.value || '' }
+  }
+
+  async componentDidMount() {
+    if (this.props.initalValue) {
+      this.setState({
+        value: this.props.initalValue
+      })
+    }
   }
 
   render() {

@@ -51,6 +51,9 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
   async componentDidMount() {
     const config = await getConfig()
 
+    console.log(config.last_ip)
+    console.log(config.last_port)
+
     this.setState({
       grasscutterEnabled: config.toggle_grasscutter,
       buttonLabel: await translate('main.launch_button'),
@@ -152,10 +155,10 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
         {
           this.state.grasscutterEnabled && (
             <div className="ServerConfig">
-              <TextInput id="ip" key="ip" placeholder={this.state.ipPlaceholder} onChange={this.setIp} />
+              <TextInput id="ip" key="ip" placeholder={this.state.ipPlaceholder} onChange={this.setIp} initalValue={this.state.ip} />
               <TextInput style={{
                 width: '10%',
-              }} id="port" key="port" placeholder={this.state.portPlaceholder} onChange={this.setPort}/>
+              }} id="port" key="port" placeholder={this.state.portPlaceholder} onChange={this.setPort} initalValue={this.state.port} />
               <HelpButton contents={this.state.portHelpText} />
             </div>
           )
