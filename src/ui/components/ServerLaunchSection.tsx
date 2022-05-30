@@ -106,7 +106,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       })
 
       // Connect to proxy
-      await invoke('connect', { port: 8365, certificate_path: await dataDir() + '\\ca' })
+      await invoke('connect', { port: 8365, certificatePath: await dataDir() + '\\ca' })
     }
   
     // Launch the program
