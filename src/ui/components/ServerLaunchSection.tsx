@@ -52,9 +52,6 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
   async componentDidMount() {
     const config = await getConfig()
 
-    console.log(config.last_ip)
-    console.log(config.last_port)
-
     this.setState({
       grasscutterEnabled: config.toggle_grasscutter,
       buttonLabel: await translate('main.launch_button'),

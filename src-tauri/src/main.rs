@@ -37,6 +37,7 @@ fn main() {
       req_get,
       get_bg_file,
       base64_decode,
+      is_game_running,
       system_helpers::run_command,
       system_helpers::run_program,
       system_helpers::run_jar,
@@ -89,6 +90,14 @@ fn process_watcher() {
       thread::sleep(std::time::Duration::from_secs(5));
     }
   });
+}
+
+#[tauri::command]
+fn is_game_running() -> bool {
+  // Grab the game process name
+  let proc = WATCH_GAME_PROCESS.lock().unwrap().to_string();
+
+  return !&proc.is_empty();
 }
 
 #[tauri::command]
