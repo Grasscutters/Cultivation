@@ -1,9 +1,10 @@
 import React from 'react'
 
 import {invoke} from '@tauri-apps/api/tauri'
+import {dataDir} from '@tauri-apps/api/path'
 
 async function startProxy() {
-  await invoke('connect', { port: 2222 })
+  await invoke('connect', { port: 2222, certificate_path: await dataDir() + '\\ca' })
 }
 
 async function stopProxy() {

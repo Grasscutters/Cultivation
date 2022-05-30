@@ -9,6 +9,7 @@ import { invoke } from '@tauri-apps/api/tauri'
 
 import Server from '../../resources/icons/server.svg'
 import './ServerLaunchSection.css'
+import {dataDir} from '@tauri-apps/api/path'
 
 interface IProps {
   [key: string]: any
@@ -105,7 +106,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       })
 
       // Connect to proxy
-      await invoke('connect', { port: 8365 })
+      await invoke('connect', { port: 8365, certificate_path: await dataDir() + '\\ca' })
     }
   
     // Launch the program

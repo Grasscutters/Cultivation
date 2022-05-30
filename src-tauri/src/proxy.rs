@@ -73,10 +73,10 @@ impl HttpHandler for ProxyHandler {
 /**
  * Starts an HTTP(S) proxy server.
  */
-pub(crate) async fn create_proxy(proxy_port: u16) {
+pub async fn create_proxy(proxy_port: u16, certificate_path: String) {
   // Get the certificate and private key.
-  let mut private_key_bytes: &[u8] = include_bytes!("../resources/private-key.pem");
-  let mut ca_cert_bytes: &[u8] = include_bytes!("../resources/ca-certificate.pem");
+  let mut private_key_bytes: &[u8] = include_bytes!(format!("{}/private.key", certificate_path));
+  let mut ca_cert_bytes: &[u8] = include_bytes!(format!("{}/cert.crt", certificate_path));
 
   // Parse the private key and certificate.
   let private_key = rustls::PrivateKey(
@@ -110,7 +110,7 @@ pub(crate) async fn create_proxy(proxy_port: u16) {
 /**
  * Connects to the local HTTP(S) proxy server.
  */
-pub(crate) fn connect_to_proxy(proxy_port: u16) {
+pub fn connect_to_proxy(proxy_port: u16) {
   if cfg!(target_os = "windows") {
     // Create 'ProxyServer' string.
     let server_string: String = format!("http=127.0.0.1:{};https=127.0.0.1:{}", proxy_port, proxy_port);
@@ -129,7 +129,7 @@ pub(crate) fn connect_to_proxy(proxy_port: u16) {
 /**
  * Disconnects from the local HTTP(S) proxy server.
  */
-pub(crate) fn disconnect_from_proxy() {
+pub fn disconnect_from_proxy() {
   if cfg!(target_os = "windows") {
     // Fetch the 'Internet Settings' registry key.
     let settings = Hive::CurrentUser.open(r"Software\Microsoft\Windows\CurrentVersion\Internet Settings", Security::Write).unwrap();
@@ -147,7 +147,7 @@ pub(crate) fn disconnect_from_proxy() {
  * Source: https://github.com/zu1k/good-mitm/raw/master/src/ca/gen.rs
  */
 #[tauri::command]
-pub(crate) fn generate_ca_files(path: &str) {
+pub fn generate_ca_files(path: &str) {
   let mut params = CertificateParams::default();
   let mut details = DistinguishedName::new();
 
@@ -201,7 +201,7 @@ pub(crate) fn generate_ca_files(path: &str) {
 /*
  * Attempts to install the certificate authority's certificate into the Root CA store.
  */
-pub(crate) fn install_ca_files(path: &str) {
+pub fn install_ca_files(path: &str) {
   if cfg!(target_os = "windows") {
     run_command(format!("certutil -addstore -f \"ROOT\" {}\\ca\\certificate.crt", path).to_string());
   } else {

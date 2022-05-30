@@ -97,7 +97,7 @@ fn enable_process_watcher(process: String) {
 }
 
 #[tauri::command]
-async fn connect(port: u16) {
+async fn connect(port: u16, certificate_path: String) {
   // Log message to console.
   println!("Connecting to proxy...");
 
@@ -105,7 +105,7 @@ async fn connect(port: u16) {
   proxy::connect_to_proxy(port);
 
   // Create and start a proxy.
-  proxy::create_proxy(port).await;
+  proxy::create_proxy(port, certificate_path).await;
 }
 
 #[tauri::command]
