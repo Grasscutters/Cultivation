@@ -72,8 +72,6 @@ export default class DirInput extends React.Component<IProps, IState> {
         ]
       })
     }
-    
-
 
     if (Array.isArray(path)) path = path[0]
     if (!path) return

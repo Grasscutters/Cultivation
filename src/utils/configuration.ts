@@ -40,11 +40,10 @@ export interface Configuration {
 }
 
 export async function setConfigOption(key: string, value: any): Promise<void> {
-  const config = await getConfig()
-
-  Object.assign(config, { [key]: value })
+  const config: any = await getConfig()
+  config[key] = value
   
-  await saveConfig(config)
+  await saveConfig(<Configuration> config)
 }
 
 export async function getConfigOption(key: string): Promise<any> {

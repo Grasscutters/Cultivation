@@ -6,7 +6,6 @@ import './Options.css'
 import { setConfigOption, getConfig, getConfigOption } from '../../../utils/configuration'
 import Checkbox from '../common/Checkbox'
 import Divider from './Divider'
-import { invoke } from '@tauri-apps/api'
 
 interface IProps {
   closeFn: () => void;
@@ -81,8 +80,8 @@ export default class Options extends React.Component<IProps, IState> {
     })
   }
 
-  setCustomBackground() {
-    setConfigOption('customBackground', this.state.bg_url_or_path)
+  setCustomBackground(value: string) {
+    setConfigOption('customBackground', value)
   }
 
   render() {
@@ -132,7 +131,7 @@ export default class Options extends React.Component<IProps, IState> {
             <Tr text="options.background" />
           </div>
           <div className='OptionValue'>
-            <DirInput onChange={this.setCustomBackground} readonly={false} value={this.state?.bg_url_or_path} extensions={['png', 'jpg', 'jpeg']} />
+            <DirInput onChange={this.setCustomBackground} value={this.state?.bg_url_or_path} extensions={['png', 'jpg', 'jpeg']} readonly={false} />
           </div>
         </div>
 

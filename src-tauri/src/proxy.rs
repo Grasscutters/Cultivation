@@ -82,13 +82,13 @@ pub async fn create_proxy(proxy_port: u16, certificate_path: String) {
   let private_key = rustls::PrivateKey(
     pemfile::pkcs8_private_keys(&mut private_key_bytes)
       .expect("Failed to parse private key")
-      .remove(0),
+      .remove(0)
   );
 
   let ca_cert = rustls::Certificate(
     pemfile::certs(&mut ca_cert_bytes)
       .expect("Failed to parse CA certificate")
-      .remove(0),
+      .remove(0)
   );
 
   // Create the certificate authority.
@@ -168,26 +168,27 @@ pub fn generate_ca_files(path: &str) {
   ];
   
   // Create certificate.
+  let cert_path = format!("{}\\ca", path);
+  
   let cert = Certificate::from_params(params).unwrap();
   let cert_crt = cert.serialize_pem().unwrap();
-  let cert_path = format!("{}\\ca", path);
+  let private_key = cert.serialize_private_key_pem();
 
+  // Make certificate directory.
   match fs::create_dir(&cert_path) {
     Ok(_) => {},
     Err(e) => {
       println!("{}", e);
     }
   };
-
-  println!("{}", cert_crt);
   
+  // Write the certificate to a file.
   match fs::write(format!("{}\\cert.crt", &cert_path), cert_crt) {
     Ok(_) => println!("Wrote certificate to {}", &cert_path),
     Err(e) => println!("Error writing certificate to {}: {}", &cert_path, e),
   }
 
-  let private_key = cert.serialize_private_key_pem();
-
+  // Write the private key to a file.
   match fs::write(format!("{}\\private.key", &cert_path), private_key) {
     Ok(_) => println!("Wrote private key to {}", &cert_path),
     Err(e) => println!("Error writing private key to {}: {}", &cert_path, e),
