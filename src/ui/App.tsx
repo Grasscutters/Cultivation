@@ -75,21 +75,24 @@ class App extends React.Component<IProps, IState> {
   async componentDidMount() {
     const cert_generated = await getConfigOption('cert_generated')
     const game_exe = await getConfigOption('game_install_path')
+    const custom_bg = await getConfigOption('customBackground')
     const game_path = game_exe.substring(0, game_exe.lastIndexOf('\\'))
     const root_path = game_path.substring(0, game_path.lastIndexOf('\\'))
 
-    if (game_path) {
-      // Get the bg by invoking, then set the background to that bg
-      const bgLoc: string = await invoke('get_bg_file', {
-        bgPath: root_path,
-      })
+    if(!custom_bg) {
+      if(game_path) {
+        // Get the bg by invoking, then set the background to that bg.
+        const bgLoc: string = await invoke('get_bg_file', {
+          bgPath: root_path
+        })
 
-      if (bgLoc) {
-        this.setState({
+        bgLoc && this.setState({
           bgFile: bgLoc
         })
       }
-    }
+    } else this.setState({
+      bgFile: custom_bg
+    })
 
     if (!cert_generated) {
       // Generate the certificate
@@ -106,13 +109,15 @@ class App extends React.Component<IProps, IState> {
         isDownloading: downloadHandler.getDownloads().filter(d => d.status !== 'finished')?.length > 0
       })
     }, 1000)
+    
+    console.log('mounting app component with background: ' + this.state.bgFile)
   }
 
   render() {
     return (
       <div className="App" style={
         this.state.bgFile ? {
-          background: `url(${this.state.bgFile}) no-repeat center center fixed`,
+          background: `url(${this.state.bgFile} fixed`,
         } : {}
       }>
         <TopBar
