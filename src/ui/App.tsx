@@ -82,7 +82,7 @@ class App extends React.Component<IProps, IState> {
     const game_path = game_exe.substring(0, game_exe.replace(/\\/g, '/').lastIndexOf('/'))
     const root_path = game_path.substring(0, game_path.replace(/\\/g, '/').lastIndexOf('/'))
 
-    if(!custom_bg) {
+    if(!custom_bg || !/png|jpg|jpeg$/.test(custom_bg)) {
       if(game_path) {
         // Get the bg by invoking, then set the background to that bg.
         const bgLoc: string = await invoke('get_bg_file', {

@@ -86,6 +86,8 @@ export default class Options extends React.Component<IProps, IState> {
   async setCustomBackground(value: string) {
     const isUrl = /^(?:http(s)?:\/\/)/gm.test(value)
 
+    if (!value) return await setConfigOption('customBackground', '')
+
     if (!isUrl) {
       const filename = value.replace(/\\/g, '/').split('/').pop()
       const localBgPath = (await dataDir() as string).replace(/\\/g, '/')
