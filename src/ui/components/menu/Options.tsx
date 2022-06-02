@@ -38,6 +38,7 @@ export default class Options extends React.Component<IProps, IState> {
     }
 
     this.toggleGrasscutterWithGame = this.toggleGrasscutterWithGame.bind(this)
+    this.setCustomBackground = this.setCustomBackground.bind(this)
   }
 
   async componentDidMount() {
@@ -86,13 +87,15 @@ export default class Options extends React.Component<IProps, IState> {
     const filename = value.replace(/\\/g, '/').split('/').pop()
     const localBgPath = (await dataDir() as string).replace(/\\/g, '/')
 
-    setConfigOption('customBackground', `${localBgPath}/cultivation/bg/${filename}`)
+    await setConfigOption('customBackground', `${localBgPath}/cultivation/bg/${filename}`)
 
     // Copy the file over to the local directory
-    invoke('copy_file', {
+    await invoke('copy_file', {
       path: value.replace(/\\/g, '/'),
       newPath: `${localBgPath}cultivation/bg/`
     })
+
+    window.location.reload()
   }
 
   render() {
