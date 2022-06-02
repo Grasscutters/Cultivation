@@ -112,7 +112,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     })
 
     if (gameExists) await invoke('run_program', { path: config.game_install_path })
-    else alert('Game not found!')
+    else alert('Game not found! At: ' + config.game_install_path)
   }
 
   async launchServer() {

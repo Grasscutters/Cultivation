@@ -35,7 +35,7 @@ interface IState {
   bgFile: string;
 }
 
-const DEFAULT_BG = 'https://webstatic.hoyoverse.com/upload/event/2020/11/04/7fd661b5184e1734f91f628b6f89a31f_7367318474207189623.png'
+const DEFAULT_BG = 'https://api.grasscutters.xyz/content/bgfile'
 
 const downloadHandler = new DownloadHandler()
 
