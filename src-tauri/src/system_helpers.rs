@@ -3,7 +3,8 @@ use std::thread;
 use std::process::Command;
 use tauri;
 use open;
-use crate::system_helpers;
+
+use crate::file_helpers;
 
 #[tauri::command]
 pub fn run_program(path: String) {
@@ -57,14 +58,14 @@ pub fn open_in_browser(url: String) {
 }
 
 #[tauri::command]
-pub fn get_local_bg_path() -> String {
-  // Get the local BG folder.
-  return format!("{}/bg", system_helpers::install_location())
-}
-
-#[tauri::command]
 pub fn copy_file(path: String, new_path: String) -> bool {
   let filename = &path.split("/").last().unwrap();
+  let mut new_path_buf = std::path::PathBuf::from(&new_path);
+
+  // If the new path doesn't exist, create it.
+  if !file_helpers::dir_exists(new_path_buf.pop().to_string().as_str()) {
+    std::fs::create_dir_all(&new_path).unwrap();
+  }
 
   // Copy old to new
   match std::fs::copy(&path, format!("{}/{}", new_path, filename)) {

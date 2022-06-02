@@ -48,7 +48,6 @@ fn main() {
       system_helpers::run_program,
       system_helpers::run_jar,
       system_helpers::open_in_browser,
-      system_helpers::get_local_bg_path,
       system_helpers::copy_file,
       proxy::set_proxy_addr,
       proxy::generate_ca_files,
@@ -144,8 +143,8 @@ async fn req_get(url: String) -> String {
 }
 
 #[tauri::command]
-async fn get_bg_file(bg_path: String) -> String {
-  let install_loc = system_helpers::install_location();
+async fn get_bg_file(bg_path: String, appdata: String) -> String {
+  let copy_loc = appdata;
   let query = web::query("https://api.grasscutters.xyz/cultivation/query").await;
   let response_data: APIQuery = match serde_json::from_str(&query) {
     Ok(data) => data,
@@ -158,8 +157,8 @@ async fn get_bg_file(bg_path: String) -> String {
   let file_name = response_data.bg_file.to_string();
 
   // First we see if the file already exists in our local bg folder.
-  if file_helpers::dir_exists(format!("{}\\bg\\{}", install_loc, file_name).as_str()) {
-    return format!("{}\\{}", install_loc, response_data.bg_file.as_str());
+  if file_helpers::dir_exists(format!("{}\\bg\\{}", copy_loc, file_name).as_str()) {
+    return format!("{}\\{}", copy_loc, response_data.bg_file.as_str());
   }
 
   // Now we check if the bg folder, which is one directory above the game_path, exists.
@@ -177,12 +176,12 @@ async fn get_bg_file(bg_path: String) -> String {
   }
 
   // The image exists, lets copy it to our local '\bg' folder.
-  let bg_img_path_local = format!("{}\\bg\\{}", install_loc, file_name.as_str());
+  let bg_img_path_local = format!("{}\\bg\\{}", copy_loc, file_name.as_str());
 
   return match std::fs::copy(bg_img_path, bg_img_path_local) {
     Ok(_) => {
       // Copy was successful, lets return true.
-      format!("{}\\{}", install_loc, response_data.bg_file.as_str())
+      format!("{}\\{}", copy_loc, response_data.bg_file.as_str())
     }
     Err(e) => {
       // Copy failed, lets return false

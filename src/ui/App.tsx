@@ -20,6 +20,7 @@ import { getConfigOption, setConfigOption } from '../utils/configuration'
 import { invoke } from '@tauri-apps/api'
 import { dataDir } from '@tauri-apps/api/path'
 import { appWindow } from '@tauri-apps/api/window'
+import { convertFileSrc } from '@tauri-apps/api/tauri'
 
 interface IProps {
   [key: string]: never;
@@ -83,7 +84,8 @@ class App extends React.Component<IProps, IState> {
       if(game_path) {
         // Get the bg by invoking, then set the background to that bg.
         const bgLoc: string = await invoke('get_bg_file', {
-          bgPath: root_path
+          bgPath: root_path,
+          appdata: await dataDir()
         })
 
         bgLoc && this.setState({
@@ -91,7 +93,7 @@ class App extends React.Component<IProps, IState> {
         }, this.forceUpdate)
       }
     } else this.setState({
-      bgFile: custom_bg
+      bgFile: convertFileSrc(custom_bg)
     }, this.forceUpdate)
 
     if (!cert_generated) {

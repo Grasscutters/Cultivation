@@ -7,6 +7,7 @@ import { setConfigOption, getConfig, getConfigOption } from '../../../utils/conf
 import Checkbox from '../common/Checkbox'
 import Divider from './Divider'
 import { invoke } from '@tauri-apps/api'
+import { dataDir } from '@tauri-apps/api/path'
 
 interface IProps {
   closeFn: () => void;
@@ -82,12 +83,15 @@ export default class Options extends React.Component<IProps, IState> {
   }
 
   async setCustomBackground(value: string) {
-    setConfigOption('customBackground', value)
+    const filename = value.replace(/\\/g, '/').split('/').pop()
+    const localBgPath = (await dataDir() as string).replace(/\\/g, '/')
+
+    setConfigOption('customBackground', `${localBgPath}/cultivation/bg/${filename}`)
 
     // Copy the file over to the local directory
     invoke('copy_file', {
       path: value.replace(/\\/g, '/'),
-      newPath: await invoke('get_local_bg_path')
+      newPath: `${localBgPath}cultivation/bg/`
     })
   }
 
