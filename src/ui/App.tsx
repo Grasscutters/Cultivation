@@ -92,9 +92,22 @@ class App extends React.Component<IProps, IState> {
           bgFile: bgLoc
         }, this.forceUpdate)
       }
-    } else this.setState({
-      bgFile: convertFileSrc(custom_bg)
-    }, this.forceUpdate)
+    } else {
+      const isUrl = /^(?:http(s)?:\/\/)/gm.test(custom_bg)
+
+      console.log(isUrl)
+
+
+      if (!isUrl) {
+        this.setState({
+          bgFile: convertFileSrc(custom_bg)
+        }, this.forceUpdate)
+      } else {
+        this.setState({
+          bgFile: custom_bg
+        }, this.forceUpdate)
+      }
+    }
 
     if (!cert_generated) {
       // Generate the certificate
