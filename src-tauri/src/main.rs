@@ -57,7 +57,8 @@ fn main() {
       downloader::download_file,
       downloader::stop_download,
       lang::get_lang,
-      lang::get_languages
+      lang::get_languages,
+      web::valid_url
     ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
