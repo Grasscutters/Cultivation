@@ -54,3 +54,14 @@ pub fn open_in_browser(url: String) {
     Err(e) => println!("Failed to open URL: {}", e),
   };
 }
+
+pub fn install_location() -> String {
+  let mut exe_path = std::env::current_exe().unwrap();
+
+  // Get the path to the executable.
+  exe_path.pop();
+
+  println!("{}", exe_path.to_str().unwrap().to_string());
+
+  return exe_path.to_str().unwrap().to_string();
+}

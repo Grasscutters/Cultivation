@@ -1,9 +1,11 @@
+use crate::system_helpers::*;
+
 #[tauri::command]
 pub async fn get_lang(window: tauri::Window, lang: String) -> String {
   let lang = lang.to_lowercase();
 
   // Send contents of language file back
-  let contents = match std::fs::read_to_string(format!("./lang/{}.json", lang)) {
+  let contents = match std::fs::read_to_string(format!("{}/lang/{}.json", install_location(), lang)) {
     Ok(x) => x,
     Err(e) => {
       emit_lang_err(window, format!("Failed to read language file: {}", e));
@@ -19,7 +21,7 @@ pub async fn get_languages() -> std::collections::HashMap<String, String> {
   // for each lang file, set the key as the filename and the value as the lang_name contained in the file
   let mut languages = std::collections::HashMap::new();
 
-  let mut lang_files = std::fs::read_dir("./lang").unwrap();
+  let mut lang_files = std::fs::read_dir(format!("{}/lang", install_location())).unwrap();
 
   while let Some(entry) = lang_files.next() {
     let entry = entry.unwrap();
