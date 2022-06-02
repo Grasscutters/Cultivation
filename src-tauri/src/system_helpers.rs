@@ -4,6 +4,8 @@ use std::process::Command;
 use tauri;
 use open;
 
+use crate::file_helpers;
+
 #[tauri::command]
 pub fn run_program(path: String) {
   // Open the program from the specified path.
@@ -53,4 +55,33 @@ pub fn open_in_browser(url: String) {
     Ok(_) => (),
     Err(e) => println!("Failed to open URL: {}", e),
   };
+}
+
+#[tauri::command]
+pub fn copy_file(path: String, new_path: String) -> bool {
+  let filename = &path.split("/").last().unwrap();
+  let mut new_path_buf = std::path::PathBuf::from(&new_path);
+
+  // If the new path doesn't exist, create it.
+  if !file_helpers::dir_exists(new_path_buf.pop().to_string().as_str()) {
+    std::fs::create_dir_all(&new_path).unwrap();
+  }
+
+  // Copy old to new
+  match std::fs::copy(&path, format!("{}/{}", new_path, filename)) {
+    Ok(_) => true,
+    Err(e) => {
+      println!("Failed to copy file: {}", e);
+      false
+    }
+  }
+}
+
+pub fn install_location() -> String {
+  let mut exe_path = std::env::current_exe().unwrap();
+
+  // Get the path to the executable.
+  exe_path.pop();
+
+  return exe_path.to_str().unwrap().to_string();
 }

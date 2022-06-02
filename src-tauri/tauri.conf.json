@@ -18,6 +18,15 @@
           "$DATA/cultivation/*"
         ]
       },
+      "protocol": {
+        "all": true,
+        "asset": true,
+        "assetScope": [
+          "$DATA",
+          "$DATA/cultivation",
+          "$DATA/cultivation/*"
+        ]
+      },
       "all": true
     },
     "bundle": {
@@ -54,7 +63,7 @@
       }
     },
     "security": {
-      "csp": null
+      "csp": "default-src 'self'; img-src 'self' asset: https://asset.localhost"
     },
     "updater": {
       "active": false

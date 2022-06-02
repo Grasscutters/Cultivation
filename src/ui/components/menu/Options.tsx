@@ -6,6 +6,8 @@ import './Options.css'
 import { setConfigOption, getConfig, getConfigOption } from '../../../utils/configuration'
 import Checkbox from '../common/Checkbox'
 import Divider from './Divider'
+import { invoke } from '@tauri-apps/api'
+import { dataDir } from '@tauri-apps/api/path'
 
 interface IProps {
   closeFn: () => void;
@@ -36,6 +38,7 @@ export default class Options extends React.Component<IProps, IState> {
     }
 
     this.toggleGrasscutterWithGame = this.toggleGrasscutterWithGame.bind(this)
+    this.setCustomBackground = this.setCustomBackground.bind(this)
   }
 
   async componentDidMount() {
@@ -80,8 +83,28 @@ export default class Options extends React.Component<IProps, IState> {
     })
   }
 
-  setCustomBackground(value: string) {
-    setConfigOption('customBackground', value)
+  async setCustomBackground(value: string) {
+    const isUrl = /^(?:http(s)?:\/\/)/gm.test(value)
+
+    if (!value) return await setConfigOption('customBackground', '')
+
+    if (!isUrl) {
+      const filename = value.replace(/\\/g, '/').split('/').pop()
+      const localBgPath = (await dataDir() as string).replace(/\\/g, '/')
+  
+      await setConfigOption('customBackground', `${localBgPath}/cultivation/bg/${filename}`)
+  
+      // Copy the file over to the local directory
+      await invoke('copy_file', {
+        path: value.replace(/\\/g, '/'),
+        newPath: `${localBgPath}cultivation/bg/`
+      })
+  
+      window.location.reload()
+    } else {
+      await setConfigOption('customBackground', value)
+      window.location.reload()
+    }
   }
 
   render() {

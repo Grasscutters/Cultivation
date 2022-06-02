@@ -20,6 +20,7 @@ import { getConfigOption, setConfigOption } from '../utils/configuration'
 import { invoke } from '@tauri-apps/api'
 import { dataDir } from '@tauri-apps/api/path'
 import { appWindow } from '@tauri-apps/api/window'
+import { convertFileSrc } from '@tauri-apps/api/tauri'
 
 interface IProps {
   [key: string]: never;
@@ -34,6 +35,8 @@ interface IState {
   bgFile: string;
 }
 
+const DEFAULT_BG = 'https://api.grasscutters.xyz/content/bgfile'
+
 const downloadHandler = new DownloadHandler()
 
 class App extends React.Component<IProps, IState> {
@@ -45,7 +48,7 @@ class App extends React.Component<IProps, IState> {
       miniDownloadsOpen: false,
       downloadsOpen: false,
       gameDownloadsOpen: false,
-      bgFile: 'https://api.grasscutters.xyz/content/bgfile',
+      bgFile: DEFAULT_BG,
     }
 
     listen('lang_error', (payload) => {
@@ -76,23 +79,39 @@ class App extends React.Component<IProps, IState> {
     const cert_generated = await getConfigOption('cert_generated')
     const game_exe = await getConfigOption('game_install_path')
     const custom_bg = await getConfigOption('customBackground')
-    const game_path = game_exe.substring(0, game_exe.lastIndexOf('\\'))
-    const root_path = game_path.substring(0, game_path.lastIndexOf('\\'))
+    const game_path = game_exe.substring(0, game_exe.replace(/\\/g, '/').lastIndexOf('/'))
+    const root_path = game_path.substring(0, game_path.replace(/\\/g, '/').lastIndexOf('/'))
 
-    if(!custom_bg) {
+    if(!custom_bg || !/png|jpg|jpeg$/.test(custom_bg)) {
       if(game_path) {
         // Get the bg by invoking, then set the background to that bg.
         const bgLoc: string = await invoke('get_bg_file', {
-          bgPath: root_path
+          bgPath: root_path,
+          appdata: await dataDir()
         })
 
         bgLoc && this.setState({
           bgFile: bgLoc
-        })
+        }, this.forceUpdate)
       }
-    } else this.setState({
-      bgFile: custom_bg
-    })
+    } else {
+      const isUrl = /^(?:http(s)?:\/\/)/gm.test(custom_bg)
+
+      if (!isUrl) {
+        this.setState({
+          bgFile: convertFileSrc(custom_bg)
+        }, this.forceUpdate)
+      } else {
+        // Check if URL returns a valid image.
+        const isValid = await invoke('valid_url', {
+          url: custom_bg
+        })
+
+        this.setState({
+          bgFile: isValid ? custom_bg : DEFAULT_BG
+        }, this.forceUpdate)
+      }
+    }
 
     if (!cert_generated) {
       // Generate the certificate
@@ -109,15 +128,13 @@ class App extends React.Component<IProps, IState> {
         isDownloading: downloadHandler.getDownloads().filter(d => d.status !== 'finished')?.length > 0
       })
     }, 1000)
-    
-    console.log('mounting app component with background: ' + this.state.bgFile)
   }
 
   render() {
     return (
       <div className="App" style={
         this.state.bgFile ? {
-          background: `url(${this.state.bgFile} fixed`,
+          background: `url("${this.state.bgFile}") fixed`,
         } : {}
       }>
         <TopBar

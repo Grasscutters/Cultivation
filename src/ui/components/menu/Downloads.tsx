@@ -10,6 +10,7 @@ import './Downloads.css'
 import Divider from './Divider'
 import { getConfigOption, setConfigOption } from '../../../utils/configuration'
 import { invoke } from '@tauri-apps/api'
+import { listen } from '@tauri-apps/api/event'
 
 const STABLE_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/stable.zip'
 const DEV_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/development.zip'
@@ -48,11 +49,15 @@ export default class Downloads extends React.Component<IProps, IState> {
     this.downloadGrasscutterStable = this.downloadGrasscutterStable.bind(this)
     this.downloadGrasscutterLatest = this.downloadGrasscutterLatest.bind(this)
     this.downloadResources = this.downloadResources.bind(this)
-    this.disableButtons = this.disableButtons.bind(this)
+    this.toggleButtons = this.toggleButtons.bind(this)
   }
 
   async componentDidMount() {
     const gc_path = await getConfigOption('grasscutter_path')
+
+    listen('jar_extracted', () => {
+      this.setState({ grasscutter_set: true }, this.forceUpdate)
+    })
 
     if (!gc_path || gc_path === '') {
       this.setState({
@@ -102,43 +107,43 @@ export default class Downloads extends React.Component<IProps, IState> {
   async downloadGrasscutterStableRepo() {
     const folder = await this.getGrasscutterFolder()
     this.props.downloadManager.addDownload(STABLE_REPO_DOWNLOAD, folder + '\\grasscutter_repo.zip', () =>{
-      unzip(folder + '\\grasscutter_repo.zip', folder + '\\')
+      unzip(folder + '\\grasscutter_repo.zip', folder + '\\', this.toggleButtons)
     })
 
-    this.disableButtons()
+    this.toggleButtons()
   }
 
   async downloadGrasscutterDevRepo() {
     const folder = await this.getGrasscutterFolder()
     this.props.downloadManager.addDownload(DEV_REPO_DOWNLOAD, folder + '\\grasscutter_repo.zip', () =>{
-      unzip(folder + '\\grasscutter_repo.zip', folder + '\\')
+      unzip(folder + '\\grasscutter_repo.zip', folder + '\\', this.toggleButtons)
     })
 
-    this.disableButtons()
+    this.toggleButtons()
   }
 
   async downloadGrasscutterStable() {
     const folder = await this.getGrasscutterFolder()
     this.props.downloadManager.addDownload(STABLE_DOWNLOAD, folder + '\\grasscutter.zip', () =>{
-      unzip(folder + '\\grasscutter.zip', folder + '\\')
+      unzip(folder + '\\grasscutter.zip', folder + '\\', this.toggleButtons)
     })
 
     // Also add repo download
     this.downloadGrasscutterStableRepo()
 
-    this.disableButtons()
+    this.toggleButtons()
   } 
 
   async downloadGrasscutterLatest() {
     const folder = await this.getGrasscutterFolder()
     this.props.downloadManager.addDownload(DEV_DOWNLOAD, folder + '\\grasscutter.zip', () =>{
-      unzip(folder + '\\grasscutter.zip', folder + '\\')
+      unzip(folder + '\\grasscutter.zip', folder + '\\', this.toggleButtons)
     })
 
     // Also add repo download
     this.downloadGrasscutterDevRepo()
 
-    this.disableButtons()
+    this.toggleButtons()
   }
 
   async downloadResources() {
@@ -150,18 +155,23 @@ export default class Downloads extends React.Component<IProps, IState> {
           path: folder + '\\Resources',
           newName: 'resources'
         })
+
+        this.toggleButtons()
       })
     })
 
-    this.disableButtons()
+    this.toggleButtons()
   }
 
-  disableButtons() {
+  async toggleButtons() {
+    const gc_path = await getConfigOption('grasscutter_path')
+
     // Set states since we know we are downloading something if this is called
     this.setState({
       grasscutter_downloading: this.props.downloadManager.downloadingJar(),
       resources_downloading: this.props.downloadManager.downloadingResources(),
-      repo_downloading: this.props.downloadManager.downloadingRepo()
+      repo_downloading: this.props.downloadManager.downloadingRepo(),
+      grasscutter_set: gc_path && gc_path !== '',
     })
   }
 

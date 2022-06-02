@@ -30,12 +30,6 @@ export default class TextInput extends React.Component<IProps, IState> {
   }
 
   static getDerivedStateFromProps(props: IProps, state: IState) {
-    if (!props.readOnly) {
-      return {
-        value: state.value
-      }
-    }
-
     return { value: props.value || '' }
   }
 
