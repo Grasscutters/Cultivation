@@ -29,6 +29,12 @@ lazy_static! {
 fn main() {
   process_watcher();
 
+  // Make BG folder if it doesn't exist
+  let bg_folder = format!("{}/bg", system_helpers::install_location());
+  if !std::path::Path::new(&bg_folder).exists() {
+    std::fs::create_dir_all(&bg_folder).unwrap();
+  }
+
   tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![
       enable_process_watcher,
@@ -42,6 +48,8 @@ fn main() {
       system_helpers::run_program,
       system_helpers::run_jar,
       system_helpers::open_in_browser,
+      system_helpers::get_local_bg_path,
+      system_helpers::copy_file,
       proxy::set_proxy_addr,
       proxy::generate_ca_files,
       unzip::unzip,
@@ -137,6 +145,7 @@ async fn req_get(url: String) -> String {
 
 #[tauri::command]
 async fn get_bg_file(bg_path: String) -> String {
+  let install_loc = system_helpers::install_location();
   let query = web::query("https://api.grasscutters.xyz/cultivation/query").await;
   let response_data: APIQuery = match serde_json::from_str(&query) {
     Ok(data) => data,
@@ -149,9 +158,8 @@ async fn get_bg_file(bg_path: String) -> String {
   let file_name = response_data.bg_file.to_string();
 
   // First we see if the file already exists in our local bg folder.
-  if file_helpers::dir_exists(format!(".\\bg\\{}", file_name).as_str()) {
-    let cwd = std::env::current_dir().unwrap();
-    return format!("{}\\{}", cwd.display(), response_data.bg_file.as_str());
+  if file_helpers::dir_exists(format!("{}\\bg\\{}", install_loc, file_name).as_str()) {
+    return format!("{}\\{}", install_loc, response_data.bg_file.as_str());
   }
 
   // Now we check if the bg folder, which is one directory above the game_path, exists.
@@ -169,13 +177,12 @@ async fn get_bg_file(bg_path: String) -> String {
   }
 
   // The image exists, lets copy it to our local '\bg' folder.
-  let bg_img_path_local = format!(".\\bg\\{}", file_name.as_str());
+  let bg_img_path_local = format!("{}\\bg\\{}", install_loc, file_name.as_str());
 
   return match std::fs::copy(bg_img_path, bg_img_path_local) {
     Ok(_) => {
       // Copy was successful, lets return true.
-      let cwd = std::env::current_dir().unwrap();
-      format!("{}\\{}", cwd.display(), response_data.bg_file.as_str())
+      format!("{}\\{}", install_loc, response_data.bg_file.as_str())
     }
     Err(e) => {
       // Copy failed, lets return false

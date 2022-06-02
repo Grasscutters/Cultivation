@@ -88,11 +88,11 @@ class App extends React.Component<IProps, IState> {
 
         bgLoc && this.setState({
           bgFile: bgLoc
-        })
+        }, this.forceUpdate)
       }
     } else this.setState({
       bgFile: custom_bg
-    })
+    }, this.forceUpdate)
 
     if (!cert_generated) {
       // Generate the certificate
@@ -109,15 +109,13 @@ class App extends React.Component<IProps, IState> {
         isDownloading: downloadHandler.getDownloads().filter(d => d.status !== 'finished')?.length > 0
       })
     }, 1000)
-    
-    console.log('mounting app component with background: ' + this.state.bgFile)
   }
 
   render() {
     return (
       <div className="App" style={
         this.state.bgFile ? {
-          background: `url(${this.state.bgFile}) fixed`,
+          background: `url("${this.state.bgFile}") fixed`,
         } : {}
       }>
         <TopBar
