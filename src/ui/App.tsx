@@ -76,8 +76,8 @@ class App extends React.Component<IProps, IState> {
     const cert_generated = await getConfigOption('cert_generated')
     const game_exe = await getConfigOption('game_install_path')
     const custom_bg = await getConfigOption('customBackground')
-    const game_path = game_exe.substring(0, game_exe.lastIndexOf('\\'))
-    const root_path = game_path.substring(0, game_path.lastIndexOf('\\'))
+    const game_path = game_exe.substring(0, game_exe.replace(/\\/g, '/').lastIndexOf('/'))
+    const root_path = game_path.substring(0, game_path.replace(/\\/g, '/').lastIndexOf('/'))
 
     if(!custom_bg) {
       if(game_path) {
