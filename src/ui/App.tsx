@@ -95,9 +95,6 @@ class App extends React.Component<IProps, IState> {
     } else {
       const isUrl = /^(?:http(s)?:\/\/)/gm.test(custom_bg)
 
-      console.log(isUrl)
-
-
       if (!isUrl) {
         this.setState({
           bgFile: convertFileSrc(custom_bg)
