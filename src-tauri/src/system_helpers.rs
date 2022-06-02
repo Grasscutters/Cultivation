@@ -61,7 +61,5 @@ pub fn install_location() -> String {
   // Get the path to the executable.
   exe_path.pop();
 
-  println!("{}", exe_path.to_str().unwrap().to_string());
-
   return exe_path.to_str().unwrap().to_string();
 }

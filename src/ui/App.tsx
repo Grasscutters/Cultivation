@@ -117,7 +117,7 @@ class App extends React.Component<IProps, IState> {
     return (
       <div className="App" style={
         this.state.bgFile ? {
-          background: `url(${this.state.bgFile} fixed`,
+          background: `url(${this.state.bgFile}) fixed`,
         } : {}
       }>
         <TopBar
