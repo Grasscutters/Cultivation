@@ -19,6 +19,6 @@ export async function getThemeList() {
   // Do some invoke to backend to get the theme list
 }
 
-export async function loadTheme() {
+export async function loadTheme(theme: string) {
   // Do some invoke to backend to load the theme
 }
