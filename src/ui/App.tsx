@@ -98,8 +98,12 @@ class App extends React.Component<IProps, IState> {
       const isUrl = /^(?:http(s)?:\/\/)/gm.test(custom_bg)
 
       if (!isUrl) {
+        const isValid = await invoke('dir_exists', {
+          path: custom_bg
+        })
+
         this.setState({
-          bgFile: convertFileSrc(custom_bg)
+          bgFile: isValid ? convertFileSrc(custom_bg) : DEFAULT_BG
         }, this.forceUpdate)
       } else {
         // Check if URL returns a valid image.
