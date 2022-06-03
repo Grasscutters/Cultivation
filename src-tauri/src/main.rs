@@ -4,7 +4,7 @@ windows_subsystem = "windows"
 )]
 
 use lazy_static::lazy_static;
-use std::sync::Mutex;
+use std::{sync::Mutex, collections::HashMap};
 
 use std::thread;
 use sysinfo::{System, SystemExt};
@@ -44,6 +44,7 @@ fn main() {
       get_bg_file,
       base64_decode,
       is_game_running,
+      get_theme_list,
       system_helpers::run_command,
       system_helpers::run_program,
       system_helpers::run_jar,
@@ -141,6 +142,42 @@ async fn req_get(url: String) -> String {
 
   // Send the response body back to the client.
   return response;
+}
+
+#[tauri::command]
+async fn get_theme_list() -> Vec<HashMap<String, String>> {
+  let theme_loc = format!("{}/themes", system_helpers::install_location());
+
+  // Ensure folder exists
+  if !std::path::Path::new(&theme_loc).exists() {
+    std::fs::create_dir_all(&theme_loc).unwrap();
+  }
+
+  // Read each index.json folder in each theme folder
+  let mut themes = Vec::new();
+
+  for entry in std::fs::read_dir(&theme_loc).unwrap() {
+    let entry = entry.unwrap();
+    let path = entry.path();
+
+    if path.is_dir() {
+      let index_path = format!("{}/index.json", path.to_str().unwrap());
+
+      if std::path::Path::new(&index_path).exists() {
+        let theme_json = std::fs::read_to_string(&index_path).unwrap();
+
+        let mut map = HashMap::new();
+
+        map.insert("json".to_string(), theme_json);
+        map.insert("path".to_string(), path.to_str().unwrap().to_string());
+        
+        // Push key-value pair containing "json" and "path"
+        themes.push(map);
+      }
+    }
+  }
+
+  return themes;
 }
 
 #[tauri::command]
