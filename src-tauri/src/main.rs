@@ -50,6 +50,7 @@ fn main() {
       system_helpers::run_jar,
       system_helpers::open_in_browser,
       system_helpers::copy_file,
+      system_helpers::install_location,
       proxy::set_proxy_addr,
       proxy::generate_ca_files,
       unzip::unzip,
@@ -145,8 +146,8 @@ async fn req_get(url: String) -> String {
 }
 
 #[tauri::command]
-async fn get_theme_list() -> Vec<HashMap<String, String>> {
-  let theme_loc = format!("{}/themes", system_helpers::install_location());
+async fn get_theme_list(dataDir: String) -> Vec<HashMap<String, String>> {
+  let theme_loc = format!("{}/themes", dataDir);
 
   // Ensure folder exists
   if !std::path::Path::new(&theme_loc).exists() {

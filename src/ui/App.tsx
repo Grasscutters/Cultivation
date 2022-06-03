@@ -18,9 +18,10 @@ import Game from './components/menu/Game'
 import RightBar from './components/RightBar'
 import { getConfigOption, setConfigOption } from '../utils/configuration'
 import { invoke } from '@tauri-apps/api'
-import { dataDir } from '@tauri-apps/api/path'
+import { appDir, dataDir } from '@tauri-apps/api/path'
 import { appWindow } from '@tauri-apps/api/window'
 import { convertFileSrc } from '@tauri-apps/api/tauri'
+import { getTheme, loadTheme } from '../utils/themes'
 
 interface IProps {
   [key: string]: never;
@@ -81,6 +82,13 @@ class App extends React.Component<IProps, IState> {
     const custom_bg = await getConfigOption('customBackground')
     const game_path = game_exe.substring(0, game_exe.replace(/\\/g, '/').lastIndexOf('/'))
     const root_path = game_path.substring(0, game_path.replace(/\\/g, '/').lastIndexOf('/'))
+
+    // Load a theme if it exists
+    const theme = await getConfigOption('theme')
+    if (theme) {
+      const themeObj = await getTheme(theme)
+      loadTheme(themeObj, document)
+    }
 
     if(!custom_bg || !/png|jpg|jpeg$/.test(custom_bg)) {
       if(game_path) {

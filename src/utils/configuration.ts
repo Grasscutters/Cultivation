@@ -18,6 +18,7 @@ let defaultConfig: Configuration
     language: 'en',
     customBackground: '',
     cert_generated: false,
+    theme: 'default'
   }
 })()
 
@@ -37,6 +38,7 @@ export interface Configuration {
   language: string
   customBackground: string
   cert_generated: boolean
+  theme: string;
 }
 
 export async function setConfigOption(key: string, value: any): Promise<void> {

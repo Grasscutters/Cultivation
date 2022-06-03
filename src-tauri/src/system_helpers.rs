@@ -77,6 +77,7 @@ pub fn copy_file(path: String, new_path: String) -> bool {
   }
 }
 
+#[tauri::command]
 pub fn install_location() -> String {
   let mut exe_path = std::env::current_exe().unwrap();
 
