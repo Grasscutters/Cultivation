@@ -11,6 +11,7 @@ interface IProps {
   readOnly?: boolean;
   id?: string;
   clearable?: boolean;
+  customClearBehaviour?: () => void;
   style?: {
     [key: string]: any;
   }
@@ -51,6 +52,10 @@ export default class TextInput extends React.Component<IProps, IState> {
         {
           this.props.clearable ?
             <div className="TextClear" onClick={() => {
+              // Run custom behaviour first
+              console.log('cleared')
+              if (this.props.customClearBehaviour) return this.props.customClearBehaviour()
+
               this.setState({ value: '' })
     
               if (this.props.onChange) this.props.onChange('')

@@ -154,7 +154,17 @@ export default class Options extends React.Component<IProps, IState> {
             <Tr text="options.background" />
           </div>
           <div className='OptionValue'>
-            <DirInput onChange={this.setCustomBackground} value={this.state?.bg_url_or_path} extensions={['png', 'jpg', 'jpeg']} readonly={false} />
+            <DirInput
+              onChange={this.setCustomBackground}
+              value={this.state?.bg_url_or_path}
+              extensions={['png', 'jpg', 'jpeg']}
+              readonly={false}
+              clearable={true}
+              customClearBehaviour={async () => {
+                await setConfigOption('customBackground', '')
+                window.location.reload()
+              }}
+            />
           </div>
         </div>
 
