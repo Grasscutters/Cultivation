@@ -85,7 +85,7 @@ class App extends React.Component<IProps, IState> {
 
     // Load a theme if it exists
     const theme = await getConfigOption('theme')
-    if (theme) {
+    if (theme && theme !== 'default') {
       const themeObj = await getTheme(theme)
       loadTheme(themeObj, document)
     }
