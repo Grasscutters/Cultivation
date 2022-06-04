@@ -30,10 +30,6 @@ export default class TextInput extends React.Component<IProps, IState> {
     }
   }
 
-  static getDerivedStateFromProps(props: IProps, state: IState) {
-    return { value: props.value || '' }
-  }
-
   async componentDidMount() {
     if (this.props.initalValue) {
       this.setState({

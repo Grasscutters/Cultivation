@@ -65,7 +65,7 @@
     scrollbar-width: none;
 }
 
-.NewsContent  tbody::-webkit-scrollbar {
+.NewsContent tbody::-webkit-scrollbar {
     display: none;
 }
 
