@@ -95,6 +95,7 @@ export default class DirInput extends React.Component<IProps, IState> {
             this.setState({ value: text })
 
             if (this.props.onChange) this.props.onChange(text)
+            this.forceUpdate()
           }}
           customClearBehaviour={this.props.customClearBehaviour}
         />
