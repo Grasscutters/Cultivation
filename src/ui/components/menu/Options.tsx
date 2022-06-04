@@ -43,6 +43,9 @@ export default class Options extends React.Component<IProps, IState> {
       theme: ''
     }
 
+    this.setGameExec = this.setGameExec.bind(this)
+    this.setGrasscutterJar = this.setGrasscutterJar.bind(this)
+    this.setJavaPath = this.setJavaPath.bind(this)
     this.toggleGrasscutterWithGame = this.toggleGrasscutterWithGame.bind(this)
     this.setCustomBackground = this.setCustomBackground.bind(this)
   }
@@ -68,14 +71,26 @@ export default class Options extends React.Component<IProps, IState> {
 
   setGameExec(value: string) {
     setConfigOption('game_install_path', value)
+
+    this.setState({
+      game_install_path: value
+    })
   }
 
   setGrasscutterJar(value: string) {
     setConfigOption('grasscutter_path', value)
+
+    this.setState({
+      grasscutter_path: value
+    })
   }
 
   setJavaPath(value: string) {
     setConfigOption('java_path', value)
+
+    this.setState({
+      java_path: value
+    })
   }
 
   async setLanguage(value: string) {

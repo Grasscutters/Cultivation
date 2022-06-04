@@ -53,7 +53,6 @@ export default class TextInput extends React.Component<IProps, IState> {
           this.props.clearable ?
             <div className="TextClear" onClick={() => {
               // Run custom behaviour first
-              console.log('cleared')
               if (this.props.customClearBehaviour) return this.props.customClearBehaviour()
 
               this.setState({ value: '' })
