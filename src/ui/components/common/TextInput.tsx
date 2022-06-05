@@ -11,6 +11,7 @@ interface IProps {
   readOnly?: boolean;
   id?: string;
   clearable?: boolean;
+  customClearBehaviour?: () => void;
   style?: {
     [key: string]: any;
   }
@@ -29,16 +30,16 @@ export default class TextInput extends React.Component<IProps, IState> {
     }
   }
 
-  static getDerivedStateFromProps(props: IProps, state: IState) {
-    return { value: props.value || '' }
-  }
-
   async componentDidMount() {
     if (this.props.initalValue) {
       this.setState({
         value: this.props.initalValue
       })
     }
+  }
+
+  static getDerivedStateFromProps(props: IProps, state: IState) {
+    return { value: props.value || state.value }
   }
 
   render() {
@@ -51,6 +52,9 @@ export default class TextInput extends React.Component<IProps, IState> {
         {
           this.props.clearable ?
             <div className="TextClear" onClick={() => {
+              // Run custom behaviour first
+              if (this.props.customClearBehaviour) return this.props.customClearBehaviour()
+
               this.setState({ value: '' })
     
               if (this.props.onChange) this.props.onChange('')

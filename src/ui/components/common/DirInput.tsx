@@ -14,6 +14,7 @@ interface IProps {
   readonly?: boolean
   placeholder?: string
   folder?: boolean
+  customClearBehaviour?: () => void
 }
 
 interface IState {
@@ -94,7 +95,9 @@ export default class DirInput extends React.Component<IProps, IState> {
             this.setState({ value: text })
 
             if (this.props.onChange) this.props.onChange(text)
+            this.forceUpdate()
           }}
+          customClearBehaviour={this.props.customClearBehaviour}
         />
         <div className="FileSelectIcon" onClick={this.handleIconClick}>
           <img src={File} />

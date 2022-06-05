@@ -7,7 +7,7 @@ let defaultConfig: Configuration
 (async() => {
   defaultConfig = {
     toggle_grasscutter: false,
-    game_install_path: 'C:\\Program Files\\Genshin Impact\\Genshin Impact game\\Genshin Impact.exe',
+    game_install_path: 'C:\\Program Files\\Genshin Impact\\Genshin Impact game\\GenshinImpact.exe',
     grasscutter_with_game: false,
     grasscutter_path: '',
     java_path: '',
@@ -18,6 +18,7 @@ let defaultConfig: Configuration
     language: 'en',
     customBackground: '',
     cert_generated: false,
+    theme: 'default'
   }
 })()
 
@@ -37,6 +38,7 @@ export interface Configuration {
   language: string
   customBackground: string
   cert_generated: boolean
+  theme: string;
 }
 
 export async function setConfigOption(key: string, value: any): Promise<void> {

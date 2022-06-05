@@ -1,13 +1,15 @@
 import React from 'react'
+import { invoke } from '@tauri-apps/api'
+import { dataDir } from '@tauri-apps/api/path'
 import DirInput from '../common/DirInput'
 import Menu from './Menu'
 import Tr, { getLanguages } from '../../../utils/language'
-import './Options.css'
 import { setConfigOption, getConfig, getConfigOption } from '../../../utils/configuration'
 import Checkbox from '../common/Checkbox'
 import Divider from './Divider'
-import { invoke } from '@tauri-apps/api'
-import { dataDir } from '@tauri-apps/api/path'
+import { getThemeList } from '../../../utils/themes'
+
+import './Options.css'
 
 interface IProps {
   closeFn: () => void;
@@ -21,6 +23,8 @@ interface IState {
   language_options: { [key: string]: string }[],
   current_language: string
   bg_url_or_path: string
+  themes: string[]
+  theme: string
 }
 
 export default class Options extends React.Component<IProps, IState> {
@@ -34,9 +38,14 @@ export default class Options extends React.Component<IProps, IState> {
       grasscutter_with_game: false,
       language_options: [],
       current_language: 'en',
-      bg_url_or_path: ''
+      bg_url_or_path: '',
+      themes: ['default'],
+      theme: ''
     }
 
+    this.setGameExec = this.setGameExec.bind(this)
+    this.setGrasscutterJar = this.setGrasscutterJar.bind(this)
+    this.setJavaPath = this.setJavaPath.bind(this)
     this.toggleGrasscutterWithGame = this.toggleGrasscutterWithGame.bind(this)
     this.setCustomBackground = this.setCustomBackground.bind(this)
   }
@@ -52,7 +61,9 @@ export default class Options extends React.Component<IProps, IState> {
       grasscutter_with_game: config.grasscutter_with_game || false,
       language_options: languages,
       current_language: config.language || 'en',
-      bg_url_or_path: config.customBackground || ''
+      bg_url_or_path: config.customBackground || '',
+      themes: (await getThemeList()).map(t => t.name),
+      theme: config.theme || 'default'
     })
 
     this.forceUpdate()
@@ -60,18 +71,36 @@ export default class Options extends React.Component<IProps, IState> {
 
   setGameExec(value: string) {
     setConfigOption('game_install_path', value)
+
+    this.setState({
+      game_install_path: value
+    })
   }
 
   setGrasscutterJar(value: string) {
     setConfigOption('grasscutter_path', value)
+
+    this.setState({
+      grasscutter_path: value
+    })
   }
 
   setJavaPath(value: string) {
     setConfigOption('java_path', value)
+
+    this.setState({
+      java_path: value
+    })
   }
 
-  setLanguage(value: string) {
-    setConfigOption('language', value)
+  async setLanguage(value: string) {
+    await setConfigOption('language', value)
+    window.location.reload()
+  }
+
+  async setTheme(value: string) {
+    await setConfigOption('theme', value)
+    window.location.reload()
   }
 
   async toggleGrasscutterWithGame() {
@@ -142,6 +171,28 @@ export default class Options extends React.Component<IProps, IState> {
 
         <div className='OptionSection'>
           <div className='OptionLabel'>
+            <Tr text="options.theme" />
+          </div>
+          <div className='OptionValue'>
+            <select value={this.state.theme} onChange={(event) => {
+              this.setTheme(event.target.value)
+            }}>
+              {this.state.themes.map(t => (
+                <option
+                  key={t}
+                  value={t}>
+
+                  {t}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <Divider />
+
+        <div className='OptionSection'>
+          <div className='OptionLabel'>
             <Tr text="options.java_path" />
           </div>
           <div className='OptionValue'>
@@ -154,7 +205,17 @@ export default class Options extends React.Component<IProps, IState> {
             <Tr text="options.background" />
           </div>
           <div className='OptionValue'>
-            <DirInput onChange={this.setCustomBackground} value={this.state?.bg_url_or_path} extensions={['png', 'jpg', 'jpeg']} readonly={false} />
+            <DirInput
+              onChange={this.setCustomBackground}
+              value={this.state?.bg_url_or_path}
+              extensions={['png', 'jpg', 'jpeg']}
+              readonly={false}
+              clearable={true}
+              customClearBehaviour={async () => {
+                await setConfigOption('customBackground', '')
+                window.location.reload()
+              }}
+            />
           </div>
         </div>
 

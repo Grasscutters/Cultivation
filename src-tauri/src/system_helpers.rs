@@ -36,9 +36,9 @@ pub fn run_command(command: String) {
 #[tauri::command]
 pub fn run_jar(path: String, execute_in: String, java_path: String) {
   let command = if java_path.is_empty() {
-    format!("java -jar {}", path)
+    format!("java -jar \"{}\"", path)
   } else {
-    format!("\"{}\" -jar {}", java_path, path)
+    format!("\"{}\" -jar \"{}\"", java_path, path)
   };
 
   // Open the program from the specified path.
@@ -77,6 +77,7 @@ pub fn copy_file(path: String, new_path: String) -> bool {
   }
 }
 
+#[tauri::command]
 pub fn install_location() -> String {
   let mut exe_path = std::env::current_exe().unwrap();
 
