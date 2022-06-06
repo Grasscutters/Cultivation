@@ -73,7 +73,9 @@ export default class Downloads extends React.Component<IProps, IState> {
     if (gc_path) {
       const resources_exist: boolean = await invoke('dir_exists', {
         path: path + '\\resources'
-      })
+      }) as boolean && !(await invoke('dir_is_empty', {
+        path: path + '\\resources'
+      })) as boolean
 
       this.setState({
         grasscutter_set: gc_path !== '',
@@ -153,7 +155,7 @@ export default class Downloads extends React.Component<IProps, IState> {
       if (await invoke('dir_exists', {
         path: folder + '\\resources'
       })) {
-        await invoke('delete_dir', {
+        await invoke('dir_delete', {
           path: folder + '\\resources'
         })
       }

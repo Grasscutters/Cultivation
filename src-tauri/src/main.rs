@@ -59,6 +59,7 @@ fn main() {
       file_helpers::rename,
       file_helpers::dir_exists,
       file_helpers::dir_is_empty,
+      file_helpers::dir_delete,
       downloader::download_file,
       downloader::stop_download,
       lang::get_lang,

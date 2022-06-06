@@ -28,3 +28,8 @@ pub fn dir_exists(path: &str) -> bool {
 pub fn dir_is_empty(path: &str) -> bool {
   return fs::read_dir(&path).unwrap().count() == 0;
 }
+
+#[tauri::command]
+pub fn dir_delete(path: &str) {
+  fs::remove_dir_all(path).unwrap();
+}
