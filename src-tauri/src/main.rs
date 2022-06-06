@@ -56,6 +56,7 @@ fn main() {
       unzip::unzip,
       file_helpers::rename,
       file_helpers::dir_exists,
+      file_helpers::dir_is_empty,
       downloader::download_file,
       downloader::stop_download,
       lang::get_lang,

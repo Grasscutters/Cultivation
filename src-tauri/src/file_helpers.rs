@@ -23,3 +23,8 @@ pub fn rename(path: String, new_name: String) {
 pub fn dir_exists(path: &str) -> bool {
   return fs::metadata(&path).is_ok();
 }
+
+#[tauri::command]
+pub fn dir_is_empty(path: &str) -> bool {
+  return fs::read_dir(&path).unwrap().count() == 0;
+}

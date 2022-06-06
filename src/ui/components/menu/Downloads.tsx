@@ -149,6 +149,15 @@ export default class Downloads extends React.Component<IProps, IState> {
   async downloadResources() {
     const folder = await this.getGrasscutterFolder()
     this.props.downloadManager.addDownload(RESOURCES_DOWNLOAD, folder + '\\resources.zip', async () => {
+      // Delete the existing folder if it exists 
+      if (await invoke('dir_exists', {
+        path: folder + '\\resources'
+      })) {
+        await invoke('delete_dir', {
+          path: folder + '\\resources'
+        })
+      }
+
       await unzip(folder + '\\resources.zip', folder + '\\', () => {
         // Rename folder to resources
         invoke('rename', {
