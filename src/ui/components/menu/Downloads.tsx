@@ -11,6 +11,7 @@ import Divider from './Divider'
 import { getConfigOption, setConfigOption } from '../../../utils/configuration'
 import { invoke } from '@tauri-apps/api'
 import { listen } from '@tauri-apps/api/event'
+import HelpButton from '../common/HelpButton'
 
 const STABLE_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/stable.zip'
 const DEV_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/development.zip'
@@ -73,7 +74,9 @@ export default class Downloads extends React.Component<IProps, IState> {
     if (gc_path) {
       const resources_exist: boolean = await invoke('dir_exists', {
         path: path + '\\resources'
-      })
+      }) as boolean && !(await invoke('dir_is_empty', {
+        path: path + '\\resources'
+      })) as boolean
 
       this.setState({
         grasscutter_set: gc_path !== '',
@@ -149,6 +152,15 @@ export default class Downloads extends React.Component<IProps, IState> {
   async downloadResources() {
     const folder = await this.getGrasscutterFolder()
     this.props.downloadManager.addDownload(RESOURCES_DOWNLOAD, folder + '\\resources.zip', async () => {
+      // Delete the existing folder if it exists 
+      if (await invoke('dir_exists', {
+        path: folder + '\\resources'
+      })) {
+        await invoke('dir_delete', {
+          path: folder + '\\resources'
+        })
+      }
+
       await unzip(folder + '\\resources.zip', folder + '\\', () => {
         // Rename folder to resources
         invoke('rename', {
@@ -183,6 +195,9 @@ export default class Downloads extends React.Component<IProps, IState> {
             <Tr text={
               this.state.grasscutter_set ? 'downloads.grasscutter_stable' : 'downloads.grasscutter_stable_update'
             } />
+            <HelpButton>
+              <Tr text="help.gc_stable_jar" />
+            </HelpButton>
           </div>
           <div className='DownloadValue'>
             <BigButton disabled={this.state.grasscutter_downloading} onClick={this.downloadGrasscutterStable} id="grasscutterStableBtn" >
@@ -195,6 +210,9 @@ export default class Downloads extends React.Component<IProps, IState> {
             <Tr text={
               this.state.grasscutter_set ? 'downloads.grasscutter_latest' : 'downloads.grasscutter_latest_update'
             } />
+            <HelpButton>
+              <Tr text="help.gc_dev_jar" />
+            </HelpButton>
           </div>
           <div className='DownloadValue'>
             <BigButton disabled={this.state.grasscutter_downloading} onClick={this.downloadGrasscutterLatest} id="grasscutterLatestBtn" >
@@ -210,6 +228,9 @@ export default class Downloads extends React.Component<IProps, IState> {
             <Tr text={
               this.state.grasscutter_set ? 'downloads.grasscutter_stable_data' : 'downloads.grasscutter_stable_data_update'
             } />
+            <HelpButton>
+              <Tr text="help.gc_stable_data" />
+            </HelpButton>
           </div>
           <div className='DownloadValue'>
             <BigButton disabled={this.state.repo_downloading} onClick={this.downloadGrasscutterStableRepo} id="grasscutterStableRepo" >
@@ -222,6 +243,9 @@ export default class Downloads extends React.Component<IProps, IState> {
             <Tr text={
               this.state.grasscutter_set ? 'downloads.grasscutter_latest_data' : 'downloads.grasscutter_latest_data_update'
             } />
+            <HelpButton>
+              <Tr text="help.gc_dev_data" />
+            </HelpButton>
           </div>
           <div className='DownloadValue'>
             <BigButton disabled={this.state.repo_downloading} onClick={this.downloadGrasscutterStableRepo} id="grasscutterDevRepo" >
@@ -235,6 +259,9 @@ export default class Downloads extends React.Component<IProps, IState> {
         <div className='DownloadMenuSection'>
           <div className='DownloadLabel'>
             <Tr text="downloads.resources" />
+            <HelpButton>
+              <Tr text="help.resources" />
+            </HelpButton>
           </div>
           <div className='DownloadValue'>
             <BigButton disabled={this.state.resources_downloading || !this.state.grasscutter_set || this.state.resources_exist} onClick={this.downloadResources} id="resourcesBtn" >

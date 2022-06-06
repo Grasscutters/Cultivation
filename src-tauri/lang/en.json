@@ -7,9 +7,7 @@
     "ip_placeholder": "Server Address...",
     "port_placeholder": "Port...",
     "files_downloading": "Files Downloading: ",
-    "files_extracting": "Files Extracting: ",
-    "port_help_text": "Ensure this is the Dispatch server port, not the Game server port. This is almost always '443'.",
-    "game_help_text": "You do not need to use a separate copy to play with Grasscutter. This is for either downgrading to 2.6 or if you do not have the game installed."
+    "files_extracting": "Files Extracting: "
   },
   "options": {
     "game_exec": "Set Game Executable",
@@ -46,5 +44,14 @@
   "news": {
     "latest_commits": "Recent Commits",
     "latest_version": "Latest Version"
+  },
+  "help": {
+    "port_help_text": "Ensure this is the Dispatch server port, not the Game server port. This is almost always '443'.",
+    "game_help_text": "You do not need to use a separate copy to play with Grasscutter. This is for either downgrading to 2.6 or if you do not have the game installed.",
+    "gc_stable_jar": "Download the current stable Grasscutter build, which includes jar file and data files.",
+    "gc_dev_jar": "Download the latest development Grasscutter build, which includes jar file and data files.",
+    "gc_stable_data": "Download the current stable Grasscutter data files, which does not come with a jar file. This is useful for updating.",
+    "gc_dev_data": "Download the latest development Grasscutter data files, which does not come with a jar file. This is useful for updating.",
+    "resources": "These are also required to run a Grasscutter server. This button will be grey if you have an existing resources folder with contents inside"
   }
 }

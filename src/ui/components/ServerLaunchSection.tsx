@@ -59,8 +59,8 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       ip: config.last_ip || '',
       port: config.last_port || '',
       ipPlaceholder: await translate('main.ip_placeholder'),
-      portPlaceholder: await translate('main.port_placeholder'),
-      portHelpText: await translate('main.port_help_text')
+      portPlaceholder: await translate('help.port_placeholder'),
+      portHelpText: await translate('help.port_help_text')
     })
   }
 
@@ -104,6 +104,23 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
 
       // Connect to proxy
       await invoke('connect', { port: 8365, certificatePath: await dataDir() + '\\cultivation\\ca' })
+
+      // Open server as well if the options are set
+      if (config.grasscutter_with_game) {
+        let jarFolder = config.grasscutter_path
+
+        if (jarFolder.includes('/')) {
+          jarFolder = jarFolder.substring(0, config.grasscutter_path.lastIndexOf('/'))
+        } else {
+          jarFolder = jarFolder.substring(0, config.grasscutter_path.lastIndexOf('\\'))
+        }
+
+        await invoke('run_jar', {
+          path: config.grasscutter_path,
+          executeIn: jarFolder,
+          javaPath: config.java_path || ''
+        })
+      }
     }
   
     // Launch the program

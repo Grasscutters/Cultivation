@@ -20,11 +20,14 @@
 
 .HelpContents {
   text-align: center;
+  position: relative;
 }
 
 .HelpContents .MiniDialog {
-  bottom: 80%;
-  left: 35%;
-  width: 60%;
-  height: 60%;
+  position: absolute;
+
+  bottom: 40px;
+  right: -450%;
+  width: 200px;
+  height: 120px;
 }
