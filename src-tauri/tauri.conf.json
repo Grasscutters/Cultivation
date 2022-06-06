@@ -31,7 +31,7 @@
     },
     "bundle": {
       "active": true,
-      "category": "DeveloperTool",
+      "category": "Game",
       "copyright": "",
       "deb": {
         "depends": []
@@ -45,7 +45,8 @@
         "icons/icon.ico"
       ],
       "identifier": "xyz.grasscutters",
-      "longDescription": "",
+      "shortDescription": "A game launcher.",
+      "longDescription": "A launcher for a certain anime game that proxies all related game traffic to external servers.",
       "macOS": {
         "entitlements": null,
         "exceptionDomain": "",
@@ -53,20 +54,30 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [],
-      "shortDescription": "",
+      "resources": [
+        "lang/*.json"
+      ],
       "targets": "all",
       "windows": {
+        "allowDowngrades": false,
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
-        "timestampUrl": ""
+        "timestampUrl": "",
+        "wix": {
+          "fragmentPaths": ["resources/wix.wxs"]
+        }
       }
     },
     "security": {
       "csp": "default-src 'self' https://asset.localhost; img-src 'self'; img-src https://* asset: https://asset.localhost"
     },
     "updater": {
-      "active": false
+      "active": false,
+      "dialog": true,
+      "endpoints": [
+        "https://api.grasscutters.xyz/cultivation/update?version={{current_version}}"
+      ],
+      "pubkey": ""
     },
     "windows": [
       {

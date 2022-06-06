@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <!-- Force installer to run as Administrator. -->
+    <Property Id="MSIUSEREALADMINDETECTION" Value="1" />
+  </Fragment>
+</Wix>
