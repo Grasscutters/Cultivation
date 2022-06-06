@@ -41,6 +41,7 @@ pub async fn download_file(window: tauri::Window, url: &str, path: &str) -> Resu
     }
   };
   let mut downloaded: u64 = 0;
+  let mut total_downloaded: u64 = 0;
 
   // File stream
   let mut stream = res.bytes_stream();
@@ -77,6 +78,8 @@ pub async fn download_file(window: tauri::Window, url: &str, path: &str) -> Resu
     let new = min(downloaded + (chunk.len() as u64), total_size);
     downloaded = new;
 
+    total_downloaded = total_downloaded + chunk.len() as u64;
+
     let mut res_hash = std::collections::HashMap::new();
 
     res_hash.insert(
@@ -92,6 +95,11 @@ pub async fn download_file(window: tauri::Window, url: &str, path: &str) -> Resu
     res_hash.insert(
       "path".to_string(),
       path.to_string(),
+    );
+
+    res_hash.insert(
+      "total_downloaded".to_string(),
+      total_downloaded.to_string(),
     );
 
     // Create event to send to frontend

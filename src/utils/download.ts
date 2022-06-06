@@ -7,6 +7,7 @@ export default class DownloadHandler {
     path: string,
     progress: number,
     total: number,
+    total_downloaded: number,
     status: string,
     startTime: number,
     error?: string,
@@ -24,16 +25,25 @@ export default class DownloadHandler {
         downloaded: string,
         total: string,
         path: string,
+        total_downloaded: string,
       } = payload
 
       const index = this.downloads.findIndex(download => download.path === obj.path)
       this.downloads[index].progress = parseInt(obj.downloaded, 10)
       this.downloads[index].total = parseInt(obj.total, 10)
+      this.downloads[index].total_downloaded = parseInt(obj.total_downloaded, 10)
 
       // Set download speed based on startTime
       const now = Date.now()
       const timeDiff = now - this.downloads[index].startTime
-      const speed = (this.downloads[index].progress / timeDiff) * 1000
+      let speed = (this.downloads[index].progress / timeDiff) * 1000
+
+      if (this.downloads[index].total === 0) {
+        // If our total is 0, then we are downloading a file without a size
+        // Calculate the average speed based total_downloaded and startTme
+        speed = (this.downloads[index].total_downloaded / timeDiff) * 1000
+      }
+
       this.downloads[index].speed = byteToString(speed) + '/s'
     })
 
@@ -104,6 +114,7 @@ export default class DownloadHandler {
       path,
       progress: 0,
       total: 0,
+      total_downloaded: 0,
       status: 'downloading',
       startTime: Date.now(),
       onFinish,
@@ -134,7 +145,7 @@ export default class DownloadHandler {
   getTotalAverage() {
     const files = this.downloads.filter(d => d.status === 'downloading')
     const total = files.reduce((acc, d) => acc + d.total, 0)
-    const progress = files.reduce((acc, d) => acc + d.progress, 0)
+    const progress = files.reduce((acc, d) => d.progress !== 0 ? acc + d.progress : acc + d.total_downloaded, 0)
     let speedStr = '0 B/s'
 
     // Get download speed based on startTimes
