@@ -59,8 +59,8 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       ip: config.last_ip || '',
       port: config.last_port || '',
       ipPlaceholder: await translate('main.ip_placeholder'),
-      portPlaceholder: await translate('main.port_placeholder'),
-      portHelpText: await translate('main.port_help_text')
+      portPlaceholder: await translate('help.port_placeholder'),
+      portHelpText: await translate('help.port_help_text')
     })
   }
 

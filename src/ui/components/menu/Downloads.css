@@ -25,3 +25,7 @@
 .DownloadValue .BigButtonText {
   font-size: 12px;
 }
+
+.DownloadMenuSection .HelpButton img {
+  filter: none;
+}
