@@ -86,3 +86,8 @@ pub fn install_location() -> String {
 
   return exe_path.to_str().unwrap().to_string();
 }
+
+#[tauri::command]
+pub fn is_elevated() -> bool {
+  return is_elevated::is_elevated();
+}
