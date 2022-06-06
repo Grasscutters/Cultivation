@@ -18,7 +18,7 @@ import Game from './components/menu/Game'
 import RightBar from './components/RightBar'
 import { getConfigOption, setConfigOption } from '../utils/configuration'
 import { invoke } from '@tauri-apps/api'
-import { appDir, dataDir } from '@tauri-apps/api/path'
+import { dataDir } from '@tauri-apps/api/path'
 import { appWindow } from '@tauri-apps/api/window'
 import { convertFileSrc } from '@tauri-apps/api/tauri'
 import { getTheme, loadTheme } from '../utils/themes'
@@ -87,7 +87,7 @@ class App extends React.Component<IProps, IState> {
     const theme = await getConfigOption('theme')
     if (theme && theme !== 'default') {
       const themeObj = await getTheme(theme)
-      loadTheme(themeObj, document)
+      await loadTheme(themeObj, document)
     }
 
     if(!custom_bg || !/png|jpg|jpeg$/.test(custom_bg)) {
@@ -103,7 +103,7 @@ class App extends React.Component<IProps, IState> {
         }, this.forceUpdate)
       }
     } else {
-      const isUrl = /^(?:http(s)?:\/\/)/gm.test(custom_bg)
+      const isUrl = /^http(s)?:\/\//gm.test(custom_bg)
 
       if (!isUrl) {
         const isValid = await invoke('dir_exists', {
