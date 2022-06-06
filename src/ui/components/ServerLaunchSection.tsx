@@ -104,6 +104,23 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
 
       // Connect to proxy
       await invoke('connect', { port: 8365, certificatePath: await dataDir() + '\\cultivation\\ca' })
+
+      // Open server as well if the options are set
+      if (config.grasscutter_with_game) {
+        let jarFolder = config.grasscutter_path
+
+        if (jarFolder.includes('/')) {
+          jarFolder = jarFolder.substring(0, config.grasscutter_path.lastIndexOf('/'))
+        } else {
+          jarFolder = jarFolder.substring(0, config.grasscutter_path.lastIndexOf('\\'))
+        }
+
+        await invoke('run_jar', {
+          path: config.grasscutter_path,
+          executeIn: jarFolder,
+          javaPath: config.java_path || ''
+        })
+      }
     }
   
     // Launch the program
