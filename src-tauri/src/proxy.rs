@@ -164,7 +164,7 @@ pub fn generate_ca_files(path: &str) {
   params.key_usages = vec![
     KeyUsagePurpose::DigitalSignature,
     KeyUsagePurpose::KeyCertSign,
-    KeyUsagePurpose::CrlSign,
+    KeyUsagePurpose::CrlSign
   ];
   
   // Create certificate.
@@ -203,7 +203,7 @@ pub fn generate_ca_files(path: &str) {
  */
 pub fn install_ca_files(path: &str) {
   if cfg!(target_os = "windows") {
-    run_command(format!("certutil -addstore -f \"ROOT\" {}\\ca\\cert.crt", path).to_string());
+    run_command(format!("certutil -user -addstore \"Root\" {}\\ca\\cert.crt", path).to_string());
   } else {
     run_command(format!("security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain {}/ca/cert.crt", path).to_string());
   }

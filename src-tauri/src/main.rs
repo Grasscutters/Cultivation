@@ -27,9 +27,10 @@ lazy_static! {
 }
 
 fn main() {
+  // Start the game process watcher.
   process_watcher();
 
-  // Make BG folder if it doesn't exist
+  // Make BG folder if it doesn't exist.
   let bg_folder = format!("{}/bg", system_helpers::install_location());
   if !std::path::Path::new(&bg_folder).exists() {
     std::fs::create_dir_all(&bg_folder).unwrap();
@@ -51,6 +52,7 @@ fn main() {
       system_helpers::open_in_browser,
       system_helpers::copy_file,
       system_helpers::install_location,
+      system_helpers::is_elevated,
       proxy::set_proxy_addr,
       proxy::generate_ca_files,
       unzip::unzip,
@@ -74,17 +76,17 @@ fn process_watcher() {
 
   // Start a thread so as to not block the main thread.
   thread::spawn(|| {
-    let mut s = System::new_all();
+    let mut system = System::new_all();
 
     loop {
       // Refresh system info
-      s.refresh_all();
+      system.refresh_all();
 
       // Grab the game process name
       let proc = WATCH_GAME_PROCESS.lock().unwrap().to_string();
 
       if !&proc.is_empty() {
-        let proc_with_name = s.processes_by_exact_name(&proc);
+        let proc_with_name = system.processes_by_exact_name(&proc);
         let mut exists = false;
 
         for _p in proc_with_name {
@@ -108,7 +110,7 @@ fn is_game_running() -> bool {
   // Grab the game process name
   let proc = WATCH_GAME_PROCESS.lock().unwrap().to_string();
 
-  return !&proc.is_empty();
+  return !proc.is_empty();
 }
 
 #[tauri::command]
@@ -147,8 +149,8 @@ async fn req_get(url: String) -> String {
 }
 
 #[tauri::command]
-async fn get_theme_list(dataDir: String) -> Vec<HashMap<String, String>> {
-  let theme_loc = format!("{}/themes", dataDir);
+async fn get_theme_list(data_dir: String) -> Vec<HashMap<String, String>> {
+  let theme_loc = format!("{}/themes", data_dir);
 
   // Ensure folder exists
   if !std::path::Path::new(&theme_loc).exists() {
