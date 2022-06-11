@@ -59,7 +59,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     const config = await getConfig()
 
     this.setState({
-      grasscutterEnabled: config.toggle_grasscutter,
+      grasscutterEnabled: config.toggle_grasscutter || false,
       buttonLabel: await translate('main.launch_button'),
       checkboxLabel: await translate('main.gc_enable'),
       ip: config.last_ip || '',
@@ -68,7 +68,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       portPlaceholder: await translate('help.port_placeholder'),
       portHelpText: await translate('help.port_help_text'),
       httpsLabel: await translate('main.https_enable'),
-      httpsEnabled: config.https_enabled,
+      httpsEnabled: config.https_enabled || false,
     })
   }
 
@@ -182,6 +182,8 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     this.setState({
       httpsEnabled: config.https_enabled
     })
+
+    await saveConfig(config)
   }
 
   render() {
