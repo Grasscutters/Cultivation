@@ -224,7 +224,7 @@ export default class Options extends React.Component<IProps, IState> {
             <Tr text="options.language" />
           </div>
           <div className='OptionValue'>
-            <select defaultValue={this.state.current_language} onChange={(event) => {
+            <select value={this.state.current_language} onChange={(event) => {
               this.setLanguage(event.target.value)
             }}>
               {this.state.language_options.map(lang => (
