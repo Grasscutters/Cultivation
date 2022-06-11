@@ -1,0 +1,57 @@
+{
+  "lang_name": "Indonesia",
+  "main": {
+    "title": "Cultivation",
+    "launch_button": "Luncurkan",
+    "gc_enable": "Terhubung Melalui GrassCutter",
+    "ip_placeholder": "Alamat Server...",
+    "port_placeholder": "Port...",
+    "files_downloading": "Mendownload File Yang Diperlukan: ",
+    "files_extracting": "MengExtract File: "
+  },
+  "options": {
+    "game_exec": "Set Game Executable",
+    "grasscutter_jar": "Path ke Grasscutter JAR",
+    "java_path": "Atur kustom Java path",
+    "grasscutter_with_game": "Otomatis Menjalankan Grasscutter Dengan Game",
+    "language": "Pilih Bahasa",
+    "background": "Atur Kustom Latar Belakang (link atau gambar file)",
+    "theme": "Atur Tema"
+  },
+  "downloads": {  
+    "grasscutter_stable_data": "Sedang Mendownload Grasscutter Versi Stabil",
+    "grasscutter_latest_data": "Sedang Mendownload Grasscutter Data Terbaru",
+    "grasscutter_stable_data_update": "Memperbaharui Grasscutter Data Stabil",
+    "grasscutter_latest_data_update": "Memperbaharui Grasscutter Data Terbaru",
+    "grasscutter_stable": "Download Grasscutter Stabil Version ",
+    "grasscutter_latest": "Download Grasscutter Terbaru Version",
+    "grasscutter_stable_update": "Sedang MengUpdate Grasscutter Stabil",
+    "grasscutter_latest_update": "Sedang MengUpdate Grasscutter Terbaru",
+    "resources": "Mendownload Grasscutter Resources"
+  },
+  "download_status": {
+    "downloading": "Sedang Mendownload",
+    "extracting": "Sedang Mengekstrak",
+    "error": "Error",
+    "finished": "Selesai",
+    "stopped": "Berhenti"
+  },
+  "components": {
+    "select_file": "Pilih File Atau Folder...",
+    "select_folder": "Pilih Folder...",
+    "download": "download"
+  },
+  "news": {
+    "latest_commits": "Commit Terbaru",
+    "latest_version": "Versi Terbaru"
+  },
+  "help": {
+    "port_help_text": "Pastikan ini adalah port server port, bukan port server Game. ini Hampir Selalu '443'.",
+    "game_help_text": "Anda tidak perlu menggunakan salinan Genshin Impact untuk bermain dengan Grasscutter. Ini untuk menurunkan versi ke 2.6 atau jika Anda belum menginstal game..",
+    "gc_stable_jar": "Unduh Build Stabil Grasscutter Saat ini, Dimana Ada Jar File Dan Data File.",
+    "gc_dev_jar": "Unduh Build Development Grasscutter saat ini, Dimana Ada Jar File Dan Data File.",
+    "gc_stable_data": "Unduh file data Grasscutter stabil saat ini, dimana Tidak Ada JAR file. Ini Berguna Untuk memperbarui.",
+    "gc_dev_data": "Unduh file data Grasscutter Development saat ini, dimana Tidak Ada JAR file. Ini Berguna Untuk memperbarui.",
+    "resources": "Ini juga diperlukan untuk menjalankan server Grasscutter. Tombol ini akan berwarna abu-abu jika Anda memiliki folder Resource yang ada dengan File di dalamnya"
+  }
+}
