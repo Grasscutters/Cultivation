@@ -50,6 +50,7 @@ impl HttpHandler for ProxyHandler {
                           mut request: Request<Body>,
   ) -> RequestOrResponse {
     let uri = request.uri().to_string();
+    let uri_path = request.uri().path();
     
     if uri.contains("hoyoverse.com") || uri.contains("mihoyo.com") || uri.contains("yuanshen.com") {
       // Create new URI.
