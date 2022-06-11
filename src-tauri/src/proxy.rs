@@ -4,7 +4,7 @@
  */
 
 use lazy_static::lazy_static;
-use std::sync::Mutex;
+use std::{sync::Mutex, str::FromStr};
 
 use rcgen::*;
 use hudsucker::{
@@ -30,7 +30,7 @@ async fn shutdown_signal() {
 // Global ver for getting server address.
 lazy_static! {
     static ref SERVER: Mutex<String> = {
-        let m = "localhost:443".to_string();
+        let m = "http://localhost:443".to_string();
         Mutex::new(m)
     };
 }
@@ -56,9 +56,9 @@ impl HttpHandler for ProxyHandler {
     // Only switch up if request is to the game servers.
     if uri.contains("hoyoverse.com") || uri.contains("mihoyo.com") || uri.contains("yuanshen.com") {
       // Create new URI.
-      let uri = format!("https://{}{}", SERVER.lock().unwrap(), uri_path).parse::<Uri>().unwrap();
+      let new_uri = Uri::from_str(format!("{}{}", SERVER.lock().unwrap(), uri_path).as_str()).unwrap();
       // Set request URI to the new one.
-      *request.uri_mut() = uri;
+      *request.uri_mut() = new_uri;
     }
 
     RequestOrResponse::Request(request)
