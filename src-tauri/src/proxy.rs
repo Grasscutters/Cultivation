@@ -49,11 +49,8 @@ impl HttpHandler for ProxyHandler {
                           _context: &HttpContext,
                           mut request: Request<Body>,
   ) -> RequestOrResponse {
-    // Get request URI.
     let uri = request.uri().to_string();
-    let uri_path = request.uri().path();
-
-    // Only switch up if request is to the game servers.
+    
     if uri.contains("hoyoverse.com") || uri.contains("mihoyo.com") || uri.contains("yuanshen.com") {
       // Create new URI.
       let new_uri = Uri::from_str(format!("{}{}", SERVER.lock().unwrap(), uri_path).as_str()).unwrap();
