@@ -49,16 +49,20 @@ impl HttpHandler for ProxyHandler {
                           _context: &HttpContext,
                           mut request: Request<Body>,
   ) -> RequestOrResponse {
-    // Get request URI.
     let uri = request.uri().to_string();
-    let uri_path = request.uri().path();
-
-    // Only switch up if request is to the game servers.
+    
     if uri.contains("hoyoverse.com") || uri.contains("mihoyo.com") || uri.contains("yuanshen.com") {
-      // Create new URI.
-      let uri = format!("https://{}{}", SERVER.lock().unwrap(), uri_path).parse::<Uri>().unwrap();
-      // Set request URI to the new one.
-      *request.uri_mut() = uri;
+      let mut res = Response::builder()
+        .status(302)
+        .body(Body::default())
+        .unwrap();
+
+      res.headers_mut().insert(
+        http::header::LOCATION,
+        http::HeaderValue::from_str(&format!("https://{}", SERVER.lock().unwrap())).unwrap(),
+      );
+
+      return RequestOrResponse::Response(res);
     }
 
     RequestOrResponse::Request(request)
