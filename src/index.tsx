@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 
 import './index.css'
 import App from './ui/App'
-import Test from './ui/Debug'
+//import Test from './ui/Debug'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -11,8 +11,8 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    {/* <App /> */}
-    <Test />
+    <App />
+    {/* <Test /> */}
   </React.StrictMode>
 )
 

@@ -8,7 +8,7 @@
   right: 10%;
   top: 50%;
 
-  width: 30%;
+  width: 32%;
   height: 80%;
   min-width: 357px;
 }
@@ -28,28 +28,34 @@
   text-shadow: 1px 1px 8px black;
 }
 
-#serverControls .CheckboxDisplay {
+.BottomSection .CheckboxDisplay {
   border-color: #c5c5c5;
   background: #fff;
 }
 
-#serverControls .Checkbox {
-  margin-bottom: 6px;
-}
-
-#serverControls .CheckboxDisplay {
+.BottomSection .CheckboxDisplay {
   margin-right: 6px;
   box-shadow: 0 0 5px 4px rgba(0, 0, 0, 0.2);
 }
 
-#serverControls .Checkbox label {
+.BottomSection .Checkbox label {
   color: #fff;
   font-weight: bold;
   text-shadow: #222222 1px 0 10px;
 }
 
-#serverControls .Checkbox label span {
+.BottomSection .Checkbox label span {
   padding-left: 4px;
+}
+
+.ServerConfig {
+  margin-bottom: 6px;
+}
+
+.ServerConfig .Checkbox {
+  display: inline-grid;
+  vertical-align: middle;
+  margin-left: 8px;
 }
 
 .ServerLaunchButtons {

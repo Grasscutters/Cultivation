@@ -4,6 +4,7 @@
     "title": "Cultivation",
     "launch_button": "Launch",
     "gc_enable": "Connect via Grasscutter",
+    "https_enable": "Use HTTPS",
     "ip_placeholder": "Server Address...",
     "port_placeholder": "Port...",
     "files_downloading": "Files Downloading: ",

@@ -26,6 +26,9 @@ interface IState {
   portPlaceholder: string;
 
   portHelpText: string;
+
+  httpsLabel: string;
+  httpsEnabled: boolean;
 }
 
 export default class ServerLaunchSection extends React.Component<IProps, IState> {
@@ -40,13 +43,16 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       port: '',
       ipPlaceholder: '',
       portPlaceholder: '',
-      portHelpText: ''
+      portHelpText: '',
+      httpsLabel: '',
+      httpsEnabled: false
     }
 
     this.toggleGrasscutter = this.toggleGrasscutter.bind(this)
     this.playGame = this.playGame.bind(this)
     this.setIp = this.setIp.bind(this)
     this.setPort = this.setPort.bind(this)
+    this.toggleHttps = this.toggleHttps.bind(this)
   }
 
   async componentDidMount() {
@@ -60,7 +66,9 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       port: config.last_port || '',
       ipPlaceholder: await translate('main.ip_placeholder'),
       portPlaceholder: await translate('help.port_placeholder'),
-      portHelpText: await translate('help.port_help_text')
+      portHelpText: await translate('help.port_help_text'),
+      httpsLabel: await translate('main.https_enable'),
+      httpsEnabled: config.https_enabled,
     })
   }
 
@@ -165,6 +173,17 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     })
   }
 
+  async toggleHttps() {
+    const config = await getConfig()
+
+    config.https_enabled = !config.https_enabled
+
+    // Set state as well
+    this.setState({
+      httpsEnabled: config.https_enabled
+    })
+  }
+
   render() {
     return (
       <div id="playButton">
@@ -174,13 +193,17 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
 
         {
           this.state.grasscutterEnabled && (
-            <div className="ServerConfig">
-              <TextInput id="ip" key="ip" placeholder={this.state.ipPlaceholder} onChange={this.setIp} initalValue={this.state.ip} />
-              <TextInput style={{
-                width: '10%',
-              }} id="port" key="port" placeholder={this.state.portPlaceholder} onChange={this.setPort} initalValue={this.state.port} />
-              <HelpButton contents={this.state.portHelpText} />
+            <div>
+              <div className="ServerConfig">
+                <TextInput id="ip" key="ip" placeholder={this.state.ipPlaceholder} onChange={this.setIp} initalValue={this.state.ip} />
+                <TextInput style={{
+                  width: '10%',
+                }} id="port" key="port" placeholder={this.state.portPlaceholder} onChange={this.setPort} initalValue={this.state.port} />
+                <HelpButton contents={this.state.portHelpText} />
+                <Checkbox id="httpsEnable" label={this.state.httpsLabel} onChange={this.toggleHttps} checked={this.state.httpsEnabled} />
+              </div>
             </div>
+
           )
         }
 
