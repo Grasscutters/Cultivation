@@ -105,7 +105,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       await setConfigOption('last_port', this.state.port)
 
       // Set IP
-      await invoke('set_proxy_addr', { addr: this.state.ip + ':' + this.state.port })
+      await invoke('set_proxy_addr', { addr: (this.state.httpsEnabled ? 'https':'http') + '://' + this.state.ip + ':' + this.state.port })
       await invoke('enable_process_watcher', {
         process: game_exe
       })
