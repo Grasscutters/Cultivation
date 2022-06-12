@@ -63,9 +63,9 @@ export default class TopBar extends React.Component<IProps, IState> {
           <div id="downloadsBtn" className='TopButton' onClick={this.props.downFunc}>
             <img src={downBtn} alt="downloads" />
           </div>
-          <div id="gameBtn" className="TopButton" onClick={this.props.gameFunc}>
+          {/* <div id="gameBtn" className="TopButton" onClick={this.props.gameFunc}>
             <img src={gameBtn} alt="game" />
-          </div>
+          </div> */}
         </div>
       </div>
     )
