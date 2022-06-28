@@ -44,7 +44,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "xyz.grasscutters",
+      "identifier": "io.grasscutter",
       "shortDescription": "A game launcher.",
       "longDescription": "A launcher for a certain anime game that proxies all related game traffic to external servers.",
       "macOS": {
@@ -72,12 +72,12 @@
       "csp": "default-src 'self' https://asset.localhost; img-src 'self'; img-src https://* asset: https://asset.localhost"
     },
     "updater": {
-      "active": false,
+      "active": true,
       "dialog": true,
       "endpoints": [
         "https://api.grasscutters.xyz/cultivation/update?version={{current_version}}"
       ],
-      "pubkey": ""
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEIyM0MzMzk0NkM4OTQzNQpSV1ExbE1oR09jTWpDNFJ4NURsaS9mdHpDWmpBM3JNVHkrdER4bS9KdHFCQnNVSWs0ZjZTU295WAo="
     },
     "windows": [
       {
