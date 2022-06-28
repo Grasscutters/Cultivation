@@ -16,7 +16,7 @@ tauri-build = { version = "1.0.0-rc.8", features = [] }
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.0.0-rc.9", features = ["api-all"] }
+tauri = { version = "1.0.0-rc.9", features = ["api-all", "updater"] }
 
 # Access system process info.
 sysinfo = "0.23.12"
