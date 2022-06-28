@@ -29,6 +29,13 @@ Once downloaded, extract somewhere and open as administrator. TODO
 
 Add `--release` or `--debug` depending on what release you are creating. This defaults to `--release`
 
+### Updating
+
+* Add the `TAURI_PRIVATE_KEY` as an environment variable with a path to your private key.
+* Add the `TAURI_KEY_PASSWORD` as an environment variable with the password for your private key.
+* Run `npm run update` or `yarn build`
+* The update will be in `src-tauri/target/(release|debug)/msi/Cultivation_X.X.X_x64_xx-XX.msi.zip`
+
 # Troubleshooting
 
 Idk figure it out (TODO)
