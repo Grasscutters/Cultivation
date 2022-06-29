@@ -6,7 +6,7 @@
     "gc_enable": "以Grasscutter模式連接",
     "https_enable": "使用 HTTPS",
     "ip_placeholder": "IP地址...",
-    "port_placeholder": "端口...",
+    "port_placeholder": "通訊埠...",
     "files_downloading": "檔案下載中：",
     "files_extracting": "檔案解壓縮中："
   },
