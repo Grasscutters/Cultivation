@@ -186,9 +186,10 @@ async fn get_theme_list(data_dir: String) -> Vec<HashMap<String, String>> {
 }
 
 #[tauri::command]
+// TODO: Replace with downloading the background file & saving it.
 async fn get_bg_file(bg_path: String, appdata: String) -> String {
   let copy_loc = appdata;
-  let query = web::query("https://api.grasscutters.xyz/cultivation/query").await;
+  let query = web::query("https://api.grasscutter.io/cultivation/query").await;
   let response_data: APIQuery = match serde_json::from_str(&query) {
     Ok(data) => data,
     Err(e) => {

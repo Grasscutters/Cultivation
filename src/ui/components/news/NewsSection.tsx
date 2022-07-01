@@ -42,7 +42,7 @@ export default class NewsSection extends React.Component<IProps, IState> {
 
   async showLatestCommits() {
     if (!this.state.commitList) {
-      const commits: string = await invoke('req_get', { url: 'https://api.grasscutters.xyz/cultivation/query' })
+      const commits: string = await invoke('req_get', { url: 'https://api.grasscutter.io/cultivation/query' })
       let obj
 
       try {

@@ -36,7 +36,7 @@ interface IState {
   bgFile: string;
 }
 
-const DEFAULT_BG = 'https://api.grasscutters.xyz/content/bgfile'
+const DEFAULT_BG = 'https://api.grasscutter.io/cultivation/bgfile'
 
 const downloadHandler = new DownloadHandler()
 

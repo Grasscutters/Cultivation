@@ -75,7 +75,8 @@
       "active": true,
       "dialog": true,
       "endpoints": [
-        "https://api.grasscutters.xyz/cultivation/update?version={{current_version}}"
+        "https://api.grasscutter.io/cultivation/updater?version={{current_version}}",
+        "https://api.grasscutters.xyz/cultivation/updater?version={{current_version}}"
       ],
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEIyM0MzMzk0NkM4OTQzNQpSV1ExbE1oR09jTWpDNFJ4NURsaS9mdHpDWmpBM3JNVHkrdER4bS9KdHFCQnNVSWs0ZjZTU295WAo="
     },
