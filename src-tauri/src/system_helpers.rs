@@ -1,8 +1,8 @@
 
 use std::thread;
-use std::process::Command;
 use tauri;
 use open;
+use duct::cmd;
 
 use crate::file_helpers;
 
@@ -19,18 +19,8 @@ pub fn run_program(path: String) {
 #[tauri::command]
 pub fn run_command(command: String) {
   // Run the specified command.
-  if cfg!(target_os = "windows") {
-    Command::new("cmd")
-      .args(["/C", command.as_str()])
-      .output()
-      .expect("failed to execute process")
-  } else {
-    Command::new("sh")
-      .arg("-c")
-      .arg(command.as_str())
-      .output()
-      .expect("failed to execute process")
-  };
+  cmd!(command).run()
+    .expect("Failed to run command");
 }
 
 #[tauri::command]
