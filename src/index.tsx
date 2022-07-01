@@ -3,20 +3,27 @@ import ReactDOM from 'react-dom/client'
 
 import './index.css'
 import App from './ui/App'
-// import Debug from './ui/Debug'
+import Debug from './ui/Debug'
+
+import { getConfigOption } from './utils/configuration'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 )
 
+let isDebug = false;
+
+(async() => {
+  isDebug = await getConfigOption('debug_enabled')
+})
+
 root.render(
   <React.StrictMode>
-    <App />
+    {
+      isDebug ? <Debug /> : <App />
+    }
   </React.StrictMode>
 )
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 import reportWebVitals from './utils/reportWebVitals'
-reportWebVitals(console.log)  
+isDebug && reportWebVitals(console.log)

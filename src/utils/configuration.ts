@@ -20,6 +20,7 @@ let defaultConfig: Configuration
     cert_generated: false,
     theme: 'default',
     https_enabled: false,
+    debug_enabled: false
   }
 })()
 
@@ -39,8 +40,9 @@ export interface Configuration {
   language: string
   customBackground: string
   cert_generated: boolean
-  theme: string;
+  theme: string
   https_enabled: boolean
+  debug_enabled: boolean
 }
 
 export async function setConfigOption(key: string, value: any): Promise<void> {
@@ -52,8 +54,9 @@ export async function setConfigOption(key: string, value: any): Promise<void> {
 
 export async function getConfigOption(key: string): Promise<any> {
   const config: any = await getConfig()
+  const defaults: any = defaultConfig
 
-  return config[key] || null
+  return config[key] || defaults[key]
 }
 
 export async function getConfig() {
