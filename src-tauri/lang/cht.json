@@ -1,0 +1,58 @@
+{
+  "lang_name": "繁體中文",
+  "main": {
+    "title": "Cultivation",
+    "launch_button": "啟動",
+    "gc_enable": "以Grasscutter模式連接",
+    "https_enable": "使用 HTTPS",
+    "ip_placeholder": "IP地址...",
+    "port_placeholder": "通訊埠...",
+    "files_downloading": "檔案下載中：",
+    "files_extracting": "檔案解壓縮中："
+  },
+  "options": {
+    "game_exec": "選擇遊戲執行檔",
+    "grasscutter_jar": "選擇伺服器JAR檔案",
+    "java_path": "設置自定義Java路徑",
+    "grasscutter_with_game": "伴隨遊戲一起啟動Grasscutter",
+    "language": "語言",
+    "background": "設置自定義背景（網址或檔案）",
+    "theme": "設置主題"
+  },
+  "downloads": {
+    "grasscutter_stable_data": "下載Grasscutter穩定版數據（Data）",
+    "grasscutter_latest_data": "下載Grasscutter開發板數據（Data）",
+    "grasscutter_stable_data_update": "更新Grasscutter穩定版數據（Data）",
+    "grasscutter_latest_data_update": "更新Grasscutter開發板數據（Data）",
+    "grasscutter_stable": "下載Grasscutter穩定版",
+    "grasscutter_latest": "下載Grasscutter開發板",
+    "grasscutter_stable_update": "更新Grasscutter穩定版",
+    "grasscutter_latest_update": "更新Grasscutter開發板",
+    "resources": "下載Grasscutter資源（Resources）"
+  },
+  "download_status": {
+    "downloading": "下載中",
+    "extracting": "解壓縮中",
+    "error": "錯誤",
+    "finished": "已完成",
+    "stopped": "暫停"
+  },
+  "components": {
+    "select_file": "選擇檔案或資料夾...",
+    "select_folder": "選擇資料夾...",
+    "download": "下載"
+  },
+  "news": {
+    "latest_commits": "最近的PR",
+    "latest_version": "最新版本"
+  },
+  "help": {
+    "port_help_text": "確保這是Dispatch伺服器端口，不是遊戲伺服器端口。 大部分伺服器的端口都是443。",
+    "game_help_text": "你不需要另外一個遊戲備份來使用Grasscutter。這是給想要降級到2.6或者還沒安裝遊戲的人使用的。",
+    "gc_stable_jar": "下載當前的Grasscutter穩定版本，包括JAR答案還有資料文件。",
+    "gc_dev_jar": "下載當前的Grasscutter穩定版本資料文件，其中不會附帶JAR文件。這個選項在更新時很有用。",
+    "gc_stable_data": "下載當前最新的Grasscutter開發版本資料文件，其中不會附帶JAR文件。這個選項在更新時很有用。",
+    "gc_dev_data": "下載當前最新的Grasscutter開發版本的資料文件，其中不會附帶JAR文件。這個選項在更新時很有用。",
+    "resources": "資源文件在架設一個Grasscutter伺服器時是必要的。 這個選項會在你已經有裡面有檔案的資源資料夾時不可選。"
+  }
+}
