@@ -56,9 +56,7 @@ export default class NewsSection extends React.Component<IProps, IState> {
         const commits: string = await invoke('req_get', { url: 'https://api.github.com/repos/Grasscutters/Grasscutter/commits' })
         obj = JSON.parse(commits)
       } else {
-        const decoded: string = await invoke('base64_decode', { encoded: obj.commits })
-        const commitData = JSON.parse(decoded)
-        obj = commitData.gc_stable
+        obj = obj.commits.gc_stable
       }
 
       // Probably rate-limited
