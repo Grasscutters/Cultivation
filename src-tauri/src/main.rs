@@ -5,6 +5,7 @@ windows_subsystem = "windows"
 
 use lazy_static::lazy_static;
 use std::{sync::Mutex, collections::HashMap};
+use std::path::PathBuf;
 
 use std::thread;
 use sysinfo::{System, SystemExt};
@@ -31,10 +32,8 @@ fn main() {
   process_watcher();
 
   // Make BG folder if it doesn't exist.
-  let bg_folder = format!("{}/bg", system_helpers::install_location());
-  if !std::path::Path::new(&bg_folder).exists() {
-    std::fs::create_dir_all(&bg_folder).unwrap();
-  }
+  let bg_folder: PathBuf = [&system_helpers::install_location(), "bg"].iter().collect();
+  std::fs::create_dir_all(&bg_folder).unwrap();
 
   tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![
