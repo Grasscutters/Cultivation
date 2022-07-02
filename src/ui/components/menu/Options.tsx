@@ -62,6 +62,7 @@ export default class Options extends React.Component<IProps, IState> {
     // Remove jar from path
     const path = config.grasscutter_path.replace(/\\/g, '/')
     const folderPath = path.substring(0, path.lastIndexOf('/'))
+    const encEnabled = await server.encryptionEnabled(folderPath + '/config.json')
 
     this.setState({
       game_install_path: config.game_install_path || '',
@@ -73,7 +74,7 @@ export default class Options extends React.Component<IProps, IState> {
       bg_url_or_path: config.customBackground || '',
       themes: (await getThemeList()).map(t => t.name),
       theme: config.theme || 'default',
-      encryption: await server.encryptionEnabled(folderPath + '/config.json') || false
+      encryption: await translate(encEnabled ? 'options.enabled' : 'options.disabled')
     })
 
     this.forceUpdate()
@@ -162,7 +163,7 @@ export default class Options extends React.Component<IProps, IState> {
     await server.toggleEncryption(folderPath + '/config.json')
 
     this.setState({
-      encryption: !this.state.encryption
+      encryption: await translate(await server.encryptionEnabled(folderPath + '/config.json') ? 'options.enabled' : 'options.disabled')
     })
   }
 
@@ -192,9 +193,7 @@ export default class Options extends React.Component<IProps, IState> {
           <div className='OptionValue'>
             <BigButton onClick={this.toggleEncryption} id="toggleEnc">
               {
-                this.state.encryption ?
-                  <Tr text="options.enabled" /> :
-                  <Tr text="options.disabled" />
+                this.state.encryption
               }
             </BigButton>
           </div>
