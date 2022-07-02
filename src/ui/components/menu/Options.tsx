@@ -3,11 +3,12 @@ import { invoke } from '@tauri-apps/api'
 import { dataDir } from '@tauri-apps/api/path'
 import DirInput from '../common/DirInput'
 import Menu from './Menu'
-import Tr, { getLanguages } from '../../../utils/language'
+import Tr, { getLanguages, translate } from '../../../utils/language'
 import { setConfigOption, getConfig, getConfigOption } from '../../../utils/configuration'
 import Checkbox from '../common/Checkbox'
 import Divider from './Divider'
 import { getThemeList } from '../../../utils/themes'
+import * as server from '../../../utils/server'
 
 import './Options.css'
 
@@ -25,6 +26,7 @@ interface IState {
   bg_url_or_path: string
   themes: string[]
   theme: string
+  encryption: boolean
 }
 
 export default class Options extends React.Component<IProps, IState> {
@@ -40,7 +42,8 @@ export default class Options extends React.Component<IProps, IState> {
       current_language: 'en',
       bg_url_or_path: '',
       themes: ['default'],
-      theme: ''
+      theme: '',
+      encryption: false
     }
 
     this.setGameExec = this.setGameExec.bind(this)
@@ -48,11 +51,16 @@ export default class Options extends React.Component<IProps, IState> {
     this.setJavaPath = this.setJavaPath.bind(this)
     this.toggleGrasscutterWithGame = this.toggleGrasscutterWithGame.bind(this)
     this.setCustomBackground = this.setCustomBackground.bind(this)
+    this.toggleEncryption = this.toggleEncryption.bind(this)
   }
 
   async componentDidMount() {
     const config = await getConfig()
     const languages = await getLanguages()
+    
+    // Remove jar from path
+    const path = config.grasscutter_path.replace(/\\/g, '/')
+    const folderPath = path.substring(0, path.lastIndexOf('/'))
 
     this.setState({
       game_install_path: config.game_install_path || '',
@@ -63,7 +71,8 @@ export default class Options extends React.Component<IProps, IState> {
       current_language: config.language || 'en',
       bg_url_or_path: config.customBackground || '',
       themes: (await getThemeList()).map(t => t.name),
-      theme: config.theme || 'default'
+      theme: config.theme || 'default',
+      encryption: await server.encryptionEnabled(folderPath + '/config.json') || false
     })
 
     this.forceUpdate()
@@ -136,6 +145,26 @@ export default class Options extends React.Component<IProps, IState> {
     }
   }
 
+  async toggleEncryption() {
+    const config = await getConfig()
+
+    // Check if grasscutter path is set
+    if (!config.grasscutter_path) {
+      alert('Grasscutter not set!')
+      return
+    }
+
+    // Remove jar from path
+    const path = config.grasscutter_path.replace(/\\/g, '/')
+    const folderPath = path.substring(0, path.lastIndexOf('/'))
+
+    await server.toggleEncryption(folderPath + '/config.json')
+
+    this.setState({
+      encryption: !this.state.encryption
+    })
+  }
+
   render() {
     return (
       <Menu closeFn={this.props.closeFn} className="Options" heading="Options">
@@ -153,6 +182,20 @@ export default class Options extends React.Component<IProps, IState> {
           </div>
           <div className='OptionValue'>
             <DirInput onChange={this.setGrasscutterJar} value={this.state?.grasscutter_path} extensions={['jar']} />
+          </div>
+        </div>
+        <div className='OptionSection'>
+          <div className='OptionLabel'>
+            <Tr text="options.toggle_encryption" />
+          </div>
+          <div className='OptionValue'>
+            <button onClick={this.toggleEncryption}>
+              {
+                this.state.encryption ?
+                  <Tr text="options.enabled" /> :
+                  <Tr text="options.disabled" />
+              }
+            </button>
           </div>
         </div>
 
