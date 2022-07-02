@@ -16,6 +16,7 @@ use hudsucker::{
 
 use std::fs;
 use std::net::SocketAddr;
+use std::path::Path;
 use registry::{Hive, Data, Security};
 
 use rustls_pemfile as pemfile;
@@ -145,7 +146,7 @@ pub fn disconnect_from_proxy() {
  * Source: https://github.com/zu1k/good-mitm/raw/master/src/ca/gen.rs
  */
 #[tauri::command]
-pub fn generate_ca_files(path: &str) {
+pub fn generate_ca_files(path: &Path) {
   let mut params = CertificateParams::default();
   let mut details = DistinguishedName::new();
 
@@ -166,14 +167,13 @@ pub fn generate_ca_files(path: &str) {
   ];
   
   // Create certificate.
-  let cert_path = format!("{}\\ca", path);
-  
   let cert = Certificate::from_params(params).unwrap();
   let cert_crt = cert.serialize_pem().unwrap();
   let private_key = cert.serialize_private_key_pem();
 
   // Make certificate directory.
-  match fs::create_dir(&cert_path) {
+  let cert_dir = path.join("ca");
+  match fs::create_dir(&cert_dir) {
     Ok(_) => {},
     Err(e) => {
       println!("{}", e);
@@ -181,29 +181,31 @@ pub fn generate_ca_files(path: &str) {
   };
   
   // Write the certificate to a file.
-  match fs::write(format!("{}\\cert.crt", &cert_path), cert_crt) {
-    Ok(_) => println!("Wrote certificate to {}", &cert_path),
-    Err(e) => println!("Error writing certificate to {}: {}", &cert_path, e),
+  let cert_path = cert_dir.join("cert.crt");
+  match fs::write(&cert_path, cert_crt) {
+    Ok(_) => println!("Wrote certificate to {}", cert_path.to_str().unwrap()),
+    Err(e) => println!("Error writing certificate to {}: {}", cert_path.to_str().unwrap(), e),
   }
 
   // Write the private key to a file.
-  match fs::write(format!("{}\\private.key", &cert_path), private_key) {
-    Ok(_) => println!("Wrote private key to {}", &cert_path),
-    Err(e) => println!("Error writing private key to {}: {}", &cert_path, e),
+  let private_key_path = cert_dir.join("private.key");
+  match fs::write(&private_key_path, private_key) {
+    Ok(_) => println!("Wrote private key to {}", private_key_path.to_str().unwrap()),
+    Err(e) => println!("Error writing private key to {}: {}", private_key_path.to_str().unwrap(), e),
   }
   
   // Install certificate into the system's Root CA store.
-  install_ca_files(path);
+  install_ca_files(&cert_path);
 }
 
 /*
  * Attempts to install the certificate authority's certificate into the Root CA store.
  */
-pub fn install_ca_files(path: &str) {
+pub fn install_ca_files(cert_path: &Path) {
   if cfg!(target_os = "windows") {
-    run_command(format!("certutil -user -addstore \"Root\" {}\\ca\\cert.crt", path).to_string());
+    run_command("certutil", vec!["-user", "-addstore", "Root", cert_path.to_str().unwrap()]);
   } else {
-    run_command(format!("security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain {}/ca/cert.crt", path).to_string());
+    run_command("security", vec!["add-trusted-cert", "-d", "-r", "trustRoot", "-k", "/Library/Keychains/System.keychain", cert_path.to_str().unwrap()]);
   }
 
   println!("Installed certificate.");

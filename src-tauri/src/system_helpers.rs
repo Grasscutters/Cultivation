@@ -17,9 +17,8 @@ pub fn run_program(path: String) {
 }
 
 #[tauri::command]
-pub fn run_command(command: String) {
-  // Run the specified command.
-  cmd!(command).run()
+pub fn run_command(program: &str, args: Vec<&str>) {
+  cmd(program, args).run()
     .expect("Failed to run command");
 }
 
