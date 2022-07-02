@@ -7,3 +7,12 @@
   margin-bottom: 8px;
   width: 80%;
 }
+
+.OptionSection .BigButton {
+  height: 100%;
+  min-height: 30px;
+}
+
+.OptionSection .BigButtonText {
+  font-size: 12px;
+}

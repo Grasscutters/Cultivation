@@ -11,6 +11,7 @@ import { getThemeList } from '../../../utils/themes'
 import * as server from '../../../utils/server'
 
 import './Options.css'
+import BigButton from '../common/BigButton'
 
 interface IProps {
   closeFn: () => void;
@@ -189,13 +190,13 @@ export default class Options extends React.Component<IProps, IState> {
             <Tr text="options.toggle_encryption" />
           </div>
           <div className='OptionValue'>
-            <button onClick={this.toggleEncryption}>
+            <BigButton onClick={this.toggleEncryption} id="toggleEnc">
               {
                 this.state.encryption ?
                   <Tr text="options.enabled" /> :
                   <Tr text="options.disabled" />
               }
-            </button>
+            </BigButton>
           </div>
         </div>
 
