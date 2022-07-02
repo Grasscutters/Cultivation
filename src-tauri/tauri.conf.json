@@ -72,7 +72,7 @@
       "csp": "default-src 'self' https://asset.localhost; img-src 'self'; img-src https://* asset: https://asset.localhost"
     },
     "updater": {
-      "active": true,
+      "active": false,
       "dialog": true,
       "endpoints": [
         "https://api.grasscutter.io/cultivation/updater?version={{current_version}}",
