@@ -17,14 +17,14 @@ export default class Menu extends React.Component<IProps, never> {
 
   render() {
     return (
-      <div className={'Menu ' + this.props.className}>
-        <div className='MenuTop'>
-          <div className="MenuHeading">{this.props.heading}</div>
-          <div className="MenuExit" onClick={this.props.closeFn}>
-            <img src={Close} className="MenuClose" />
+      <div className={'Menu ' + this.props.className} id={'menuContainer'}>
+        <div className='MenuTop' id={'menuContainerTop'}>
+          <div className="MenuHeading" id={'menuHeading'}>{this.props.heading}</div>
+          <div className="MenuExit" id={'menuButtonCloseContainer'} onClick={this.props.closeFn}>
+            <img src={Close} className="MenuClose" id={'menuButtonCloseIcon'} />
           </div>
         </div>
-        <div className='MenuInner'>
+        <div className='MenuInner' id={'menuContent'}>
           {this.props.children}
         </div>
       </div>

@@ -38,7 +38,7 @@ A full, complete `index.json` will look something like this:
     "css": ["/index.css"],
     "js": ["/index.js"]
   },
-  "customBackgroundURL": "https://website.com/image.png",
+  "customBackgroundURL": "https://website.com/image.png"
 }
 ```
 
@@ -100,3 +100,6 @@ newButton.innerHTML = "New Button";
 
 document.body.appendChild(newButton);
 ```
+
+## How can i access "x" element to customize?
+Please take a look at documentation of all element id's by clicking [here](/docs/elementIds.md).

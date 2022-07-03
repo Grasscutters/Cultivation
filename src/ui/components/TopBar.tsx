@@ -43,14 +43,14 @@ export default class TopBar extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div className="TopBar" data-tauri-drag-region>
+      <div className="TopBar" id={'topBarContainer'} data-tauri-drag-region>
         <div id="title">
           <span data-tauri-drag-region>
             <Tr text="main.title" />
           </span>
           <span data-tauri-drag-region id="version">{this.state?.version}</span>
         </div>
-        <div className="TopBtns">
+        <div className="TopBtns" id={'topBarButtonContainer'}>
           <div id="closeBtn" onClick={this.handleClose} className='TopButton'>
             <img src={closeIcon} alt="close" />
           </div>

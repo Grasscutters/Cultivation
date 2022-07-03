@@ -16,12 +16,12 @@ export default class RightBar extends React.Component {
 
   render() {
     return (
-      <div className="RightBar">
-        <div className="RightBarInner">
-          <div className="BarDiscord BarImg" onClick={() => this.openInBrowser(DISCORD)}>
+      <div className="RightBar" id={'rightBarContainer'}>
+        <div className="RightBarInner" id={'rightBarContent'}>
+          <div className="BarDiscord BarImg" id={'rightBarButtonDiscord'} onClick={() => this.openInBrowser(DISCORD)}>
             <img src={Discord} />
           </div>
-          <div className="BarGithub BarImg" onClick={() => this.openInBrowser(GITHUB)}>
+          <div className="BarGithub BarImg" id={'rightBarButtonGithub'} onClick={() => this.openInBrowser(GITHUB)}>
             <img src={Github} />
           </div>
         </div>

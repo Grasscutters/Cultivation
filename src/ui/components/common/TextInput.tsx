@@ -44,14 +44,14 @@ export default class TextInput extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div className="TextInputWrapper" style={this.props.style || {}}>
+      <div className="TextInputWrapper" id={'commonTextInputContainer'} style={this.props.style || {}}>
         <input id={this.props?.id} readOnly={this.props.readOnly || false} placeholder={this.props.placeholder || ''} className="TextInput" value={this.state.value} onChange={(e) => {
           this.setState({ value: e.target.value })
           if (this.props.onChange) this.props.onChange(e.target.value)
         }} />
         {
           this.props.clearable ?
-            <div className="TextClear" onClick={() => {
+            <div className="TextClear" id={'commonTextInputClearableContainer'} onClick={() => {
               // Run custom behaviour first
               if (this.props.customClearBehaviour) return this.props.customClearBehaviour()
 
@@ -61,7 +61,7 @@ export default class TextInput extends React.Component<IProps, IState> {
 
               this.forceUpdate()
             }}>
-              <img src={Close} className="TextInputClear" />
+              <img src={Close} className="TextInputClear" id={'commonTextInputClearableIcon'} />
             </div> : null
         }
       </div>

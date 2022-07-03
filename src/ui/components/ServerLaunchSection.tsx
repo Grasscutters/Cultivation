@@ -196,7 +196,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
         {
           this.state.grasscutterEnabled && (
             <div>
-              <div className="ServerConfig">
+              <div className="ServerConfig" id={'serverConfigContainer'}>
                 <TextInput id="ip" key="ip" placeholder={this.state.ipPlaceholder} onChange={this.setIp} initalValue={this.state.ip} />
                 <TextInput style={{
                   width: '10%',
@@ -210,10 +210,10 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
         }
 
 
-        <div className="ServerLaunchButtons">
+        <div className="ServerLaunchButtons" id={'serverLaunchContainer'}>
           <BigButton onClick={this.playGame} id="officialPlay">{this.state.buttonLabel}</BigButton>
           <BigButton onClick={this.launchServer} id="serverLaunch">
-            <img className="ServerIcon" src={Server} />
+            <img className="ServerIcon" id={'serverLaunchIcon'} src={Server} />
           </BigButton>
         </div>
       </div>

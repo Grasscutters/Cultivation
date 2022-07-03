@@ -38,7 +38,7 @@ export default class BigButton extends React.Component<IProps, IState> {
   render() {
     return (
       <div className={'BigButton ' + (this.state.disabled ? 'disabled' : '')} onClick={this.handleClick} id={this.props.id}>
-        <div className="BigButtonText">{this.props.children}</div>
+        <div className="BigButtonText" id={'commonBigButtonContent'}>{this.props.children}</div>
       </div>
     )
   }
