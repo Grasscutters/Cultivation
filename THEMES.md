@@ -70,6 +70,9 @@ body {
 }
 ```
 
+## How can I change XYZ element?
+Every element is documented and describe [here](/docs/elementIds.md). Every\* single DOM element is assigned an ID to allow for easy and hyper-specific editing.
+
 ## Writing your JS
 
 There are no limitations to what you can do with JS. It is safe, as it is sandboxed within the webpage, so there is no possibility of it being able to do anything more than what any regular webpage can do.
@@ -100,6 +103,3 @@ newButton.innerHTML = "New Button";
 
 document.body.appendChild(newButton);
 ```
-
-## How can i access "x" element to customize?
-Please take a look at documentation of all element id's by clicking [here](/docs/elementIds.md).
