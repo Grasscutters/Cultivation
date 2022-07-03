@@ -21,6 +21,7 @@ A game launcher designed to easily proxy traffic from anime game to private serv
   * [Setup](#setup)
   * [Building](#building)
 * [Troubleshooting](#troubleshooting)
+* [Theming](#theming)
 
 # Download
 [Find release builds here!](https://github.com/Grasscutters/Cultivation/releases)
@@ -47,6 +48,10 @@ Add `--release` or `--debug` depending on what release you are creating. This de
 
 # Troubleshooting
 TODO. Collect common issues before updating.
+
+# Theming
+
+A full theming reference can be found [here!](/THEMES.md)
 
 # Screenshots
 ![image](https://user-images.githubusercontent.com/25207995/173211603-e5e85df7-7fd3-430b-9246-749ebbc1e483.png)
