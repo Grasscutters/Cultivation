@@ -68,9 +68,9 @@ export default class NewsSection extends React.Component<IProps, IState> {
       const commitsList = obj.slice(0, 10)
       const commitsListHtml = commitsList.map((commit: any) => {
         return (
-          <tr className="Commit" id={'newsCommitsTable'} key={commit.sha}>
-            <td className="CommitAuthor" id={'newsCommitsAuthor'}><span>{commit.commit.author.name}</span></td>
-            <td className="CommitMessage" id={'newsCommitsCommitMessage'}><span>{commit.commit.message}</span></td>
+          <tr className="Commit" id="newsCommitsTable" key={commit.sha}>
+            <td className="CommitAuthor" id="newsCommitsAuthor"><span>{commit.commit.author.name}</span></td>
+            <td className="CommitMessage" id="newsCommitsCommitMessage"><span>{commit.commit.message}</span></td>
           </tr>
         )
       })
@@ -108,8 +108,8 @@ export default class NewsSection extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div className="NewsSection" id={'newsContainer'}>
-        <div className="NewsTabs" id={'newsTabsContainer'}>
+      <div className="NewsSection" id="newsContainer">
+        <div className="NewsTabs" id="newsTabsContainer">
           <div className={'NewsTab ' + (this.state.selected === 'commits' ? 'selected' : '')} id="commits" onClick={() => this.setSelected('commits')}>
             <Tr text="news.latest_commits" />
           </div>
@@ -117,7 +117,7 @@ export default class NewsSection extends React.Component<IProps, IState> {
             <Tr text="news.latest_version" />
           </div>
         </div>
-        <table className="NewsContent" id={'newsContent'}>
+        <table className="NewsContent" id="newsContent">
             <tbody>
                 {this.state.news}
             </tbody>

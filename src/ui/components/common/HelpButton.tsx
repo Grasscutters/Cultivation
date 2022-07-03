@@ -36,12 +36,12 @@ export default class HelpButton extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div className="HelpSection" id={'commonHelpButtonContainer'}>
-        <div className="HelpButton" id={'commonHelpButtonClosed'} onMouseEnter={this.setOpen} onMouseLeave={this.setClosed}>
-          <img id={'commonHelpButtonIcon'} src={Help} />
+      <div className="HelpSection" id="commonHelpButtonContainer">
+        <div className="HelpButton" id="commonHelpButtonClosed" onMouseEnter={this.setOpen} onMouseLeave={this.setClosed}>
+          <img id="commonHelpButtonIcon" src={Help} />
         </div>
 
-        <div className="HelpContents" id={'commonHelpButtonContainerOpen'} style={{
+        <div className="HelpContents" id="commonHelpButtonContainerOpen" style={{
           display: this.state.opened ? 'block' : 'none'
         }}>
           <MiniDialog closeFn={this.setClosed}>

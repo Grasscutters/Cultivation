@@ -49,9 +49,9 @@ export default class ProgressBar extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div className="MainProgressBarWrapper" id={'commonMainProgressContainer'}>
-        <div className="ProgressBar" id={'commonMainProgress'}>
-          <div className="InnerProgress" id={'commonMainProgressInner'} style={{
+      <div className="MainProgressBarWrapper" id="commonMainProgressContainer">
+        <div className="ProgressBar" id="commonMainProgress">
+          <div className="InnerProgress" id="commonMainProgressInner" style={{
             width: `${(() => {
               // Handles no files downloading
               if (this.state.files === 0) {
@@ -67,7 +67,7 @@ export default class ProgressBar extends React.Component<IProps, IState> {
           }}></div>
         </div>
 
-        <div className="MainProgressText" id={'commonMainProgressText'}>
+        <div className="MainProgressText" id="commonMainProgressText">
           <Tr text="main.files_downloading" /> {this.state.files} ({this.state.speed})
           <br />
           <Tr text="main.files_extracting" /> {this.state.extracting}

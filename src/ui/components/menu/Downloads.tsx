@@ -190,8 +190,8 @@ export default class Downloads extends React.Component<IProps, IState> {
   render() {
     return (
       <Menu closeFn={this.props.closeFn} className="Downloads" heading="Downloads">
-        <div className='DownloadMenuSection' id={'downloadMenuContainerGCStable'}>
-          <div className='DownloadLabel' id={'downloadMenuLabelGCStable'}>
+        <div className='DownloadMenuSection' id="downloadMenuContainerGCStable">
+          <div className='DownloadLabel' id="downloadMenuLabelGCStable">
             <Tr text={
               this.state.grasscutter_set ? 'downloads.grasscutter_stable' : 'downloads.grasscutter_stable_update'
             } />
@@ -199,14 +199,14 @@ export default class Downloads extends React.Component<IProps, IState> {
               <Tr text="help.gc_stable_jar" />
             </HelpButton>
           </div>
-          <div className='DownloadValue' id={'downloadMenuButtonGCStable'}>
+          <div className='DownloadValue' id="downloadMenuButtonGCStable">
             <BigButton disabled={this.state.grasscutter_downloading} onClick={this.downloadGrasscutterStable} id="grasscutterStableBtn" >
               <Tr text="components.download" />
             </BigButton>
           </div>
         </div>
-        <div className='DownloadMenuSection' id={'downloadMenuContainerGCDev'}>
-          <div className='DownloadLabel' id={'downloadMenuLabelGCDev'}>
+        <div className='DownloadMenuSection' id="downloadMenuContainerGCDev">
+          <div className='DownloadLabel' id="downloadMenuLabelGCDev">
             <Tr text={
               this.state.grasscutter_set ? 'downloads.grasscutter_latest' : 'downloads.grasscutter_latest_update'
             } />
@@ -214,7 +214,7 @@ export default class Downloads extends React.Component<IProps, IState> {
               <Tr text="help.gc_dev_jar" />
             </HelpButton>
           </div>
-          <div className='DownloadValue' id={'downloadMenuButtonGCDev'}>
+          <div className='DownloadValue' id="downloadMenuButtonGCDev">
             <BigButton disabled={this.state.grasscutter_downloading} onClick={this.downloadGrasscutterLatest} id="grasscutterLatestBtn" >
               <Tr text="components.download" />
             </BigButton>
@@ -223,8 +223,8 @@ export default class Downloads extends React.Component<IProps, IState> {
 
         <Divider />
 
-        <div className='DownloadMenuSection' id={'downloadMenuContainerGCStableData'}>
-          <div className='DownloadLabel' id={'downloadMenuLabelGCStableData'}>
+        <div className='DownloadMenuSection' id="downloadMenuContainerGCStableData">
+          <div className='DownloadLabel' id="downloadMenuLabelGCStableData">
             <Tr text={
               this.state.grasscutter_set ? 'downloads.grasscutter_stable_data' : 'downloads.grasscutter_stable_data_update'
             } />
@@ -232,14 +232,14 @@ export default class Downloads extends React.Component<IProps, IState> {
               <Tr text="help.gc_stable_data" />
             </HelpButton>
           </div>
-          <div className='DownloadValue' id={'downloadMenuButtonGCStableData'}>
+          <div className='DownloadValue' id="downloadMenuButtonGCStableData">
             <BigButton disabled={this.state.repo_downloading} onClick={this.downloadGrasscutterStableRepo} id="grasscutterStableRepo" >
               <Tr text="components.download" />
             </BigButton>
           </div>
         </div>
-        <div className='DownloadMenuSection' id={'downloadMenuContainerGCDevData'}>
-          <div className='DownloadLabel' id={'downloadMenuLabelGCDevData'}>
+        <div className='DownloadMenuSection' id="downloadMenuContainerGCDevData">
+          <div className='DownloadLabel' id="downloadMenuLabelGCDevData">
             <Tr text={
               this.state.grasscutter_set ? 'downloads.grasscutter_latest_data' : 'downloads.grasscutter_latest_data_update'
             } />
@@ -247,7 +247,7 @@ export default class Downloads extends React.Component<IProps, IState> {
               <Tr text="help.gc_dev_data" />
             </HelpButton>
           </div>
-          <div className='DownloadValue' id={'downloadMenuButtonGCDevData'}>
+          <div className='DownloadValue' id="downloadMenuButtonGCDevData">
             <BigButton disabled={this.state.repo_downloading} onClick={this.downloadGrasscutterStableRepo} id="grasscutterDevRepo" >
               <Tr text="components.download" />
             </BigButton>
@@ -256,14 +256,14 @@ export default class Downloads extends React.Component<IProps, IState> {
 
         <Divider />
 
-        <div className='DownloadMenuSection' id={'downloadMenuContainerResources'}>
-          <div className='DownloadLabel' id={'downloadMenuLabelResources'}>
+        <div className='DownloadMenuSection' id="downloadMenuContainerResources">
+          <div className='DownloadLabel' id="downloadMenuLabelResources">
             <Tr text="downloads.resources" />
             <HelpButton>
               <Tr text="help.resources" />
             </HelpButton>
           </div>
-          <div className='DownloadValue' id={'downloadMenuButtonResources'}>
+          <div className='DownloadValue' id="downloadMenuButtonResources">
             <BigButton disabled={this.state.resources_downloading || !this.state.grasscutter_set || this.state.resources_exist} onClick={this.downloadResources} id="resourcesBtn" >
               <Tr text="components.download" />
             </BigButton>

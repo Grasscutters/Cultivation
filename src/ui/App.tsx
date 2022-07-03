@@ -166,7 +166,7 @@ class App extends React.Component<IProps, IState> {
         {
           // Mini downloads section
           this.state.miniDownloadsOpen ? (
-            <div className="MiniDownloads" id={'miniDownloadContainer'}>
+            <div className="MiniDownloads" id="miniDownloadContainer">
               <MiniDialog
                 title="Downloads"
                 closeFn={() => {
@@ -209,7 +209,7 @@ class App extends React.Component<IProps, IState> {
           ) : null
         }
 
-        <div className="BottomSection" id={'bottomSectionContainer'}>
+        <div className="BottomSection" id="bottomSectionContainer">
           <ServerLaunchSection />
 
           <div id="DownloadProgress"

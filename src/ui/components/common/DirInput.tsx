@@ -100,8 +100,8 @@ export default class DirInput extends React.Component<IProps, IState> {
           }}
           customClearBehaviour={this.props.customClearBehaviour}
         />
-        <div className="FileSelectIcon" id={'commonDirInputFileSelContainer'} onClick={this.handleIconClick}>
-          <img id={'commonDirInputFileSelIcon'} src={File} />
+        <div className="FileSelectIcon" id="commonDirInputFileSelContainer" onClick={this.handleIconClick}>
+          <img id="commonDirInputFileSelIcon" src={File} />
         </div>
       </div>
     )
