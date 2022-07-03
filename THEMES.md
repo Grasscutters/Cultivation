@@ -1,9 +1,8 @@
 # Downloading/Installing Themes
 
 1. Download your favorite theme! (You can find some in the `#themes` channel on Discord)
-2. Place the unzipped theme folder inside of `%appdata%/cultivation/themes`
-  2a. The path should look something like this: `cultivation/themes/theme_name/index.json`
-3. Enable within Cultivation!
+2. Place the unzipped theme folder inside of `%appdata%/cultivation/themes` (The path should look something like this: `cultivation/themes/theme_name/index.json`)
+4. Enable within Cultivation!
 
 # Creating your own theme
 
