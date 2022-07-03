@@ -53,12 +53,12 @@ export default class ProgressBar extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div className="ProgressBarWrapper">
+      <div className="ProgressBarWrapper" id="commonProgressBarContainer">
         <div style={{
           width: '80%'
         }}>
-          <div className="ProgressBar">
-            <div className="InnerProgress" style={{
+          <div className="ProgressBar" id="commonProgressBar">
+            <div className="InnerProgress" id="commonProgressBarContent" style={{
               width: `${(() => {
                 // Handles files with content-lengths of 0
                 if (this.state.status === 'finished') {
@@ -73,14 +73,14 @@ export default class ProgressBar extends React.Component<IProps, IState> {
               })()}%`,
             }}></div>
           </div>
-          <div className="DownloadControls">
-            <div onClick={this.stopDownload} className="downloadStop">
-              <img src={Stop}></img>
+          <div className="DownloadControls" id="commonProgressbarDownContrContainer">
+            <div onClick={this.stopDownload} id="commonProgressBarDownStopContainer" className="downloadStop">
+              <img id="commonProgressBarDownStopIcon" src={Stop}></img>
             </div>
           </div>
         </div>
 
-        <div className="ProgressText">
+        <div className="ProgressText" id="commonProgressBarText">
           {capitalize(this.state.status) || 'Waiting'}
         </div>
       </div>

@@ -32,16 +32,16 @@ export default class MiniDialog extends React.Component<IProps, never> {
 
   render() {
     return (
-      <div className="MiniDialog">
+      <div className="MiniDialog" id="miniDialogContainer">
         {
           this.props.closeable !== undefined && this.props.closeable ?
-            <div className="MiniDialogTop" onClick={this.props.closeFn}>
+            <div className="MiniDialogTop" id="miniDialogContainerTop" onClick={this.props.closeFn}>
               <span>{this.props?.title}</span>
-              <img src={Close} className="MiniDialogClose" />
+              <img src={Close} className="MiniDialogClose" id="miniDialogButtonClose" />
             </div> : null
         }
 
-        <div className="MiniDialogInner">
+        <div className="MiniDialogInner" id="miniDialogContent">
           {this.props.children}
         </div>
       </div>

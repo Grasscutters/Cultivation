@@ -38,7 +38,7 @@ A full, complete `index.json` will look something like this:
     "css": ["/index.css"],
     "js": ["/index.js"]
   },
-  "customBackgroundURL": "https://website.com/image.png",
+  "customBackgroundURL": "https://website.com/image.png"
 }
 ```
 
@@ -69,6 +69,9 @@ body {
   width: 300px;
 }
 ```
+
+## How can I change XYZ element?
+Every element is documented and describe [here](/docs/elementIds.md). Every\* single DOM element is assigned an ID to allow for easy and hyper-specific editing.
 
 ## Writing your JS
 

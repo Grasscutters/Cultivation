@@ -40,10 +40,10 @@ export default class Checkbox extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div className="Checkbox">
+      <div className="Checkbox" id="commonCheckboxContainer">
         <input type='checkbox' id={this.props.id} checked={this.state.checked} onChange={this.handleChange} />
-        <label htmlFor={this.props.id}>
-          <div className="CheckboxDisplay">
+        <label id="commonCheckboxLabel" htmlFor={this.props.id}>
+          <div className="CheckboxDisplay" id="commonCheckboxDisplay">
             {this.state.checked ? <img src={checkmark} alt='Checkmark' /> : null}
           </div>
           <span>{this.props.label || ''}</span>

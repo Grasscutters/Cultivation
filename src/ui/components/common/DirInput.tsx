@@ -86,8 +86,9 @@ export default class DirInput extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div className='DirInput'>
+      <div className='DirInput' id='commonDirInputContainer'>
         <TextInput
+          id='commonDirInputText'
           value={this.state.value}
           placeholder={this.state.placeholder}
           clearable={this.props.clearable !== undefined ? this.props.clearable : true}
@@ -99,8 +100,8 @@ export default class DirInput extends React.Component<IProps, IState> {
           }}
           customClearBehaviour={this.props.customClearBehaviour}
         />
-        <div className="FileSelectIcon" onClick={this.handleIconClick}>
-          <img src={File} />
+        <div className="FileSelectIcon" id="commonDirInputFileSelContainer" onClick={this.handleIconClick}>
+          <img id="commonDirInputFileSelIcon" src={File} />
         </div>
       </div>
     )
