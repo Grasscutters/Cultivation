@@ -15,7 +15,7 @@
     "disabled": "未啟用",
     "game_exec": "選擇遊戲執行檔",
     "grasscutter_jar": "選擇伺服器JAR檔案",
-    "toggle_encryption": "設置加密",
+    "toggle_encryption": "設定加密",
     "java_path": "設定自定義Java路徑",
     "grasscutter_with_game": "伴隨遊戲一起啟動Grasscutter",
     "language": "語言",
