@@ -35,10 +35,6 @@
 | `#latest_version`                      | News tabs for latest version button                             |
 | `#newsContent`                         | Content section of news container                               |
 | `#newsCommitsTable`                    | Commits table of news section                                   |
-| `#mewsCommitsAuthor`                   | Commit author of commit                                         |
-| `#newsCommitsCommitMessage`            | Commit message of commit                                        |
-| `#dividerContainer`                    | Container for divider line                                      |
-| `#dividerLine`                         | Divider line                                                    |
 | `#downloadMenuContainerGCStable`       | Grasscutter stable update container                             |
 | `#downloadMenuLabelGCStable`           | Label for stable update button                                  |
 | `#downloadMenuButtonGCStable`          | Button container for stable update button                       |
@@ -96,34 +92,3 @@
 | `#DownloadProgress`                    | Download progress container                                     |
 | `#bottomSectionContainer`              | Bottom section container                                        |
 | `#miniDownloadContainer`               | Container for mini download                                     |
-| `#commonBigButtonContent`              | Content of big button component                                 |
-| `#commonCheckboxContainer`             | Container of common Checkbox component                          |
-| `#commonCheckboxLabel`                 | Label of common checkbox                                        |
-| `#commonCheckboxDisplay`               | is checked? section of common checkbox                          |
-| `#commonDirInputContainer`             | Container of DirInput component                                 |
-| `#commonDirInputText`                  | Text of DirInput component                                      |
-| `#commonDirInputFileSelContainer`      | DirInput file selector container                                |
-| `#commonDirInputFileSelIcon`           | DirInput file selector icon                                     |
-| `#commonDownloadSectionContainer`      | DownloadSection component container                             |
-| `#commonDownloadSectionTitle`          | Title of download section                                       |
-| `#commonDownloadSectionPath`           | Path of the download section                                    |
-| `#commonDownloadSectionSize`           | File size of download section's file                            |
-| `#commonDownloadSectionProgress`       | Progressbar of the download section                             |
-| `#commonHelpButtonContainer`           | Container for HelpButtons                                       |
-| `#commonHelpButtonClosed`              | HelpButton closed content container                             |
-| `#commonHelpButtonIcon`                | HelpButton icon                                                 |
-| `#commonHelpButtonContainerOpen`       | Container of opened HelpButton                                  |
-| `#commonMainProgressContainer`         | MainProgressBar container                                       |
-| `#commonMainProgress`                  | Container for inner content of MainProgressBar                  |
-| `#commonMainProgressInner`             | MainProgressBar inner                                           |
-| `#commonMainProgressText`              | Text of MainProgressBar                                         |
-| `#commonProgressBarContainer`          | ProgressBar container                                           |
-| `#commonProgressBar`                   | ProgressBar container before content                            |
-| `#commonProgressBarContent`            | ProgressBar content                                             |
-| `#commonProgressbarDownContrContainer` | Container for ProgressBar controls                              |
-| `#commonProgressBarDownStopContainer`  | Container for download stop                                     |
-| `#commonProgressBarDownStopIcon`       | Download stop icon (SVG)                                        |
-| `#commonProgressBarText`               | Text describing the progress bar's job                          |
-| `#commonTextInputContainer`            | Container of TextInput component                                |
-| `#commonTextInputClearableContainer`   | Container if TextInput is clearable                             |
-| `#commonTextInputClearableIcon`        | TextInput clearable icon (SVG)                                  |
