@@ -36,7 +36,7 @@
   "download_status": {
     "downloading": "Telechargement",
     "extracting": "Extraction",
-    "error": "Erreurr",
+    "error": "Erreur",
     "finished": "Termine",
     "stopped": "Arrete"
   },
