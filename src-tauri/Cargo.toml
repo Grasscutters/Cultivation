@@ -37,7 +37,6 @@ duct = "0.13.5"
 
 # Serialization.
 serde_json = "1"
-base64 = "0.13.0"
 
 # System process elevation.
 is_elevated = "0.1.2"
