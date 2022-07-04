@@ -69,8 +69,8 @@ export default class NewsSection extends React.Component<IProps, IState> {
       const commitsListHtml = commitsList.map((commit: any) => {
         return (
           <tr className="Commit" id="newsCommitsTable" key={commit.sha}>
-            <td className="CommitAuthor" id="newsCommitsAuthor"><span>{commit.commit.author.name}</span></td>
-            <td className="CommitMessage" id="newsCommitsCommitMessage"><span>{commit.commit.message}</span></td>
+            <td className="CommitAuthor"><span>{commit.commit.author.name}</span></td>
+            <td className="CommitMessage"><span>{commit.commit.message}</span></td>
           </tr>
         )
       })
