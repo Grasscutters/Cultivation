@@ -102,10 +102,7 @@ This is not full list of all classes, rather its list of classes for commonly us
 | .Class                      | Description                                             |
 |-----------------------------|---------------------------------------------------------|
 | `.BigButton`                | Class for all buttons                                   |
-| `.BigButtonText`            | Text inside a button                                    |
-| `.BigButton:hover`          | Hover state of all buttons                              |
-| `.BigButton.disabled`       | Disabled state of all buttons                           |
-| `.BigButton.disabled:hover` | Disabled state with hover                               |
+| `.BigButtonText`            | Text inside a button                                    |                              |
 | `.Checkbox`                 | Checkbox container                                      |
 | `.CheckboxDisplay`          | Content of checkbox                                     |
 | `.DirInput`                 | Container for DirInput                                  |
