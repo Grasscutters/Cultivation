@@ -38,7 +38,7 @@ export default class HelpButton extends React.Component<IProps, IState> {
     return (
       <div className="HelpSection">
         <div className="HelpButton" onMouseEnter={this.setOpen} onMouseLeave={this.setClosed}>
-          <img id="commonHelpButtonIcon" src={Help} />
+          <img src={Help} />
         </div>
 
         <div className="HelpContents" style={{
