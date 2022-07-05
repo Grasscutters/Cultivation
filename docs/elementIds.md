@@ -1,4 +1,7 @@
-# Documentation of Element ID's for custom theming
+# Documentation of Element ID's and Classes for custom theming
+
+## IDs
+This does not include commonly used components (buttons, divider lines, commit author and message, etc...) for accessing and modifying those elements, please check `Classes` section bellow.
 
 | #ID                                    | Description                                                     |
 |----------------------------------------|-----------------------------------------------------------------|
@@ -92,3 +95,42 @@
 | `#DownloadProgress`                    | Download progress container                                     |
 | `#bottomSectionContainer`              | Bottom section container                                        |
 | `#miniDownloadContainer`               | Container for mini download                                     |
+
+## Classes
+This is not full list of all classes, rather its list of classes for commonly used components that can not be accessed using element id system.
+
+| .Class                      | Description                                             |
+|-----------------------------|---------------------------------------------------------|
+| `.BigButton`                | Class for all buttons                                   |
+| `.BigButtonText`            | Text inside a button                                    |
+| `.BigButton:hover`          | Hover state of all buttons                              |
+| `.BigButton.disabled`       | Disabled state of all buttons                           |
+| `.BigButton.disabled:hover` | Disabled state with hover                               |
+| `.Checkbox`                 | Checkbox container                                      |
+| `.CheckboxDisplay`          | Content of checkbox                                     |
+| `.DirInput`                 | Container for DirInput                                  |
+| `.FileSelectIcon`           | Icon of DirInput                                        |
+| `.DownloadList`             | List of all downloads                                   |
+| `.DownloadSection`          | Container for each download                             |
+| `.DownloadTitle`            | Contains file download path and current status          |
+| `.DownloadPath`             | Path of a download                                      |
+| `.DownloadStatus`           | Status of a download                                    |
+| `.DownloadSectionInner`     | Contains progressbar of the download section            |
+| `.HelpSection`              | Container for help "?" circle button                    |
+| `.HelpButton`               | HelpButton itself                                       |
+| `.HelpContents`             | Content of help button once expanded                    |
+| `.MainProgressBarWrapper`   | Container for MainProgressBar                           |
+| `.ProgressBar`              | ProgressBar (creativity left the brain)                 |
+| `.InnerProgress`            | ProgressBar percentage                                  |
+| `.MainProgressText`         | Text for MainProgressBar                                |
+| `.ProgressBarWrapper`       | Container for ProgressBar                               |
+| `.DownloadControls`         | DownloadControls of ProgressBar                         |
+| `.downloadStop`             | Container for download stop icon (SVG)                  |
+| `.ProgressText`             | Text of the ProgressBar display current download status |
+| `.TextInputWrapper`         | Container for TextInput                                 |
+| `.TextClear`                | Container for clear input content button                |
+| `.TextInputClear`           | TextInput clear button icon (SVG)                       |
+| `.Divider`                  | Container for line dividers                             |
+| `.DividerLine`              | Divider line itself                                     |
+| `.CommitAuthor`             | Author of a commit                                      |
+| `.CommitMessage`            | Message of a commit                                     |

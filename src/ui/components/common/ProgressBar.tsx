@@ -75,7 +75,7 @@ export default class ProgressBar extends React.Component<IProps, IState> {
           </div>
           <div className="DownloadControls">
             <div onClick={this.stopDownload} className="downloadStop">
-              <img id="commonProgressBarDownStopIcon" src={Stop}></img>
+              <img src={Stop}></img>
             </div>
           </div>
         </div>

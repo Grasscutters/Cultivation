@@ -88,7 +88,6 @@ export default class DirInput extends React.Component<IProps, IState> {
     return (
       <div className='DirInput'>
         <TextInput
-          id='commonDirInputText'
           value={this.state.value}
           placeholder={this.state.placeholder}
           clearable={this.props.clearable !== undefined ? this.props.clearable : true}
