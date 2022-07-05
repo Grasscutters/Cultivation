@@ -47,7 +47,7 @@ All paths are relative to the theme folder. This means you only need to do `"/in
 
 ## Writing your CSS
 
-You will want to use the DevTools to find what classes and IDs you are able to work with.
+You are welcome to use the DevTools to debug your theme, or view what properties an element has already, etc.
 
 Below are some small examples of what you can do:
 
