@@ -38,7 +38,8 @@ A full, complete `index.json` will look something like this:
     "css": ["/index.css"],
     "js": ["/index.js"]
   },
-  "customBackgroundURL": "https://website.com/image.png"
+  "customBackgroundURL": "https://website.com/image.png",
+  "customBackgroundFile": "/image.png"
 }
 ```
 
