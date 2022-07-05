@@ -31,6 +31,7 @@ Once downloaded, extract somewhere and open as administrator.
 # Developer Quickstart
 
 ### Setup
+* Install [NodeJS >12](https://nodejs.org/en/)
 * Install [Cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html) & [Rust compiler](https://www.rust-lang.org/tools/install)
 * `npm install` or `yarn install`
 * `npm run start:dev` or `yarn start:dev`
