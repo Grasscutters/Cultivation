@@ -318,28 +318,6 @@ void oqs_aes128_enc_c(const uint8_t *plaintext, const void *_schedule, uint8_t *
 	xor_round_key(ciphertext, schedule, 10);
 }
 
-// It's not enc nor dec, it's something in between
-void oqs_mhy128_enc_c(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext) {
-	const uint8_t *schedule = (const uint8_t *) _schedule;
-	int i; // To count the rounds
-
-	// First Round
-	memcpy(ciphertext, plaintext, 16);
-	xor_round_key(ciphertext, schedule, 0);
-
-	// Middle rounds
-	for (i = 0; i < 9; i++) {
-		sub_bytes_inv(ciphertext, 16);
-		shift_rows_inv(ciphertext);
-		mix_cols_inv(ciphertext);
-		xor_round_key(ciphertext, schedule, i + 1);
-	}
-
-	// Final Round
-	sub_bytes_inv(ciphertext, 16);
-	shift_rows_inv(ciphertext);
-	xor_round_key(ciphertext, schedule, 10);
-}
 
 void oqs_aes128_dec_c(const uint8_t *ciphertext, const void *_schedule, uint8_t *plaintext) {
 	const uint8_t *schedule = (const uint8_t *) _schedule;
@@ -361,6 +339,29 @@ void oqs_aes128_dec_c(const uint8_t *ciphertext, const void *_schedule, uint8_t 
 
 	// Reverse the first Round
 	xor_round_key(plaintext, schedule, 0);
+}
+
+// It's not enc nor dec, it's something in between
+void oqs_mhy128_enc_c(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext) {
+	const uint8_t *schedule = (const uint8_t *) _schedule;
+	int i; // To count the rounds
+
+	// First Round
+	memcpy(ciphertext, plaintext, 16);
+	xor_round_key(ciphertext, schedule, 0);
+
+	// Middle rounds
+	for (i = 0; i < 9; i++) {
+		sub_bytes_inv(ciphertext, 16);
+		shift_rows_inv(ciphertext);
+		mix_cols_inv(ciphertext);
+		xor_round_key(ciphertext, schedule, i + 1);
+	}
+
+	// Final Round
+	sub_bytes_inv(ciphertext, 16);
+	shift_rows_inv(ciphertext);
+	xor_round_key(ciphertext, schedule, 10);
 }
 
 void oqs_mhy128_dec_c(const uint8_t *ciphertext, const void *_schedule, uint8_t *plaintext) {

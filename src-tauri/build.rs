@@ -3,12 +3,17 @@ fn main() {
     .include("mhycrypto")
     .cpp(true)
 
-    .file("mhycrypto/aes.cpp")
     .file("mhycrypto/memecrypto.cpp")
     .file("mhycrypto/metadata.cpp")
     .file("mhycrypto/metadatastringdec.cpp")
 
     .compile("mhycrypto");
+
+    cc::Build::new()
+    .include("mhycrypto")
+    .file("mhycrypto/aes.c")
+  
+    .compile("mhycrypto-aes");
 
   tauri_build::build()
 }

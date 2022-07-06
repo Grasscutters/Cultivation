@@ -3,7 +3,8 @@
 #include <cstring>
 #include <stdio.h>
 
-#include "aes.h"
+extern "C" void oqs_mhy128_enc_c(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext);
+extern "C" void oqs_mhy128_dec_c(const uint8_t *ciphertext, const void *_schedule, uint8_t *plaintext);
 
 static uint8_t dexor16(const uint8_t *c) {
     uint8_t ret = 0;
@@ -16,9 +17,6 @@ void memecrypto_prepare_key(const uint8_t *in, uint8_t *out) {
     for (int i = 0; i < 0xB0; i++)
         out[i] = dexor16(&in[0x10 * i]);
 }
-
-extern "C" void oqs_mhy128_enc_c(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext);
-extern "C" void oqs_mhy128_dec_c(const uint8_t *ciphertext, const void *_schedule, uint8_t *plaintext);
 
 void memecrypto_decrypt(const uint8_t *key, uint8_t *data) {
   uint8_t plaintext[16];
