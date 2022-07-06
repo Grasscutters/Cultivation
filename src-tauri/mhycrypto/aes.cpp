@@ -8,8 +8,6 @@
 
 // This code is public domain, or any OSI-approved license, your choice. No warranty.
 
-extern "C" {
-
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
@@ -161,16 +159,16 @@ static const byte lookup_g14[] = {
     0xd7, 0xd9, 0xcb, 0xc5, 0xef, 0xe1, 0xf3, 0xfd, 0xa7, 0xa9, 0xbb, 0xb5, 0x9f, 0x91, 0x83, 0x8d};
 
 // Xor's all elements in a n byte array a by b
-static void xor (byte * a, const byte *b, int n) {
+static void xor_s(byte * a, const byte *b, int n) {
 	int i;
 	for (i = 0; i < n; i++) {
 		a[i] ^= b[i];
 	}
 }
 
-    // Xor the current cipher state by a specific round key
-    static void xor_round_key(byte *state, const byte *keys, int round) {
-	xor(state, keys + round * 16, 16);
+// Xor the current cipher state by a specific round key
+static void xor_round_key(byte *state, const byte *keys, int round) {
+	xor_s(state, keys + round * 16, 16);
 }
 
 // Apply the rijndael s-box to all elements in an array
@@ -217,14 +215,14 @@ void oqs_aes128_load_schedule_c(const uint8_t *key, void **_schedule) {
 		memcpy(t, schedule + bytes - 4, 4); // We assign the value of the previous four bytes in the expanded key to t
 		key_schedule_core(t, i);            // We perform the key schedule core on t, with i as the rcon iteration value
 		i++;                                // We increment i by 1
-		xor(t, schedule + bytes - 16, 4);   // We exclusive-or t with the four-byte block 16 bytes before the new expanded key.
+		xor_s(t, schedule + bytes - 16, 4);   // We exclusive-or t with the four-byte block 16 bytes before the new expanded key.
 		memcpy(schedule + bytes, t, 4);     // This becomes the next 4 bytes in the expanded key
 		bytes += 4;                         // Keep track of how many expanded key bytes we've added
 
 		// We then do the following three times to create the next twelve bytes
 		for (j = 0; j < 3; j++) {
 			memcpy(t, schedule + bytes - 4, 4); // We assign the value of the previous 4 bytes in the expanded key to t
-			xor(t, schedule + bytes - 16, 4);   // We exclusive-or t with the four-byte block n bytes before
+			xor_s(t, schedule + bytes - 16, 4);   // We exclusive-or t with the four-byte block n bytes before
 			memcpy(schedule + bytes, t, 4);     // This becomes the next 4 bytes in the expanded key
 			bytes += 4;                         // Keep track of how many expanded key bytes we've added
 		}
@@ -385,6 +383,4 @@ void oqs_mhy128_dec_c(const uint8_t *ciphertext, const void *_schedule, uint8_t 
 
 	// Reverse the first Round
 	xor_round_key(plaintext, schedule, 0);
-}
-
 }

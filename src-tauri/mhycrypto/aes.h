@@ -6,8 +6,6 @@
 #ifndef __OQS_AES_H
 #define __OQS_AES_H
 
-extern "C" {
-
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -64,7 +62,5 @@ void OQS_AES128_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len
  * not have to be regenerated from the key.
  */
 void OQS_AES128_ECB_dec_sch(const uint8_t *ciphertext, const size_t ciphertext_len, const void *schedule, uint8_t *plaintext);
-
-}
 
 #endif
