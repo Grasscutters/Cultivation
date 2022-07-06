@@ -14,6 +14,13 @@ rust-version = "1.57"
 [build-dependencies]
 tauri-build = { version = "1.0.0-rc.8", features = [] }
 
+[target.'cfg(windows)'.dependencies]
+is_elevated = "0.1.2"
+registry = "1.2.1"
+
+[target.'cfg(unix)'.dependencies]
+sudo = "0.6.0"
+
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
 tauri = { version = "1.0.0-rc.9", features = ["api-all"] }
@@ -28,9 +35,6 @@ zip = "0.6.2"
 # For creating a "global" downloads list.
 lazy_static = "1.4.0"
 
-# Access to the Windows Registry.
-registry = "1.2.1"
-
 # Program opener.
 open = "2.1.2"
 duct = "0.13.5"
@@ -39,7 +43,6 @@ duct = "0.13.5"
 serde_json = "1"
 
 # System process elevation.
-is_elevated = "0.1.2"
 runas = "0.2.1"
 
 # Dependencies for the HTTP(S) proxy.
