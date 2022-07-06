@@ -6,10 +6,7 @@ use std::fs::File;
 use std::io::Read;
 use std::io::Write;
 
-fn dll_decrypt_global_metadata(
-  data: *mut u8,
-  size: u64,
-) -> Result<*const c_void, Box<dyn std::error::Error>> {
+fn dll_decrypt_global_metadata(data: *mut u8, size: u64) -> Result<*const c_void, Box<dyn std::error::Error>> {
   unsafe {
     // Load DLL
     let lib = Library::new("mhycrypto.dll")?;
@@ -24,10 +21,7 @@ fn dll_decrypt_global_metadata(
   }
 }
 
-fn dll_encrypt_global_metadata(
-  data: *mut u8,
-  size: u64,
-) -> Result<*const c_void, Box<dyn std::error::Error>> {
+fn dll_encrypt_global_metadata(data: *mut u8, size: u64) -> Result<*const c_void, Box<dyn std::error::Error>> {
   unsafe {
     // Load DLL
     let lib = Library::new("mhycrypto.dll")?;
@@ -46,13 +40,13 @@ fn dll_encrypt_global_metadata(
 pub fn patch_metadata(metadata_folder: &str) {
   let metadata_file = &(metadata_folder.to_owned() + "\\global-metadata.dat");
   println!("Patching metadata file: {}", metadata_file);
-  let decrypted: Vec<u8> = decrypt_metadata(metadata_file);
-
+  let decrypted = decrypt_metadata(metadata_file);
   let modified = replace_keys(&decrypted);
+  let encrypted = encrypt_metadata(&modified);
 
-  //write modfied to file
-  let mut file = File::create(&(metadata_folder.to_owned() + "\\modified-metadata.dat")).unwrap();
-  file.write_all(&modified).unwrap();
+  //write encrypted to file
+  let mut file = File::create(&(metadata_folder.to_owned() + "\\encrypted-metadata.dat")).unwrap();
+  file.write_all(&encrypted).unwrap();
 }
 
 fn decrypt_metadata(file_path: &str) -> Vec<u8> {
@@ -131,19 +125,16 @@ fn replace_rsa_key(old_data: &str, to_replace: &str, file_name: &str) -> String 
   }
 }
 
-/*let mut file = match OpenOptions::new().write(true).create(true).open(&(file_location.to_owned() + "\\decrypted_metadata.dat")) {
-  Ok(file) => file,
-  Err(e) => {
-    println!("Failed to open file: {}", e);
-    return;
-  }
-};
-match file.write_all(&data) {
-  Ok(_) => {
-    println!("Successfully decrypted metadata");
-  }
-  Err(e) => {
-    println!("Failed to write to file: {}", e);
-    return;
-  }
-}*/
+fn encrypt_metadata(old_data: &Vec<u8>) -> Vec<u8> {
+  let mut data = old_data.to_vec();
+  match dll_encrypt_global_metadata(data.as_mut_ptr(), data.len().try_into().unwrap()) {
+    Ok(_) => {
+      println!("Successfully encrypted global-metadata");
+      return data;
+    }
+    Err(e) => {
+      println!("Failed to encrypt global-metadata: {}", e);
+      return Vec::new();
+    }
+  };
+}

@@ -19,7 +19,7 @@ mod downloader;
 mod lang;
 mod proxy;
 mod web;
-mod metadata;
+mod metadata_patcher;
 
 lazy_static! {
   static ref WATCH_GAME_PROCESS: Mutex<String> = {
@@ -64,7 +64,7 @@ fn main() {
       lang::get_lang,
       lang::get_languages,
       web::valid_url,
-      metadata::patch_metadata
+      metadata_patcher::patch_metadata
     ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
