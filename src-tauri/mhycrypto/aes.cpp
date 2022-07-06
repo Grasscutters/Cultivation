@@ -5,7 +5,10 @@
 // http://en.wikipedia.org/wiki/Rijndael_key_schedule
 // http://en.wikipedia.org/wiki/Rijndael_mix_columns
 // http://en.wikipedia.org/wiki/Rijndael_S-box
+
 // This code is public domain, or any OSI-approved license, your choice. No warranty.
+
+extern "C" {
 
 #include <assert.h>
 #include <stdio.h>
@@ -382,4 +385,6 @@ void oqs_mhy128_dec_c(const uint8_t *ciphertext, const void *_schedule, uint8_t 
 
 	// Reverse the first Round
 	xor_round_key(plaintext, schedule, 0);
+}
+
 }
