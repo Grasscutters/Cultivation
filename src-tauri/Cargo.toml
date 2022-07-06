@@ -13,6 +13,7 @@ rust-version = "1.57"
 
 [build-dependencies]
 tauri-build = { version = "1.0.0-rc.8", features = [] }
+cc = "1.0"
 
 [target.'cfg(windows)'.dependencies]
 is_elevated = "0.1.2"

@@ -1,38 +1,24 @@
-use core::ffi::c_void;
-use libloading::os::windows::Library;
-use libloading::os::windows::Symbol;
 use regex::Regex;
 use std::fs::File;
 use std::io::Read;
 use std::io::Write;
 
-fn dll_decrypt_global_metadata(data: *mut u8, size: u64) -> Result<*const c_void, Box<dyn std::error::Error>> {
+extern {
+  fn decrypt_global_metadata(data : *mut u8, size : u64);
+  fn encrypt_global_metadata(data : *mut u8, size : u64);
+}
+
+fn dll_decrypt_global_metadata(data : *mut u8, size : u64) -> Result<bool, Box<dyn std::error::Error>> {
   unsafe {
-    // Load DLL
-    let lib = Library::new("mhycrypto.dll")?;
-
-    // Load function and call it
-    let func: Symbol<unsafe extern "C" fn(*mut u8, u64) -> *const c_void> = lib.get_ordinal(0x1)?;
-    let decrypted_data = func(data, size);
-
-    // Close DLL and return result
-    lib.close()?;
-    Ok(decrypted_data)
+    decrypt_global_metadata(data, size);
+    Ok(true)
   }
 }
 
-fn dll_encrypt_global_metadata(data: *mut u8, size: u64) -> Result<*const c_void, Box<dyn std::error::Error>> {
+fn dll_encrypt_global_metadata(data : *mut u8, size : u64) -> Result<bool, Box<dyn std::error::Error>> {
   unsafe {
-    // Load DLL
-    let lib = Library::new("mhycrypto.dll")?;
-
-    // Load function and call it
-    let func: Symbol<unsafe extern "C" fn(*mut u8, u64) -> *const c_void> = lib.get_ordinal(0x2)?;
-    let encrypted_data = func(data, size);
-
-    // Close DLL and return result
-    lib.close()?;
-    Ok(encrypted_data)
+    encrypt_global_metadata(data, size);
+    Ok(true)
   }
 }
 
