@@ -4,7 +4,6 @@ import BigButton from './common/BigButton'
 import TextInput from './common/TextInput'
 import HelpButton from './common/HelpButton'
 import { getConfig, saveConfig, setConfigOption } from '../../utils/configuration'
-import { patchMetadata } from '../../utils/patcher'
 import { translate } from '../../utils/language'
 import { invoke } from '@tauri-apps/api/tauri'
 
@@ -87,7 +86,30 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
   }
 
   async patchMetadata() {
-    await patchMetadata()
+    const config = await getConfig()
+
+    // Copy unpatched metadata to backup location
+    if(await invoke('copy_file_with_new_name', { path: config.game_install_path + '\\GenshinImpact_Data\\Managed\\Metadata\\global-metadata.dat', newPath: await dataDir() + 'cultivation\\metadata', newName: 'global-metadata-unpatched.dat' })) {
+      // Backup successful
+
+      // Patch backedup metadata
+      if(await invoke('patch_metadata', {metadataFolder: await dataDir() +  'cultivation/metadata'})) {
+        // Patch successful
+        
+        // Replace game metadata with patched metadata
+        if(!(await invoke('copy_file_with_new_name', { path: await dataDir() +  'cultivation/metadata/global-metadata-patched.dat', newPath: config.game_install_path + '\\GenshinImpact_Data\\Managed\\Metadata', newName: 'global-metadata.dat' }))) {
+          // Replace failed
+          alert('Failed to replace game metadata!')
+          return
+        }
+      } else {
+        alert ('Failed to patch metadata!')
+        return
+      }
+    } else {
+      alert ('Failed to backup metadata!')
+      return
+    }
   }
 
   async playGame() {
@@ -97,7 +119,42 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     
     // Connect to proxy
     if (config.toggle_grasscutter) {
-      let game_exe = config.game_install_path
+      // Check if metadata has been backed up
+      if (await invoke('dir_exists', { path: await dataDir() +  'cultivation/metadata/global-metadata-unpatched.dat'})) {
+        // Assume metadata has been patched
+        
+        // Compare metadata files
+        if (!(await invoke('are_files_identical', { path1: await dataDir() +  'cultivation/metadata/global-metadata-patched.dat', path2: config.game_install_path + '\\GenshinImpact_Data\\Managed\\Metadata\\global-metadata.dat'}))) {
+          // Metadata is not patched
+
+          // Check to see if unpatched backup matches the game's version
+          if (await invoke('are_files_identical', { path1: await dataDir() +  'cultivation/metadata/global-metadata-unpatched.dat', path2: config.game_install_path + '\\GenshinImpact_Data\\Managed\\Metadata\\global-metadata.dat'})) {
+            // Game's metadata is not patched, so we need to patch it
+            if(!(await invoke('copy_file_with_new_name', { path: await dataDir() +  'cultivation/metadata/global-metadata-patched.dat', newPath: config.game_install_path + '\\GenshinImpact_Data\\Managed\\Metadata', newName: 'global-metadata.dat' }))) {
+              // Replace failed
+              alert('Failed to replace game metadata!')
+              return
+            }
+          } else {
+            // Game has probably been updated. We need to repatch the game...
+            alert('Deleting old metadata')
+            
+            // Delete backed up metadata
+            if(!(await invoke('delete_file', { path: await dataDir() +  'cultivation/metadata/global-metadata-unpatched.dat' }) && !(await invoke('delete_file', { path: await dataDir() +  'cultivation/metadata/global-metadata-patched.dat' })))) {
+              // Delete failed
+              alert('Failed to delete backed up metadata!')
+              return
+            }
+
+            await this.patchMetadata()
+          }
+        }
+      } else {
+        // Assume metadata has not been patched
+        await this.patchMetadata()
+      }
+
+      let game_exe = config.game_install_path + '\\GenshinImpact.exe'
 
       if (game_exe.includes('\\')) {
         game_exe = game_exe.substring(config.game_install_path.lastIndexOf('\\') + 1)
@@ -134,14 +191,29 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
           javaPath: config.java_path || ''
         })
       }
+    } else {
+      // Check if metadata has been backed up
+      if (await invoke('dir_exists', { path: await dataDir() +  'cultivation/metadata/global-metadata-unpatched.dat'})) {
+        // Check if metadata is patched
+
+        // Compare metadata files
+        if (await invoke('are_files_identical', { path1: await dataDir() +  'cultivation/metadata/global-metadata-patched.dat', path2: config.game_install_path + '\\GenshinImpact_Data\\Managed\\Metadata\\global-metadata.dat'})) {
+          // Metadata is patched, so we need to unpatch it
+          if(!(await invoke('copy_file_with_new_name', { path: await dataDir() +  'cultivation/metadata/global-metadata-unpatched.dat', newPath: config.game_install_path + '\\GenshinImpact_Data\\Managed\\Metadata', newName: 'global-metadata.dat' }))) {
+            // Replace failed
+            alert('Failed to unpatch game metadata!')
+            return
+          }
+        }
+      }
     }
   
     // Launch the program
     const gameExists = await invoke('dir_exists', {
-      path: config.game_install_path
+      path: config.game_install_path + '\\GenshinImpact.exe'
     })
 
-    if (gameExists) await invoke('run_program', { path: config.game_install_path })
+    if (gameExists) await invoke('run_program', { path: config.game_install_path + '\\GenshinImpact.exe' })
     else alert('Game not found! At: ' + config.game_install_path)
   }
 
@@ -201,7 +273,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
         {
           this.state.grasscutterEnabled && (
             <div>
-              <div className="ServerConfig" id="serverConfigContainer">Compiled with problems:
+              <div className="ServerConfig" id="serverConfigContainer">
                 <TextInput id="ip" key="ip" placeholder={this.state.ipPlaceholder} onChange={this.setIp} initalValue={this.state.ip} />
                 <TextInput style={{
                   width: '10%',
@@ -216,7 +288,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
 
 
         <div className="ServerLaunchButtons" id="serverLaunchContainer">
-          <BigButton onClick={this.patchMetadata} id="officialPlay">Patch Metadata</BigButton>
+          <BigButton onClick={this.playGame} id="officialPlay">{this.state.buttonLabel}</BigButton>
           <BigButton onClick={this.launchServer} id="serverLaunch">
             <img className="ServerIcon" id="serverLaunchIcon" src={Server} />
           </BigButton>

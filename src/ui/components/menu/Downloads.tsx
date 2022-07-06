@@ -269,6 +269,21 @@ export default class Downloads extends React.Component<IProps, IState> {
             </BigButton>
           </div>
         </div>
+
+        <Divider />
+        <div className='DownloadMenuSection' id="downloadMenuContainerResources">
+          <div className='DownloadLabel' id="downloadMenuLabelResources">
+            <Tr text="downloads.game" />
+            <HelpButton>
+              <Tr text="help.game" />
+            </HelpButton>
+          </div>
+          <div className='DownloadValue' id="downloadMenuButtonResources">
+            <BigButton disabled={this.state.resources_downloading || !this.state.grasscutter_set || this.state.resources_exist} onClick={this.downloadResources} id="resourcesBtn" >
+              <Tr text="components.download" />
+            </BigButton>
+          </div>
+        </div>
       </Menu>
     )
   }

@@ -1,4 +1,5 @@
 use std::fs;
+use file_diff::diff;
 
 #[tauri::command]
 pub fn rename(path: String, new_name: String) {
@@ -32,4 +33,9 @@ pub fn dir_is_empty(path: &str) -> bool {
 #[tauri::command]
 pub fn dir_delete(path: &str) {
   fs::remove_dir_all(path).unwrap();
+}
+
+#[tauri::command]
+pub fn are_files_identical(path1: &str, path2: &str) -> bool {
+  return diff(path1, path2);
 }

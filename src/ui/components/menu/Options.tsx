@@ -175,7 +175,7 @@ export default class Options extends React.Component<IProps, IState> {
             <Tr text="options.game_exec" />
           </div>
           <div className='OptionValue' id="menuOptionsDirGameExec">
-            <DirInput onChange={this.setGameExec} value={this.state?.game_install_path} extensions={['exe']} />
+            <DirInput onChange={this.setGameExec} value={this.state?.game_install_path} folder={true} />
           </div>
         </div>
         <div className='OptionSection' id="menuOptionsContainerGCJar">

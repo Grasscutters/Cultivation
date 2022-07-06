@@ -1,5 +1,6 @@
 use regex::Regex;
 use std::fs::File;
+use std::fs::OpenOptions;
 use std::io::Read;
 use std::io::Write;
 
@@ -23,16 +24,38 @@ fn dll_encrypt_global_metadata(data : *mut u8, size : u64) -> Result<bool, Box<d
 }
 
 #[tauri::command]
-pub fn patch_metadata(metadata_folder: &str) {
-  let metadata_file = &(metadata_folder.to_owned() + "\\global-metadata.dat");
+pub fn patch_metadata(metadata_folder: &str) -> bool {
+  let metadata_file = &(metadata_folder.to_owned() + "\\global-metadata-unpatched.dat");
   println!("Patching metadata file: {}", metadata_file);
   let decrypted = decrypt_metadata(metadata_file);
+  if do_vecs_match(&decrypted, &Vec::new()) {
+    println!("Failed to decrypt metadata file.");
+    return false;
+  }
+
   let modified = replace_keys(&decrypted);
+  if do_vecs_match(&modified, &Vec::new()) {
+    println!("Failed to replace keys in metadata file.");
+    return false;
+  }
+
   let encrypted = encrypt_metadata(&modified);
+  if do_vecs_match(&encrypted, &Vec::new()) {
+    println!("Failed to re-encrypt metadata file.");
+    return false;
+  }
 
   //write encrypted to file
-  let mut file = File::create(&(metadata_folder.to_owned() + "\\encrypted-metadata.dat")).unwrap();
+  let mut file = match OpenOptions::new().create(true).write(true).open(&(metadata_folder.to_owned() + "\\global-metadata-patched.dat")) {
+    Ok(file) => file,
+    Err(e) => {
+      println!("Failed to open global-metadata: {}", e);
+      return false;
+    }
+  };
+
   file.write_all(&encrypted).unwrap();
+  return true;
 }
 
 fn decrypt_metadata(file_path: &str) -> Vec<u8> {
@@ -123,4 +146,9 @@ fn encrypt_metadata(old_data: &Vec<u8>) -> Vec<u8> {
       return Vec::new();
     }
   };
+}
+
+fn do_vecs_match<T: PartialEq>(a: &Vec<T>, b: &Vec<T>) -> bool {
+  let matching = a.iter().zip(b.iter()).filter(|&(a, b)| a == b).count();
+  matching == a.len() && matching == b.len()
 }

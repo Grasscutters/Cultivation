@@ -742,7 +742,9 @@ checksum = "b365fabc795046672053e29c954733ec3b05e4be654ab130fe8f1f94d7051f35"
 name = "cultivation"
 version = "0.1.0"
 dependencies = [
+ "cc",
  "duct",
+ "file_diff",
  "futures-util",
  "http",
  "hudsucker",
@@ -1042,6 +1044,12 @@ dependencies = [
  "memoffset 0.6.5",
  "rustc_version 0.3.3",
 ]
+
+[[package]]
+name = "file_diff"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "31a7a908b8f32538a2143e59a6e4e2508988832d5d4d6f7c156b3cbc762643a5"
 
 [[package]]
 name = "filetime"
