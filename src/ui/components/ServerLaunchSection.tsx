@@ -4,6 +4,7 @@ import BigButton from './common/BigButton'
 import TextInput from './common/TextInput'
 import HelpButton from './common/HelpButton'
 import { getConfig, saveConfig, setConfigOption } from '../../utils/configuration'
+import { patchMetadata } from '../../utils/patcher'
 import { translate } from '../../utils/language'
 import { invoke } from '@tauri-apps/api/tauri'
 
@@ -83,6 +84,10 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     })
 
     await saveConfig(config)
+  }
+
+  async patchMetadata() {
+    await patchMetadata()
   }
 
   async playGame() {
@@ -196,7 +201,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
         {
           this.state.grasscutterEnabled && (
             <div>
-              <div className="ServerConfig" id="serverConfigContainer">
+              <div className="ServerConfig" id="serverConfigContainer">Compiled with problems:
                 <TextInput id="ip" key="ip" placeholder={this.state.ipPlaceholder} onChange={this.setIp} initalValue={this.state.ip} />
                 <TextInput style={{
                   width: '10%',
@@ -211,7 +216,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
 
 
         <div className="ServerLaunchButtons" id="serverLaunchContainer">
-          <BigButton onClick={this.playGame} id="officialPlay">{this.state.buttonLabel}</BigButton>
+          <BigButton onClick={this.patchMetadata} id="officialPlay">Patch Metadata</BigButton>
           <BigButton onClick={this.launchServer} id="serverLaunch">
             <img className="ServerIcon" id="serverLaunchIcon" src={Server} />
           </BigButton>
