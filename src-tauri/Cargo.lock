@@ -740,7 +740,7 @@ checksum = "b365fabc795046672053e29c954733ec3b05e4be654ab130fe8f1f94d7051f35"
 
 [[package]]
 name = "cultivation"
-version = "0.1.0"
+version = "1.0.1"
 dependencies = [
  "duct",
  "futures-util",
@@ -2102,6 +2102,12 @@ name = "minimal-lexical"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "68354c5c6bd36d73ff3feceb05efa59b6acb7626617f4962be322a825e61f79a"
+
+[[package]]
+name = "minisign-verify"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "933dca44d65cdd53b355d0b73d380a2ff5da71f87f036053188bf1eab6a19881"
 
 [[package]]
 name = "miniz_oxide"
@@ -3886,6 +3892,7 @@ checksum = "a34cef4a0ebee0230baaa319b1709c4336f4add550149d2b005a9a5dc5d33617"
 dependencies = [
  "anyhow",
  "attohttpc",
+ "base64",
  "bincode",
  "cocoa",
  "dirs-next",
@@ -3899,6 +3906,7 @@ dependencies = [
  "heck 0.4.0",
  "http",
  "ignore",
+ "minisign-verify",
  "notify-rust",
  "objc",
  "once_cell",
@@ -3930,6 +3938,7 @@ dependencies = [
  "webkit2gtk",
  "webview2-com",
  "windows 0.30.0",
+ "zip 0.6.2",
 ]
 
 [[package]]

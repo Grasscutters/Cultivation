@@ -1,7 +1,9 @@
-import { invoke } from '@tauri-apps/api'
-import { dataDir } from '@tauri-apps/api/path'
-import { convertFileSrc } from '@tauri-apps/api/tauri'
-import { getConfig, setConfigOption } from './configuration'
+import {invoke} from '@tauri-apps/api'
+import {dataDir} from '@tauri-apps/api/path'
+import {convertFileSrc} from '@tauri-apps/api/tauri'
+import {getConfig, setConfigOption} from './configuration'
+
+import {InputSettings} from '../ui/components/common/ThemeOptionValue'
 
 interface Theme {
   name: string
@@ -13,6 +15,16 @@ interface Theme {
     css: string[]
     js: string[]
   }
+  
+  // Custom settings.
+  settings?: {
+    label: string // The setting's label.
+    type: string // The setting's type.
+    data: InputSettings // The data for the setting.
+    
+    className?: string // The name of the class this setting should take.
+    jsCallback?: string // The name of the callback method that should be invoked.
+  }[]
 
   customBackgroundURL?: string
   customBackgroundPath?: string
@@ -23,7 +35,7 @@ interface BackendThemeList {
   path: string
 }
 
-interface ThemeList extends Theme {
+export interface ThemeList extends Theme {
   path: string
 }
 
@@ -37,6 +49,7 @@ const defaultTheme = {
   },
   path: 'default'
 }
+
 export async function getThemeList() {
   // Do some invoke to backend to get the theme list
   const themes = await invoke('get_theme_list', {
@@ -75,6 +88,11 @@ export async function getTheme(name: string) {
   const themes = await getThemeList()
 
   return themes.find(t => t.name === name) || defaultTheme
+}
+
+export async function getSelectedTheme() {
+  const config = await getConfig()
+  return await getTheme(config.theme)
 }
 
 export async function loadTheme(theme: ThemeList, document: Document) {

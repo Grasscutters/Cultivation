@@ -33,7 +33,7 @@
   background: #fff;
 }
 
-.BottomSection .CheckboxDisplay {
+.BottomSection .CheckboxDisplay { 
   margin-right: 6px;
   box-shadow: 0 0 5px 4px rgba(0, 0, 0, 0.2);
 }

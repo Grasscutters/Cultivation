@@ -7,11 +7,12 @@ import Tr, { getLanguages, translate } from '../../../utils/language'
 import { setConfigOption, getConfig, getConfigOption } from '../../../utils/configuration'
 import Checkbox from '../common/Checkbox'
 import Divider from './Divider'
-import { getThemeList } from '../../../utils/themes'
+import { getTheme, getThemeList, ThemeList } from '../../../utils/themes'
 import * as server from '../../../utils/server'
 
 import './Options.css'
 import BigButton from '../common/BigButton'
+import ThemeOptionValue from '../common/ThemeOptionValue'
 
 interface IProps {
   closeFn: () => void;
@@ -28,6 +29,8 @@ interface IState {
   themes: string[]
   theme: string
   encryption: boolean
+  
+  theme_object: ThemeList|null;
 }
 
 export default class Options extends React.Component<IProps, IState> {
@@ -44,7 +47,9 @@ export default class Options extends React.Component<IProps, IState> {
       bg_url_or_path: '',
       themes: ['default'],
       theme: '',
-      encryption: false
+      encryption: false,
+      
+      theme_object: null
     }
 
     this.setGameExec = this.setGameExec.bind(this)
@@ -74,7 +79,9 @@ export default class Options extends React.Component<IProps, IState> {
       bg_url_or_path: config.customBackground || '',
       themes: (await getThemeList()).map(t => t.name),
       theme: config.theme || 'default',
-      encryption: await translate(encEnabled ? 'options.enabled' : 'options.disabled')
+      encryption: await translate(encEnabled ? 'options.enabled' : 'options.disabled'),
+      
+      theme_object: (await getTheme(config.theme))
     })
 
     this.forceUpdate()
@@ -124,7 +131,7 @@ export default class Options extends React.Component<IProps, IState> {
   }
 
   async setCustomBackground(value: string) {
-    const isUrl = /^(?:http(s)?:\/\/)/gm.test(value)
+    const isUrl = /^http(s)?:\/\//gm.test(value)
 
     if (!value) return await setConfigOption('customBackground', '')
 
@@ -168,6 +175,8 @@ export default class Options extends React.Component<IProps, IState> {
   }
 
   render() {
+    const themeSettings = this.state.theme_object?.settings
+    
     return (
       <Menu closeFn={this.props.closeFn} className="Options" heading="Options">
         <div className='OptionSection' id="menuOptionsContainerGameExec">
@@ -178,6 +187,7 @@ export default class Options extends React.Component<IProps, IState> {
             <DirInput onChange={this.setGameExec} value={this.state?.game_install_path} extensions={['exe']} />
           </div>
         </div>
+        
         <div className='OptionSection' id="menuOptionsContainerGCJar">
           <div className='OptionLabel' id="menuOptionsLabelGCJar">
             <Tr text="options.grasscutter_jar" />
@@ -186,6 +196,7 @@ export default class Options extends React.Component<IProps, IState> {
             <DirInput onChange={this.setGrasscutterJar} value={this.state?.grasscutter_path} extensions={['jar']} />
           </div>
         </div>
+        
         <div className='OptionSection' id="menuOptionsContainerToggleEnc">
           <div className='OptionLabel' id="menuOptionsLabelToggleEnc">
             <Tr text="options.toggle_encryption" />
@@ -281,6 +292,23 @@ export default class Options extends React.Component<IProps, IState> {
             </select>
           </div>
         </div>
+        
+        <Divider />
+
+        {
+          themeSettings ? themeSettings.map((settings, index) => {
+            return (
+              <div className='OptionSection' key={index}>
+                <div className='OptionLabel'>
+                  {settings.label}
+                </div>
+                <div className='OptionValue'>
+                  <ThemeOptionValue type={settings.type} className={settings.className} data={settings.data} />
+                </div>
+              </div>
+            )
+          }) : null
+        }
       </Menu>
     )
   }

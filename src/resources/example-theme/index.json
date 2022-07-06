@@ -1,0 +1,34 @@
+{
+  "name": "Example Theme",
+  "version": "420.69",
+  "description": "Show off some of the abilities of the Cultivation theme system",
+  
+  "includes": {
+    "_README": "You can include any amount of CSS and JS files here. Paths are relative to the theme directory.",
+
+    "css": ["/index.css"],
+    "js": ["/index.js"]
+  },
+  
+  "settings": [
+    {
+      "label": "Example Setting",
+      "type": "input",
+      "className": "Input",
+      
+      "data": {
+        "placeholder": "Enter a value",
+        "initialValue": "Change this value"
+      }
+    },
+    {
+      "label": "Example Setting",
+      "type": "checkbox",
+      "className": "Checkbox"
+    }
+  ],
+
+  "_README": "These are optional. Including neither will result in the launcher simply using the default background choice.",
+  "customBackgroundPath": "/background/bg.png",
+  "customBackgroundURL": ""
+}

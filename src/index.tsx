@@ -17,6 +17,7 @@ let isDebug = false;
   isDebug = await getConfigOption('debug_enabled')
 })
 
+// Render the app.
 root.render(
   <React.StrictMode>
     {
@@ -25,5 +26,10 @@ root.render(
   </React.StrictMode>
 )
 
+// Enable web vitals if needed.
 import reportWebVitals from './utils/reportWebVitals'
 isDebug && reportWebVitals(console.log)
+
+// Setup DOM message passing.
+import { parseMessageFromDOM } from './utils/dom'
+document.addEventListener<string>('domMessage', parseMessageFromDOM)
