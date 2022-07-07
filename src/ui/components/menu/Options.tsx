@@ -191,7 +191,7 @@ export default class Options extends React.Component<IProps, IState> {
             <Tr text="options.toggle_encryption" />
           </div>
           <div className='OptionValue' id="menuOptionsButtonToggleEnc">
-            <BigButton onClick={this.toggleEncryption} id="toggleEnc">
+            <BigButton disabled={this.state.grasscutter_path === ''} onClick={this.toggleEncryption} id="toggleEnc">
               {
                 this.state.encryption
               }
