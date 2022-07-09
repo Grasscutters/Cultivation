@@ -3,7 +3,7 @@
  * https://github.com/omjadas/hudsucker/blob/main/examples/log.rs
  */
 
-use lazy_static::lazy_static;
+use once_cell::sync::Lazy;
 use std::{sync::Mutex, str::FromStr};
 
 use rcgen::*;
@@ -30,12 +30,7 @@ async fn shutdown_signal() {
 }
 
 // Global ver for getting server address.
-lazy_static! {
-    static ref SERVER: Mutex<String> = {
-        let m = "http://localhost:443".to_string();
-        Mutex::new(m)
-    };
-}
+static SERVER: Lazy<Mutex<String>> = Lazy::new(|| Mutex::new("http://localhost:443".to_string()));
 
 #[derive(Clone)]
 struct ProxyHandler;
