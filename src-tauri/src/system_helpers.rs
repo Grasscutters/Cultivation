@@ -1,7 +1,4 @@
-
 use std::thread;
-use tauri;
-use open;
 use duct::cmd;
 
 use crate::file_helpers;
@@ -31,7 +28,7 @@ pub fn run_jar(path: String, execute_in: String, java_path: String) {
   };
 
   // Open the program from the specified path.
-  match open::with(format!("/k cd /D \"{}\" & {}", &execute_in, &command).to_string(), "C:\\Windows\\System32\\cmd.exe") {
+  match open::with(format!("/k cd /D \"{}\" & {}", &execute_in, &command), "C:\\Windows\\System32\\cmd.exe") {
     Ok(_) => (),
     Err(e) => println!("Failed to open jar ({} from {}): {}", &path, &execute_in, e),
   };
@@ -48,7 +45,7 @@ pub fn open_in_browser(url: String) {
 
 #[tauri::command]
 pub fn copy_file(path: String, new_path: String) -> bool {
-  let filename = &path.split("/").last().unwrap();
+  let filename = &path.split('/').last().unwrap();
   let mut new_path_buf = std::path::PathBuf::from(&new_path);
 
   // If the new path doesn't exist, create it.
