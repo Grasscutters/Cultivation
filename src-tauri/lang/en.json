@@ -13,7 +13,8 @@
   "options": {
     "enabled": "Enabled",
     "disabled": "Disabled",
-    "game_exec": "Set Game Executable",
+    "game_path": "Set Game Install Path",
+    "game_executable": "Set Game Executable",
     "grasscutter_jar": "Set Grasscutter JAR",
     "toggle_encryption": "Toggle Encryption",
     "java_path": "Set Custom Java Path",
@@ -57,7 +58,6 @@
     "gc_dev_jar": "Download the latest development Grasscutter build, which includes jar file and data files.",
     "gc_stable_data": "Download the current stable Grasscutter data files, which does not come with a jar file. This is useful for updating.",
     "gc_dev_data": "Download the latest development Grasscutter data files, which does not come with a jar file. This is useful for updating.",
-    "resources": "These are also required to run a Grasscutter server. This button will be grey if you have an existing resources folder with contents inside",
-    "game": "This will download a fresh copy of \"the certain anime game\" and set your game executable to it. This is useful if you don't want to patch your main game."
+    "resources": "These are also required to run a Grasscutter server. This button will be grey if you have an existing resources folder with contents inside"
   }
 }

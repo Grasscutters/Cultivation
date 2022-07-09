@@ -11,7 +11,7 @@
     "files_extracting": "文件解压中："
   },
   "options": {
-    "game_exec": "选择游戏可执行文件",
+    "game_executable": "选择游戏可执行文件",
     "grasscutter_jar": "选择 Grasscutter JAR 文件",
     "java_path": "设置自定义 Java 路径",
     "grasscutter_with_game": "随游戏自动启动 Grasscutter",

@@ -14,7 +14,8 @@ interface IProps {
   readonly?: boolean
   placeholder?: string
   folder?: boolean
-  customClearBehaviour?: () => void
+  customClearBehaviour?: () => void,
+  openFolder?: string
 }
 
 interface IState {
@@ -67,10 +68,12 @@ export default class DirInput extends React.Component<IProps, IState> {
         directory: true
       })
     } else {
+      console.log(this.props.openFolder)
       path = await open({
         filters: [
           { name: 'Files', extensions: this.props.extensions || ['*'] }
-        ]
+        ],
+        defaultPath: this.props.openFolder
       })
     }
 

@@ -3,7 +3,7 @@ import Checkbox from './common/Checkbox'
 import BigButton from './common/BigButton'
 import TextInput from './common/TextInput'
 import HelpButton from './common/HelpButton'
-import { getConfig, saveConfig, setConfigOption } from '../../utils/configuration'
+import { Configuration, getConfig, saveConfig, setConfigOption } from '../../utils/configuration'
 import { translate } from '../../utils/language'
 import { invoke } from '@tauri-apps/api/tauri'
 
@@ -72,6 +72,24 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     })
   }
 
+  getGameExecutable(config : Configuration) { 
+    if(!config.game_install_path || !config.game_executable) {
+      alert('Game executable and/or path not set!')
+      return null
+    }
+
+    return config.game_install_path + '\\' + config.game_executable 
+  }
+
+  getGameMetadataLocation(config : Configuration) {
+    if(!config.game_install_path || !config.game_executable) {
+      alert('Game executable and/or path not set!')
+      return null
+    }
+
+    return config.game_install_path + '\\' + config.game_executable.replace('.exe', '_Data') + '\\Managed\\Metadata'
+  }
+
   async toggleGrasscutter() {
     const config = await getConfig()
 
@@ -89,7 +107,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     const config = await getConfig()
 
     // Copy unpatched metadata to backup location
-    if(await invoke('copy_file_with_new_name', { path: config.game_install_path + '\\GenshinImpact_Data\\Managed\\Metadata\\global-metadata.dat', newPath: await dataDir() + 'cultivation\\metadata', newName: 'global-metadata-unpatched.dat' })) {
+    if(await invoke('copy_file_with_new_name', { path: this.getGameMetadataLocation(config) + '\\global-metadata.dat', newPath: await dataDir() + 'cultivation\\metadata', newName: 'global-metadata-unpatched.dat' })) {
       // Backup successful
 
       // Patch backedup metadata
@@ -97,7 +115,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
         // Patch successful
         
         // Replace game metadata with patched metadata
-        if(!(await invoke('copy_file_with_new_name', { path: await dataDir() +  'cultivation/metadata/global-metadata-patched.dat', newPath: config.game_install_path + '\\GenshinImpact_Data\\Managed\\Metadata', newName: 'global-metadata.dat' }))) {
+        if(!(await invoke('copy_file_with_new_name', { path: await dataDir() +  'cultivation/metadata/global-metadata-patched.dat', newPath: this.getGameMetadataLocation(config), newName: 'global-metadata.dat' }))) {
           // Replace failed
           alert('Failed to replace game metadata!')
           return
@@ -114,8 +132,10 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
 
   async playGame() {
     const config = await getConfig()
-  
-    if (!config.game_install_path) return alert('Game path not set!')
+
+    if(this.getGameExecutable(config) == null) { 
+      return 
+    }
     
     // Connect to proxy
     if (config.toggle_grasscutter) {
@@ -124,13 +144,13 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
         // Assume metadata has been patched
         
         // Compare metadata files
-        if (!(await invoke('are_files_identical', { path1: await dataDir() +  'cultivation/metadata/global-metadata-patched.dat', path2: config.game_install_path + '\\GenshinImpact_Data\\Managed\\Metadata\\global-metadata.dat'}))) {
+        if (!(await invoke('are_files_identical', { path1: await dataDir() +  'cultivation/metadata/global-metadata-patched.dat', path2: this.getGameMetadataLocation(config) + '\\global-metadata.dat'}))) {
           // Metadata is not patched
 
           // Check to see if unpatched backup matches the game's version
-          if (await invoke('are_files_identical', { path1: await dataDir() +  'cultivation/metadata/global-metadata-unpatched.dat', path2: config.game_install_path + '\\GenshinImpact_Data\\Managed\\Metadata\\global-metadata.dat'})) {
+          if (await invoke('are_files_identical', { path1: await dataDir() +  'cultivation/metadata/global-metadata-unpatched.dat', path2: this.getGameMetadataLocation(config) + '\\global-metadata.dat'})) {
             // Game's metadata is not patched, so we need to patch it
-            if(!(await invoke('copy_file_with_new_name', { path: await dataDir() +  'cultivation/metadata/global-metadata-patched.dat', newPath: config.game_install_path + '\\GenshinImpact_Data\\Managed\\Metadata', newName: 'global-metadata.dat' }))) {
+            if(!(await invoke('copy_file_with_new_name', { path: await dataDir() +  'cultivation/metadata/global-metadata-patched.dat', newPath: this.getGameMetadataLocation(config), newName: 'global-metadata.dat' }))) {
               // Replace failed
               alert('Failed to replace game metadata!')
               return
@@ -140,7 +160,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
             alert('Deleting old metadata')
             
             // Delete backed up metadata
-            if(!(await invoke('delete_file', { path: await dataDir() +  'cultivation/metadata/global-metadata-unpatched.dat' }) && !(await invoke('delete_file', { path: await dataDir() +  'cultivation/metadata/global-metadata-patched.dat' })))) {
+            if(!(await invoke('delete_file', { path: await dataDir() +  'cultivation/metadata/global-metadata-unpatched.dat' })) && !(await invoke('delete_file', { path: await dataDir() +  'cultivation/metadata/global-metadata-patched.dat' }))) {
               // Delete failed
               alert('Failed to delete backed up metadata!')
               return
@@ -154,12 +174,12 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
         await this.patchMetadata()
       }
 
-      let game_exe = config.game_install_path + '\\GenshinImpact.exe'
+      let game_exe = this.getGameExecutable(config) as string
 
       if (game_exe.includes('\\')) {
-        game_exe = game_exe.substring(config.game_install_path.lastIndexOf('\\') + 1)
+        game_exe = game_exe.substring((this.getGameExecutable(config) as string).lastIndexOf('\\') + 1)
       } else {
-        game_exe = game_exe.substring(config.game_install_path.lastIndexOf('/') + 1)
+        game_exe = game_exe.substring((this.getGameExecutable(config) as string).lastIndexOf('/') + 1)
       }
 
       // Save last connected server and port
@@ -197,9 +217,9 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
         // Check if metadata is patched
 
         // Compare metadata files
-        if (await invoke('are_files_identical', { path1: await dataDir() +  'cultivation/metadata/global-metadata-patched.dat', path2: config.game_install_path + '\\GenshinImpact_Data\\Managed\\Metadata\\global-metadata.dat'})) {
+        if (await invoke('are_files_identical', { path1: await dataDir() +  'cultivation/metadata/global-metadata-patched.dat', path2: this.getGameMetadataLocation(config) + '\\global-metadata.dat'})) {
           // Metadata is patched, so we need to unpatch it
-          if(!(await invoke('copy_file_with_new_name', { path: await dataDir() +  'cultivation/metadata/global-metadata-unpatched.dat', newPath: config.game_install_path + '\\GenshinImpact_Data\\Managed\\Metadata', newName: 'global-metadata.dat' }))) {
+          if(!(await invoke('copy_file_with_new_name', { path: await dataDir() +  'cultivation/metadata/global-metadata-unpatched.dat', newPath: this.getGameMetadataLocation(config), newName: 'global-metadata.dat' }))) {
             // Replace failed
             alert('Failed to unpatch game metadata!')
             return
@@ -210,11 +230,11 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
   
     // Launch the program
     const gameExists = await invoke('dir_exists', {
-      path: config.game_install_path + '\\GenshinImpact.exe'
+      path: this.getGameExecutable(config)
     })
 
-    if (gameExists) await invoke('run_program', { path: config.game_install_path + '\\GenshinImpact.exe' })
-    else alert('Game not found! At: ' + config.game_install_path)
+    if (gameExists) await invoke('run_program', { path: this.getGameExecutable(config) })
+    else alert('Game not found! At: ' + this.getGameExecutable(config))
   }
 
   async launchServer() {

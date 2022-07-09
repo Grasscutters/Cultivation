@@ -10,7 +10,7 @@
     "files_extracting": "MengExtract File: "
   },
   "options": {
-    "game_exec": "Set Game Executable",
+    "game_executable": "Set Game Executable",
     "grasscutter_jar": "Path ke Grasscutter JAR",
     "java_path": "Atur kustom Java path",
     "grasscutter_with_game": "Otomatis Menjalankan Grasscutter Dengan Game",
