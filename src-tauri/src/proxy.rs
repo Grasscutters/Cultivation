@@ -17,11 +17,12 @@ use hudsucker::{
 use std::fs;
 use std::net::SocketAddr;
 use std::path::Path;
-use registry::{Hive, Data, Security};
 
 use rustls_pemfile as pemfile;
 use tauri::http::Uri;
-use crate::system_helpers::run_command;
+
+#[cfg(windows)]
+use registry::{Hive, Data, Security};
 
 async fn shutdown_signal() {
   tokio::signal::ctrl_c().await
@@ -109,36 +110,42 @@ pub async fn create_proxy(proxy_port: u16, certificate_path: String) {
 /**
  * Connects to the local HTTP(S) proxy server.
  */
+#[cfg(windows)]
 pub fn connect_to_proxy(proxy_port: u16) {
-  if cfg!(target_os = "windows") {
-    // Create 'ProxyServer' string.
-    let server_string: String = format!("http=127.0.0.1:{};https=127.0.0.1:{}", proxy_port, proxy_port);
+  // Create 'ProxyServer' string.
+  let server_string: String = format!("http=127.0.0.1:{};https=127.0.0.1:{}", proxy_port, proxy_port);
 
-    // Fetch the 'Internet Settings' registry key.
-    let settings = Hive::CurrentUser.open(r"Software\Microsoft\Windows\CurrentVersion\Internet Settings", Security::Write).unwrap();
+  // Fetch the 'Internet Settings' registry key.
+  let settings = Hive::CurrentUser.open(r"Software\Microsoft\Windows\CurrentVersion\Internet Settings", Security::Write).unwrap();
 
-    // Set registry values.
-    settings.set_value("ProxyServer", &Data::String(server_string.parse().unwrap())).unwrap();
-    settings.set_value("ProxyEnable", &Data::U32(1)).unwrap();
-  }
+  // Set registry values.
+  settings.set_value("ProxyServer", &Data::String(server_string.parse().unwrap())).unwrap();
+  settings.set_value("ProxyEnable", &Data::U32(1)).unwrap();
 
   println!("Connected to the proxy.");
+}
+
+#[cfg(not(windows))]
+pub fn connect_to_proxy(_proxy_port: u16) {
+  println!("Connecting to the proxy is not implemented on this platform.");
 }
 
 /**
  * Disconnects from the local HTTP(S) proxy server.
  */
+#[cfg(windows)]
 pub fn disconnect_from_proxy() {
-  if cfg!(target_os = "windows") {
-    // Fetch the 'Internet Settings' registry key.
-    let settings = Hive::CurrentUser.open(r"Software\Microsoft\Windows\CurrentVersion\Internet Settings", Security::Write).unwrap();
+  // Fetch the 'Internet Settings' registry key.
+  let settings = Hive::CurrentUser.open(r"Software\Microsoft\Windows\CurrentVersion\Internet Settings", Security::Write).unwrap();
 
-    // Set registry values.
-    settings.set_value("ProxyEnable", &Data::U32(0)).unwrap();
-  }
+  // Set registry values.
+  settings.set_value("ProxyEnable", &Data::U32(0)).unwrap();
 
   println!("Disconnected from proxy.");
 }
+
+#[cfg(not(windows))]
+pub fn disconnect_from_proxy() {}
 
 /*
  * Generates a private key and certificate used by the certificate authority.
@@ -201,12 +208,19 @@ pub fn generate_ca_files(path: &Path) {
 /*
  * Attempts to install the certificate authority's certificate into the Root CA store.
  */
+#[cfg(windows)]
 pub fn install_ca_files(cert_path: &Path) {
-  if cfg!(target_os = "windows") {
-    run_command("certutil", vec!["-user", "-addstore", "Root", cert_path.to_str().unwrap()]);
-  } else {
-    run_command("security", vec!["add-trusted-cert", "-d", "-r", "trustRoot", "-k", "/Library/Keychains/System.keychain", cert_path.to_str().unwrap()]);
-  }
-
+  crate::system_helpers::run_command("certutil", vec!["-user", "-addstore", "Root", cert_path.to_str().unwrap()]);
   println!("Installed certificate.");
+}
+
+#[cfg(target_os = "macos")]
+pub fn install_ca_files(cert_path: &Path) {
+  crate::system_helpers::run_command("security", vec!["add-trusted-cert", "-d", "-r", "trustRoot", "-k", "/Library/Keychains/System.keychain", cert_path.to_str().unwrap()]);
+  println!("Installed certificate.");
+}
+
+#[cfg(not(any(windows, target_os = "macos")))]
+pub fn install_ca_files(_cert_path: &Path) {
+  println!("Certificate installation is not supported on this platform.");
 }

@@ -1,0 +1,61 @@
+{
+  "lang_name": "Tiếng Việt",
+  "main": {
+    "title": "Cultivation",
+    "launch_button": "Khởi Chạy",
+    "gc_enable": "Kết nối đến Grasscutter",
+    "https_enable": "Sử dụng HTTPS",
+    "ip_placeholder": "Địa chỉ máy chủ...",
+    "port_placeholder": "Cổng...",
+    "files_downloading": "Đang tải file: ",
+    "files_extracting": "Đang giải nén tệp tin: "
+  },
+  "options": {
+    "enabled": "Bật",
+    "disabled": "Tắt",
+    "game_exec": "Đường dẫn đến GenshinImpact.exe",
+    "grasscutter_jar": "Đường dẫn đến Grasscutter.jar",
+    "toggle_encryption": "Bật/Tắt mã hoá",
+    "java_path": "Đường dẫn Java tuỳ chỉnh",
+    "grasscutter_with_game": "Tự động khởi chạy Grasscutter cùng game",
+    "language": "Chọn ngôn ngữ",
+    "background": "Ảnh nền tuỳ chỉnh (đường dẫn hoặc tệp tin ảnh)",
+    "theme": "Chọn giao diện"
+  },
+  "downloads": {
+    "grasscutter_stable_data": "Tải xuống dữ liệu Grasscutter bản ổn định",
+    "grasscutter_latest_data": "Tải xuống dữ liệu Grasscutter bản mới nhất",
+    "grasscutter_stable_data_update": "Cập nhật dữ liệu Grasscutter bản ổn định",
+    "grasscutter_latest_data_update": "Cập nhật dữ liệu Grasscutter bản mới nhất",
+    "grasscutter_stable": "Tải xuống Grasscutter phiên bản ổn định",
+    "grasscutter_latest": "Tải xuống Grasscutter phiển bản mới nhất",
+    "grasscutter_stable_update": "Cập nhật Grasscutter ổn định",
+    "grasscutter_latest_update": "Cập nhật Grasscutter mới nhất",
+    "resources": "Tải xuống tài nguyên cho Grasscutter"
+  },
+  "download_status": {
+    "downloading": "Đang tải",
+    "extracting": "Đang giải nén",
+    "error": "Lỗi",
+    "finished": "Đã xong",
+    "stopped": "Đã dừng"
+  },
+  "components": {
+    "select_file": "Chọn tệp tin hoặc thư mục...",
+    "select_folder": "Chọn thư mục...",
+    "download": "Tải xuống"
+  },
+  "news": {
+    "latest_commits": "Cập nhật gần đây",
+    "latest_version": "Phiên bản mới nhất"
+  },
+  "help": {
+    "port_help_text": "Đảm bảo đây là cổng của server Dispatch, không phải cổng của server Game. Thường là '443'.",
+    "game_help_text": "Bạn không cần phải sử dụng một bản sao riêng để chơi với Grasscutter. Việc này chỉ xảy ra nếu bạn hạ phiên bản xuống 2.6 hoặc chưa cài đặt trò chơi.",
+    "gc_stable_jar": "Tải xuống phiên bản ổn định của Grasscutter, bảo gồm file jar và các file dữ liệu.",
+    "gc_dev_jar": "Tải xuống phiên bản phát triển mới nhất của Grasscutter, bảo gồm file jar và các file dữ liệu.",
+    "gc_stable_data": "Tải xuống bản ổn định các tệp dữ liệu của Grasscutter, không bao gồm file jar. Phù hợp khi cập nhật.",
+    "gc_dev_data": "Tải xuống bản phát triển mới nhất các tệp dữ liệu của Grasscutter, không bao gồm file jar. Phù hợp khi cập nhật.",
+    "resources": "Chúng được yêu cầu để chạy máy chủ Grasscutter. Nút này sẽ có màu xám nếu bạn có một thư mục tài nguyên có nội dung bên trong"
+  }
+}

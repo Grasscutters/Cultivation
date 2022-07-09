@@ -76,7 +76,14 @@ pub fn install_location() -> String {
   return exe_path.to_str().unwrap().to_string();
 }
 
+#[cfg(windows)]
 #[tauri::command]
 pub fn is_elevated() -> bool {
-  return is_elevated::is_elevated();
+  is_elevated::is_elevated()
+}
+
+#[cfg(unix)]
+#[tauri::command]
+pub fn is_elevated() -> bool {
+  sudo::check() == sudo::RunningAs::Root
 }
