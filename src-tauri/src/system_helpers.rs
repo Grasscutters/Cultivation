@@ -1,4 +1,3 @@
-use std::thread;
 use duct::cmd;
 
 use crate::file_helpers;
@@ -6,11 +5,7 @@ use crate::file_helpers;
 #[tauri::command]
 pub fn run_program(path: String) {
   // Open the program from the specified path.
-
-  // Open in new thread to prevent blocking.
-  thread::spawn(move || {
-    open::that(&path).unwrap();
-  });
+  open::that(&path).unwrap();
 }
 
 #[tauri::command]
