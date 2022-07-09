@@ -33,7 +33,7 @@ zip-extract = "0.1.1"
 zip = "0.6.2"
 
 # For creating a "global" downloads list.
-lazy_static = "1.4.0"
+once_cell = "1.13.0"
 
 # Program opener.
 open = "2.1.2"

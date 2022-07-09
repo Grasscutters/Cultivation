@@ -1,4 +1,4 @@
-use lazy_static::lazy_static;
+use once_cell::sync::Lazy;
 
 use std::sync::Mutex;
 use std::cmp::min;
@@ -8,12 +8,7 @@ use std::io::Write;
 use futures_util::StreamExt;
 
 // This will create a downloads list that will be used to check if we should continue downloading the file
-lazy_static! {
-    static ref DOWNLOADS: Mutex<Vec<String>> = {
-        let m = Vec::new();
-        Mutex::new(m)
-    };
-}
+static DOWNLOADS: Lazy<Mutex<Vec<String>>> = Lazy::new(|| Mutex::new(Vec::new()));
 
 // Lots of help from: https://gist.github.com/giuliano-oliveira/4d11d6b3bb003dba3a1b53f43d81b30d
 // and docs ofc

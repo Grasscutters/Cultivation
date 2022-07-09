@@ -3,7 +3,7 @@ all(not(debug_assertions), target_os = "windows"),
 windows_subsystem = "windows"
 )]
 
-use lazy_static::lazy_static;
+use once_cell::sync::Lazy;
 use std::{sync::Mutex, collections::HashMap};
 use std::path::PathBuf;
 
@@ -20,12 +20,7 @@ mod lang;
 mod proxy;
 mod web;
 
-lazy_static! {
-  static ref WATCH_GAME_PROCESS: Mutex<String> = {
-      let m = "".to_string();
-      Mutex::new(m)
-  };
-}
+static WATCH_GAME_PROCESS: Lazy<Mutex<String>> = Lazy::new(|| Mutex::new(String::new()));
 
 fn main() {
   // Start the game process watcher.
