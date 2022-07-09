@@ -42,9 +42,6 @@ duct = "0.13.5"
 # Serialization.
 serde_json = "1"
 
-# System process elevation.
-runas = "0.2.1"
-
 # Dependencies for the HTTP(S) proxy.
 http = "0.2"
 hudsucker = "0.17.2"
