@@ -10,7 +10,7 @@ During this open-beta testing period, **helpful issues are appreciated**, while 
 ## Fair Warning
 Cultivation is **VERY MUCH IN BETA**.
 There are **no official releases of Cultivation**. You are **required** to build the application from **scratch** unless you want to deal with the alpha state of the current builds.
-Please do **NOT install, download, or use pre-compiled versions of Cultivation foudn elsewhere**. Only use releases from this GitHub repository.
+Please do **NOT install, download, or use pre-compiled versions of Cultivation found elsewhere**. Only use releases from this GitHub repository.
 
 # Cultivation
 A game launcher designed to easily proxy traffic from anime game to private servers.
