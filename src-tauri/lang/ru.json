@@ -1,0 +1,61 @@
+{
+  "lang_name": "Русский",
+  "main": {
+    "title": "Cultivation",
+    "launch_button": "Запустить",
+    "gc_enable": "Подключиться с Grasscutter",
+    "https_enable": "Исп. HTTPS",
+    "ip_placeholder": "Айпи адрес...",
+    "port_placeholder": "Порт...",
+    "files_downloading": "Файлов скачано: ",
+    "files_extracting": "Извлечено файлов: "
+  },
+  "options": {
+    "enabled": "Включено",
+    "disabled": "Выключено",
+    "game_exec": "Установить исполняемый файл игры",
+    "grasscutter_jar": "Установить Grasscutter JAR",
+    "toggle_encryption": "Переключить шифрование",
+    "java_path": "Установить пользовательский путь Java",
+    "grasscutter_with_game": "Автоматически запускать Grasscutter вместе с игрой",
+    "language": "Установить язык",
+    "background": "Установить свой фон (ссылка или файл)",
+    "theme": "Установить тему"
+  },
+  "downloads": {
+    "grasscutter_stable_data": "Скачать стабильные данные Grasscutter",
+    "grasscutter_latest_data": "Скачать последние данные Grasscutter",
+    "grasscutter_stable_data_update": "Обновить стабильные данные Grasscutter",
+    "grasscutter_latest_data_update": "Обновить последние данные Grasscutter",
+    "grasscutter_stable": "Скачать стабильную версию Grasscutter",
+    "grasscutter_latest": "Скачать последнюю версию Grasscutter",
+    "grasscutter_stable_update": "Обновить стабильную версию Grasscutter",
+    "grasscutter_latest_update": "Обновить последнюю версию Grasscutter",
+    "resources": "Скачать ресурсы Grasscutter"
+  },
+  "download_status": {
+    "downloading": "Скачивание",
+    "extracting": "Извлечение",
+    "error": "Ошибка",
+    "finished": "Закончено",
+    "stopped": "Остановлено"
+  },
+  "components": {
+    "select_file": "Выберите файл или папку...",
+    "select_folder": "Выберите папку...",
+    "download": "Скачать"
+  },
+  "news": {
+    "latest_commits": "Последние коммиты",
+    "latest_version": "Последняя версия"
+  },
+  "help": {
+    "port_help_text": "Убедитесь, что это порт Dispatch-сервера, не порт игрового сервера. Обычно это '443'.",
+    "game_help_text": "Вам не нужно устанавливать еще одну копию, что бы играть с Grascutter. Это нужно или для версии 2.6, или если у Вас не установлена игра.",
+    "gc_stable_jar": "Скачать последнюю стабильную версию Grasscutter, которая содержит jar файл и данные.",
+    "gc_dev_jar": "Скачать последнюю версию для разработки Grasscutter, которая содержит jar файл и данные.",
+    "gc_stable_data": "Скачать стабильные данные Grasscutter, в которой нету jar файла. Это полезно для обновления.",
+    "gc_dev_data": "Скачать последнюю версию для разработки Grasscutter, в которой нету jar файла. Это полезно для обновления.",
+    "resources": "Это необходимо для запуска сервера Grasscutter. Эта кнопка будет серой, если у Вас уже есть не пустая папка с ресурсами."
+  }
+}

@@ -79,7 +79,6 @@ class App extends React.Component<IProps, IState> {
   async componentDidMount() {
     const cert_generated = await getConfigOption('cert_generated')
     const game_exe = await getConfigOption('game_install_path')
-    const custom_bg = await getConfigOption('customBackground')
     const game_path = game_exe?.substring(0, game_exe.replace(/\\/g, '/').lastIndexOf('/')) || ''
     const root_path = game_path?.substring(0, game_path.replace(/\\/g, '/').lastIndexOf('/')) || ''
 
@@ -89,6 +88,9 @@ class App extends React.Component<IProps, IState> {
       const themeObj = await getTheme(theme)
       await loadTheme(themeObj, document)
     }
+
+    // Get custom bg AFTER theme is loaded !! important !!
+    const custom_bg = await getConfigOption('customBackground')
 
     if(!custom_bg || !/png|jpg|jpeg$/.test(custom_bg)) {
       if(game_path) {
@@ -164,7 +166,7 @@ class App extends React.Component<IProps, IState> {
         {
           // Mini downloads section
           this.state.miniDownloadsOpen ? (
-            <div className="MiniDownloads">
+            <div className="MiniDownloads" id="miniDownloadContainer">
               <MiniDialog
                 title="Downloads"
                 closeFn={() => {
@@ -207,7 +209,7 @@ class App extends React.Component<IProps, IState> {
           ) : null
         }
 
-        <div className="BottomSection">
+        <div className="BottomSection" id="bottomSectionContainer">
           <ServerLaunchSection />
 
           <div id="DownloadProgress"

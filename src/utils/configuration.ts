@@ -84,7 +84,7 @@ export async function saveConfig(obj: Configuration) {
 async function readConfigFile() {
   const local = await dataDir()
 
-  if (!configFilePath) configFilePath = local + 'cultivation\\configuration.json'
+  if (!configFilePath) configFilePath = local + 'cultivation/configuration.json'
 
   // Ensure Cultivation dir exists
   const dirs = await fs.readDir(local)
@@ -94,12 +94,12 @@ async function readConfigFile() {
     await fs.createDir(local + 'cultivation').catch(e => console.log(e))
   }
 
-  const innerDirs = await fs.readDir(local + '\\cultivation')
+  const innerDirs = await fs.readDir(local + '/cultivation')
 
   // Create grasscutter dir for potential installation
   if (!innerDirs.find((fileOrDir) => fileOrDir?.name === 'grasscutter')) {
     // Create dir
-    await fs.createDir(local + 'cultivation\\grasscutter').catch(e => console.log(e))
+    await fs.createDir(local + 'cultivation/grasscutter').catch(e => console.log(e))
   }
 
   const dataFiles = await fs.readDir(local + 'cultivation')

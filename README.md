@@ -8,9 +8,9 @@ Consider Cultivation to be the bleeding-edge version of GrassClipper.
 During this open-beta testing period, **helpful issues are appreciated**, while unhelpful ones will be closed.
 
 ## Fair Warning
-Cultivation is **VERY MUCH IN BETA** and a majority of features do not work.\
-There are **no official releases of Cultivation**. You are **required** to build the application from **scratch**.\
-Please do **NOT install, download, or use pre-compiled versions of Cultivation**. Only use releases from this GitHub repository.
+Cultivation is **VERY MUCH IN BETA**.
+There are **no official releases of Cultivation**. You are **required** to build the application from **scratch** unless you want to deal with the alpha state of the current builds.
+Please do **NOT install, download, or use pre-compiled versions of Cultivation found elsewhere**. Only use releases from this GitHub repository.
 
 # Cultivation
 A game launcher designed to easily proxy traffic from anime game to private servers.
@@ -21,6 +21,7 @@ A game launcher designed to easily proxy traffic from anime game to private serv
   * [Setup](#setup)
   * [Building](#building)
 * [Troubleshooting](#troubleshooting)
+* [Theming](#theming)
 
 # Download
 [Find release builds here!](https://github.com/Grasscutters/Cultivation/releases)
@@ -30,6 +31,7 @@ Once downloaded, extract somewhere and open as administrator.
 # Developer Quickstart
 
 ### Setup
+* Install [NodeJS >12](https://nodejs.org/en/)
 * Install [Cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html) & [Rust compiler](https://www.rust-lang.org/tools/install)
 * `npm install` or `yarn install`
 * `npm run start:dev` or `yarn start:dev`
@@ -47,6 +49,10 @@ Add `--release` or `--debug` depending on what release you are creating. This de
 
 # Troubleshooting
 TODO. Collect common issues before updating.
+
+# Theming
+
+A full theming reference can be found [here!](/THEMES.md)
 
 # Screenshots
 ![image](https://user-images.githubusercontent.com/25207995/173211603-e5e85df7-7fd3-430b-9246-749ebbc1e483.png)

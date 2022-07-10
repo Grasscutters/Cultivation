@@ -1,6 +1,7 @@
 import { invoke } from '@tauri-apps/api'
 import { dataDir } from '@tauri-apps/api/path'
 import { convertFileSrc } from '@tauri-apps/api/tauri'
+import { getConfig, setConfigOption } from './configuration'
 
 interface Theme {
   name: string
@@ -77,6 +78,9 @@ export async function getTheme(name: string) {
 }
 
 export async function loadTheme(theme: ThemeList, document: Document) {
+  // Get config, since we will set the custom background in there
+  const config = await getConfig()
+
   // We are going to dynamically load stylesheets into the document
   const head = document.head
 
@@ -107,22 +111,32 @@ export async function loadTheme(theme: ThemeList, document: Document) {
 
   // Set custom background
   if (theme.customBackgroundURL) {
-    document.body.style.backgroundImage = `url('${theme.customBackgroundURL}')`
+    // If the custom bg is already set don't overwrite
+    if (config.customBackground === '') {
+      config.customBackground = theme.customBackgroundURL
+    }
   }
 
   // Set custom background
   if (theme.customBackgroundPath) {
-    const bgPath = await dataDir() + 'cultivation/grasscutter/theme.png'
+    const bgPath = (await dataDir()).replace(/\\/g, '/') + 'cultivation/bg/'
+    const imageName = theme.customBackgroundPath.split('/').pop()
 
     // Save the background to our data dir
     await invoke('copy_file', {
       path: theme.path + '/' + theme.customBackgroundPath,
-      new_path: bgPath
+      newPath: bgPath
     })
 
     // Set the background
-    document.body.style.backgroundImage = `url('${bgPath}')`
+    // If the custom bg is already set don't overwrite
+    if (config.customBackground === '') {
+      config.customBackground = bgPath + imageName
+    }
   }
+
+  // Write config
+  await setConfigOption('customBackground', config.customBackground)
 
   return
 }

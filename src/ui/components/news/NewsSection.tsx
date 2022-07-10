@@ -56,9 +56,7 @@ export default class NewsSection extends React.Component<IProps, IState> {
         const commits: string = await invoke('req_get', { url: 'https://api.github.com/repos/Grasscutters/Grasscutter/commits' })
         obj = JSON.parse(commits)
       } else {
-        const decoded: string = await invoke('base64_decode', { encoded: obj.commits })
-        const commitData = JSON.parse(decoded)
-        obj = commitData.gc_stable
+        obj = obj.commits.gc_stable
       }
 
       // Probably rate-limited
@@ -68,7 +66,7 @@ export default class NewsSection extends React.Component<IProps, IState> {
       const commitsList = obj.slice(0, 10)
       const commitsListHtml = commitsList.map((commit: any) => {
         return (
-          <tr className="Commit" key={commit.sha}>
+          <tr className="Commit" id="newsCommitsTable" key={commit.sha}>
             <td className="CommitAuthor"><span>{commit.commit.author.name}</span></td>
             <td className="CommitMessage"><span>{commit.commit.message}</span></td>
           </tr>
@@ -108,8 +106,8 @@ export default class NewsSection extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div className="NewsSection">
-        <div className="NewsTabs">
+      <div className="NewsSection" id="newsContainer">
+        <div className="NewsTabs" id="newsTabsContainer">
           <div className={'NewsTab ' + (this.state.selected === 'commits' ? 'selected' : '')} id="commits" onClick={() => this.setSelected('commits')}>
             <Tr text="news.latest_commits" />
           </div>
@@ -117,7 +115,7 @@ export default class NewsSection extends React.Component<IProps, IState> {
             <Tr text="news.latest_version" />
           </div>
         </div>
-        <table className="NewsContent">
+        <table className="NewsContent" id="newsContent">
             <tbody>
                 {this.state.news}
             </tbody>

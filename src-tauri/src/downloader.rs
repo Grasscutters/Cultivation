@@ -1,4 +1,4 @@
-use lazy_static::lazy_static;
+use once_cell::sync::Lazy;
 
 use std::sync::Mutex;
 use std::cmp::min;
@@ -8,12 +8,7 @@ use std::io::Write;
 use futures_util::StreamExt;
 
 // This will create a downloads list that will be used to check if we should continue downloading the file
-lazy_static! {
-    static ref DOWNLOADS: Mutex<Vec<String>> = {
-        let m = Vec::new();
-        Mutex::new(m)
-    };
-}
+static DOWNLOADS: Lazy<Mutex<Vec<String>>> = Lazy::new(|| Mutex::new(Vec::new()));
 
 // Lots of help from: https://gist.github.com/giuliano-oliveira/4d11d6b3bb003dba3a1b53f43d81b30d
 // and docs ofc
@@ -59,17 +54,17 @@ pub async fn download_file(window: tauri::Window, url: &str, path: &str) -> Resu
     let chunk = match item {
       Ok(itm) => itm,
       Err(e) => {
-        emit_download_err(window, format!("Error while downloading file"), path);
+        emit_download_err(window, "Error while downloading file".to_string(), path);
         return Err(format!("Error while downloading file: {}", e));
       }
     };
     let vect = &chunk.to_vec()[..];
 
     // Write bytes
-    match file.write_all(&vect) {
+    match file.write_all(vect) {
       Ok(x) => x,
       Err(e) => {
-        emit_download_err(window, format!("Error while writing file"), path);
+        emit_download_err(window, "Error while writing file".to_string(), path);
         return Err(format!("Error while writing file: {}", e));
       }
     }
@@ -78,7 +73,7 @@ pub async fn download_file(window: tauri::Window, url: &str, path: &str) -> Resu
     let new = min(downloaded + (chunk.len() as u64), total_size);
     downloaded = new;
 
-    total_downloaded = total_downloaded + chunk.len() as u64;
+    total_downloaded += chunk.len() as u64;
 
     let mut res_hash = std::collections::HashMap::new();
 
@@ -110,15 +105,15 @@ pub async fn download_file(window: tauri::Window, url: &str, path: &str) -> Resu
   window.emit("download_finished", &path).unwrap();
 
   // We are done
-  return Ok(());
+  Ok(())
 }
 
-pub fn emit_download_err(window: tauri::Window, msg: std::string::String, path: &str) {
+pub fn emit_download_err(window: tauri::Window, msg: String, path: &str) {
   let mut res_hash = std::collections::HashMap::new();
 
   res_hash.insert(
     "error".to_string(),
-    msg.to_string(),
+    msg,
   );
 
   res_hash.insert(

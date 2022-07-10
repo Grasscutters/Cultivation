@@ -11,13 +11,16 @@
     "files_extracting": "檔案解壓縮中："
   },
   "options": {
+    "enabled": "已啟用",
+    "disabled": "未啟用",
     "game_exec": "選擇遊戲執行檔",
     "grasscutter_jar": "選擇伺服器JAR檔案",
-    "java_path": "設置自定義Java路徑",
+    "toggle_encryption": "設定加密",
+    "java_path": "設定自定義Java路徑",
     "grasscutter_with_game": "伴隨遊戲一起啟動Grasscutter",
     "language": "語言",
-    "background": "設置自定義背景（網址或檔案）",
-    "theme": "設置主題"
+    "background": "設定自定義背景（網址或檔案）",
+    "theme": "設定主題"
   },
   "downloads": {
     "grasscutter_stable_data": "下載Grasscutter穩定版數據（Data）",

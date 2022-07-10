@@ -170,27 +170,27 @@ export default class Options extends React.Component<IProps, IState> {
   render() {
     return (
       <Menu closeFn={this.props.closeFn} className="Options" heading="Options">
-        <div className='OptionSection'>
-          <div className='OptionLabel'>
+        <div className='OptionSection' id="menuOptionsContainerGameExec">
+          <div className='OptionLabel' id="menuOptionsLabelGameExec">
             <Tr text="options.game_exec" />
           </div>
-          <div className='OptionValue'>
+          <div className='OptionValue' id="menuOptionsDirGameExec">
             <DirInput onChange={this.setGameExec} value={this.state?.game_install_path} extensions={['exe']} />
           </div>
         </div>
-        <div className='OptionSection'>
-          <div className='OptionLabel'>
+        <div className='OptionSection' id="menuOptionsContainerGCJar">
+          <div className='OptionLabel' id="menuOptionsLabelGCJar">
             <Tr text="options.grasscutter_jar" />
           </div>
-          <div className='OptionValue'>
+          <div className='OptionValue' id="menuOptionsDirGCJar">
             <DirInput onChange={this.setGrasscutterJar} value={this.state?.grasscutter_path} extensions={['jar']} />
           </div>
         </div>
-        <div className='OptionSection'>
-          <div className='OptionLabel'>
+        <div className='OptionSection' id="menuOptionsContainerToggleEnc">
+          <div className='OptionLabel' id="menuOptionsLabelToggleEnc">
             <Tr text="options.toggle_encryption" />
           </div>
-          <div className='OptionValue'>
+          <div className='OptionValue' id="menuOptionsButtonToggleEnc">
             <BigButton onClick={this.toggleEncryption} id="toggleEnc">
               {
                 this.state.encryption
@@ -201,23 +201,23 @@ export default class Options extends React.Component<IProps, IState> {
 
         <Divider />
         
-        <div className='OptionSection'>
-          <div className='OptionLabel'>
+        <div className='OptionSection' id="menuOptionsContainerGCWGame">
+          <div className='OptionLabel' id="menuOptionsLabelGCWDame">
             <Tr text="options.grasscutter_with_game" />
           </div>
-          <div className='OptionValue'>
+          <div className='OptionValue' id="menuOptionsCheckboxGCWGame">
             <Checkbox onChange={this.toggleGrasscutterWithGame} checked={this.state?.grasscutter_with_game} id="gcWithGame" />
           </div>
         </div>
 
         <Divider />
 
-        <div className='OptionSection'>
-          <div className='OptionLabel'>
+        <div className='OptionSection' id="menuOptionsContainerThemes">
+          <div className='OptionLabel' id="menuOptionsLabelThemes">
             <Tr text="options.theme" />
           </div>
-          <div className='OptionValue'>
-            <select value={this.state.theme} onChange={(event) => {
+          <div className='OptionValue' id="menuOptionsSelectThemes">
+            <select value={this.state.theme} id="menuOptionsSelectMenuThemes" onChange={(event) => {
               this.setTheme(event.target.value)
             }}>
               {this.state.themes.map(t => (
@@ -234,20 +234,20 @@ export default class Options extends React.Component<IProps, IState> {
 
         <Divider />
 
-        <div className='OptionSection'>
-          <div className='OptionLabel'>
+        <div className='OptionSection' id="menuOptionsContainerJavaPath">
+          <div className='OptionLabel' id="menuOptionsLabelJavaPath">
             <Tr text="options.java_path" />
           </div>
-          <div className='OptionValue'>
+          <div className='OptionValue' id="menuOptionsDirJavaPath">
             <DirInput onChange={this.setJavaPath} value={this.state?.java_path} extensions={['exe']} />
           </div>
         </div>
 
-        <div className='OptionSection'>
-          <div className='OptionLabel'>
+        <div className='OptionSection' id="menuOptionsContainerBG">
+          <div className='OptionLabel' id="menuOptionsLabelBG">
             <Tr text="options.background" />
           </div>
-          <div className='OptionValue'>
+          <div className='OptionValue' id="menuOptionsDirBG">
             <DirInput
               onChange={this.setCustomBackground}
               value={this.state?.bg_url_or_path}
@@ -262,12 +262,12 @@ export default class Options extends React.Component<IProps, IState> {
           </div>
         </div>
 
-        <div className='OptionSection'>
-          <div className='OptionLabel'>
+        <div className='OptionSection' id="menuOptionsContainerLang">
+          <div className='OptionLabel' id="menuOptionsLabelLang">
             <Tr text="options.language" />
           </div>
-          <div className='OptionValue'>
-            <select value={this.state.current_language} onChange={(event) => {
+          <div className='OptionValue' id="menuOptionsSelectLang">
+            <select value={this.state.current_language} id="menuOptionsSelectMenuLang" onChange={(event) => {
               this.setLanguage(event.target.value)
             }}>
               {this.state.language_options.map(lang => (
