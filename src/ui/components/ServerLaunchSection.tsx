@@ -125,7 +125,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       if(await invoke('patch_metadata', {metadataFolder: await this.getBackupMetadataPath()})) {
         // Patch successful
         // Replace game metadata with patched metadata
-        console.log('Replacing game metadata with patched metadata')
+        console.log('Replacing unpatched game metadata with patched metadata')
         if(await invoke('copy_file_with_new_name', { path: await this.getBackupMetadataPath() + '\\global-metadata-patched.dat', newPath: this.getGameMetadataPath(config), newName: 'global-metadata.dat' })) {
           console.log('Replacement successful!')
           return true
@@ -164,7 +164,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
           // Check to see if unpatched backup matches the game's version
           console.log('Metadata is not patched')
           if (await invoke('are_files_identical', { path1: await this.getBackupMetadataPath() +  '\\global-metadata-unpatched.dat', path2: this.getGameMetadataPath(config) + '\\global-metadata.dat'})) {
-            // Current metadat matches unpatched metadata
+            // Current metadata matches unpatched metadata
             // Game's metadata is not patched, so we need to replace it with the patched metadata
             console.log('Replacing unpatched metadata')
             if(!(await invoke('copy_file_with_new_name', { path: await this.getBackupMetadataPath() +  '\\global-metadata-patched.dat', newPath: this.getGameMetadataPath(config), newName: 'global-metadata.dat' }))) {
@@ -217,7 +217,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       })
 
       // Connect to proxy
-      // await invoke('connect', { port: 8365, certificatePath: await dataDir() + '\\cultivation\\ca' })
+      await invoke('connect', { port: 8365, certificatePath: await dataDir() + '\\cultivation\\ca' })
 
       // Open server as well if the options are set
       if (config.grasscutter_with_game) {
@@ -243,7 +243,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
         // Compare metadata files
         if (await invoke('are_files_identical', { path1: await this.getBackupMetadataPath() +  '\\global-metadata-patched.dat', path2: this.getGameMetadataPath(config) + '\\global-metadata.dat'})) {
           // Metadata is patched, so we need to unpatch it
-          console.log('Replacing patched metadata with unpatched metadata')
+          console.log('Replacing patched game metadata with unpatched metadata')
           if(!(await invoke('copy_file_with_new_name', { path: await this.getBackupMetadataPath() +  '\\global-metadata-unpatched.dat', newPath: this.getGameMetadataPath(config), newName: 'global-metadata.dat' }))) {
             // Replace failed
             alert('Failed to unpatch game metadata!')
