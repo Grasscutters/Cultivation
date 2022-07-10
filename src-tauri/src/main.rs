@@ -31,10 +31,6 @@ fn main() {
   // Start the game process watcher.
   process_watcher();
 
-  // Make BG folder if it doesn't exist.
-  let bg_folder: PathBuf = [&system_helpers::install_location(), "bg"].iter().collect();
-  std::fs::create_dir_all(&bg_folder).unwrap();
-
   tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![
       enable_process_watcher,
