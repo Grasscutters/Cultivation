@@ -81,13 +81,17 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     return config.game_install_path + '\\' + config.game_executable 
   }
 
-  getGameMetadataLocation(config : Configuration) {
+  getGameMetadataPath(config : Configuration) {
     if(!config.game_install_path || !config.game_executable) {
       alert('Game executable and/or path not set!')
       return null
     }
 
     return config.game_install_path + '\\' + config.game_executable.replace('.exe', '_Data') + '\\Managed\\Metadata'
+  }
+
+  async getBackupMetadataPath() {
+    return await dataDir() +  'cultivation\\metadata'
   }
 
   async toggleGrasscutter() {
@@ -106,27 +110,38 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
   async patchMetadata() {
     const config = await getConfig()
 
+    if(!await invoke('dir_exists', {path: this.getGameMetadataPath(config) + '\\global-metadata.dat'})) {
+      alert('Global metadata not found!')
+      return
+    }
+
     // Copy unpatched metadata to backup location
-    if(await invoke('copy_file_with_new_name', { path: this.getGameMetadataLocation(config) + '\\global-metadata.dat', newPath: await dataDir() + 'cultivation\\metadata', newName: 'global-metadata-unpatched.dat' })) {
+    console.log('Copying unpatched metadata to backup location')
+    if(await invoke('copy_file_with_new_name', { path: this.getGameMetadataPath(config) + '\\global-metadata.dat', newPath: await this.getBackupMetadataPath(), newName: 'global-metadata-unpatched.dat' })) {
       // Backup successful
 
       // Patch backedup metadata
-      if(await invoke('patch_metadata', {metadataFolder: await dataDir() +  'cultivation/metadata'})) {
+      console.log('Patching backedup metadata')
+      if(await invoke('patch_metadata', {metadataFolder: await this.getBackupMetadataPath()})) {
         // Patch successful
-        
         // Replace game metadata with patched metadata
-        if(!(await invoke('copy_file_with_new_name', { path: await dataDir() +  'cultivation/metadata/global-metadata-patched.dat', newPath: this.getGameMetadataLocation(config), newName: 'global-metadata.dat' }))) {
+        console.log('Replacing game metadata with patched metadata')
+        if(await invoke('copy_file_with_new_name', { path: await this.getBackupMetadataPath() + '\\global-metadata-patched.dat', newPath: this.getGameMetadataPath(config), newName: 'global-metadata.dat' })) {
+          console.log('Replacement successful!')
+          return true
+        } else {
           // Replace failed
           alert('Failed to replace game metadata!')
-          return
+          return false
         }
       } else {
         alert ('Failed to patch metadata!')
-        return
+        return false
       }
     } else {
       alert ('Failed to backup metadata!')
-      return
+      console.log(await this.getBackupMetadataPath())
+      return false
     }
   }
 
@@ -140,38 +155,47 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     // Connect to proxy
     if (config.toggle_grasscutter) {
       // Check if metadata has been backed up
-      if (await invoke('dir_exists', { path: await dataDir() +  'cultivation/metadata/global-metadata-unpatched.dat'})) {
+      if (await invoke('dir_exists', { path: await this.getBackupMetadataPath() +  '\\global-metadata-unpatched.dat'})) {
         // Assume metadata has been patched
         
         // Compare metadata files
-        if (!(await invoke('are_files_identical', { path1: await dataDir() +  'cultivation/metadata/global-metadata-patched.dat', path2: this.getGameMetadataLocation(config) + '\\global-metadata.dat'}))) {
+        if (!(await invoke('are_files_identical', { path1: await this.getBackupMetadataPath() +  '\\global-metadata-patched.dat', path2: this.getGameMetadataPath(config) + '\\global-metadata.dat'}))) {
           // Metadata is not patched
-
           // Check to see if unpatched backup matches the game's version
-          if (await invoke('are_files_identical', { path1: await dataDir() +  'cultivation/metadata/global-metadata-unpatched.dat', path2: this.getGameMetadataLocation(config) + '\\global-metadata.dat'})) {
-            // Game's metadata is not patched, so we need to patch it
-            if(!(await invoke('copy_file_with_new_name', { path: await dataDir() +  'cultivation/metadata/global-metadata-patched.dat', newPath: this.getGameMetadataLocation(config), newName: 'global-metadata.dat' }))) {
+          console.log('Metadata is not patched')
+          if (await invoke('are_files_identical', { path1: await this.getBackupMetadataPath() +  '\\global-metadata-unpatched.dat', path2: this.getGameMetadataPath(config) + '\\global-metadata.dat'})) {
+            // Current metadat matches unpatched metadata
+            // Game's metadata is not patched, so we need to replace it with the patched metadata
+            console.log('Replacing unpatched metadata')
+            if(!(await invoke('copy_file_with_new_name', { path: await this.getBackupMetadataPath() +  '\\global-metadata-patched.dat', newPath: this.getGameMetadataPath(config), newName: 'global-metadata.dat' }))) {
               // Replace failed
               alert('Failed to replace game metadata!')
               return
             }
           } else {
             // Game has probably been updated. We need to repatch the game...
-            alert('Deleting old metadata')
             
             // Delete backed up metadata
-            if(!(await invoke('delete_file', { path: await dataDir() +  'cultivation/metadata/global-metadata-unpatched.dat' })) && !(await invoke('delete_file', { path: await dataDir() +  'cultivation/metadata/global-metadata-patched.dat' }))) {
+            if(!(await invoke('delete_file', { path: await this.getBackupMetadataPath() + '\\global-metadata-unpatched.dat' })) && !(await invoke('delete_file', { path: await this.getBackupMetadataPath() +  '\\global-metadata-patched.dat' }))) {
               // Delete failed
               alert('Failed to delete backed up metadata!')
               return
             }
 
-            await this.patchMetadata()
+            console.log('Patching Metadata')
+            if(!await this.patchMetadata()) {
+              // Patch failed
+              return
+            }
           }
         }
       } else {
         // Assume metadata has not been patched
-        await this.patchMetadata()
+        console.log('Patching Metadata')
+        if(!await this.patchMetadata()) {
+          // Patch failed
+          return
+        }
       }
 
       let game_exe = this.getGameExecutable(config) as string
@@ -193,7 +217,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       })
 
       // Connect to proxy
-      await invoke('connect', { port: 8365, certificatePath: await dataDir() + '\\cultivation\\ca' })
+      // await invoke('connect', { port: 8365, certificatePath: await dataDir() + '\\cultivation\\ca' })
 
       // Open server as well if the options are set
       if (config.grasscutter_with_game) {
@@ -213,13 +237,14 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       }
     } else {
       // Check if metadata has been backed up
-      if (await invoke('dir_exists', { path: await dataDir() +  'cultivation/metadata/global-metadata-unpatched.dat'})) {
+      if (await invoke('dir_exists', { path: await this.getBackupMetadataPath() +  '\\global-metadata-unpatched.dat'})) {
         // Check if metadata is patched
 
         // Compare metadata files
-        if (await invoke('are_files_identical', { path1: await dataDir() +  'cultivation/metadata/global-metadata-patched.dat', path2: this.getGameMetadataLocation(config) + '\\global-metadata.dat'})) {
+        if (await invoke('are_files_identical', { path1: await this.getBackupMetadataPath() +  '\\global-metadata-patched.dat', path2: this.getGameMetadataPath(config) + '\\global-metadata.dat'})) {
           // Metadata is patched, so we need to unpatch it
-          if(!(await invoke('copy_file_with_new_name', { path: await dataDir() +  'cultivation/metadata/global-metadata-unpatched.dat', newPath: this.getGameMetadataLocation(config), newName: 'global-metadata.dat' }))) {
+          console.log('Replacing patched metadata with unpatched metadata')
+          if(!(await invoke('copy_file_with_new_name', { path: await this.getBackupMetadataPath() +  '\\global-metadata-unpatched.dat', newPath: this.getGameMetadataPath(config), newName: 'global-metadata.dat' }))) {
             // Replace failed
             alert('Failed to unpatch game metadata!')
             return
