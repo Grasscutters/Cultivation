@@ -27,7 +27,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "tauri": "tauri",
-    "start:dev": "tauri dev"
+    "start:dev": "tauri dev",
+    "format": "cargo fmt --manifest-path ./src-tauri/Cargo.toml --all",
+    "lint": "cargo clippy --manifest-path ./src-tauri/Cargo.toml --no-default-features && yarn tsc --noEmit && yarn eslint src"
   },
   "eslintConfig": {
     "extends": [
