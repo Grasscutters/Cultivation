@@ -5,7 +5,6 @@ import closeIcon from '../../resources/icons/close.svg'
 import minIcon from '../../resources/icons/min.svg'
 import cogBtn from '../../resources/icons/cog.svg'
 import downBtn from '../../resources/icons/download.svg'
-import gameBtn from '../../resources/icons/game.svg'
 
 import Tr from '../../utils/language'
 

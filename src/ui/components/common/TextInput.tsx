@@ -12,9 +12,7 @@ interface IProps {
   id?: string;
   clearable?: boolean;
   customClearBehaviour?: () => void;
-  style?: {
-    [key: string]: any;
-  }
+  style?: React.CSSProperties;
 }
 
 interface IState {

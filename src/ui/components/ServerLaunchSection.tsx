@@ -11,10 +11,6 @@ import Server from '../../resources/icons/server.svg'
 import './ServerLaunchSection.css'
 import {dataDir} from '@tauri-apps/api/path'
 
-interface IProps {
-  [key: string]: any
-}
-
 interface IState {
   grasscutterEnabled: boolean;
   buttonLabel: string;
@@ -31,8 +27,8 @@ interface IState {
   httpsEnabled: boolean;
 }
 
-export default class ServerLaunchSection extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
+export default class ServerLaunchSection extends React.Component<{}, IState> {
+  constructor(props: {}) {
     super(props)
 
     this.state = {

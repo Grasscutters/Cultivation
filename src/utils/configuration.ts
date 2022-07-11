@@ -45,16 +45,16 @@ export interface Configuration {
   debug_enabled: boolean
 }
 
-export async function setConfigOption(key: string, value: any): Promise<void> {
-  const config: any = await getConfig()
+export async function setConfigOption<K extends keyof Configuration>(key: K, value: Configuration[K]): Promise<void> {
+  const config = await getConfig()
   config[key] = value
   
   await saveConfig(<Configuration> config)
 }
 
-export async function getConfigOption(key: string): Promise<any> {
-  const config: any = await getConfig()
-  const defaults: any = defaultConfig
+export async function getConfigOption<K extends keyof Configuration>(key: K): Promise<Configuration[K]> {
+  const config = await getConfig()
+  const defaults = defaultConfig
 
   return config[key] || defaults[key]
 }
