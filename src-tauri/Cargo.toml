@@ -27,14 +27,14 @@ serde = { version = "1.0", features = ["derive"] }
 tauri = { version = "1.0.0-rc.9", features = ["api-all"] }
 
 # Access system process info.
-sysinfo = "0.23.12"
+sysinfo = "0.24.6"
 
 # ZIP-archive library.
 zip-extract = "0.1.1"
 zip = "0.6.2"
 
 # For creating a "global" downloads list.
-lazy_static = "1.4.0"
+once_cell = "1.13.0"
 
 # Program opener.
 open = "2.1.2"
@@ -42,9 +42,6 @@ duct = "0.13.5"
 
 # Serialization.
 serde_json = "1"
-
-# System process elevation.
-runas = "0.2.1"
 
 # Dependencies for the HTTP(S) proxy.
 http = "0.2"

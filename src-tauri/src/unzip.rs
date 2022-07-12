@@ -1,5 +1,3 @@
-use zip_extract;
-use zip;
 use std::fs::File;
 use std::path;
 use std::thread;

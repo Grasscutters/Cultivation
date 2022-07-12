@@ -3,7 +3,7 @@ all(not(debug_assertions), target_os = "windows"),
 windows_subsystem = "windows"
 )]
 
-use lazy_static::lazy_static;
+use once_cell::sync::Lazy;
 use std::{sync::Mutex, collections::HashMap};
 use std::path::PathBuf;
 
@@ -21,20 +21,11 @@ mod proxy;
 mod web;
 mod metadata_patcher;
 
-lazy_static! {
-  static ref WATCH_GAME_PROCESS: Mutex<String> = {
-      let m = "".to_string();
-      Mutex::new(m)
-  };
-}
+static WATCH_GAME_PROCESS: Lazy<Mutex<String>> = Lazy::new(|| Mutex::new(String::new()));
 
 fn main() {
   // Start the game process watcher.
   process_watcher();
-
-  // Make BG folder if it doesn't exist.
-  let bg_folder: PathBuf = [&system_helpers::install_location(), "bg"].iter().collect();
-  std::fs::create_dir_all(&bg_folder).unwrap();
 
   tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![
@@ -61,6 +52,7 @@ fn main() {
       file_helpers::dir_exists,
       file_helpers::dir_is_empty,
       file_helpers::dir_delete,
+      file_helpers::copy_file,
       file_helpers::are_files_identical,
       downloader::download_file,
       downloader::stop_download,
@@ -89,14 +81,9 @@ fn process_watcher() {
       // Grab the game process name
       let proc = WATCH_GAME_PROCESS.lock().unwrap().to_string();
 
-      if !&proc.is_empty() {
-        let proc_with_name = system.processes_by_exact_name(&proc);
-        let mut exists = false;
-
-        for _p in proc_with_name {
-          exists = true;
-          break;
-        }
+      if !proc.is_empty() {
+        let mut proc_with_name = system.processes_by_exact_name(&proc);
+        let exists = proc_with_name.next().is_some();
 
         // If the game process closes, disable the proxy.
         if !exists {
@@ -114,7 +101,7 @@ fn is_game_running() -> bool {
   // Grab the game process name
   let proc = WATCH_GAME_PROCESS.lock().unwrap().to_string();
 
-  return !proc.is_empty();
+  !proc.is_empty()
 }
 
 #[tauri::command]
@@ -145,11 +132,8 @@ fn disconnect() {
 
 #[tauri::command]
 async fn req_get(url: String) -> String {
-  // Send a GET request to the specified URL.
-  let response = web::query(&url.to_string()).await;
-
-  // Send the response body back to the client.
-  return response;
+  // Send a GET request to the specified URL and send the response body back to the client.
+  web::query(&url.to_string()).await
 }
 
 #[tauri::command]
@@ -185,7 +169,7 @@ async fn get_theme_list(data_dir: String) -> Vec<HashMap<String, String>> {
     }
   }
 
-  return themes;
+  themes
 }
 
 #[tauri::command]
@@ -209,7 +193,7 @@ async fn get_bg_file(bg_path: String, appdata: String) -> String {
   }
 
   // Now we check if the bg folder, which is one directory above the game_path, exists.
-  let bg_img_path = format!("{}\\{}", bg_path.clone().to_string(), file_name.as_str());
+  let bg_img_path = format!("{}\\{}", &bg_path, &file_name);
 
   // If it doesn't, then we do not have backgrounds to grab.
   if !file_helpers::dir_exists(&bg_path) {
@@ -225,15 +209,15 @@ async fn get_bg_file(bg_path: String, appdata: String) -> String {
   // The image exists, lets copy it to our local '\bg' folder.
   let bg_img_path_local = format!("{}\\bg\\{}", copy_loc, file_name.as_str());
 
-  return match std::fs::copy(bg_img_path, bg_img_path_local) {
+  match std::fs::copy(bg_img_path, bg_img_path_local) {
     Ok(_) => {
       // Copy was successful, lets return true.
-      format!("{}\\{}", copy_loc, response_data.bg_file.as_str())
+      format!("{}\\{}", copy_loc, response_data.bg_file)
     }
     Err(e) => {
       // Copy failed, lets return false
       println!("Failed to copy background image: {}", e);
       "".to_string()
     }
-  };
+  }
 }

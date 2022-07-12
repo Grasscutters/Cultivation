@@ -8,9 +8,9 @@ Consider Cultivation to be the bleeding-edge version of GrassClipper.
 During this open-beta testing period, **helpful issues are appreciated**, while unhelpful ones will be closed.
 
 ## Fair Warning
-Cultivation is **VERY MUCH IN BETA** and a majority of features do not work.\
-There are **no official releases of Cultivation**. You are **required** to build the application from **scratch**.\
-Please do **NOT install, download, or use pre-compiled versions of Cultivation**. Only use releases from this GitHub repository.
+Cultivation is **VERY MUCH IN BETA**.
+There are **no official releases of Cultivation**. You are **required** to build the application from **scratch** unless you want to deal with the alpha state of the current builds.
+Please do **NOT install, download, or use pre-compiled versions of Cultivation found elsewhere**. Only use releases from this GitHub repository.
 
 # Cultivation
 A game launcher designed to easily proxy traffic from anime game to private servers.
