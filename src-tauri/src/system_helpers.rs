@@ -38,37 +38,6 @@ pub fn open_in_browser(url: String) {
   };
 }
 
-
-#[tauri::command]
-pub fn copy_file_with_new_name(path: String, new_path: String, new_name: String) -> bool {
-  let mut new_path_buf = std::path::PathBuf::from(&new_path);
-
-  // If the new path doesn't exist, create it.
-  if !file_helpers::dir_exists(new_path_buf.pop().to_string().as_str()) {
-    std::fs::create_dir_all(&new_path).unwrap();
-  }
-
-  // Copy old to new
-  match std::fs::copy(&path, format!("{}/{}", new_path, new_name)) {
-    Ok(_) => true,
-    Err(e) => {
-      println!("Failed to copy file: {}", e);
-      false
-    }
-  }
-}
-
-#[tauri::command]
-pub fn delete_file(path: String) -> bool {
-  match std::fs::remove_file(path) {
-    Ok(_) => return true, 
-    Err(e) => {
-      println!("Failed to delete file: {}", e);
-      return false
-    }
-  };
-}
-
 #[tauri::command]
 pub fn install_location() -> String {
   let mut exe_path = std::env::current_exe().unwrap();
