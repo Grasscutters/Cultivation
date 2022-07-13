@@ -41,6 +41,10 @@ Once downloaded, extract somewhere and open as administrator.
 
 Add `--release` or `--debug` depending on what release you are creating. This defaults to `--release`
 
+### Code Formatting and Linting
+
+Format the code with `yarn format`. Run the lints with `yarn lint`.
+
 ### Updating
 * Add the `TAURI_PRIVATE_KEY` as an environment variable with a path to your private key.
 * Add the `TAURI_KEY_PASSWORD` as an environment variable with the password for your private key.
