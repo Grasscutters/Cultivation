@@ -5,7 +5,7 @@ use crate::file_helpers;
 #[tauri::command]
 pub fn run_program(path: String) {
   // Open in new thread to prevent blocking.
-  thread::spawn(move || {
+  std::thread::spawn(move || {
     open::that(&path).unwrap();
   });
 }
