@@ -43,7 +43,7 @@ Add `--release` or `--debug` depending on what release you are creating. This de
 
 ### Code Formatting and Linting
 
-Format the code with `yarn format`. Run the lints with `yarn lint`.
+Format the code with `npm format` or `yarn format`. Run the lints with `npm lint` or `yarn lint`.
 
 ### Updating
 * Add the `TAURI_PRIVATE_KEY` as an environment variable with a path to your private key.
