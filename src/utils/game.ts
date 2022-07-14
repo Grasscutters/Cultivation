@@ -7,6 +7,6 @@ export async function getGameExecutable() {
     return null
   }
 
-  const pathArr = config.game_executable.replace(/\\/g, '/').split('/')
+  const pathArr = config.game_install_path.replace(/\\/g, '/').split('/')
   return pathArr[pathArr.length - 1].replace('.exe', '')
 }

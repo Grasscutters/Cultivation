@@ -19,7 +19,6 @@ interface IProps {
 
 interface IState {
   game_install_path: string;
-  game_executable: string;
   grasscutter_path: string;
   java_path: string;
   grasscutter_with_game: boolean;
@@ -37,7 +36,6 @@ export default class Options extends React.Component<IProps, IState> {
 
     this.state = {
       game_install_path: '',
-      game_executable: '',
       grasscutter_path: '',
       java_path: '',
       grasscutter_with_game: false,
@@ -49,7 +47,6 @@ export default class Options extends React.Component<IProps, IState> {
       encryption: false,
     }
 
-    this.setGamePath = this.setGamePath.bind(this)
     this.setGameExecutable = this.setGameExecutable.bind(this)
     this.setGrasscutterJar = this.setGrasscutterJar.bind(this)
     this.setJavaPath = this.setJavaPath.bind(this)
@@ -69,7 +66,6 @@ export default class Options extends React.Component<IProps, IState> {
 
     this.setState({
       game_install_path: config.game_install_path || '',
-      game_executable: config.game_executable || '',
       grasscutter_path: config.grasscutter_path || '',
       java_path: config.java_path || '',
       grasscutter_with_game: config.grasscutter_with_game || false,
@@ -84,30 +80,12 @@ export default class Options extends React.Component<IProps, IState> {
     this.forceUpdate()
   }
 
-  setGamePath(value: string) {
+  setGameExecutable(value: string) {
     setConfigOption('game_install_path', value)
 
     this.setState({
       game_install_path: value,
     })
-  }
-
-  setGameExecutable(value: string) {
-    if (this.state.game_install_path != '') {
-      if (value.includes(this.state.game_install_path)) {
-        value = value.replace(this.state.game_install_path + '\\', '')
-
-        setConfigOption('game_executable', value)
-
-        this.setState({
-          game_executable: value,
-        })
-      } else {
-        alert('Game executable must be inside the game folder!')
-      }
-    } else {
-      alert('Please set the game install path first!')
-    }
   }
 
   setGrasscutterJar(value: string) {
@@ -199,15 +177,7 @@ export default class Options extends React.Component<IProps, IState> {
             <Tr text="options.game_path" />
           </div>
           <div className="OptionValue" id="menuOptionsDirGamePath">
-            <DirInput onChange={this.setGamePath} value={this.state?.game_install_path} folder={true} />
-          </div>
-        </div>
-        <div className="OptionSection" id="menuOptionsContainerGameExecutable">
-          <div className="OptionLabel" id="menuOptionsLabelGameExecutable">
-            <Tr text="options.game_executable" />
-          </div>
-          <div className="OptionValue" id="menuOptionsDirGameExecutable">
-            <DirInput onChange={this.setGameExecutable} value={this.state?.game_executable} folder={false} extensions={['exe']} openFolder={this.state?.game_install_path} />
+            <DirInput onChange={this.setGameExecutable} value={this.state?.game_install_path} extensions={['exe']} />
           </div>
         </div>
         <div className="OptionSection" id="menuOptionsContainerGCJar">

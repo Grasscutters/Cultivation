@@ -9,8 +9,7 @@ export async function patchMetadata() {
   })
 
   if (!metadataExists) {
-    alert('Global metadata not found!')
-    return
+    return false
   }
 
   console.log('Copying unpatched metadata to backup location')
@@ -23,7 +22,6 @@ export async function patchMetadata() {
   })
 
   if (!copiedMeta) {
-    alert('Failed to backup metadata!')
     console.log(await getBackupMetadataPath())
     return false
   }
@@ -37,7 +35,6 @@ export async function patchMetadata() {
   })
 
   if (!patchedMeta) {
-    alert('Failed to patch metadata!')
     return false
   }
 
@@ -51,7 +48,6 @@ export async function patchMetadata() {
   })
 
   if (!replacedMeta) {
-    alert('Failed to replace game metadata!')
     return false
   }
 

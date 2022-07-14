@@ -7,8 +7,7 @@ let defaultConfig: Configuration
 (async() => {
   defaultConfig = {
     toggle_grasscutter: false,
-    game_install_path: 'C:\\Program Files\\Genshin Impact\\Genshin Impact game',
-    game_executable: 'GenshinImpact.exe',
+    game_install_path: 'C:\\Program Files\\Genshin Impact\\Genshin Impact game\\GenshinImpact.exe',
     grasscutter_with_game: false,
     grasscutter_path: '',
     java_path: '',
@@ -31,7 +30,6 @@ let defaultConfig: Configuration
 export interface Configuration {
   toggle_grasscutter: boolean
   game_install_path: string
-  game_executable: string
   grasscutter_with_game: boolean
   grasscutter_path: string
   java_path: string
