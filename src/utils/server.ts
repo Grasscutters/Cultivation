@@ -18,7 +18,7 @@ export async function toggleEncryption(path: string) {
   // Write file
   await fs.writeFile({
     path,
-    contents: JSON.stringify(serverConf)
+    contents: JSON.stringify(serverConf, null, 2),
   })
 }
 

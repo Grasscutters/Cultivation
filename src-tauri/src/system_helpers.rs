@@ -1,11 +1,11 @@
 use duct::cmd;
 
-use crate::file_helpers;
-
 #[tauri::command]
 pub fn run_program(path: String) {
-  // Open the program from the specified path.
-  open::that(&path).unwrap();
+  // Open in new thread to prevent blocking.
+  std::thread::spawn(move || {
+    open::that(&path).unwrap();
+  });
 }
 
 #[tauri::command]

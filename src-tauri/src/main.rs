@@ -5,7 +5,6 @@ windows_subsystem = "windows"
 
 use once_cell::sync::Lazy;
 use std::{sync::Mutex, collections::HashMap};
-use std::path::PathBuf;
 
 use std::thread;
 use sysinfo::{System, SystemExt};
