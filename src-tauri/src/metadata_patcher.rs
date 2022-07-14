@@ -67,24 +67,27 @@ fn decrypt_metadata(file_path: &str) -> Vec<u8> {
     }
   };
   let mut data = Vec::new();
+
+  // Read metadata file
   match file.read_to_end(&mut data) {
-    Ok(_) => {
-      match dll_decrypt_global_metadata(data.as_mut_ptr(), data.len().try_into().unwrap()) {
-        Ok(_) => {
-          println!("Successfully decrypted global-metadata");
-          return data;
-        }
-        Err(e) => {
-          println!("Failed to decrypt global-metadata: {}", e);
-          return Vec::new();
-        }
-      };
-    }
+    Ok(_) => (),
     Err(e) => {
       println!("Failed to read global-metadata: {}", e);
       return Vec::new();
     }
   }
+
+  // Decrypt metadata file
+  match dll_decrypt_global_metadata(data.as_mut_ptr(), data.len().try_into().unwrap()) {
+    Ok(_) => {
+      println!("Successfully decrypted global-metadata");
+      return data;
+    }
+    Err(e) => {
+      println!("Failed to decrypt global-metadata: {}", e);
+      return Vec::new();
+    }
+  };
 }
 
 fn replace_keys(data: &Vec<u8>) -> Vec<u8> {
