@@ -1,12 +1,14 @@
 import { invoke } from '@tauri-apps/api'
 import { dataDir } from '@tauri-apps/api/path'
 import { getConfig } from './configuration'
-import { getGameExecutable } from './game'
+import { getGameExecutable, getGameFolder } from './game'
 
 export async function patchMetadata() {
   const metadataExists = await invoke('dir_exists', {
-    path: getGameMetadataPath() + '\\global-metadata.dat'
+    path: await getGameMetadataPath() + '\\global-metadata.dat'
   })
+
+  console.log(await getGameMetadataPath())
 
   if (!metadataExists) {
     return false
@@ -164,14 +166,13 @@ export async function unpatchGame() {
 }
 
 export async function getGameMetadataPath() {
-  const config = await getConfig()
   const gameExec = await getGameExecutable()
 
   if (!gameExec) {
     return null
   }
 
-  return config.game_install_path + '\\' + gameExec.replace('.exe', '_Data') + '\\Managed\\Metadata'
+  return (await getGameFolder() + '\\' + gameExec.replace('.exe', '_Data') + '\\Managed\\Metadata').replace(/\\/g, '/')
 }
 
 export async function getBackupMetadataPath() {
