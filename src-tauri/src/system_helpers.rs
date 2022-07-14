@@ -4,7 +4,8 @@ use duct::cmd;
 pub fn run_program(path: String) {
   // Open in new thread to prevent blocking.
   std::thread::spawn(move || {
-    open::that(&path).unwrap();
+    // Without unwrap_or, this can crash when UAC prompt is denied
+    open::that(&path).unwrap_or(());
   });
 }
 
