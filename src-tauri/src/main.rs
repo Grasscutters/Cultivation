@@ -23,9 +23,6 @@ mod metadata_patcher;
 static WATCH_GAME_PROCESS: Lazy<Mutex<String>> = Lazy::new(|| Mutex::new(String::new()));
 
 fn main() {
-  // Start the game process watcher.
-  process_watcher();
-
   tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![
       enable_process_watcher,
@@ -63,16 +60,30 @@ fn main() {
     .expect("error while running tauri application");
 }
 
-fn process_watcher() {
-  // Every 5 seconds, see if the game process is still running.
-  // If it is not, then we assume the game has closed and disable the proxy
-  // to prevent any requests from being sent to the game.
+#[tauri::command]
+fn is_game_running() -> bool {
+  // Grab the game process name
+  let proc = WATCH_GAME_PROCESS.lock().unwrap().to_string();
 
-  // Start a thread so as to not block the main thread.
-  thread::spawn(|| {
+  !proc.is_empty()
+}
+
+#[tauri::command]
+fn enable_process_watcher(window: tauri::Window,process: String) {
+  *WATCH_GAME_PROCESS.lock().unwrap() = process;
+
+  window.listen("disable_process_watcher", |_e| {
+    *WATCH_GAME_PROCESS.lock().unwrap() = "".to_string();
+  });
+
+  println!("Starting process watcher...");
+
+  thread::spawn(move || {
     let mut system = System::new_all();
 
     loop {
+      thread::sleep(std::time::Duration::from_secs(5));
+
       // Refresh system info
       system.refresh_all();
 
@@ -85,26 +96,16 @@ fn process_watcher() {
 
         // If the game process closes, disable the proxy.
         if !exists {
+          println!("Game closed");
+
           *WATCH_GAME_PROCESS.lock().unwrap() = "".to_string();
           disconnect();
+
+          break;
         }
       }
-      thread::sleep(std::time::Duration::from_secs(5));
     }
   });
-}
-
-#[tauri::command]
-fn is_game_running() -> bool {
-  // Grab the game process name
-  let proc = WATCH_GAME_PROCESS.lock().unwrap().to_string();
-
-  !proc.is_empty()
-}
-
-#[tauri::command]
-fn enable_process_watcher(process: String) {
-  *WATCH_GAME_PROCESS.lock().unwrap() = process;
 }
 
 #[tauri::command]
