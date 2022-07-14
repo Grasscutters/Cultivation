@@ -16,3 +16,9 @@ pub(crate) async fn valid_url(url: String) -> bool {
 
   response.status().as_str() == "200"
 }
+
+#[tauri::command]
+pub async fn web_get(url: String) -> String {
+  // Send a GET request to the specified URL and send the response body back to the client.
+  query(&url).await
+}

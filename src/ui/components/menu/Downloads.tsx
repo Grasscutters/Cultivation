@@ -13,12 +13,6 @@ import { invoke } from '@tauri-apps/api'
 import { listen } from '@tauri-apps/api/event'
 import HelpButton from '../common/HelpButton'
 
-const STABLE_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/stable.zip'
-const DEV_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/development.zip'
-const STABLE_DOWNLOAD = 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/stable/Grasscutter.zip'
-const DEV_DOWNLOAD = 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/development/Grasscutter.zip'
-const RESOURCES_DOWNLOAD = 'https://github.com/Koko-boya/Grasscutter_Resources/archive/refs/heads/main.zip'
-
 interface IProps {
   closeFn: () => void;
   downloadManager: DownloadHandler;
