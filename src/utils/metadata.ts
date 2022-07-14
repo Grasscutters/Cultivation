@@ -136,7 +136,7 @@ export async function patchGame() {
 
 export async function unpatchGame() {
   const backupExists = await invoke('dir_exists', {
-    path: getBackupMetadataPath + '\\global-metadata-unpatched.dat'
+    path: await getBackupMetadataPath() + '\\global-metadata-unpatched.dat'
   })
 
   if (!backupExists) {
@@ -158,7 +158,7 @@ export async function unpatchGame() {
 
   const replaced = await invoke('copy_file_with_new_name', {
     path: await getBackupMetadataPath() + '\\global-metadata-unpatched.dat', 
-    newPath: getGameMetadataPath(),
+    newPath: await getGameMetadataPath(),
     newName: 'global-metadata.dat'
   })
 
