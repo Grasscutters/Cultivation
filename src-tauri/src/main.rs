@@ -101,6 +101,7 @@ fn enable_process_watcher(window: tauri::Window,process: String) {
           *WATCH_GAME_PROCESS.lock().unwrap() = "".to_string();
           disconnect();
 
+          window.emit("game_closed", &()).unwrap();
           break;
         }
       }

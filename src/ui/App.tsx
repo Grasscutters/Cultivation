@@ -22,6 +22,7 @@ import { dataDir } from '@tauri-apps/api/path'
 import { appWindow } from '@tauri-apps/api/window'
 import { convertFileSrc } from '@tauri-apps/api/tauri'
 import { getTheme, loadTheme } from '../utils/themes'
+import { unpatchGame } from '../utils/metadata'
 
 interface IProps {
   [key: string]: never;
@@ -58,6 +59,15 @@ class App extends React.Component<IProps, IState> {
 
     listen('jar_extracted', ({ payload }) => {
       setConfigOption('grasscutter_path', payload)
+    })
+
+    // Emitted for metadata replacing-purposes
+    listen('game_closed', async () => {
+      const unpatched = await unpatchGame()
+
+      if (!unpatched) {
+        alert(`Could not unpatch game! (You should be able to find your metadata backup in ${await dataDir()}\\cultivation\\)`)
+      }
     })
 
     let min = false
