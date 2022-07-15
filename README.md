@@ -32,6 +32,7 @@ Once downloaded, extract somewhere and open as administrator.
 
 ### Setup
 * Install [NodeJS >12](https://nodejs.org/en/)
+* Install [yarn](https://classic.yarnpkg.com/lang/en/docs/install/#debian-stable) (cry about it `npm` lovers)
 * Install [Cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html) & [Rust compiler](https://www.rust-lang.org/tools/install)
 * `npm install` or `yarn install`
 * `npm run start:dev` or `yarn start:dev`
