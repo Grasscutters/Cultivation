@@ -44,6 +44,9 @@ export interface Configuration {
   https_enabled: boolean
   debug_enabled: boolean
   swag_mode?: boolean
+
+  // Swag stuff
+  akebi_path?: string
 }
 
 export async function setConfigOption(key: string, value: any): Promise<void> {

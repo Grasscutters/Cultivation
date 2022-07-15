@@ -205,7 +205,6 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
                 <Checkbox id="httpsEnable" label={this.state.httpsLabel} onChange={this.toggleHttps} checked={this.state.httpsEnabled} />
               </div>
             </div>
-
           )
         }
 
