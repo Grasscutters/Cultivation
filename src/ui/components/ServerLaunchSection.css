@@ -62,20 +62,27 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 
   height: 100%;
   max-height: 60px;
 }
 
-#officialPlay {
-  width: 60%
+.ServerLaunchButtons .BigButton {
+  margin-right: 8px;
 }
 
+#officialPlay {
+  max-width: 60%;
+  flex-grow: 1;
+}
+
+#akebiLaunch,
 #serverLaunch {
   width: 5%;
 }
 
+.AkebiIcon,
 .ServerIcon {
   height: 20px;
   filter: invert(28%) sepia(28%) saturate(1141%) hue-rotate(352deg) brightness(96%) contrast(88%);
