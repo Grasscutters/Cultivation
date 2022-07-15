@@ -67,6 +67,9 @@ export default class TopBar extends React.Component<IProps, IState> {
       // Activate... SWAG MODE
       await setConfigOption('swag_mode', true)
 
+      // Reload the window
+      window.location.reload()
+
       return
     }
 
