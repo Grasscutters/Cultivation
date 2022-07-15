@@ -8,6 +8,8 @@ import { translate } from '../../utils/language'
 import { invoke } from '@tauri-apps/api/tauri'
 
 import Server from '../../resources/icons/server.svg'
+import Akebi from '../../resources/icons/akebi.svg'
+
 import './ServerLaunchSection.css'
 import {dataDir} from '@tauri-apps/api/path'
 import { getGameExecutable } from '../../utils/game'
@@ -31,6 +33,8 @@ interface IState {
 
   httpsLabel: string;
   httpsEnabled: boolean;
+
+  swag: boolean;
 }
 
 export default class ServerLaunchSection extends React.Component<IProps, IState> {
@@ -47,11 +51,13 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       portPlaceholder: '',
       portHelpText: '',
       httpsLabel: '',
-      httpsEnabled: false
+      httpsEnabled: false,
+      swag: false
     }
 
     this.toggleGrasscutter = this.toggleGrasscutter.bind(this)
     this.playGame = this.playGame.bind(this)
+    this.launchAkebi = this.launchAkebi.bind(this)
     this.setIp = this.setIp.bind(this)
     this.setPort = this.setPort.bind(this)
     this.toggleHttps = this.toggleHttps.bind(this)
@@ -71,6 +77,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       portHelpText: await translate('help.port_help_text'),
       httpsLabel: await translate('main.https_enable'),
       httpsEnabled: config.https_enabled || false,
+      swag: config.swag_mode || false
     })
   }
 
@@ -87,7 +94,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     await saveConfig(config)
   }
 
-  async playGame() {
+  async playGame(exe?: string, proc_name?: string) {
     const config = await getConfig()
 
     if(!await getGameExecutable()) {
@@ -113,7 +120,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       // Set IP
       await invoke('set_proxy_addr', { addr: (this.state.httpsEnabled ? 'https':'http') + '://' + this.state.ip + ':' + this.state.port })
       await invoke('enable_process_watcher', {
-        process: game_exe
+        process: proc_name || game_exe
       })
 
       // Connect to proxy
@@ -143,18 +150,11 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
   
     // Launch the program
     const gameExists = await invoke('dir_exists', {
-      path: config.game_install_path
+      path: exe || config.game_install_path
     })
 
-    if (gameExists) {
-      await invoke('run_program', {
-        path: config.game_install_path
-      })
-
-      return
-    }
-
-    alert('Game not found! At: ' + config.game_install_path)
+    if (gameExists) await invoke('run_program', { path: exe || config.game_install_path })
+    else alert('Game not found! At: ' + (exe || config.game_install_path))
   }
 
   async launchServer() {
@@ -176,6 +176,16 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       executeIn: jarFolder,
       javaPath: config.java_path || ''
     })
+  }
+
+  async launchAkebi() {
+    const config = await getConfig()
+
+    // Get game exe from game path, so we can watch it
+    const pathArr = config.game_install_path.replace(/\\/g, '/').split('/')
+    const gameExec = pathArr[pathArr.length - 1]
+
+    await this.playGame(config.akebi_path, gameExec)
   }
 
   setIp(text: string) {
@@ -222,13 +232,19 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
                 <Checkbox id="httpsEnable" label={this.state.httpsLabel} onChange={this.toggleHttps} checked={this.state.httpsEnabled} />
               </div>
             </div>
-
           )
         }
 
 
         <div className="ServerLaunchButtons" id="serverLaunchContainer">
           <BigButton onClick={this.playGame} id="officialPlay">{this.state.buttonLabel}</BigButton>
+          {
+            this.state.swag && (
+              <BigButton onClick={this.launchAkebi} id="akebiLaunch">
+                <img className="AkebiIcon" id="akebiIcon" src={Akebi} />
+              </BigButton>
+            )
+          }
           <BigButton onClick={this.launchServer} id="serverLaunch">
             <img className="ServerIcon" id="serverLaunchIcon" src={Server} />
           </BigButton>

@@ -18,16 +18,20 @@ interface IProps {
 }
 
 interface IState {
-  game_install_path: string;
-  grasscutter_path: string;
-  java_path: string;
-  grasscutter_with_game: boolean;
-  language_options: { [key: string]: string }[];
-  current_language: string;
-  bg_url_or_path: string;
-  themes: string[];
-  theme: string;
-  encryption: boolean;
+  game_install_path: string
+  grasscutter_path: string
+  java_path: string
+  grasscutter_with_game: boolean
+  language_options: { [key: string]: string }[],
+  current_language: string
+  bg_url_or_path: string
+  themes: string[]
+  theme: string
+  encryption: boolean
+  swag: boolean
+
+  // Swag stuff
+  akebi_path: string
 }
 
 export default class Options extends React.Component<IProps, IState> {
@@ -45,11 +49,16 @@ export default class Options extends React.Component<IProps, IState> {
       themes: ['default'],
       theme: '',
       encryption: false,
+      swag: false,
+
+      // Swag stuff
+      akebi_path: '',
     }
 
     this.setGameExecutable = this.setGameExecutable.bind(this)
     this.setGrasscutterJar = this.setGrasscutterJar.bind(this)
     this.setJavaPath = this.setJavaPath.bind(this)
+    this.setAkebi = this.setAkebi.bind(this)
     this.toggleGrasscutterWithGame = this.toggleGrasscutterWithGame.bind(this)
     this.setCustomBackground = this.setCustomBackground.bind(this)
     this.toggleEncryption = this.toggleEncryption.bind(this)
@@ -75,6 +84,10 @@ export default class Options extends React.Component<IProps, IState> {
       themes: (await getThemeList()).map((t) => t.name),
       theme: config.theme || 'default',
       encryption: await translate(encEnabled ? 'options.enabled' : 'options.disabled'),
+      swag: config.swag_mode || false,
+
+      // Swag stuff
+      akebi_path: config.akebi_path || '',
     })
 
     this.forceUpdate()
@@ -101,6 +114,14 @@ export default class Options extends React.Component<IProps, IState> {
 
     this.setState({
       java_path: value,
+    })
+  }
+
+  setAkebi(value: string) {
+    setConfigOption('akebi_path', value)
+
+    this.setState({
+      akebi_path: value
     })
   }
 
@@ -180,8 +201,20 @@ export default class Options extends React.Component<IProps, IState> {
             <DirInput onChange={this.setGameExecutable} value={this.state?.game_install_path} extensions={['exe']} />
           </div>
         </div>
-        <div className="OptionSection" id="menuOptionsContainerGCJar">
-          <div className="OptionLabel" id="menuOptionsLabelGCJar">
+        {
+          this.state.swag && (
+            <div className='OptionSection' id="menuOptionsContainerAkebi">
+              <div className='OptionLabel' id="menuOptionsLabelAkebi">
+                <Tr text="swag.akebi" />
+              </div>
+              <div className='OptionValue' id="menuOptionsDirAkebi">
+                <DirInput onChange={this.setAkebi} value={this.state?.akebi_path} extensions={['exe']} />
+              </div>
+            </div>
+          )
+        }
+        <div className='OptionSection' id="menuOptionsContainerGCJar">
+          <div className='OptionLabel' id="menuOptionsLabelGCJar">
             <Tr text="options.grasscutter_jar" />
           </div>
           <div className="OptionValue" id="menuOptionsDirGCJar">
