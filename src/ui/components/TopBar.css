@@ -26,3 +26,29 @@
   margin: 0px 6px;
   color: #434343;
 }
+
+#unassumingButton {
+  font-weight: bold;
+  margin: 0px 6px;
+  color: #141414;
+
+  transition: color 0.2s ease-in-out;
+}
+
+#unassumingButton:hover {
+  color: #434343;
+}
+
+#unassumingButton.spin {
+  color: #fff;
+  animation: spin 0.5s ease-in-out;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

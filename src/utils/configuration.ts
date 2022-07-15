@@ -43,6 +43,7 @@ export interface Configuration {
   theme: string
   https_enabled: boolean
   debug_enabled: boolean
+  swag_mode?: boolean
 }
 
 export async function setConfigOption(key: string, value: any): Promise<void> {
