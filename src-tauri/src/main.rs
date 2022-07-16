@@ -1,22 +1,22 @@
 #![cfg_attr(
-all(not(debug_assertions), target_os = "windows"),
-windows_subsystem = "windows"
+  all(not(debug_assertions), target_os = "windows"),
+  windows_subsystem = "windows"
 )]
 
 use once_cell::sync::Lazy;
-use std::{sync::Mutex, collections::HashMap};
+use std::{collections::HashMap, sync::Mutex};
 
 use std::thread;
+use structs::APIQuery;
 use sysinfo::{System, SystemExt};
-use structs::{APIQuery};
 
-mod structs;
-mod system_helpers;
-mod file_helpers;
-mod unzip;
 mod downloader;
+mod file_helpers;
 mod lang;
 mod proxy;
+mod structs;
+mod system_helpers;
+mod unzip;
 mod web;
 
 static WATCH_GAME_PROCESS: Lazy<Mutex<String>> = Lazy::new(|| Mutex::new(String::new()));
@@ -156,7 +156,7 @@ async fn get_theme_list(data_dir: String) -> Vec<HashMap<String, String>> {
 
         map.insert("json".to_string(), theme_json);
         map.insert("path".to_string(), path.to_str().unwrap().to_string());
-        
+
         // Push key-value pair containing "json" and "path"
         themes.push(map);
       }

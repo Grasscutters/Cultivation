@@ -13,10 +13,6 @@ import Akebi from '../../resources/icons/akebi.svg'
 import './ServerLaunchSection.css'
 import {dataDir} from '@tauri-apps/api/path'
 
-interface IProps {
-  [key: string]: any
-}
-
 interface IState {
   grasscutterEnabled: boolean;
   buttonLabel: string;
@@ -35,8 +31,8 @@ interface IState {
   swag: boolean;
 }
 
-export default class ServerLaunchSection extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
+export default class ServerLaunchSection extends React.Component<{}, IState> {
+  constructor(props: {}) {
     super(props)
 
     this.state = {

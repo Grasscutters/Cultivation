@@ -33,6 +33,27 @@
         "semi": [
             "error",
             "never"
+        ],
+        "@typescript-eslint/ban-types": [
+            "warn",
+            {
+                "extendDefaults": true,
+                "types": {
+                    "{}": false
+                }
+            }
+        ],
+        "@typescript-eslint/no-unused-vars": [
+            "warn",
+            {
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_"
+            }
         ]
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     }
 }
