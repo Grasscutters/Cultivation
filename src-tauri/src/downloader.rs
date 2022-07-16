@@ -1,9 +1,9 @@
 use once_cell::sync::Lazy;
 
-use std::sync::Mutex;
 use std::cmp::min;
 use std::fs::File;
 use std::io::Write;
+use std::sync::Mutex;
 
 use futures_util::StreamExt;
 
@@ -15,17 +15,14 @@ static DOWNLOADS: Lazy<Mutex<Vec<String>>> = Lazy::new(|| Mutex::new(Vec::new())
 #[tauri::command]
 pub async fn download_file(window: tauri::Window, url: &str, path: &str) -> Result<(), String> {
   // Reqwest setup
-  let res = match reqwest::get(url)
-    .await {
+  let res = match reqwest::get(url).await {
     Ok(r) => r,
     Err(_e) => {
       emit_download_err(window, format!("Failed to request {}", url), path);
       return Err(format!("Failed to request {}", url));
     }
   };
-  let total_size = res
-    .content_length()
-    .unwrap_or(0);
+  let total_size = res.content_length().unwrap_or(0);
 
   // Create file path
   let mut file = match File::create(path) {
@@ -77,25 +74,10 @@ pub async fn download_file(window: tauri::Window, url: &str, path: &str) -> Resu
 
     let mut res_hash = std::collections::HashMap::new();
 
-    res_hash.insert(
-      "downloaded".to_string(),
-      downloaded.to_string(),
-    );
-
-    res_hash.insert(
-      "total".to_string(),
-      total_size.to_string(),
-    );
-
-    res_hash.insert(
-      "path".to_string(),
-      path.to_string(),
-    );
-
-    res_hash.insert(
-      "total_downloaded".to_string(),
-      total_downloaded.to_string(),
-    );
+    res_hash.insert("downloaded".to_string(), downloaded.to_string());
+    res_hash.insert("total".to_string(), total_size.to_string());
+    res_hash.insert("path".to_string(), path.to_string());
+    res_hash.insert("total_downloaded".to_string(), total_downloaded.to_string());
 
     // Create event to send to frontend
     window.emit("download_progress", &res_hash).unwrap();
@@ -111,15 +93,8 @@ pub async fn download_file(window: tauri::Window, url: &str, path: &str) -> Resu
 pub fn emit_download_err(window: tauri::Window, msg: String, path: &str) {
   let mut res_hash = std::collections::HashMap::new();
 
-  res_hash.insert(
-    "error".to_string(),
-    msg,
-  );
-
-  res_hash.insert(
-    "path".to_string(),
-    path.to_string(),
-  );
+  res_hash.insert("error".to_string(), msg);
+  res_hash.insert("path".to_string(), path.to_string());
 
   window.emit("download_error", &res_hash).unwrap();
 }

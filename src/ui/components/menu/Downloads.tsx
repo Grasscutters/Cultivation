@@ -8,7 +8,7 @@ import { dataDir } from '@tauri-apps/api/path'
 
 import './Downloads.css'
 import Divider from './Divider'
-import { getConfigOption, setConfigOption } from '../../../utils/configuration'
+import { getConfigOption } from '../../../utils/configuration'
 import { invoke } from '@tauri-apps/api'
 import { listen } from '@tauri-apps/api/event'
 import HelpButton from '../common/HelpButton'
@@ -183,7 +183,7 @@ export default class Downloads extends React.Component<IProps, IState> {
       grasscutter_downloading: this.props.downloadManager.downloadingJar(),
       resources_downloading: this.props.downloadManager.downloadingResources(),
       repo_downloading: this.props.downloadManager.downloadingRepo(),
-      grasscutter_set: gc_path && gc_path !== '',
+      grasscutter_set: gc_path !== '',
     })
   }
 

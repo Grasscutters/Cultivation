@@ -42,7 +42,7 @@ pub fn are_files_identical(path1: &str, path2: &str) -> bool {
 
 #[tauri::command]
 pub fn copy_file(path: String, new_path: String) -> bool {
-  let filename = &path.split("/").last().unwrap();
+  let filename = &path.split('/').last().unwrap();
   let mut new_path_buf = std::path::PathBuf::from(&new_path);
 
   // If the new path doesn't exist, create it.

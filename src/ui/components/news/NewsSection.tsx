@@ -11,8 +11,28 @@ interface IProps {
 
 interface IState {
   selected: string;
-  news: any;
-  commitList: any;
+  news?: JSX.Element;
+  commitList?: JSX.Element[];
+}
+
+interface GrasscutterAPIResponse {
+  commits: {
+    gc_stable:   CommitResponse[];
+    gc_dev:      CommitResponse[];
+    cultivation: CommitResponse[];
+  }
+}
+
+interface CommitResponse {
+  sha: string;
+  commit: Commit;
+}
+
+interface Commit {
+  author: {
+    name: string;
+  };
+  message: string;
 }
 
 export default class NewsSection extends React.Component<IProps, IState> {
@@ -21,8 +41,6 @@ export default class NewsSection extends React.Component<IProps, IState> {
 
     this.state = {
       selected: props.selected || 'commits',
-      news: null,
-      commitList: null
     }
 
     this.setSelected = this.setSelected.bind(this)
@@ -42,40 +60,41 @@ export default class NewsSection extends React.Component<IProps, IState> {
 
   async showLatestCommits() {
     if (!this.state.commitList) {
-      const commits: string = await invoke('req_get', { url: 'https://api.grasscutter.io/cultivation/query' })
-      let obj
+      const response: string = await invoke('req_get', { url: 'https://api.grasscutter.io/cultivation/query' })
+      let grasscutterApiResponse: GrasscutterAPIResponse | null = null
 
       try {
-        obj = JSON.parse(commits)
+        grasscutterApiResponse = JSON.parse(response)
       } catch(e) {
-        obj = {}
+        grasscutterApiResponse = null
       }
 
-      // If it didn't work, use official API
-      if (!obj.commits) {
-        const commits: string = await invoke('req_get', { url: 'https://api.github.com/repos/Grasscutters/Grasscutter/commits' })
-        obj = JSON.parse(commits)
+      let commits: CommitResponse[]
+      if (grasscutterApiResponse?.commits == null) {
+        // If it didn't work, use official API
+        const response: string = await invoke('req_get', { url: 'https://api.github.com/repos/Grasscutters/Grasscutter/commits' })
+        commits = JSON.parse(response)
       } else {
-        obj = obj.commits.gc_stable
+        commits = grasscutterApiResponse.commits.gc_stable
       }
 
       // Probably rate-limited
-      if (!Array.isArray(obj)) return
+      if (!Array.isArray(commits)) return
   
       // Get only first 5
-      const commitsList = obj.slice(0, 10)
-      const commitsListHtml = commitsList.map((commit: any) => {
+      const commitsList = commits.slice(0, 10)
+      const commitsListHtml = commitsList.map((commitResponse: CommitResponse) => {
         return (
-          <tr className="Commit" id="newsCommitsTable" key={commit.sha}>
-            <td className="CommitAuthor"><span>{commit.commit.author.name}</span></td>
-            <td className="CommitMessage"><span>{commit.commit.message}</span></td>
+          <tr className="Commit" id="newsCommitsTable" key={commitResponse.sha}>
+            <td className="CommitAuthor"><span>{commitResponse.commit.author.name}</span></td>
+            <td className="CommitMessage"><span>{commitResponse.commit.message}</span></td>
           </tr>
         )
       })
 
       this.setState({
         commitList: commitsListHtml,
-        news: commitsListHtml
+        news: <>{commitsListHtml}</>
       })
     }
 
@@ -83,12 +102,16 @@ export default class NewsSection extends React.Component<IProps, IState> {
   }
 
   async showNews() {
-    let news = <tr></tr>
+    let news: JSX.Element | JSX.Element[] = <tr></tr>
 
     switch(this.state.selected) {
-      case 'commits':
-        news = await this.showLatestCommits()
+      case 'commits': {
+        const commits = await this.showLatestCommits()
+        if (commits != null) {
+          news = commits
+        }
         break
+      }
 
       case 'latest_version':
         news = <tr><td>Latest version</td></tr>
@@ -100,7 +123,7 @@ export default class NewsSection extends React.Component<IProps, IState> {
     }
 
     this.setState({
-      news
+      news: <>{news}</>
     })
   }
 

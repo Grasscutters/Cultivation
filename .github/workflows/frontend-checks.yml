@@ -1,0 +1,37 @@
+name: Check frontend
+
+on:
+  push:
+    paths:
+      - ".github/workflows/frontend-checks.yml"
+      - "src/**"
+      - ".eslintrc.json"
+      - "package.json"
+      - "tsconfig.json"
+      - "yarn.lock"
+  pull_request:
+    paths:
+      - ".github/workflows/frontend-checks.yml"
+      - "src/**"
+      - ".eslintrc.json"
+      - "package.json"
+      - "tsconfig.json"
+      - "yarn.lock"
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  tsc-eslint-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install modules
+        run: yarn
+      - name: Run tsc
+        run: yarn tsc --noEmit
+      - name: Run ESLint
+        run: yarn eslint src
+

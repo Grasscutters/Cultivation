@@ -3,7 +3,7 @@ import './BigButton.css'
 
 interface IProps {
   children: React.ReactNode;
-  onClick: () => any;
+  onClick: () => unknown;
   id: string;
   disabled?: boolean;
 }
@@ -23,7 +23,7 @@ export default class BigButton extends React.Component<IProps, IState> {
     this.handleClick = this.handleClick.bind(this)
   }
 
-  static getDerivedStateFromProps(props: IProps, state: IState) {
+  static getDerivedStateFromProps(props: IProps, _state: IState) {
     return {
       disabled: props.disabled
     }

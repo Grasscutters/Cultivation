@@ -15,10 +15,6 @@ import {dataDir} from '@tauri-apps/api/path'
 import { getGameExecutable } from '../../utils/game'
 import { patchGame, unpatchGame } from '../../utils/metadata'
 
-interface IProps {
-  [key: string]: any
-}
-
 interface IState {
   grasscutterEnabled: boolean;
   buttonLabel: string;
@@ -37,8 +33,8 @@ interface IState {
   swag: boolean;
 }
 
-export default class ServerLaunchSection extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
+export default class ServerLaunchSection extends React.Component<{}, IState> {
+  constructor(props: {}) {
     super(props)
 
     this.state = {

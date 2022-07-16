@@ -40,7 +40,7 @@ function none() {
   alert('none')
 }
 
-class Debug extends React.Component<any, any>{
+class Debug extends React.Component{
   render() {
     return (
       <div className="App">

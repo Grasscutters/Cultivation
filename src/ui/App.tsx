@@ -57,7 +57,7 @@ class App extends React.Component<IProps, IState> {
       console.log(payload)
     })
 
-    listen('jar_extracted', ({ payload }) => {
+    listen('jar_extracted', ({ payload }: { payload: string}) => {
       setConfigOption('grasscutter_path', payload)
     })
 
