@@ -202,7 +202,7 @@ export default class Downloads extends React.Component<IProps, IState> {
             </HelpButton>
           </div>
           <div className='DownloadValue' id="downloadMenuButtonGCStable">
-            <BigButton disabled={this.state.grasscutter_downloading} onClick={this.downloadGrasscutterStable} id="grasscutterStableBtn" >
+            <BigButton disabled={this.state.grasscutter_downloading || !this.state.version_data?.stableJar} onClick={this.downloadGrasscutterStable} id="grasscutterStableBtn" >
               <Tr text="components.download" />
             </BigButton>
           </div>
@@ -217,7 +217,7 @@ export default class Downloads extends React.Component<IProps, IState> {
             </HelpButton>
           </div>
           <div className='DownloadValue' id="downloadMenuButtonGCDev">
-            <BigButton disabled={this.state.grasscutter_downloading} onClick={this.downloadGrasscutterLatest} id="grasscutterLatestBtn" >
+            <BigButton disabled={this.state.grasscutter_downloading || !this.state.version_data?.devJar} onClick={this.downloadGrasscutterLatest} id="grasscutterLatestBtn" >
               <Tr text="components.download" />
             </BigButton>
           </div>
@@ -235,7 +235,7 @@ export default class Downloads extends React.Component<IProps, IState> {
             </HelpButton>
           </div>
           <div className='DownloadValue' id="downloadMenuButtonGCStableData">
-            <BigButton disabled={this.state.repo_downloading} onClick={this.downloadGrasscutterStableRepo} id="grasscutterStableRepo" >
+            <BigButton disabled={this.state.repo_downloading || !this.state.version_data?.stable} onClick={this.downloadGrasscutterStableRepo} id="grasscutterStableRepo" >
               <Tr text="components.download" />
             </BigButton>
           </div>
@@ -250,7 +250,7 @@ export default class Downloads extends React.Component<IProps, IState> {
             </HelpButton>
           </div>
           <div className='DownloadValue' id="downloadMenuButtonGCDevData">
-            <BigButton disabled={this.state.repo_downloading} onClick={this.downloadGrasscutterStableRepo} id="grasscutterDevRepo" >
+            <BigButton disabled={this.state.repo_downloading || !this.state.version_data?.dev} onClick={this.downloadGrasscutterStableRepo} id="grasscutterDevRepo" >
               <Tr text="components.download" />
             </BigButton>
           </div>
@@ -266,7 +266,11 @@ export default class Downloads extends React.Component<IProps, IState> {
             </HelpButton>
           </div>
           <div className='DownloadValue' id="downloadMenuButtonResources">
-            <BigButton disabled={this.state.resources_downloading || !this.state.grasscutter_set || this.state.resources_exist} onClick={this.downloadResources} id="resourcesBtn" >
+            <BigButton disabled={
+              this.state.resources_downloading
+              || !this.state.grasscutter_set
+              || this.state.resources_exist
+              || !this.state.version_data?.resources} onClick={this.downloadResources} id="resourcesBtn" >
               <Tr text="components.download" />
             </BigButton>
           </div>
