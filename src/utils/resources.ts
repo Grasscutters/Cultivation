@@ -1,14 +1,27 @@
-import { invoke } from '@tauri-apps/api'
+import { fs, invoke } from '@tauri-apps/api'
+import { dataDir } from '@tauri-apps/api/path'
 import { getConfig } from './configuration'
 
-const globals = {
+export interface VersionData {
+  game: string
+  metadata: string | null
+  resources: string
+  stableJar: string | null
+  devJar: string | null
+  stable: string | null
+  dev: string | null
+}
+
+const globals: {
+  [key: string]: VersionData
+} = {
   '2.8.0': {
     game: '2.8.0',
     metadata: '2.8.0',
     resources: 'https://gitlab.com/yukiz/GrasscutterResources/-/archive/2.8/GrasscutterResources-2.8.zip',
-    stableJar: '',
+    stableJar: null,
     devJar: 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/2.8/Grasscutter.zip',
-    stable: '',
+    stable: null,
     dev: 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/2.8.zip'
   },
   '2.7.0': {
@@ -25,12 +38,14 @@ const globals = {
     metadata: null,
     resources: 'https://github.com/Koko-boya/Grasscutter_Resources/archive/0e99a59218a346c2d56c54953f99077882de4a6d.zip',
     stableJar: 'https://github.com/Grasscutters/Grasscutter/releases/download/v1.1.0/grasscutter-1.1.0.jar',
+    devJar: null,
     stable: 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/2.6.zip',
-    dev: ''
+    dev: null
   }
 }
 
 export async function cacheLauncherResources() {
+  const config = await getConfig()
   const versionAPIUrl = 'https://sdk-os-static.mihoyo.com/hk4e_global/mdk/launcher/api/resource?channel_id=1&key=gcStgarh&launcher_id=10&sub_channel_id=0'
 
   // Get versions from API
@@ -42,4 +57,33 @@ export async function cacheLauncherResources() {
     console.log('Failed to get versions from API')
     return false
   }
+
+  console.log(versions)
+
+  const selectedVersion = config.client_version
+  const selectedVersionData = globals[selectedVersion]
+
+  if (!selectedVersionData) {
+    console.log('Failed to get version for selected version')
+    return false
+  }
+
+  // Write
+  fs.writeFile({
+    path: await dataDir() + 'cultivation/resources.json',
+    contents: JSON.stringify(selectedVersionData)
+  })
+}
+
+export async function getVersionCache() {
+  const raw = await fs.readTextFile(await dataDir() + 'cultivation/resources.json').catch(e => {
+    console.log(e)
+    return null
+  })
+
+  return raw ? JSON.parse(raw) as VersionData : null
+}
+
+export function getVersions() {
+  return Object.keys(globals)
 }

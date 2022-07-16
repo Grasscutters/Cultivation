@@ -12,6 +12,7 @@ import { getConfigOption, setConfigOption } from '../../../utils/configuration'
 import { invoke } from '@tauri-apps/api'
 import { listen } from '@tauri-apps/api/event'
 import HelpButton from '../common/HelpButton'
+import { getVersionCache, VersionData } from '../../../utils/resources'
 
 interface IProps {
   closeFn: () => void;
@@ -24,6 +25,7 @@ interface IState {
   repo_downloading: boolean
   grasscutter_set: boolean
   resources_exist: boolean
+  version_data: VersionData | null
 }
 
 export default class Downloads extends React.Component<IProps, IState> {
@@ -35,7 +37,8 @@ export default class Downloads extends React.Component<IProps, IState> {
       resources_downloading: this.props.downloadManager.downloadingResources(),
       repo_downloading: this.props.downloadManager.downloadingRepo(),
       grasscutter_set: false,
-      resources_exist: false
+      resources_exist: false,
+      version_data: null
     }
 
     this.getGrasscutterFolder = this.getGrasscutterFolder.bind(this)
@@ -49,6 +52,11 @@ export default class Downloads extends React.Component<IProps, IState> {
 
   async componentDidMount() {
     const gc_path = await getConfigOption('grasscutter_path')
+    const versionData = await getVersionCache()
+
+    this.setState({
+      version_data: versionData,
+    })
 
     listen('jar_extracted', () => {
       this.setState({ grasscutter_set: true }, this.forceUpdate)
@@ -103,7 +111,7 @@ export default class Downloads extends React.Component<IProps, IState> {
 
   async downloadGrasscutterStableRepo() {
     const folder = await this.getGrasscutterFolder()
-    this.props.downloadManager.addDownload(STABLE_REPO_DOWNLOAD, folder + '\\grasscutter_repo.zip', () =>{
+    this.props.downloadManager.addDownload(this.state.version_data?.stable, folder + '\\grasscutter_repo.zip', () =>{
       unzip(folder + '\\grasscutter_repo.zip', folder + '\\', this.toggleButtons)
     })
 
@@ -112,7 +120,7 @@ export default class Downloads extends React.Component<IProps, IState> {
 
   async downloadGrasscutterDevRepo() {
     const folder = await this.getGrasscutterFolder()
-    this.props.downloadManager.addDownload(DEV_REPO_DOWNLOAD, folder + '\\grasscutter_repo.zip', () =>{
+    this.props.downloadManager.addDownload(this.state.version_data?.dev, folder + '\\grasscutter_repo.zip', () =>{
       unzip(folder + '\\grasscutter_repo.zip', folder + '\\', this.toggleButtons)
     })
 
@@ -121,7 +129,7 @@ export default class Downloads extends React.Component<IProps, IState> {
 
   async downloadGrasscutterStable() {
     const folder = await this.getGrasscutterFolder()
-    this.props.downloadManager.addDownload(STABLE_DOWNLOAD, folder + '\\grasscutter.zip', () =>{
+    this.props.downloadManager.addDownload(this.state.version_data?.stableJar, folder + '\\grasscutter.zip', () =>{
       unzip(folder + '\\grasscutter.zip', folder + '\\', this.toggleButtons)
     })
 
@@ -133,7 +141,7 @@ export default class Downloads extends React.Component<IProps, IState> {
 
   async downloadGrasscutterLatest() {
     const folder = await this.getGrasscutterFolder()
-    this.props.downloadManager.addDownload(DEV_DOWNLOAD, folder + '\\grasscutter.zip', () =>{
+    this.props.downloadManager.addDownload(this.state.version_data?.devJar, folder + '\\grasscutter.zip', () =>{
       unzip(folder + '\\grasscutter.zip', folder + '\\', this.toggleButtons)
     })
 
@@ -145,7 +153,7 @@ export default class Downloads extends React.Component<IProps, IState> {
 
   async downloadResources() {
     const folder = await this.getGrasscutterFolder()
-    this.props.downloadManager.addDownload(RESOURCES_DOWNLOAD, folder + '\\resources.zip', async () => {
+    this.props.downloadManager.addDownload(this.state.version_data?.resources, folder + '\\resources.zip', async () => {
       // Delete the existing folder if it exists 
       if (await invoke('dir_exists', {
         path: folder + '\\resources'

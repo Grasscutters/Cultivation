@@ -12,6 +12,7 @@ import * as server from '../../../utils/server'
 
 import './Options.css'
 import BigButton from '../common/BigButton'
+import { cacheLauncherResources, getVersions } from '../../../utils/resources'
 
 interface IProps {
   closeFn: () => void;
@@ -20,6 +21,7 @@ interface IProps {
 interface IState {
   game_install_path: string
   grasscutter_path: string
+  client_version: string
   java_path: string
   grasscutter_with_game: boolean
   language_options: { [key: string]: string }[],
@@ -41,6 +43,7 @@ export default class Options extends React.Component<IProps, IState> {
     this.state = {
       game_install_path: '',
       grasscutter_path: '',
+      client_version: '',
       java_path: '',
       grasscutter_with_game: false,
       language_options: [],
@@ -58,6 +61,7 @@ export default class Options extends React.Component<IProps, IState> {
     this.setGameExec = this.setGameExec.bind(this)
     this.setGrasscutterJar = this.setGrasscutterJar.bind(this)
     this.setJavaPath = this.setJavaPath.bind(this)
+    this.setClientVersion = this.setClientVersion.bind(this)
     this.setAkebi = this.setAkebi.bind(this)
     this.toggleGrasscutterWithGame = this.toggleGrasscutterWithGame.bind(this)
     this.setCustomBackground = this.setCustomBackground.bind(this)
@@ -77,6 +81,7 @@ export default class Options extends React.Component<IProps, IState> {
       game_install_path: config.game_install_path || '',
       grasscutter_path: config.grasscutter_path || '',
       java_path: config.java_path || '',
+      client_version: config.client_version || '',
       grasscutter_with_game: config.grasscutter_with_game || false,
       language_options: languages,
       current_language: config.language || 'en',
@@ -98,6 +103,16 @@ export default class Options extends React.Component<IProps, IState> {
 
     this.setState({
       game_install_path: value
+    })
+  }
+
+  async setClientVersion(value: string) {
+    setConfigOption('client_version', value)
+
+    await cacheLauncherResources()
+
+    this.setState({
+      client_version: value
     })
   }
 
@@ -197,6 +212,25 @@ export default class Options extends React.Component<IProps, IState> {
           </div>
           <div className='OptionValue' id="menuOptionsDirGameExec">
             <DirInput onChange={this.setGameExec} value={this.state?.game_install_path} extensions={['exe']} />
+          </div>
+        </div>
+        <div className='OptionSection' id="menuOptionsContainerClientVersion">
+          <div className='OptionLabel' id="menuOptionsLabelClientVersion">
+            <Tr text="options.game_exec" />
+          </div>
+          <div className='OptionValue' id="menuOptionsDirClientVersion">
+            <select value={this.state.client_version} id="menuOptionsSelectMenuThemes" onChange={(event) => {
+              this.setClientVersion(event.target.value)
+            }}>
+              {getVersions().map(t => (
+                <option
+                  key={t}
+                  value={t}>
+
+                  {t}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
         {

@@ -107,7 +107,9 @@ export default class DownloadHandler {
     return this.downloads.some(d => d.path.includes('grasscutter_repo.zip'))
   }
 
-  addDownload(url: string, path: string, onFinish?: () => void) {
+  addDownload(url: string | null | undefined, path: string, onFinish?: () => void) {
+    if (!url) return
+
     // Begin download from rust backend, don't add if the download addition fails
     invoke('download_file', { url, path })
     const obj = {
