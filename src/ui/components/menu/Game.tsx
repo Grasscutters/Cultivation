@@ -8,8 +8,7 @@ import DirInput from '../common/DirInput'
 import BigButton from '../common/BigButton'
 import HelpButton from '../common/HelpButton'
 import { unzip } from '../../../utils/zipUtils'
-
-const GAME_DOWNLOAD = ''
+import { getVersionCache } from '../../../utils/resources'
 
 interface IProps {
   closeFn: () => void;
@@ -20,6 +19,7 @@ interface IState {
   gameDownloading: boolean;
   gameDownloadFolder: string;
   dirPlaceholder: string;
+  clientDownloadLink: string | null | undefined;
 }
 
 export default class Downloads extends React.Component<IProps, IState> {
@@ -29,23 +29,25 @@ export default class Downloads extends React.Component<IProps, IState> {
     this.state = {
       gameDownloading: false,
       gameDownloadFolder: '',
-      dirPlaceholder: ''
+      dirPlaceholder: '',
+      clientDownloadLink: ''
     }
 
     this.downloadGame = this.downloadGame.bind(this)
   }
 
   async componentDidMount() {
-    this.setState({
-      dirPlaceholder: await translate('components.select_folder')
-    })
+    const versionCache = await getVersionCache()
 
-    console.log(this.state)
+    this.setState({
+      dirPlaceholder: await translate('components.select_folder'),
+      clientDownloadLink: versionCache?.client_download_link
+    })
   }
 
   async downloadGame() {
     const folder = this.state.gameDownloadFolder
-    this.props.downloadManager.addDownload(GAME_DOWNLOAD, folder + '\\game.zip', () =>{
+    this.props.downloadManager.addDownload(this.state.clientDownloadLink, folder + '\\game.zip', () =>{
       unzip(folder + '\\game.zip', folder + '\\', () => {
         this.setState({
           gameDownloading: false
@@ -63,7 +65,7 @@ export default class Downloads extends React.Component<IProps, IState> {
       <Menu heading='Download Game' closeFn={this.props.closeFn} className="GameDownloadMenu">
         <div className="GameDownload">
           {
-            this.state.gameDownloadFolder !== '' && !this.state.gameDownloading ?
+            this.state.gameDownloadFolder !== '' && !this.state.gameDownloading && this.state.clientDownloadLink ?
               <BigButton id="downloadGameBtn" onClick={this.downloadGame}>Download Game</BigButton>
               : <BigButton id="disabledGameBtn" onClick={() => null} disabled>Download Game</BigButton>
           }
