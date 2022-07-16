@@ -5,6 +5,8 @@ import { getConfig } from './configuration'
 export interface VersionData {
   game: string
   metadata: string | null
+  metadata_backup_link: string | null
+  client_download_link: string | null
   resources: string
   stableJar: string | null
   devJar: string | null
@@ -18,6 +20,8 @@ const globals: {
   '2.8.0': {
     game: '2.8.0',
     metadata: '2.8.0',
+    metadata_backup_link: '',
+    client_download_link: '',
     resources: 'https://gitlab.com/yukiz/GrasscutterResources/-/archive/2.8/GrasscutterResources-2.8.zip',
     stableJar: null,
     devJar: 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/2.8/Grasscutter.zip',
@@ -27,6 +31,8 @@ const globals: {
   '2.7.0': {
     game: '2.7.0',
     metadata: null,
+    metadata_backup_link: '',
+    client_download_link: '',
     resources: 'https://github.com/Koko-boya/Grasscutter_Resources/archive/refs/heads/main.zip',
     stableJar: 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/stable/Grasscutter.zip',
     devJar: 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/development/Grasscutter.zip',
@@ -36,6 +42,8 @@ const globals: {
   '2.6.0': {
     game: '2.6.0',
     metadata: null,
+    metadata_backup_link: '',
+    client_download_link: '',
     resources: 'https://github.com/Koko-boya/Grasscutter_Resources/archive/0e99a59218a346c2d56c54953f99077882de4a6d.zip',
     stableJar: 'https://github.com/Grasscutters/Grasscutter/releases/download/v1.1.0/grasscutter-1.1.0.jar',
     devJar: null,
@@ -58,14 +66,20 @@ export async function cacheLauncherResources() {
     return false
   }
 
-  console.log(versions)
-
   const selectedVersion = config.client_version
   const selectedVersionData = globals[selectedVersion]
 
   if (!selectedVersionData) {
     console.log('Failed to get version for selected version')
     return false
+  }
+
+  const latest = versions.data.game.latest
+  const latestData = globals[latest.version]
+
+  if (latestData) {
+    latestData.metadata_backup_link = latest.decompressed_path + '/GenshinImpact_Data/Managed/Metadata/global-metadata.dat'
+    latestData.client_download_link = latest.path
   }
 
   // Write

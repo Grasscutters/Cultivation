@@ -107,7 +107,7 @@ export default class Options extends React.Component<IProps, IState> {
   }
 
   async setClientVersion(value: string) {
-    setConfigOption('client_version', value)
+    await setConfigOption('client_version', value)
 
     await cacheLauncherResources()
 
