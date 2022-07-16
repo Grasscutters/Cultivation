@@ -55,7 +55,8 @@ pub fn patch_metadata(metadata_folder: &str) -> bool {
   };
 
   file.write_all(&encrypted).unwrap();
-  return true;
+  
+  true
 }
 
 fn decrypt_metadata(file_path: &str) -> Vec<u8> {
@@ -81,16 +82,18 @@ fn decrypt_metadata(file_path: &str) -> Vec<u8> {
   match dll_decrypt_global_metadata(data.as_mut_ptr(), data.len().try_into().unwrap()) {
     Ok(_) => {
       println!("Successfully decrypted global-metadata");
-      return data;
+      data
     }
     Err(e) => {
       println!("Failed to decrypt global-metadata: {}", e);
-      return Vec::new();
+      Vec::new()
     }
   };
+  
+  Vec::new()
 }
 
-fn replace_keys(data: &Vec<u8>) -> Vec<u8> {
+fn replace_keys(data: &[u8]) -> Vec<u8> {
   let mut new_data = String::new();
 
   unsafe {
@@ -107,10 +110,10 @@ fn replace_keys(data: &Vec<u8>) -> Vec<u8> {
 
       if i == 2 {
         println!("Replacing password key");
-        new_data = replace_rsa_key(&data_str, &key, "passwordKey.txt");
+        new_data = replace_rsa_key(&data_str, key, "passwordKey.txt");
       } else if i == 3 {
         println!("Replacing dispatch key");
-        new_data = replace_rsa_key(&new_data, &key, "dispatchKey.txt");
+        new_data = replace_rsa_key(&new_data, key, "dispatchKey.txt");
       }
     }
   }
@@ -133,22 +136,24 @@ fn replace_rsa_key(old_data: &str, to_replace: &str, file_name: &str) -> String 
     let new_key = String::from_utf8_unchecked(key_data.to_vec());
 
     // Replace old key with new key
-    return old_data.replace(to_replace, &new_key);
+    old_data.replace(to_replace, &new_key)
   }
 }
 
-fn encrypt_metadata(old_data: &Vec<u8>) -> Vec<u8> {
+fn encrypt_metadata(old_data: &[u8]) -> Vec<u8> {
   let mut data = old_data.to_vec();
   match dll_encrypt_global_metadata(data.as_mut_ptr(), data.len().try_into().unwrap()) {
     Ok(_) => {
       println!("Successfully encrypted global-metadata");
-      return data;
+      data
     }
     Err(e) => {
       println!("Failed to encrypt global-metadata: {}", e);
-      return Vec::new();
+      Vec::new()
     }
   };
+
+  Vec::new()
 }
 
 fn do_vecs_match<T: PartialEq>(a: &Vec<T>, b: &Vec<T>) -> bool {

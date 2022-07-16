@@ -37,7 +37,7 @@ pub fn dir_delete(path: &str) {
 
 #[tauri::command]
 pub fn are_files_identical(path1: &str, path2: &str) -> bool {
-  return diff(path1, path2);
+  diff(path1, path2)
 }
 
 #[tauri::command]
@@ -88,10 +88,12 @@ pub fn copy_file_with_new_name(path: String, new_path: String, new_name: String)
 #[tauri::command]
 pub fn delete_file(path: String) -> bool {
   match std::fs::remove_file(path) {
-    Ok(_) => return true, 
+    Ok(_) => true,
     Err(e) => {
       println!("Failed to delete file: {}", e);
-      return false
+      false
     }
   };
+
+  false
 }

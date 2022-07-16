@@ -1,6 +1,5 @@
 import { invoke } from '@tauri-apps/api'
 import { dataDir } from '@tauri-apps/api/path'
-import { getConfig } from './configuration'
 import DownloadHandler from './download'
 import { getGameExecutable, getGameFolder } from './game'
 
@@ -8,8 +7,6 @@ export async function patchMetadata() {
   const metadataExists = await invoke('dir_exists', {
     path: await getGameMetadataPath() + '\\global-metadata.dat'
   })
-
-  console.log(await getGameMetadataPath())
 
   if (!metadataExists) {
     return false
