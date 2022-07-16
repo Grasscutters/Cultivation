@@ -199,18 +199,6 @@ export default class Options extends React.Component<IProps, IState> {
             <DirInput onChange={this.setGameExec} value={this.state?.game_install_path} extensions={['exe']} />
           </div>
         </div>
-        {
-          this.state.swag && (
-            <div className='OptionSection' id="menuOptionsContainerAkebi">
-              <div className='OptionLabel' id="menuOptionsLabelAkebi">
-                <Tr text="swag.akebi" />
-              </div>
-              <div className='OptionValue' id="menuOptionsDirAkebi">
-                <DirInput onChange={this.setAkebi} value={this.state?.akebi_path} extensions={['exe']} />
-              </div>
-            </div>
-          )
-        }
         <div className='OptionSection' id="menuOptionsContainerGCJar">
           <div className='OptionLabel' id="menuOptionsLabelGCJar">
             <Tr text="options.grasscutter_jar" />
@@ -231,6 +219,21 @@ export default class Options extends React.Component<IProps, IState> {
             </BigButton>
           </div>
         </div>
+        {
+          this.state.swag && (
+            <>
+              <Divider />
+              <div className='OptionSection' id="menuOptionsContainerAkebi">
+                <div className='OptionLabel' id="menuOptionsLabelAkebi">
+                  <Tr text="swag.akebi" />
+                </div>
+                <div className='OptionValue' id="menuOptionsDirAkebi">
+                  <DirInput onChange={this.setAkebi} value={this.state?.akebi_path} extensions={['exe']} />
+                </div>
+              </div>
+            </>
+          )
+        }
 
         <Divider />
         
