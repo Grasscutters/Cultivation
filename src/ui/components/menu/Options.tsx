@@ -12,9 +12,12 @@ import * as server from '../../../utils/server'
 
 import './Options.css'
 import BigButton from '../common/BigButton'
+import DownloadHandler from '../../../utils/download'
+import * as meta from '../../../utils/metadata'
 
 interface IProps {
   closeFn: () => void;
+  downloadManager: DownloadHandler;
 }
 
 interface IState {
@@ -62,6 +65,7 @@ export default class Options extends React.Component<IProps, IState> {
     this.toggleGrasscutterWithGame = this.toggleGrasscutterWithGame.bind(this)
     this.setCustomBackground = this.setCustomBackground.bind(this)
     this.toggleEncryption = this.toggleEncryption.bind(this)
+    this.restoreMetadata = this.restoreMetadata.bind(this)
   }
 
   async componentDidMount() {
@@ -190,6 +194,11 @@ export default class Options extends React.Component<IProps, IState> {
     })
   }
 
+  async restoreMetadata() {
+    console.log(this.props)
+    await meta.restoreMetadata(this.props.downloadManager)
+  }
+
   render() {
     return (
       <Menu closeFn={this.props.closeFn} className="Options" heading="Options">
@@ -199,6 +208,16 @@ export default class Options extends React.Component<IProps, IState> {
           </div>
           <div className="OptionValue" id="menuOptionsDirGamePath">
             <DirInput onChange={this.setGameExecutable} value={this.state?.game_install_path} extensions={['exe']} />
+          </div>
+        </div>
+        <div className="OptionSection" id="menuOptionsContainermetaDownload">
+          <div className="OptionLabel" id="menuOptionsLabelmetaDownload">
+            <Tr text="options.recover_metadata" />
+          </div>
+          <div className="OptionValue" id="menuOptionsButtonmetaDownload">
+            <BigButton onClick={this.restoreMetadata} id="metaDownload">
+              <Tr text='components.download' />
+            </BigButton>
           </div>
         </div>
         {

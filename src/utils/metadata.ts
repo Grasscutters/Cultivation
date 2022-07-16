@@ -1,6 +1,7 @@
 import { invoke } from '@tauri-apps/api'
 import { dataDir } from '@tauri-apps/api/path'
 import { getConfig } from './configuration'
+import DownloadHandler from './download'
 import { getGameExecutable, getGameFolder } from './game'
 
 export async function patchMetadata() {
@@ -149,7 +150,11 @@ export async function unpatchGame() {
     path2: await getGameMetadataPath() + '\\global-metadata.dat'
   })
 
-  if (!metaPatched) {
+  const metaExists = await invoke('dir_exists', {
+    path: await getGameMetadataPath() + '\\global-metadata.dat'
+  })
+
+  if (!metaPatched && metaExists) {
     // Game isn't patched
     return true
   }
@@ -177,4 +182,51 @@ export async function getGameMetadataPath() {
 
 export async function getBackupMetadataPath() {
   return await dataDir() + 'cultivation\\metadata'
+}
+
+export async function globalMetadataLink() {
+  const versionAPIUrl = 'https://sdk-os-static.mihoyo.com/hk4e_global/mdk/launcher/api/resource?channel_id=1&key=gcStgarh&launcher_id=10&sub_channel_id=0'
+
+  // Get versions from API
+  const versions = JSON.parse(await invoke('web_get', {
+    url: versionAPIUrl
+  }))
+  
+  if (!versions || versions.retcode !== 0) {
+    console.log('Failed to get versions from API')
+    return null
+  }
+
+  // Get latest version
+  const latest = versions.data.game.latest
+
+  return latest.decompressed_path as string + '/GenshinImpact_Data/Managed/Metadata/global-metadata.dat'
+}
+
+export async function restoreMetadata(manager: DownloadHandler) {
+  const backupExists = await invoke('dir_exists', {
+    path: await getBackupMetadataPath() + '\\global-metadata-unpatched.dat'
+  })
+
+  if (!backupExists) {
+    console.log('No backup found! Replacing with global metadata link')
+
+    const metaLink = await globalMetadataLink()
+
+    if (!metaLink) {
+      console.log('Coudl not get global metadata link!')
+      return false
+    }
+    
+    // Download the file
+    manager.addDownload(metaLink, await getBackupMetadataPath() + '\\global-metadata-unpatched.dat', () => {
+      unpatchGame()
+    })
+  }
+
+  console.log('Restoring backedup metadata')
+
+  await unpatchGame()
+
+  return true
 }

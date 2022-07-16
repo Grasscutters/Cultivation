@@ -206,6 +206,7 @@ class App extends React.Component<IProps, IState> {
           // Options menu
           this.state.optionsOpen ? (
             <Options
+              downloadManager={downloadHandler}
               closeFn={() => this.setState({ optionsOpen: !this.state.optionsOpen })}
             />
           ) : null

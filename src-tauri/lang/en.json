@@ -15,6 +15,7 @@
     "disabled": "Disabled",
     "game_path": "Set Game Install Path",
     "game_executable": "Set Game Executable",
+    "recover_metadata": "Emergency Metadata Recovery",
     "grasscutter_jar": "Set Grasscutter JAR",
     "toggle_encryption": "Toggle Encryption",
     "java_path": "Set Custom Java Path",

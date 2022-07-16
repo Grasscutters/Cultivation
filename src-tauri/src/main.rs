@@ -54,6 +54,7 @@ fn main() {
       lang::get_lang,
       lang::get_languages,
       web::valid_url,
+      web::web_get,
       metadata_patcher::patch_metadata
     ])
     .run(tauri::generate_context!())

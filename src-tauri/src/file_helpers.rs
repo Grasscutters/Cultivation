@@ -66,7 +66,13 @@ pub fn copy_file_with_new_name(path: String, new_path: String, new_name: String)
 
   // If the new path doesn't exist, create it.
   if !dir_exists(new_path_buf.pop().to_string().as_str()) {
-    std::fs::create_dir_all(&new_path).unwrap();
+    match std::fs::create_dir_all(&new_path) {
+      Ok(_) => {}
+      Err(e) => {
+        println!("Failed to create directory: {}", e);
+        return false;
+      }
+    };
   }
 
   // Copy old to new
