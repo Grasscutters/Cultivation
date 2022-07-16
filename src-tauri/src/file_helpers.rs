@@ -1,4 +1,4 @@
-use std::fs;
+use std::{fs, io::{Read, Write}};
 
 #[tauri::command]
 pub fn rename(path: String, new_name: String) {
@@ -50,6 +50,51 @@ pub fn copy_file(path: String, new_path: String) -> bool {
     Err(e) => {
       println!("Failed to copy file: {}", e);
       false
+    }
+  }
+}
+
+#[tauri::command]
+pub fn read_file(path: String) -> String {
+  let mut file = match fs::File::open(path) {
+    Ok(file) => file,
+    Err(e) => {
+      println!("Failed to open file: {}", e);
+      return String::new();
+    }
+  };
+
+  let mut contents = String::new();
+  file.read_to_string(&mut contents).unwrap();
+
+  contents
+}
+
+#[tauri::command]
+pub fn write_file(path: String, contents: String) {
+  // Create file if it exists, otherwise just open and rewrite
+  let mut file = match fs::File::open(&path) {
+    Ok(file) => file,
+    Err(e) => {
+      println!("Failed to open file: {}", e);
+      
+      // attempt to create file. otherwise return
+      match fs::File::create(&path) {
+        Ok(file) => file,
+        Err(e) => {
+          println!("Failed to create file: {}", e);
+          return;
+        }
+      }
+    }
+  };
+
+  // Write contents to file
+  match file.write_all(contents.as_bytes()) {
+    Ok(_) => (),
+    Err(e) => {
+      println!("Failed to write to file: {}", e);
+      return;
     }
   }
 }

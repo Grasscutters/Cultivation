@@ -45,6 +45,8 @@ fn main() {
       file_helpers::dir_is_empty,
       file_helpers::dir_delete,
       file_helpers::copy_file,
+      file_helpers::read_file,
+      file_helpers::write_file,
       downloader::download_file,
       downloader::stop_download,
       lang::get_lang,
