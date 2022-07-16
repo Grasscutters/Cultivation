@@ -24,7 +24,7 @@ const globals: {
     client_download_link: null,
     resources: 'https://gitlab.com/yukiz/GrasscutterResources/-/archive/2.8/GrasscutterResources-2.8.zip',
     stableJar: null,
-    devJar: 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/2.8/Grasscutter.zip',
+    devJar: 'https://nightly.link/Grasscutters/Grasscutter/actions/runs/2661955213/Grasscutter.zip',
     stable: null,
     dev: 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/2.8.zip'
   },
