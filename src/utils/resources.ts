@@ -63,7 +63,7 @@ export async function cacheLauncherResources() {
   
   if (!versions || versions.retcode !== 0) {
     console.log('Failed to get versions from API')
-    return false
+    return null
   }
 
   const selectedVersion = config.client_version
@@ -71,7 +71,7 @@ export async function cacheLauncherResources() {
 
   if (!selectedVersionData) {
     console.log('Failed to get version for selected version')
-    return false
+    return null
   }
 
   const latest = versions.data.game.latest
@@ -87,6 +87,9 @@ export async function cacheLauncherResources() {
     path: await dataDir() + 'cultivation/resources.json',
     contents: JSON.stringify(selectedVersionData)
   })
+
+  // In case we want to get it right away too
+  return selectedVersionData
 }
 
 export async function getVersionCache() {

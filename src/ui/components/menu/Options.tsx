@@ -12,7 +12,7 @@ import * as server from '../../../utils/server'
 
 import './Options.css'
 import BigButton from '../common/BigButton'
-import { cacheLauncherResources, getVersions } from '../../../utils/resources'
+import { cacheLauncherResources, getVersionCache, getVersions } from '../../../utils/resources'
 
 interface IProps {
   closeFn: () => void;
@@ -22,6 +22,7 @@ interface IState {
   game_install_path: string
   grasscutter_path: string
   client_version: string
+  meta_download: string | null | undefined
   java_path: string
   grasscutter_with_game: boolean
   language_options: { [key: string]: string }[],
@@ -44,6 +45,7 @@ export default class Options extends React.Component<IProps, IState> {
       game_install_path: '',
       grasscutter_path: '',
       client_version: '',
+      meta_download: '',
       java_path: '',
       grasscutter_with_game: false,
       language_options: [],
@@ -82,6 +84,7 @@ export default class Options extends React.Component<IProps, IState> {
       grasscutter_path: config.grasscutter_path || '',
       java_path: config.java_path || '',
       client_version: config.client_version || '',
+      meta_download: (await getVersionCache())?.metadata_backup_link || '',
       grasscutter_with_game: config.grasscutter_with_game || false,
       language_options: languages,
       current_language: config.language || 'en',
@@ -109,10 +112,11 @@ export default class Options extends React.Component<IProps, IState> {
   async setClientVersion(value: string) {
     await setConfigOption('client_version', value)
 
-    await cacheLauncherResources()
+    const newCache = await cacheLauncherResources()
 
     this.setState({
-      client_version: value
+      client_version: value,
+      meta_download: newCache?.metadata_backup_link
     })
   }
 
@@ -216,7 +220,7 @@ export default class Options extends React.Component<IProps, IState> {
         </div>
         <div className='OptionSection' id="menuOptionsContainerClientVersion">
           <div className='OptionLabel' id="menuOptionsLabelClientVersion">
-            <Tr text="options.game_exec" />
+            <Tr text="options.game_version" />
           </div>
           <div className='OptionValue' id="menuOptionsDirClientVersion">
             <select value={this.state.client_version} id="menuOptionsSelectMenuThemes" onChange={(event) => {
@@ -233,16 +237,30 @@ export default class Options extends React.Component<IProps, IState> {
             </select>
           </div>
         </div>
+        <div className='OptionSection' id="menuOptionsContainerMetadataDownload">
+          <div className='OptionLabel' id="menuOptionsLabelMetadataDownload">
+            <Tr text="options.emergency_metadata" />
+          </div>
+          <div className='OptionValue' id="menuOptionsButtonMetadataDownload">
+            <BigButton disabled={this.state.meta_download === ''} onClick={this.toggleEncryption} id="toggleEnc">
+              <Tr text='components.download' />
+            </BigButton>
+          </div>
+        </div>
         {
           this.state.swag && (
-            <div className='OptionSection' id="menuOptionsContainerAkebi">
-              <div className='OptionLabel' id="menuOptionsLabelAkebi">
-                <Tr text="swag.akebi" />
+            <>
+              <Divider />
+              <div className='OptionSection' id="menuOptionsContainerAkebi">
+                <div className='OptionLabel' id="menuOptionsLabelAkebi">
+                  <Tr text="swag.akebi" />
+                </div>
+                <div className='OptionValue' id="menuOptionsDirAkebi">
+                  <DirInput onChange={this.setAkebi} value={this.state?.akebi_path} extensions={['exe']} />
+                </div>
               </div>
-              <div className='OptionValue' id="menuOptionsDirAkebi">
-                <DirInput onChange={this.setAkebi} value={this.state?.akebi_path} extensions={['exe']} />
-              </div>
-            </div>
+              <Divider />
+            </>
           )
         }
         <div className='OptionSection' id="menuOptionsContainerGCJar">
