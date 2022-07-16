@@ -188,6 +188,12 @@ export default class Options extends React.Component<IProps, IState> {
     })
   }
 
+  async installCert() {
+    await invoke('generate_ca_files', {
+      path: await dataDir() + 'cultivation'
+    })
+  }
+
   render() {
     return (
       <Menu closeFn={this.props.closeFn} className="Options" heading="Options">
@@ -216,6 +222,16 @@ export default class Options extends React.Component<IProps, IState> {
               {
                 this.state.encryption
               }
+            </BigButton>
+          </div>
+        </div>
+        <div className='OptionSection' id="menuOptionsContainerInstallCert">
+          <div className='OptionLabel' id="menuOptionsLabelInstallCert">
+            <Tr text="options.install_certificate" />
+          </div>
+          <div className='OptionValue' id="menuOptionsButtonInstallCert">
+            <BigButton disabled={false} onClick={this.installCert} id="installCert">
+              <Tr text="components.install" />
             </BigButton>
           </div>
         </div>
