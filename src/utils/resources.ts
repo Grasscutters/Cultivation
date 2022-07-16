@@ -20,8 +20,8 @@ const globals: {
   '2.8.0': {
     game: '2.8.0',
     metadata: '2.8.0',
-    metadata_backup_link: '',
-    client_download_link: '',
+    metadata_backup_link: null,
+    client_download_link: null,
     resources: 'https://gitlab.com/yukiz/GrasscutterResources/-/archive/2.8/GrasscutterResources-2.8.zip',
     stableJar: null,
     devJar: 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/2.8/Grasscutter.zip',
@@ -31,8 +31,8 @@ const globals: {
   '2.7.0': {
     game: '2.7.0',
     metadata: null,
-    metadata_backup_link: '',
-    client_download_link: '',
+    metadata_backup_link: null,
+    client_download_link: null,
     resources: 'https://github.com/Koko-boya/Grasscutter_Resources/archive/refs/heads/main.zip',
     stableJar: 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/stable/Grasscutter.zip',
     devJar: 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/development/Grasscutter.zip',
@@ -42,8 +42,8 @@ const globals: {
   '2.6.0': {
     game: '2.6.0',
     metadata: null,
-    metadata_backup_link: '',
-    client_download_link: '',
+    metadata_backup_link: null,
+    client_download_link: null,
     resources: 'https://github.com/Koko-boya/Grasscutter_Resources/archive/0e99a59218a346c2d56c54953f99077882de4a6d.zip',
     stableJar: 'https://github.com/Grasscutters/Grasscutter/releases/download/v1.1.0/grasscutter-1.1.0.jar',
     devJar: null,
@@ -66,7 +66,7 @@ export async function cacheLauncherResources() {
     return null
   }
 
-  const selectedVersion = config.client_version
+  const selectedVersion = config.client_version || versions.data.game.latest.version
   const selectedVersionData = globals[selectedVersion]
 
   if (!selectedVersionData) {

@@ -119,10 +119,13 @@ async function readConfigFile() {
       contents: JSON.stringify(defaultConfig)
     }
 
-    await fs.writeFile(file)
+    // Also just shoe-horning this in, cache resources on first launch
+    const versionData = await cacheLauncherResources()
 
-    // ALso just shoe-horning this in, cache resources on first launch
-    await cacheLauncherResources()
+    defaultConfig.client_version = versionData?.game || ''
+
+    // Write config
+    await fs.writeFile(file)
   }
 
   // Finally, read the file 
