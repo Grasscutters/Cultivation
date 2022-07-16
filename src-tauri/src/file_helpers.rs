@@ -1,6 +1,6 @@
 use std::fs;
 use file_diff::diff;
-use std::{fs, io::{Read, Write}};
+use std::{io::{Read, Write}};
 
 #[tauri::command]
 pub fn rename(path: String, new_name: String) {
@@ -99,6 +99,7 @@ pub fn delete_file(path: String) -> bool {
   false
 }
 
+#[tauri::command]
 pub fn read_file(path: String) -> String {
   let mut file = match fs::File::open(path) {
     Ok(file) => file,
