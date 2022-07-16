@@ -15,7 +15,7 @@
     "disabled": "Disabled",
     "game_exec": "Set Game Executable",
     "game_version": "Set Game Version",
-    "emergency_metadata": "Emergency Metadata Replacement",
+    "emergency_metadata": "Emergency Metadata Restore",
     "grasscutter_jar": "Set Grasscutter JAR",
     "toggle_encryption": "Toggle Encryption",
     "java_path": "Set Custom Java Path",

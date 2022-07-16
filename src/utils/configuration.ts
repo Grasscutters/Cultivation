@@ -1,5 +1,6 @@
 import { fs } from '@tauri-apps/api'
 import { dataDir } from '@tauri-apps/api/path'
+import { cacheLauncherResources } from './resources'
 
 let configFilePath: string
 let defaultConfig: Configuration
@@ -119,6 +120,9 @@ async function readConfigFile() {
     }
 
     await fs.writeFile(file)
+
+    // ALso just shoe-horning this in, cache resources on first launch
+    await cacheLauncherResources()
   }
 
   // Finally, read the file 
