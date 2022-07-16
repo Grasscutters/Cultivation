@@ -49,6 +49,8 @@ fn main() {
       file_helpers::copy_file_with_new_name,
       file_helpers::delete_file,
       file_helpers::are_files_identical,
+      file_helpers::read_file,
+      file_helpers::write_file,
       downloader::download_file,
       downloader::stop_download,
       lang::get_lang,

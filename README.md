@@ -1,19 +1,11 @@
-# NOTICE
-Yes! The Cultivation repository is **open**. This does **not** mean it has released.\
-Cultivation will be releasing at some point after opening this repo.
-
-**This also means you will not be provided explicit support for Cultivation.**\
-Consider Cultivation to be the bleeding-edge version of GrassClipper.
-
-During this open-beta testing period, **helpful issues are appreciated**, while unhelpful ones will be closed.
-
-## Fair Warning
-Cultivation is **VERY MUCH IN BETA**.
-There are **no official releases of Cultivation**. You are **required** to build the application from **scratch** unless you want to deal with the alpha state of the current builds.
-Please do **NOT install, download, or use pre-compiled versions of Cultivation found elsewhere**. Only use releases from this GitHub repository.
+# Cient Patching Notice
+For game versions 2.8 and above, Cultivation automatically makes a small patch to your game client when launching using Grasscutter, and restores it upon closing the game. In theory, you should still be totally safe, however it would be dishonest to not explicitly state that **modifying the game client could, theoretically, lead to a ban if you connect to official servers with it**. It is extremely unlikely AND there are no instances known of it happening, but the possibility exists.
 
 # Cultivation
 A game launcher designed to easily proxy traffic from anime game to private servers.
+
+While the Cultivation repository is **open**. This does **not** mean it has released.
+Please do **NOT install, download, or use pre-compiled versions of Cultivation found elsewhere**. Only use releases from this GitHub repository.
 
 # Table Of Contents
 * [Download](#download)
