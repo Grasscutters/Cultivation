@@ -82,15 +82,13 @@ fn decrypt_metadata(file_path: &str) -> Vec<u8> {
   match dll_decrypt_global_metadata(data.as_mut_ptr(), data.len().try_into().unwrap()) {
     Ok(_) => {
       println!("Successfully decrypted global-metadata");
-      data
+      return data;
     }
     Err(e) => {
       println!("Failed to decrypt global-metadata: {}", e);
-      Vec::new()
+      return Vec::new();
     }
   };
-  
-  Vec::new()
 }
 
 fn replace_keys(data: &[u8]) -> Vec<u8> {
@@ -145,15 +143,13 @@ fn encrypt_metadata(old_data: &[u8]) -> Vec<u8> {
   match dll_encrypt_global_metadata(data.as_mut_ptr(), data.len().try_into().unwrap()) {
     Ok(_) => {
       println!("Successfully encrypted global-metadata");
-      data
+      return data;
     }
     Err(e) => {
       println!("Failed to encrypt global-metadata: {}", e);
-      Vec::new()
+      return Vec::new();
     }
   };
-
-  Vec::new()
 }
 
 fn do_vecs_match<T: PartialEq>(a: &Vec<T>, b: &Vec<T>) -> bool {
