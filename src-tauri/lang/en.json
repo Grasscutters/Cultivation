@@ -13,7 +13,9 @@
   "options": {
     "enabled": "Enabled",
     "disabled": "Disabled",
-    "game_exec": "Set Game Executable",
+    "game_path": "Set Game Install Path",
+    "game_executable": "Set Game Executable",
+    "recover_metadata": "Emergency Metadata Recovery",
     "grasscutter_jar": "Set Grasscutter JAR",
     "toggle_encryption": "Toggle Encryption",
     "install_certificate": "Install Proxy Certificate",
@@ -32,7 +34,8 @@
     "grasscutter_latest": "Download Grasscutter Latest",
     "grasscutter_stable_update": "Update Grasscutter Stable",
     "grasscutter_latest_update": "Update Grasscutter Latest",
-    "resources": "Download Grasscutter Resources"
+    "resources": "Download Grasscutter Resources",
+    "game": "Download Game"
   },
   "download_status": {
     "downloading": "Downloading",

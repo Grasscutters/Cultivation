@@ -1,4 +1,6 @@
-use std::{fs, io::{Read, Write}};
+use std::fs;
+use file_diff::diff;
+use std::{io::{Read, Write}};
 
 #[tauri::command]
 pub fn rename(path: String, new_name: String) {
@@ -35,6 +37,11 @@ pub fn dir_delete(path: &str) {
 }
 
 #[tauri::command]
+pub fn are_files_identical(path1: &str, path2: &str) -> bool {
+  diff(path1, path2)
+}
+
+#[tauri::command]
 pub fn copy_file(path: String, new_path: String) -> bool {
   let filename = &path.split('/').last().unwrap();
   let mut new_path_buf = std::path::PathBuf::from(&new_path);
@@ -52,6 +59,44 @@ pub fn copy_file(path: String, new_path: String) -> bool {
       false
     }
   }
+}
+
+#[tauri::command]
+pub fn copy_file_with_new_name(path: String, new_path: String, new_name: String) -> bool {
+  let mut new_path_buf = std::path::PathBuf::from(&new_path);
+
+  // If the new path doesn't exist, create it.
+  if !dir_exists(new_path_buf.pop().to_string().as_str()) {
+    match std::fs::create_dir_all(&new_path) {
+      Ok(_) => {}
+      Err(e) => {
+        println!("Failed to create directory: {}", e);
+        return false;
+      }
+    };
+  }
+
+  // Copy old to new
+  match std::fs::copy(&path, format!("{}/{}", new_path, new_name)) {
+    Ok(_) => true,
+    Err(e) => {
+      println!("Failed to copy file: {}", e);
+      false
+    }
+  }
+}
+
+#[tauri::command]
+pub fn delete_file(path: String) -> bool {
+  match std::fs::remove_file(path) {
+    Ok(_) => true,
+    Err(e) => {
+      println!("Failed to delete file: {}", e);
+      false
+    }
+  };
+
+  false
 }
 
 #[tauri::command]

@@ -13,7 +13,7 @@
   "options": {
     "enabled": "已啟用",
     "disabled": "未啟用",
-    "game_exec": "選擇遊戲執行檔",
+    "game_executable": "選擇遊戲執行檔",
     "grasscutter_jar": "選擇伺服器JAR檔案",
     "toggle_encryption": "設定加密",
     "java_path": "設定自定義Java路徑",

@@ -13,7 +13,7 @@
   "options": {
     "enabled": "Iespējots",
     "disabled": "Atspējots",
-    "game_exec": "Iestatīt spēles izpildāmu",
+    "game_executable": "Iestatīt spēles izpildāmu",
     "grasscutter_jar": "Iestatiet Grasscutter JAR",
     "toggle_encryption": "Pārslēgt Šifrēšanu",
     "java_path": "Iestatiet pielāgotu Java ceļu",

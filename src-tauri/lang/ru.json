@@ -13,7 +13,7 @@
   "options": {
     "enabled": "Включено",
     "disabled": "Выключено",
-    "game_exec": "Установить исполняемый файл игры",
+    "game_executable": "Установить исполняемый файл игры",
     "grasscutter_jar": "Установить Grasscutter JAR",
     "toggle_encryption": "Переключить шифрование",
     "java_path": "Установить пользовательский путь Java",

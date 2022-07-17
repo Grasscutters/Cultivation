@@ -13,7 +13,7 @@
     "options": {
       "enabled": "Aktiviert",
       "disabled": "Deaktiviert",
-      "game_exec": "Spiel Datei auswählen",
+      "game_executable": "Spiel Datei auswählen",
       "grasscutter_jar": "Grasscuter JAR auswählen",
       "toggle_encryption": "Verschlüsselung umschalten",
       "java_path": "Benutzerdefinierten Java Pfad setzen",

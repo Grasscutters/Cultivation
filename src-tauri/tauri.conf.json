@@ -55,7 +55,9 @@
         "signingIdentity": null
       },
       "resources": [
-        "lang/*.json"
+        "lang/*.json",
+        "keys/*",
+        "./mhycrypto.dll"
       ],
       "targets": "all",
       "windows": {

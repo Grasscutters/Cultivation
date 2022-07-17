@@ -12,9 +12,12 @@ import * as server from '../../../utils/server'
 
 import './Options.css'
 import BigButton from '../common/BigButton'
+import DownloadHandler from '../../../utils/download'
+import * as meta from '../../../utils/metadata'
 
 interface IProps {
   closeFn: () => void;
+  downloadManager: DownloadHandler;
 }
 
 interface IState {
@@ -55,19 +58,20 @@ export default class Options extends React.Component<IProps, IState> {
       akebi_path: '',
     }
 
-    this.setGameExec = this.setGameExec.bind(this)
+    this.setGameExecutable = this.setGameExecutable.bind(this)
     this.setGrasscutterJar = this.setGrasscutterJar.bind(this)
     this.setJavaPath = this.setJavaPath.bind(this)
     this.setAkebi = this.setAkebi.bind(this)
     this.toggleGrasscutterWithGame = this.toggleGrasscutterWithGame.bind(this)
     this.setCustomBackground = this.setCustomBackground.bind(this)
     this.toggleEncryption = this.toggleEncryption.bind(this)
+    this.restoreMetadata = this.restoreMetadata.bind(this)
   }
 
   async componentDidMount() {
     const config = await getConfig()
     const languages = await getLanguages()
-    
+
     // Remove jar from path
     const path = config.grasscutter_path.replace(/\\/g, '/')
     const folderPath = path.substring(0, path.lastIndexOf('/'))
@@ -81,7 +85,7 @@ export default class Options extends React.Component<IProps, IState> {
       language_options: languages,
       current_language: config.language || 'en',
       bg_url_or_path: config.customBackground || '',
-      themes: (await getThemeList()).map(t => t.name),
+      themes: (await getThemeList()).map((t) => t.name),
       theme: config.theme || 'default',
       encryption: await translate(encEnabled ? 'options.enabled' : 'options.disabled'),
       swag: config.swag_mode || false,
@@ -93,11 +97,11 @@ export default class Options extends React.Component<IProps, IState> {
     this.forceUpdate()
   }
 
-  setGameExec(value: string) {
+  setGameExecutable(value: string) {
     setConfigOption('game_install_path', value)
 
     this.setState({
-      game_install_path: value
+      game_install_path: value,
     })
   }
 
@@ -105,7 +109,7 @@ export default class Options extends React.Component<IProps, IState> {
     setConfigOption('grasscutter_path', value)
 
     this.setState({
-      grasscutter_path: value
+      grasscutter_path: value,
     })
   }
 
@@ -113,7 +117,7 @@ export default class Options extends React.Component<IProps, IState> {
     setConfigOption('java_path', value)
 
     this.setState({
-      java_path: value
+      java_path: value,
     })
   }
 
@@ -140,7 +144,7 @@ export default class Options extends React.Component<IProps, IState> {
     setConfigOption('grasscutter_with_game', changedVal)
 
     this.setState({
-      grasscutter_with_game: changedVal
+      grasscutter_with_game: changedVal,
     })
   }
 
@@ -151,16 +155,16 @@ export default class Options extends React.Component<IProps, IState> {
 
     if (!isUrl) {
       const filename = value.replace(/\\/g, '/').split('/').pop()
-      const localBgPath = (await dataDir() as string).replace(/\\/g, '/')
-  
+      const localBgPath = ((await dataDir()) as string).replace(/\\/g, '/')
+
       await setConfigOption('customBackground', `${localBgPath}/cultivation/bg/${filename}`)
-  
+
       // Copy the file over to the local directory
       await invoke('copy_file', {
         path: value.replace(/\\/g, '/'),
-        newPath: `${localBgPath}cultivation/bg/`
+        newPath: `${localBgPath}cultivation/bg/`,
       })
-  
+
       window.location.reload()
     } else {
       await setConfigOption('customBackground', value)
@@ -184,10 +188,17 @@ export default class Options extends React.Component<IProps, IState> {
     await server.toggleEncryption(folderPath + '/config.json')
 
     this.setState({
-      encryption: await translate(await server.encryptionEnabled(folderPath + '/config.json') ? 'options.enabled' : 'options.disabled')
+      encryption: await translate(
+        (await server.encryptionEnabled(folderPath + '/config.json')) ? 'options.enabled' : 'options.disabled'
+      ),
     })
   }
 
+  async restoreMetadata() {
+    console.log(this.props)
+    await meta.restoreMetadata(this.props.downloadManager)
+  }
+  
   async installCert() {
     await invoke('generate_ca_files', {
       path: await dataDir() + 'cultivation'
@@ -197,31 +208,39 @@ export default class Options extends React.Component<IProps, IState> {
   render() {
     return (
       <Menu closeFn={this.props.closeFn} className="Options" heading="Options">
-        <div className='OptionSection' id="menuOptionsContainerGameExec">
-          <div className='OptionLabel' id="menuOptionsLabelGameExec">
-            <Tr text="options.game_exec" />
+        <div className="OptionSection" id="menuOptionsContainerGamePath">
+          <div className="OptionLabel" id="menuOptionsLabelGamePath">
+            <Tr text="options.game_path" />
           </div>
-          <div className='OptionValue' id="menuOptionsDirGameExec">
-            <DirInput onChange={this.setGameExec} value={this.state?.game_install_path} extensions={['exe']} />
+          <div className="OptionValue" id="menuOptionsDirGamePath">
+            <DirInput onChange={this.setGameExecutable} value={this.state?.game_install_path} extensions={['exe']} />
+          </div>
+        </div>
+        <div className="OptionSection" id="menuOptionsContainermetaDownload">
+          <div className="OptionLabel" id="menuOptionsLabelmetaDownload">
+            <Tr text="options.recover_metadata" />
+          </div>
+          <div className="OptionValue" id="menuOptionsButtonmetaDownload">
+            <BigButton onClick={this.restoreMetadata} id="metaDownload">
+              <Tr text='components.download' />
+            </BigButton>
           </div>
         </div>
         <div className='OptionSection' id="menuOptionsContainerGCJar">
           <div className='OptionLabel' id="menuOptionsLabelGCJar">
             <Tr text="options.grasscutter_jar" />
           </div>
-          <div className='OptionValue' id="menuOptionsDirGCJar">
+          <div className="OptionValue" id="menuOptionsDirGCJar">
             <DirInput onChange={this.setGrasscutterJar} value={this.state?.grasscutter_path} extensions={['jar']} />
           </div>
         </div>
-        <div className='OptionSection' id="menuOptionsContainerToggleEnc">
-          <div className='OptionLabel' id="menuOptionsLabelToggleEnc">
+        <div className="OptionSection" id="menuOptionsContainerToggleEnc">
+          <div className="OptionLabel" id="menuOptionsLabelToggleEnc">
             <Tr text="options.toggle_encryption" />
           </div>
-          <div className='OptionValue' id="menuOptionsButtonToggleEnc">
-            <BigButton disabled={this.state.grasscutter_path === ''} onClick={this.toggleEncryption} id="toggleEnc">
-              {
-                this.state.encryption
-              }
+          <div className="OptionValue" id="menuOptionsButtonToggleEnc">
+            <BigButton onClick={this.toggleEncryption} id="toggleEnc">
+              {this.state.encryption}
             </BigButton>
           </div>
         </div>
@@ -252,31 +271,36 @@ export default class Options extends React.Component<IProps, IState> {
         }
 
         <Divider />
-        
-        <div className='OptionSection' id="menuOptionsContainerGCWGame">
-          <div className='OptionLabel' id="menuOptionsLabelGCWDame">
+
+        <div className="OptionSection" id="menuOptionsContainerGCWGame">
+          <div className="OptionLabel" id="menuOptionsLabelGCWDame">
             <Tr text="options.grasscutter_with_game" />
           </div>
-          <div className='OptionValue' id="menuOptionsCheckboxGCWGame">
-            <Checkbox onChange={this.toggleGrasscutterWithGame} checked={this.state?.grasscutter_with_game} id="gcWithGame" />
+          <div className="OptionValue" id="menuOptionsCheckboxGCWGame">
+            <Checkbox
+              onChange={this.toggleGrasscutterWithGame}
+              checked={this.state?.grasscutter_with_game}
+              id="gcWithGame"
+            />
           </div>
         </div>
 
         <Divider />
 
-        <div className='OptionSection' id="menuOptionsContainerThemes">
-          <div className='OptionLabel' id="menuOptionsLabelThemes">
+        <div className="OptionSection" id="menuOptionsContainerThemes">
+          <div className="OptionLabel" id="menuOptionsLabelThemes">
             <Tr text="options.theme" />
           </div>
-          <div className='OptionValue' id="menuOptionsSelectThemes">
-            <select value={this.state.theme} id="menuOptionsSelectMenuThemes" onChange={(event) => {
-              this.setTheme(event.target.value)
-            }}>
-              {this.state.themes.map(t => (
-                <option
-                  key={t}
-                  value={t}>
-
+          <div className="OptionValue" id="menuOptionsSelectThemes">
+            <select
+              value={this.state.theme}
+              id="menuOptionsSelectMenuThemes"
+              onChange={(event) => {
+                this.setTheme(event.target.value)
+              }}
+            >
+              {this.state.themes.map((t) => (
+                <option key={t} value={t}>
                   {t}
                 </option>
               ))}
@@ -286,20 +310,20 @@ export default class Options extends React.Component<IProps, IState> {
 
         <Divider />
 
-        <div className='OptionSection' id="menuOptionsContainerJavaPath">
-          <div className='OptionLabel' id="menuOptionsLabelJavaPath">
+        <div className="OptionSection" id="menuOptionsContainerJavaPath">
+          <div className="OptionLabel" id="menuOptionsLabelJavaPath">
             <Tr text="options.java_path" />
           </div>
-          <div className='OptionValue' id="menuOptionsDirJavaPath">
+          <div className="OptionValue" id="menuOptionsDirJavaPath">
             <DirInput onChange={this.setJavaPath} value={this.state?.java_path} extensions={['exe']} />
           </div>
         </div>
 
-        <div className='OptionSection' id="menuOptionsContainerBG">
-          <div className='OptionLabel' id="menuOptionsLabelBG">
+        <div className="OptionSection" id="menuOptionsContainerBG">
+          <div className="OptionLabel" id="menuOptionsLabelBG">
             <Tr text="options.background" />
           </div>
-          <div className='OptionValue' id="menuOptionsDirBG">
+          <div className="OptionValue" id="menuOptionsDirBG">
             <DirInput
               onChange={this.setCustomBackground}
               value={this.state?.bg_url_or_path}
@@ -314,19 +338,20 @@ export default class Options extends React.Component<IProps, IState> {
           </div>
         </div>
 
-        <div className='OptionSection' id="menuOptionsContainerLang">
-          <div className='OptionLabel' id="menuOptionsLabelLang">
+        <div className="OptionSection" id="menuOptionsContainerLang">
+          <div className="OptionLabel" id="menuOptionsLabelLang">
             <Tr text="options.language" />
           </div>
-          <div className='OptionValue' id="menuOptionsSelectLang">
-            <select value={this.state.current_language} id="menuOptionsSelectMenuLang" onChange={(event) => {
-              this.setLanguage(event.target.value)
-            }}>
-              {this.state.language_options.map(lang => (
-                <option
-                  key={Object.keys(lang)[0]}
-                  value={Object.keys(lang)[0]}>
-
+          <div className="OptionValue" id="menuOptionsSelectLang">
+            <select
+              value={this.state.current_language}
+              id="menuOptionsSelectMenuLang"
+              onChange={(event) => {
+                this.setLanguage(event.target.value)
+              }}
+            >
+              {this.state.language_options.map((lang) => (
+                <option key={Object.keys(lang)[0]} value={Object.keys(lang)[0]}>
                   {lang[Object.keys(lang)[0]]}
                 </option>
               ))}

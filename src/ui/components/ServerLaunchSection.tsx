@@ -12,6 +12,8 @@ import Akebi from '../../resources/icons/akebi.svg'
 
 import './ServerLaunchSection.css'
 import {dataDir} from '@tauri-apps/api/path'
+import { getGameExecutable } from '../../utils/game'
+import { patchGame, unpatchGame } from '../../utils/metadata'
 
 interface IState {
   grasscutterEnabled: boolean;
@@ -90,18 +92,22 @@ export default class ServerLaunchSection extends React.Component<{}, IState> {
 
   async playGame(exe?: string, proc_name?: string) {
     const config = await getConfig()
-  
-    if (!config.game_install_path) return alert('Game path not set!')
+
+    if(!await getGameExecutable()) {
+      alert('Game executable not set!')
+      return 
+    }
     
     // Connect to proxy
     if (config.toggle_grasscutter) {
-      let game_exe = config.game_install_path
+      const patched = await patchGame()
 
-      if (game_exe.includes('\\')) {
-        game_exe = game_exe.substring(config.game_install_path.lastIndexOf('\\') + 1)
-      } else {
-        game_exe = game_exe.substring(config.game_install_path.lastIndexOf('/') + 1)
+      if (!patched) {
+        alert('Could not patch game!')
+        return
       }
+
+      const game_exe = await getGameExecutable()
 
       // Save last connected server and port
       await setConfigOption('last_ip', this.state.ip)
@@ -118,19 +124,23 @@ export default class ServerLaunchSection extends React.Component<{}, IState> {
 
       // Open server as well if the options are set
       if (config.grasscutter_with_game) {
-        let jarFolder = config.grasscutter_path
+        const jarFolderArr = config.grasscutter_path.replace(/\\/g, '/').split('/')
+        jarFolderArr.pop()
 
-        if (jarFolder.includes('/')) {
-          jarFolder = jarFolder.substring(0, config.grasscutter_path.lastIndexOf('/'))
-        } else {
-          jarFolder = jarFolder.substring(0, config.grasscutter_path.lastIndexOf('\\'))
-        }
+        const jarFolder = jarFolderArr.join('/')
 
         await invoke('run_jar', {
           path: config.grasscutter_path,
           executeIn: jarFolder,
           javaPath: config.java_path || ''
         })
+      }
+    } else {
+      const unpatched = await unpatchGame()
+
+      if (!unpatched) {
+        alert(`Could not unpatch game, aborting launch! (You can find your metadata backup in ${await dataDir()}\\cultivation\\)`)
+        return
       }
     }
   

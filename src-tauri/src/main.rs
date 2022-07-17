@@ -18,6 +18,7 @@ mod structs;
 mod system_helpers;
 mod unzip;
 mod web;
+mod metadata_patcher;
 
 static WATCH_GAME_PROCESS: Lazy<Mutex<String>> = Lazy::new(|| Mutex::new(String::new()));
 
@@ -45,13 +46,18 @@ fn main() {
       file_helpers::dir_is_empty,
       file_helpers::dir_delete,
       file_helpers::copy_file,
+      file_helpers::copy_file_with_new_name,
+      file_helpers::delete_file,
+      file_helpers::are_files_identical,
       file_helpers::read_file,
       file_helpers::write_file,
       downloader::download_file,
       downloader::stop_download,
       lang::get_lang,
       lang::get_languages,
-      web::valid_url
+      web::valid_url,
+      web::web_get,
+      metadata_patcher::patch_metadata
     ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
@@ -98,6 +104,7 @@ fn enable_process_watcher(window: tauri::Window,process: String) {
           *WATCH_GAME_PROCESS.lock().unwrap() = "".to_string();
           disconnect();
 
+          window.emit("game_closed", &()).unwrap();
           break;
         }
       }

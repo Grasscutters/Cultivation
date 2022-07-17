@@ -1697,15 +1697,15 @@
   resolved "https://registry.npmjs.org/@tauri-apps/cli/-/cli-1.0.0-rc.13.tgz"
   integrity sha512-q7i45Mi1SMv5XllNoX09QS4Q/fYVFwD6piVYmqMSrKY/T5RwedQhytiVH60TxC2xk6o0akVHa7BdYiyJvXNR8A==
   optionalDependencies:
-    "@tauri-apps/cli-darwin-arm64" "1.0.0-rc.13"
-    "@tauri-apps/cli-darwin-x64" "1.0.0-rc.13"
-    "@tauri-apps/cli-linux-arm-gnueabihf" "1.0.0-rc.13"
-    "@tauri-apps/cli-linux-arm64-gnu" "1.0.0-rc.13"
-    "@tauri-apps/cli-linux-arm64-musl" "1.0.0-rc.13"
-    "@tauri-apps/cli-linux-x64-gnu" "1.0.0-rc.13"
-    "@tauri-apps/cli-linux-x64-musl" "1.0.0-rc.13"
-    "@tauri-apps/cli-win32-ia32-msvc" "1.0.0-rc.13"
-    "@tauri-apps/cli-win32-x64-msvc" "1.0.0-rc.13"
+    "@tauri-apps/cli-darwin-arm64" "1.0.0-rc.12"
+    "@tauri-apps/cli-darwin-x64" "1.0.0-rc.12"
+    "@tauri-apps/cli-linux-arm-gnueabihf" "1.0.0-rc.12"
+    "@tauri-apps/cli-linux-arm64-gnu" "1.0.0-rc.12"
+    "@tauri-apps/cli-linux-arm64-musl" "1.0.0-rc.12"
+    "@tauri-apps/cli-linux-x64-gnu" "1.0.0-rc.12"
+    "@tauri-apps/cli-linux-x64-musl" "1.0.0-rc.12"
+    "@tauri-apps/cli-win32-ia32-msvc" "1.0.0-rc.12"
+    "@tauri-apps/cli-win32-x64-msvc" "1.0.0-rc.12"
 
 "@testing-library/dom@^8.5.0":
   version "8.14.0"

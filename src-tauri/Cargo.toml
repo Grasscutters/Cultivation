@@ -13,6 +13,7 @@ rust-version = "1.57"
 
 [build-dependencies]
 tauri-build = { version = "1.0.0-rc.8", features = [] }
+cc = "1.0"
 
 [target.'cfg(windows)'.dependencies]
 is_elevated = "0.1.2"
@@ -53,6 +54,13 @@ rustls-pemfile = "1.0.0"
 reqwest = { version = "0.11.3", features = ["stream"] }
 futures-util = "0.3.14"
 rcgen = { version = "0.9", features = ["x509-parser"] }
+
+# metadata stuff
+libloading = "0.7"
+regex = "1"
+
+# other
+file_diff = "1.0.0"
 
 [features]
 # by default Tauri runs in production mode
