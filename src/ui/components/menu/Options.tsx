@@ -198,6 +198,12 @@ export default class Options extends React.Component<IProps, IState> {
     console.log(this.props)
     await meta.restoreMetadata(this.props.downloadManager)
   }
+  
+  async installCert() {
+    await invoke('generate_ca_files', {
+      path: await dataDir() + 'cultivation'
+    })
+  }
 
   render() {
     return (
@@ -220,18 +226,6 @@ export default class Options extends React.Component<IProps, IState> {
             </BigButton>
           </div>
         </div>
-        {
-          this.state.swag && (
-            <div className='OptionSection' id="menuOptionsContainerAkebi">
-              <div className='OptionLabel' id="menuOptionsLabelAkebi">
-                <Tr text="swag.akebi" />
-              </div>
-              <div className='OptionValue' id="menuOptionsDirAkebi">
-                <DirInput onChange={this.setAkebi} value={this.state?.akebi_path} extensions={['exe']} />
-              </div>
-            </div>
-          )
-        }
         <div className='OptionSection' id="menuOptionsContainerGCJar">
           <div className='OptionLabel' id="menuOptionsLabelGCJar">
             <Tr text="options.grasscutter_jar" />
@@ -250,6 +244,31 @@ export default class Options extends React.Component<IProps, IState> {
             </BigButton>
           </div>
         </div>
+        <div className='OptionSection' id="menuOptionsContainerInstallCert">
+          <div className='OptionLabel' id="menuOptionsLabelInstallCert">
+            <Tr text="options.install_certificate" />
+          </div>
+          <div className='OptionValue' id="menuOptionsButtonInstallCert">
+            <BigButton disabled={false} onClick={this.installCert} id="installCert">
+              <Tr text="components.install" />
+            </BigButton>
+          </div>
+        </div>
+        {
+          this.state.swag && (
+            <>
+              <Divider />
+              <div className='OptionSection' id="menuOptionsContainerAkebi">
+                <div className='OptionLabel' id="menuOptionsLabelAkebi">
+                  <Tr text="swag.akebi" />
+                </div>
+                <div className='OptionValue' id="menuOptionsDirAkebi">
+                  <DirInput onChange={this.setAkebi} value={this.state?.akebi_path} extensions={['exe']} />
+                </div>
+              </div>
+            </>
+          )
+        }
 
         <Divider />
 

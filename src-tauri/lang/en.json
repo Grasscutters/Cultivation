@@ -18,6 +18,7 @@
     "recover_metadata": "Emergency Metadata Recovery",
     "grasscutter_jar": "Set Grasscutter JAR",
     "toggle_encryption": "Toggle Encryption",
+    "install_certificate": "Install Proxy Certificate",
     "java_path": "Set Custom Java Path",
     "grasscutter_with_game": "Automatically launch Grasscutter with game",
     "language": "Select Language",
@@ -46,7 +47,8 @@
   "components": {
     "select_file": "Select file or folder...",
     "select_folder": "Select folder...",
-    "download": "Download"
+    "download": "Download",
+    "install": "Install"
   },
   "news": {
     "latest_commits": "Recent Commits",
