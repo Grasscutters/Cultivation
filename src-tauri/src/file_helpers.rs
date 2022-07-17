@@ -23,17 +23,20 @@ pub fn rename(path: String, new_name: String) {
 
 #[tauri::command]
 pub fn dir_exists(path: &str) -> bool {
-  fs::metadata(&path).is_ok()
+  let path_buf = std::path::PathBuf::from(path);
+  fs::metadata(path_buf).is_ok()
 }
 
 #[tauri::command]
 pub fn dir_is_empty(path: &str) -> bool {
-  fs::read_dir(&path).unwrap().count() == 0
+  let path_buf = std::path::PathBuf::from(path);
+  fs::read_dir(path_buf).unwrap().count() == 0
 }
 
 #[tauri::command]
 pub fn dir_delete(path: &str) {
-  fs::remove_dir_all(path).unwrap();
+  let path_buf = std::path::PathBuf::from(path);
+  fs::remove_dir_all(path_buf).unwrap();
 }
 
 #[tauri::command]
@@ -90,7 +93,9 @@ pub fn copy_file_with_new_name(path: String, new_path: String, new_name: String)
 
 #[tauri::command]
 pub fn delete_file(path: String) -> bool {
-  match std::fs::remove_file(path) {
+  let path_buf = std::path::PathBuf::from(&path);
+
+  match std::fs::remove_file(path_buf) {
     Ok(_) => true,
     Err(e) => {
       println!("Failed to delete file: {}", e);
@@ -103,7 +108,9 @@ pub fn delete_file(path: String) -> bool {
 
 #[tauri::command]
 pub fn read_file(path: String) -> String {
-  let mut file = match fs::File::open(path) {
+  let path_buf = std::path::PathBuf::from(&path);
+
+  let mut file = match fs::File::open(path_buf) {
     Ok(file) => file,
     Err(e) => {
       println!("Failed to open file: {}", e);
@@ -119,14 +126,16 @@ pub fn read_file(path: String) -> String {
 
 #[tauri::command]
 pub fn write_file(path: String, contents: String) {
+  let path_buf = std::path::PathBuf::from(&path);
+
   // Create file if it exists, otherwise just open and rewrite
-  let mut file = match fs::File::open(&path) {
+  let mut file = match fs::File::open(&path_buf) {
     Ok(file) => file,
     Err(e) => {
       println!("Failed to open file: {}", e);
       
       // attempt to create file. otherwise return
-      match fs::File::create(&path) {
+      match fs::File::create(&path_buf) {
         Ok(file) => file,
         Err(e) => {
           println!("Failed to create file: {}", e);
