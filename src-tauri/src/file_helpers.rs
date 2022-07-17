@@ -60,6 +60,8 @@ pub fn copy_file(path: String, new_path: String) -> bool {
     Ok(_) => true,
     Err(e) => {
       println!("Failed to copy file: {}", e);
+      println!("Path: {}", path);
+      println!("New Path: {}", new_path);
       false
     }
   }
@@ -86,6 +88,8 @@ pub fn copy_file_with_new_name(path: String, new_path: String, new_name: String)
     Ok(_) => true,
     Err(e) => {
       println!("Failed to copy file: {}", e);
+      println!("Path: {}", path);
+      println!("New Path: {}", new_path);
       false
     }
   }
