@@ -45,6 +45,7 @@ pub fn are_files_identical(path1: &str, path2: &str) -> bool {
 pub fn copy_file(path: String, new_path: String) -> bool {
   let filename = &path.split('/').last().unwrap();
   let mut new_path_buf = std::path::PathBuf::from(&new_path);
+  let path_buf = std::path::PathBuf::from(&path);
 
   // If the new path doesn't exist, create it.
   if !dir_exists(new_path_buf.pop().to_string().as_str()) {
@@ -52,7 +53,7 @@ pub fn copy_file(path: String, new_path: String) -> bool {
   }
 
   // Copy old to new
-  match std::fs::copy(&path, format!("{}/{}", new_path, filename)) {
+  match std::fs::copy(&path_buf, format!("{}/{}", new_path, filename)) {
     Ok(_) => true,
     Err(e) => {
       println!("Failed to copy file: {}", e);
@@ -64,6 +65,7 @@ pub fn copy_file(path: String, new_path: String) -> bool {
 #[tauri::command]
 pub fn copy_file_with_new_name(path: String, new_path: String, new_name: String) -> bool {
   let mut new_path_buf = std::path::PathBuf::from(&new_path);
+  let path_buf = std::path::PathBuf::from(&path);
 
   // If the new path doesn't exist, create it.
   if !dir_exists(new_path_buf.pop().to_string().as_str()) {
@@ -77,7 +79,7 @@ pub fn copy_file_with_new_name(path: String, new_path: String, new_name: String)
   }
 
   // Copy old to new
-  match std::fs::copy(&path, format!("{}/{}", new_path, new_name)) {
+  match std::fs::copy(&path_buf, format!("{}/{}", new_path, new_name)) {
     Ok(_) => true,
     Err(e) => {
       println!("Failed to copy file: {}", e);
