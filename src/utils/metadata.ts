@@ -70,6 +70,20 @@ export async function patchGame() {
     }
   }
 
+  // Do we have a patch already?
+  const patchedExists = await invoke('dir_exists', {
+    path: await getGameMetadataPath() + '\\global-metadata-patched.dat'
+  })
+
+  if (!patchedExists) {
+    // No patch found? Patching creates one
+    const patched = await patchMetadata()
+
+    if (!patched) {
+      return false
+    }
+  } 
+
   // Are we already patched? If so, that's fine, just continue as normal
   const gameIsPatched = await invoke('are_files_identical', {
     path1: await getBackupMetadataPath() + '\\global-metadata-patched.dat',
@@ -142,22 +156,6 @@ export async function unpatchGame() {
     return true
   }
 
-  const metaPatched = await invoke('are_files_identical', {
-    path1: await getBackupMetadataPath() + '\\global-metadata-patched.dat',
-    path2: await getGameMetadataPath() + '\\global-metadata.dat'
-  })
-
-  const metaExists = await invoke('dir_exists', {
-    path: await getGameMetadataPath() + '\\global-metadata.dat'
-  })
-
-  if (!metaPatched && metaExists) {
-    // Game isn't patched
-    return true
-  }
-
-  console.log('Replacing patched game metadata with unpatched metadata')
-
   const replaced = await invoke('copy_file_with_new_name', {
     path: await getBackupMetadataPath() + '\\global-metadata-unpatched.dat', 
     newPath: await getGameMetadataPath(),
@@ -201,26 +199,27 @@ export async function globalMetadataLink() {
 }
 
 export async function restoreMetadata(manager: DownloadHandler) {
-  const backupExists = await invoke('dir_exists', {
+  const metaLink = await globalMetadataLink()
+
+  if (!metaLink) {
+    console.log('Could not get global metadata link!')
+    return false
+  }
+
+  // Should make sure metadata path exists since the user may have deleted it
+  await invoke('dir_create', {
+    path: await getBackupMetadataPath()
+  })
+
+  // It is possible the unpatched backup is mistakenly patched
+  await invoke('delete_file', {
     path: await getBackupMetadataPath() + '\\global-metadata-unpatched.dat'
   })
 
-  if (!backupExists) {
-    console.log('No backup found! Replacing with global metadata link')
-
-    const metaLink = await globalMetadataLink()
-
-    if (!metaLink) {
-      console.log('Coudl not get global metadata link!')
-      return false
-    }
-    
-    // Download the file
-    manager.addDownload(metaLink, await getBackupMetadataPath() + '\\global-metadata-unpatched.dat', () => {
-      unpatchGame()
-    })
-  }
-
+  // Download the file
+  manager.addDownload(metaLink, await getBackupMetadataPath() + '\\global-metadata-unpatched.dat', () => {
+    unpatchGame()
+  })
   console.log('Restoring backedup metadata')
 
   await unpatchGame()

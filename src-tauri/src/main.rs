@@ -42,6 +42,7 @@ fn main() {
       proxy::generate_ca_files,
       unzip::unzip,
       file_helpers::rename,
+      file_helpers::dir_create,
       file_helpers::dir_exists,
       file_helpers::dir_is_empty,
       file_helpers::dir_delete,

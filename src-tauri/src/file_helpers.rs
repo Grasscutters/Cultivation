@@ -22,6 +22,11 @@ pub fn rename(path: String, new_name: String) {
 }
 
 #[tauri::command]
+pub fn dir_create(path: String) {
+  fs::create_dir_all(path).unwrap();
+}
+
+#[tauri::command]
 pub fn dir_exists(path: &str) -> bool {
   let path_buf = std::path::PathBuf::from(path);
   fs::metadata(path_buf).is_ok()
