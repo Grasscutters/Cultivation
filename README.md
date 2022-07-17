@@ -61,4 +61,6 @@ A full theming reference can be found [here!](/THEMES.md)
 ## Credits
 * [SpikeHD](https://github.com/SpikeHD): For originally creating **GrassClipper** and creating the amazing UI of Cultivation.
 * [KingRainbow44](https://github.com/KingRainbow44): For building a proxy daemon from scratch and integrating it with Cultivation.
+* [BenJ](https://github.com/4Benj): For assistance in client patching.
+* [lilmayofuksu](https://github.com/lilmayofuksu): For assistance in client patching.
 * [Tauri](https://tauri.app): For providing an amazing, efficient, and simple desktop application framework/library.
