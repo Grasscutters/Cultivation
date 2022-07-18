@@ -138,7 +138,7 @@ pub fn write_file(path: String, contents: String) {
   let path_buf = std::path::PathBuf::from(&path);
 
   // Create file if it exists, otherwise just open and rewrite
-  let mut file = match fs::File::open(&path_buf) {
+  let mut file = match fs::File::options().write(true).truncate(true).open(&path_buf) {
     Ok(file) => file,
     Err(e) => {
       println!("Failed to open file: {}", e);
