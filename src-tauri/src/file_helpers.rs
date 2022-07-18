@@ -118,7 +118,7 @@ pub fn read_file(path: String) -> String {
 #[tauri::command]
 pub fn write_file(path: String, contents: String) {
   // Create file if it exists, otherwise just open and rewrite
-  let mut file = match fs::File::open(&path) {
+  let mut file = match fs::File::options().write(true).truncate(true).open(&path) {
     Ok(file) => file,
     Err(e) => {
       println!("Failed to open file: {}", e);
