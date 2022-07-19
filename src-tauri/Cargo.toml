@@ -37,7 +37,7 @@ zip = "0.6.2"
 once_cell = "1.13.0"
 
 # Program opener.
-open = "2.1.2"
+open = "3.0.2"
 duct = "0.13.5"
 
 # Serialization.

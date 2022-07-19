@@ -43,7 +43,7 @@ bool gen_global_metadata_key(uint8_t* src, size_t srcn) {
 
     uint64_t* key = (uint64_t*)src;
 
-    for (int i = 0; i < srcn / sizeof(uint64_t); i++)
+    for (size_t i = 0; i < srcn / sizeof(uint64_t); i++)
         key[i] = rand();
 
     *(uint16_t *) (src + 0xc8) = 0xfc2e; // Magic

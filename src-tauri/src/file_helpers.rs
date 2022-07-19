@@ -1,6 +1,6 @@
-use std::fs;
 use file_diff::diff;
-use std::{io::{Read, Write}};
+use std::fs;
+use std::io::{Read, Write};
 
 #[tauri::command]
 pub fn rename(path: String, new_name: String) {
@@ -142,7 +142,7 @@ pub fn write_file(path: String, contents: String) {
     Ok(file) => file,
     Err(e) => {
       println!("Failed to open file: {}", e);
-      
+
       // attempt to create file. otherwise return
       match fs::File::create(&path_buf) {
         Ok(file) => file,
@@ -159,7 +159,6 @@ pub fn write_file(path: String, contents: String) {
     Ok(_) => (),
     Err(e) => {
       println!("Failed to write to file: {}", e);
-      return;
     }
   }
 }
