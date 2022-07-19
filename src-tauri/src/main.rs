@@ -13,12 +13,12 @@ use sysinfo::{System, SystemExt};
 mod downloader;
 mod file_helpers;
 mod lang;
+mod metadata_patcher;
 mod proxy;
 mod structs;
 mod system_helpers;
 mod unzip;
 mod web;
-mod metadata_patcher;
 
 static WATCH_GAME_PROCESS: Lazy<Mutex<String>> = Lazy::new(|| Mutex::new(String::new()));
 
@@ -73,7 +73,7 @@ fn is_game_running() -> bool {
 }
 
 #[tauri::command]
-fn enable_process_watcher(window: tauri::Window,process: String) {
+fn enable_process_watcher(window: tauri::Window, process: String) {
   *WATCH_GAME_PROCESS.lock().unwrap() = process;
 
   window.listen("disable_process_watcher", |_e| {
