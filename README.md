@@ -49,8 +49,13 @@ For a debug build,
 
 ### Code Formatting and Linting
 
+Formatting:
+
 - `yarn format`
-- `yarn lint`
+
+Check Lints, fix (some) lints:
+
+- `yarn lint`, `yarn lint:fix`
 
 ### Generating Update Artifacts
 
