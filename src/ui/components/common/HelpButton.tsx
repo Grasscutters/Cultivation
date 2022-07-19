@@ -5,7 +5,7 @@ import Help from '../../../resources/icons/help.svg'
 import MiniDialog from '../MiniDialog'
 
 interface IProps {
-  children?: React.ReactNode[] | React.ReactNode;
+  children?: React.ReactNode[] | React.ReactNode
   contents?: string
   id?: string
 }
@@ -19,7 +19,7 @@ export default class HelpButton extends React.Component<IProps, IState> {
     super(props)
 
     this.state = {
-      opened: false
+      opened: false,
     }
 
     this.setOpen = this.setOpen.bind(this)
@@ -41,12 +41,13 @@ export default class HelpButton extends React.Component<IProps, IState> {
           <img src={Help} />
         </div>
 
-        <div className="HelpContents" style={{
-          display: this.state.opened ? 'block' : 'none'
-        }}>
-          <MiniDialog closeFn={this.setClosed}>
-            {this.props.contents || this.props.children}
-          </MiniDialog>
+        <div
+          className="HelpContents"
+          style={{
+            display: this.state.opened ? 'block' : 'none',
+          }}
+        >
+          <MiniDialog closeFn={this.setClosed}>{this.props.contents || this.props.children}</MiniDialog>
         </div>
       </div>
     )

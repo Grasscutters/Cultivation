@@ -12,14 +12,14 @@ import { unzip } from '../../../utils/zipUtils'
 const GAME_DOWNLOAD = ''
 
 interface IProps {
-  closeFn: () => void;
-  downloadManager: DownloadHandler;
+  closeFn: () => void
+  downloadManager: DownloadHandler
 }
 
 interface IState {
-  gameDownloading: boolean;
-  gameDownloadFolder: string;
-  dirPlaceholder: string;
+  gameDownloading: boolean
+  gameDownloadFolder: string
+  dirPlaceholder: string
 }
 
 export default class Downloads extends React.Component<IProps, IState> {
@@ -29,7 +29,7 @@ export default class Downloads extends React.Component<IProps, IState> {
     this.state = {
       gameDownloading: false,
       gameDownloadFolder: '',
-      dirPlaceholder: ''
+      dirPlaceholder: '',
     }
 
     this.downloadGame = this.downloadGame.bind(this)
@@ -37,7 +37,7 @@ export default class Downloads extends React.Component<IProps, IState> {
 
   async componentDidMount() {
     this.setState({
-      dirPlaceholder: await translate('components.select_folder')
+      dirPlaceholder: await translate('components.select_folder'),
     })
 
     console.log(this.state)
@@ -45,37 +45,49 @@ export default class Downloads extends React.Component<IProps, IState> {
 
   async downloadGame() {
     const folder = this.state.gameDownloadFolder
-    this.props.downloadManager.addDownload(GAME_DOWNLOAD, folder + '\\game.zip', () =>{
+    this.props.downloadManager.addDownload(GAME_DOWNLOAD, folder + '\\game.zip', () => {
       unzip(folder + '\\game.zip', folder + '\\', () => {
         this.setState({
-          gameDownloading: false
+          gameDownloading: false,
         })
       })
     })
 
     this.setState({
-      gameDownloading: true
+      gameDownloading: true,
     })
   }
 
   render() {
     return (
-      <Menu heading='Download Game' closeFn={this.props.closeFn} className="GameDownloadMenu">
+      <Menu heading="Download Game" closeFn={this.props.closeFn} className="GameDownloadMenu">
         <div className="GameDownload">
-          {
-            this.state.gameDownloadFolder !== '' && !this.state.gameDownloading ?
-              <BigButton id="downloadGameBtn" onClick={this.downloadGame}>Download Game</BigButton>
-              : <BigButton id="disabledGameBtn" onClick={() => null} disabled>Download Game</BigButton>
-          }
+          {this.state.gameDownloadFolder !== '' && !this.state.gameDownloading ? (
+            <BigButton id="downloadGameBtn" onClick={this.downloadGame}>
+              Download Game
+            </BigButton>
+          ) : (
+            <BigButton id="disabledGameBtn" onClick={() => null} disabled>
+              Download Game
+            </BigButton>
+          )}
           <HelpButton>
             <Tr text="main.game_help_text" />
           </HelpButton>
         </div>
-        
+
         <div className="GameDownloadDir">
-          <DirInput folder placeholder={this.state.dirPlaceholder} clearable={false} readonly={true} onChange={(value: string) => this.setState({
-            gameDownloadFolder: value
-          })}/>
+          <DirInput
+            folder
+            placeholder={this.state.dirPlaceholder}
+            clearable={false}
+            readonly={true}
+            onChange={(value: string) =>
+              this.setState({
+                gameDownloadFolder: value,
+              })
+            }
+          />
         </div>
       </Menu>
     )

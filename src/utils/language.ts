@@ -3,12 +3,12 @@ import React from 'react'
 import { getConfigOption } from './configuration'
 
 interface IProps {
-  text: string;
+  text: string
 }
 
 interface IState {
-  language: string;
-  translated_text: string;
+  language: string
+  translated_text: string
 }
 
 export default class Tr extends React.Component<IProps, IState> {
@@ -28,7 +28,7 @@ export default class Tr extends React.Component<IProps, IState> {
       if (!language) language = 'en'
 
       invoke('get_lang', { lang: language }).then((response) => {
-        const translation_obj = JSON.parse(response as string || '{}')
+        const translation_obj = JSON.parse((response as string) || '{}')
 
         // Traversal
         if (text.includes('.')) {
@@ -39,7 +39,7 @@ export default class Tr extends React.Component<IProps, IState> {
             if (!translation) {
               translation = ''
             } else {
-              translation = typeof translation !== 'string' ? translation[keys[i]] : translation as string
+              translation = typeof translation !== 'string' ? translation[keys[i]] : (translation as string)
             }
           }
 
@@ -48,7 +48,7 @@ export default class Tr extends React.Component<IProps, IState> {
           })
         } else {
           this.setState({
-            translated_text: translation_obj[text] || ''
+            translated_text: translation_obj[text] || '',
           })
         }
       })
@@ -62,13 +62,13 @@ export default class Tr extends React.Component<IProps, IState> {
 
 export async function getLanguages() {
   const resp: {
-    [key: string]: string;
+    [key: string]: string
   } = await invoke('get_languages')
   const lang_list: {
-    [key: string]: string;
+    [key: string]: string
   }[] = []
 
-  Object.keys(resp).forEach(k => {
+  Object.keys(resp).forEach((k) => {
     const parsed = JSON.parse(resp[k])
 
     if (parsed.lang_name) {
@@ -80,9 +80,9 @@ export async function getLanguages() {
 }
 
 export async function translate(text: string) {
-  const language = await getConfigOption('language') || 'en'
-  const translation_json = JSON.parse(await invoke('get_lang', { lang: language }) || '{}')
-  
+  const language = (await getConfigOption('language')) || 'en'
+  const translation_json = JSON.parse((await invoke('get_lang', { lang: language })) || '{}')
+
   // Traversal
   if (text.includes('.')) {
     const keys = text.split('.')
@@ -92,7 +92,7 @@ export async function translate(text: string) {
       if (!translation) {
         translation = ''
       } else {
-        translation = typeof translation !== 'string' ? translation[keys[i]] : translation as string
+        translation = typeof translation !== 'string' ? translation[keys[i]] : (translation as string)
       }
     }
 

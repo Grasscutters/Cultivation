@@ -3,8 +3,7 @@ import { dataDir } from '@tauri-apps/api/path'
 
 let configFilePath: string
 let defaultConfig: Configuration
-
-(async() => {
+;(async () => {
   defaultConfig = {
     toggle_grasscutter: false,
     game_install_path: 'C:\\Program Files\\Genshin Impact\\Genshin Impact game\\GenshinImpact.exe',
@@ -57,8 +56,8 @@ export interface Configuration {
 export async function setConfigOption<K extends keyof Configuration>(key: K, value: Configuration[K]): Promise<void> {
   const config = await getConfig()
   config[key] = value
-  
-  await saveConfig(<Configuration> config)
+
+  await saveConfig(<Configuration>config)
 }
 
 export async function getConfigOption<K extends keyof Configuration>(key: K): Promise<Configuration[K]> {
@@ -71,13 +70,13 @@ export async function getConfigOption<K extends keyof Configuration>(key: K): Pr
 export async function getConfig() {
   const raw = await readConfigFile()
   let parsed: Configuration = defaultConfig
-  
+
   try {
-    parsed = <Configuration> JSON.parse(raw)
-  } catch(e) {
+    parsed = <Configuration>JSON.parse(raw)
+  } catch (e) {
     // We could not open the file
     console.log(e)
-    
+
     // TODO: Create a popup saying the config file is corrupted.
   }
 
@@ -100,7 +99,7 @@ async function readConfigFile() {
 
   if (!dirs.find((fileOrDir) => fileOrDir?.name === 'cultivation')) {
     // Create dir
-    await fs.createDir(local + 'cultivation').catch(e => console.log(e))
+    await fs.createDir(local + 'cultivation').catch((e) => console.log(e))
   }
 
   const innerDirs = await fs.readDir(local + '/cultivation')
@@ -108,7 +107,7 @@ async function readConfigFile() {
   // Create grasscutter dir for potential installation
   if (!innerDirs.find((fileOrDir) => fileOrDir?.name === 'grasscutter')) {
     // Create dir
-    await fs.createDir(local + 'cultivation/grasscutter').catch(e => console.log(e))
+    await fs.createDir(local + 'cultivation/grasscutter').catch((e) => console.log(e))
   }
 
   const dataFiles = await fs.readDir(local + 'cultivation')
@@ -118,13 +117,13 @@ async function readConfigFile() {
     // Create config file
     const file: fs.FsTextFileOption = {
       path: configFilePath,
-      contents: JSON.stringify(defaultConfig)
+      contents: JSON.stringify(defaultConfig),
     }
 
     await fs.writeFile(file)
   }
 
-  // Finally, read the file 
+  // Finally, read the file
   return await fs.readTextFile(configFilePath)
 }
 
@@ -132,6 +131,6 @@ async function writeConfigFile(raw: string) {
   // All external config functions call readConfigFile, which ensure files exists
   await fs.writeFile({
     path: configFilePath,
-    contents: raw
+    contents: raw,
   })
 }

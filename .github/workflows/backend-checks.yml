@@ -3,12 +3,12 @@ name: Check backend
 on:
   push:
     paths:
-      - ".github/workflows/backend-checks.yml"
-      - "src-tauri/**"
+      - '.github/workflows/backend-checks.yml'
+      - 'src-tauri/**'
   pull_request:
     paths:
-      - ".github/workflows/backend-checks.yml"
-      - "src-tauri/**"
+      - '.github/workflows/backend-checks.yml'
+      - 'src-tauri/**'
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -59,4 +59,3 @@ jobs:
           name: clippy (${{ runner.os }})
           token: ${{ secrets.GITHUB_TOKEN }}
           args: --manifest-path ./src-tauri/Cargo.toml --no-default-features -- -D warnings
-

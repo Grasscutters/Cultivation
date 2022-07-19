@@ -33,15 +33,15 @@ const defaultTheme = {
   description: 'Default theme',
   includes: {
     css: [],
-    js: []
+    js: [],
   },
-  path: 'default'
+  path: 'default',
 }
 export async function getThemeList() {
   // Do some invoke to backend to get the theme list
-  const themes = await invoke('get_theme_list', {
-    dataDir: `${await dataDir()}/cultivation`
-  }) as BackendThemeList[]
+  const themes = (await invoke('get_theme_list', {
+    dataDir: `${await dataDir()}/cultivation`,
+  })) as BackendThemeList[]
   const list: ThemeList[] = [
     // ALWAYS include default theme
     {
@@ -50,13 +50,13 @@ export async function getThemeList() {
       description: 'Default theme',
       includes: {
         css: [],
-        js: []
+        js: [],
       },
-      path: 'default'
-    }
+      path: 'default',
+    },
   ]
 
-  themes.forEach(t => {
+  themes.forEach((t) => {
     let obj
 
     try {
@@ -74,7 +74,7 @@ export async function getThemeList() {
 export async function getTheme(name: string) {
   const themes = await getThemeList()
 
-  return themes.find(t => t.name === name) || defaultTheme
+  return themes.find((t) => t.name === name) || defaultTheme
 }
 
 export async function loadTheme(theme: ThemeList, document: Document) {
@@ -89,7 +89,7 @@ export async function loadTheme(theme: ThemeList, document: Document) {
   const jsIncludes = theme.includes.js
 
   // Load CSS files
-  cssIncludes.forEach(css => {
+  cssIncludes.forEach((css) => {
     if (!css) return
 
     const link = document.createElement('link')
@@ -100,7 +100,7 @@ export async function loadTheme(theme: ThemeList, document: Document) {
   })
 
   // Load JS files
-  jsIncludes.forEach(js => {
+  jsIncludes.forEach((js) => {
     if (!js) return
 
     const script = document.createElement('script')
@@ -125,7 +125,7 @@ export async function loadTheme(theme: ThemeList, document: Document) {
     // Save the background to our data dir
     await invoke('copy_file', {
       path: theme.path + '/' + theme.customBackgroundPath,
-      newPath: bgPath
+      newPath: bgPath,
     })
 
     // Set the background

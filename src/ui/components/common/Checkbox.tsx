@@ -4,9 +4,9 @@ import checkmark from '../../../resources/icons/check.svg'
 import './Checkbox.css'
 
 interface IProps {
-  label?: string,
-  checked: boolean,
-  onChange: () => void,
+  label?: string
+  checked: boolean
+  onChange: () => void
   id: string
 }
 
@@ -19,14 +19,14 @@ export default class Checkbox extends React.Component<IProps, IState> {
     super(props)
 
     this.state = {
-      checked: props.checked
+      checked: props.checked,
     }
   }
 
   static getDerivedStateFromProps(props: IProps, state: IState) {
     if (props.checked !== state.checked) {
       return {
-        checked: props.checked
+        checked: props.checked,
       }
     }
 
@@ -41,11 +41,9 @@ export default class Checkbox extends React.Component<IProps, IState> {
   render() {
     return (
       <div className="Checkbox">
-        <input type='checkbox' id={this.props.id} checked={this.state.checked} onChange={this.handleChange} />
+        <input type="checkbox" id={this.props.id} checked={this.state.checked} onChange={this.handleChange} />
         <label htmlFor={this.props.id}>
-          <div className="CheckboxDisplay">
-            {this.state.checked ? <img src={checkmark} alt='Checkmark' /> : null}
-          </div>
+          <div className="CheckboxDisplay">{this.state.checked ? <img src={checkmark} alt="Checkmark" /> : null}</div>
           <span>{this.props.label || ''}</span>
         </label>
       </div>

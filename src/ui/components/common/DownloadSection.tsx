@@ -5,8 +5,8 @@ import ProgressBar from './ProgressBar'
 import './DownloadSection.css'
 
 interface IProps {
-  downloadManager: DownloadHandler;
-  downloadName: string;
+  downloadManager: DownloadHandler
+  downloadName: string
 }
 
 export default class DownloadSection extends React.Component<IProps, never> {

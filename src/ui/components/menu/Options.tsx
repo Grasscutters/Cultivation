@@ -16,8 +16,8 @@ import DownloadHandler from '../../../utils/download'
 import * as meta from '../../../utils/metadata'
 
 interface IProps {
-  closeFn: () => void;
-  downloadManager: DownloadHandler;
+  closeFn: () => void
+  downloadManager: DownloadHandler
 }
 
 interface IState {
@@ -25,7 +25,7 @@ interface IState {
   grasscutter_path: string
   java_path: string
   grasscutter_with_game: boolean
-  language_options: { [key: string]: string }[],
+  language_options: { [key: string]: string }[]
   current_language: string
   bg_url_or_path: string
   themes: string[]
@@ -61,7 +61,7 @@ export default class Options extends React.Component<IProps, IState> {
 
       // Swag stuff
       akebi_path: '',
-      migoto_path: ''
+      migoto_path: '',
     }
 
     this.setGameExecutable = this.setGameExecutable.bind(this)
@@ -136,7 +136,7 @@ export default class Options extends React.Component<IProps, IState> {
     setConfigOption('akebi_path', value)
 
     this.setState({
-      akebi_path: value
+      akebi_path: value,
     })
   }
 
@@ -144,7 +144,7 @@ export default class Options extends React.Component<IProps, IState> {
     setConfigOption('migoto_path', value)
 
     this.setState({
-      migoto_path: value
+      migoto_path: value,
     })
   }
 
@@ -217,10 +217,10 @@ export default class Options extends React.Component<IProps, IState> {
     console.log(this.props)
     await meta.restoreMetadata(this.props.downloadManager)
   }
-  
+
   async installCert() {
     await invoke('generate_ca_files', {
-      path: await dataDir() + 'cultivation'
+      path: (await dataDir()) + 'cultivation',
     })
   }
 
@@ -261,7 +261,7 @@ export default class Options extends React.Component<IProps, IState> {
           </div>
           <div className="OptionValue" id="menuOptionsButtonmetaDownload">
             <BigButton onClick={this.restoreMetadata} id="metaDownload">
-              <Tr text='components.download' />
+              <Tr text="components.download" />
             </BigButton>
           </div>
         </div>
@@ -270,11 +270,7 @@ export default class Options extends React.Component<IProps, IState> {
             <Tr text="options.patch_metadata" />
           </div>
           <div className="OptionValue" id="menuOptionsCheckboxPatchMeta">
-            <Checkbox
-              onChange={this.toggleMetadata}
-              checked={this.state?.patch_metadata}
-              id="patchMeta"
-            />
+            <Checkbox onChange={this.toggleMetadata} checked={this.state?.patch_metadata} id="patchMeta" />
           </div>
         </div>
         <div className="OptionSection" id="menuOptionsContainerUseProxy">
@@ -282,18 +278,14 @@ export default class Options extends React.Component<IProps, IState> {
             <Tr text="options.use_proxy" />
           </div>
           <div className="OptionValue" id="menuOptionsCheckboxUseProxy">
-            <Checkbox
-              onChange={this.toggleProxy}
-              checked={this.state?.use_internal_proxy}
-              id="useProxy"
-            />
+            <Checkbox onChange={this.toggleProxy} checked={this.state?.use_internal_proxy} id="useProxy" />
           </div>
         </div>
 
         <Divider />
 
-        <div className='OptionSection' id="menuOptionsContainerGCJar">
-          <div className='OptionLabel' id="menuOptionsLabelGCJar">
+        <div className="OptionSection" id="menuOptionsContainerGCJar">
+          <div className="OptionLabel" id="menuOptionsLabelGCJar">
             <Tr text="options.grasscutter_jar" />
           </div>
           <div className="OptionValue" id="menuOptionsDirGCJar">
@@ -310,39 +302,34 @@ export default class Options extends React.Component<IProps, IState> {
             </BigButton>
           </div>
         </div>
-        <div className='OptionSection' id="menuOptionsContainerInstallCert">
-          <div className='OptionLabel' id="menuOptionsLabelInstallCert">
+        <div className="OptionSection" id="menuOptionsContainerInstallCert">
+          <div className="OptionLabel" id="menuOptionsLabelInstallCert">
             <Tr text="options.install_certificate" />
           </div>
-          <div className='OptionValue' id="menuOptionsButtonInstallCert">
+          <div className="OptionValue" id="menuOptionsButtonInstallCert">
             <BigButton disabled={false} onClick={this.installCert} id="installCert">
               <Tr text="components.install" />
             </BigButton>
           </div>
         </div>
-        {
-          this.state.swag && (
-            <>
-              <Divider />
-              <div className='OptionSection' id="menuOptionsContainerAkebi">
-                <div className='OptionLabel' id="menuOptionsLabelAkebi">
-                  <Tr text="swag.akebi" />
-                </div>
-                <div className='OptionValue' id="menuOptionsDirAkebi">
-                  <DirInput onChange={this.setAkebi} value={this.state?.akebi_path} extensions={['exe']} />
-                </div>
+        {this.state.swag && (
+          <>
+            <Divider />
+            <div className="OptionSection" id="menuOptionsContainerAkebi">
+              <div className="OptionLabel" id="menuOptionsLabelAkebi">
+                <Tr text="swag.akebi" />
               </div>
-              <div className='OptionSection' id="menuOptionsContainerMigoto">
-                <div className='OptionLabel' id="menuOptionsLabelMigoto">
+              <div className="OptionSection" id="menuOptionsContainerMigoto">
+                <div className="OptionLabel" id="menuOptionsLabelMigoto">
                   <Tr text="swag.migoto" />
                 </div>
-                <div className='OptionValue' id="menuOptionsDirMigoto">
+                <div className="OptionValue" id="menuOptionsDirMigoto">
                   <DirInput onChange={this.setMigoto} value={this.state?.migoto_path} extensions={['exe']} />
                 </div>
               </div>
-            </>
-          )
-        }
+            </div>
+          </>
+        )}
 
         <Divider />
 

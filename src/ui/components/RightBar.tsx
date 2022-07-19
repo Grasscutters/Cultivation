@@ -1,8 +1,8 @@
 import { invoke } from '@tauri-apps/api'
 import React from 'react'
 
-import Discord from  '../../resources/icons/discord.svg'
-import Github from  '../../resources/icons/github.svg'
+import Discord from '../../resources/icons/discord.svg'
+import Github from '../../resources/icons/github.svg'
 
 import './RightBar.css'
 

@@ -1,7 +1,7 @@
 .MiniDialog {
   position: fixed;
   z-index: 99;
-  
+
   /* Len and width */
   height: 30%;
   width: 30%;

@@ -1,20 +1,20 @@
 import React from 'react'
 import { capitalize } from '../../../utils/string'
 
-import Stop from '../../../resources/icons/close.svg' 
+import Stop from '../../../resources/icons/close.svg'
 import './ProgressBar.css'
 import DownloadHandler from '../../../utils/download'
 import { translate } from '../../../utils/language'
 
 interface IProps {
-  path: string,
-  downloadManager: DownloadHandler,
+  path: string
+  downloadManager: DownloadHandler
 }
 
 interface IState {
-  progress: number,
-  status: string,
-  total: number,
+  progress: number
+  status: string
+  total: number
 }
 
 export default class ProgressBar extends React.Component<IProps, IState> {
@@ -36,7 +36,7 @@ export default class ProgressBar extends React.Component<IProps, IState> {
       const prog = this.props.downloadManager.getDownloadProgress(this.props.path)
       this.setState({
         progress: prog?.progress || 0,
-        status: await translate(`download_status.${prog?.status || 'stopped'}`) || 'stopped',
+        status: (await translate(`download_status.${prog?.status || 'stopped'}`)) || 'stopped',
         total: prog?.total || 0,
       })
 
@@ -54,24 +54,29 @@ export default class ProgressBar extends React.Component<IProps, IState> {
   render() {
     return (
       <div className="ProgressBarWrapper">
-        <div style={{
-          width: '80%'
-        }}>
+        <div
+          style={{
+            width: '80%',
+          }}
+        >
           <div className="ProgressBar">
-            <div className="InnerProgress" style={{
-              width: `${(() => {
-                // Handles files with content-lengths of 0
-                if (this.state.status === 'finished') {
-                  return '100'
-                }
+            <div
+              className="InnerProgress"
+              style={{
+                width: `${(() => {
+                  // Handles files with content-lengths of 0
+                  if (this.state.status === 'finished') {
+                    return '100'
+                  }
 
-                if (this.state.total <= 0) {
-                  return '0'
-                }
+                  if (this.state.total <= 0) {
+                    return '0'
+                  }
 
-                return this.state.progress / this.state.total * 100
-              })()}%`,
-            }}></div>
+                  return (this.state.progress / this.state.total) * 100
+                })()}%`,
+              }}
+            ></div>
           </div>
           <div className="DownloadControls">
             <div onClick={this.stopDownload} className="downloadStop">
@@ -80,9 +85,7 @@ export default class ProgressBar extends React.Component<IProps, IState> {
           </div>
         </div>
 
-        <div className="ProgressText">
-          {capitalize(this.state.status) || 'Waiting'}
-        </div>
+        <div className="ProgressText">{capitalize(this.state.status) || 'Waiting'}</div>
       </div>
     )
   }

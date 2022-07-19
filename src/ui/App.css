@@ -22,7 +22,8 @@ select:focus {
   border-bottom-color: #ffd326;
 }
 
-#root, .App {
+#root,
+.App {
   height: 100%;
 }
 
@@ -64,8 +65,8 @@ select:focus {
 }
 
 .arrow-down {
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-left: 50px solid transparent;
   border-right: 50px solid transparent;
   border-top: 50px solid transparent;
@@ -82,28 +83,28 @@ select:focus {
 
 .BottomSection {
   position: absolute;
-	bottom: 0%;
-	left: 50%;
-	transform: translate(-50%, 0%);
+  bottom: 0%;
+  left: 50%;
+  transform: translate(-50%, 0%);
 
-	width: 100%;
-	height: 160px;
+  width: 100%;
+  height: 160px;
 
   backdrop-filter: blur(10px);
   box-shadow: inset 0px 5px 12px -3px rgb(50 50 50 / 75%);
 
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
-@media(max-height: 580px) {
-    .BottomSection {
-        height: 150px;
-    }
+@media (max-height: 580px) {
+  .BottomSection {
+    height: 150px;
+  }
 }
 
-@media(max-height: 500px) {
-    .BottomSection {
-        height: 140px;
-    }
+@media (max-height: 500px) {
+  .BottomSection {
+    height: 140px;
+  }
 }

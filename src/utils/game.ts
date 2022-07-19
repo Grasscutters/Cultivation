@@ -3,7 +3,7 @@ import { getConfig } from './configuration'
 export async function getGameExecutable() {
   const config = await getConfig()
 
-  if(!config.game_install_path) {
+  if (!config.game_install_path) {
     return null
   }
 
@@ -14,7 +14,7 @@ export async function getGameExecutable() {
 export async function getGameFolder() {
   const config = await getConfig()
 
-  if(!config.game_install_path) {
+  if (!config.game_install_path) {
     return null
   }
 
