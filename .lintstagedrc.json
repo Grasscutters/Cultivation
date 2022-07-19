@@ -1,0 +1,4 @@
+{
+  "src-tauri/**/*.rs": "rustfmt --edition 2021",
+  "*": "yarn prettier --write --ignore-unknown"
+}

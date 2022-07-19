@@ -29,7 +29,8 @@
     "tauri": "tauri",
     "start:dev": "tauri dev",
     "format": "cargo fmt --manifest-path ./src-tauri/Cargo.toml --all && yarn prettier --write --cache --loglevel warn .",
-    "lint": "cargo clippy --manifest-path ./src-tauri/Cargo.toml --no-default-features && yarn tsc --noEmit && yarn eslint src"
+    "lint": "cargo clippy --manifest-path ./src-tauri/Cargo.toml --no-default-features && yarn tsc --noEmit && yarn eslint src",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -57,6 +58,8 @@
     "eslint": "^8.15.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-react": "^7.29.4",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.3",
     "prettier": "^2.7.1",
     "run-script-os": "^1.1.6"
   }
