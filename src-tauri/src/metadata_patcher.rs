@@ -4,19 +4,25 @@ use std::fs::OpenOptions;
 use std::io::Read;
 use std::io::Write;
 
-extern {
-  fn decrypt_global_metadata(data : *mut u8, size : u64);
-  fn encrypt_global_metadata(data : *mut u8, size : u64);
+extern "C" {
+  fn decrypt_global_metadata(data: *mut u8, size: u64);
+  fn encrypt_global_metadata(data: *mut u8, size: u64);
 }
 
-fn dll_decrypt_global_metadata(data : *mut u8, size : u64) -> Result<bool, Box<dyn std::error::Error>> {
+fn dll_decrypt_global_metadata(
+  data: *mut u8,
+  size: u64,
+) -> Result<bool, Box<dyn std::error::Error>> {
   unsafe {
     decrypt_global_metadata(data, size);
     Ok(true)
   }
 }
 
-fn dll_encrypt_global_metadata(data : *mut u8, size : u64) -> Result<bool, Box<dyn std::error::Error>> {
+fn dll_encrypt_global_metadata(
+  data: *mut u8,
+  size: u64,
+) -> Result<bool, Box<dyn std::error::Error>> {
   unsafe {
     encrypt_global_metadata(data, size);
     Ok(true)
@@ -46,7 +52,11 @@ pub fn patch_metadata(metadata_folder: &str) -> bool {
   }
 
   //write encrypted to file
-  let mut file = match OpenOptions::new().create(true).write(true).open(&(metadata_folder.to_owned() + "\\global-metadata-patched.dat")) {
+  let mut file = match OpenOptions::new()
+    .create(true)
+    .write(true)
+    .open(&(metadata_folder.to_owned() + "\\global-metadata-patched.dat"))
+  {
     Ok(file) => file,
     Err(e) => {
       println!("Failed to open global-metadata: {}", e);
@@ -55,7 +65,7 @@ pub fn patch_metadata(metadata_folder: &str) -> bool {
   };
 
   file.write_all(&encrypted).unwrap();
-  
+
   true
 }
 
@@ -82,13 +92,13 @@ fn decrypt_metadata(file_path: &str) -> Vec<u8> {
   match dll_decrypt_global_metadata(data.as_mut_ptr(), data.len().try_into().unwrap()) {
     Ok(_) => {
       println!("Successfully decrypted global-metadata");
-      return data;
+      data
     }
     Err(e) => {
       println!("Failed to decrypt global-metadata: {}", e);
-      return Vec::new();
+      Vec::new()
     }
-  };
+  }
 }
 
 fn replace_keys(data: &[u8]) -> Vec<u8> {
@@ -143,13 +153,13 @@ fn encrypt_metadata(old_data: &[u8]) -> Vec<u8> {
   match dll_encrypt_global_metadata(data.as_mut_ptr(), data.len().try_into().unwrap()) {
     Ok(_) => {
       println!("Successfully encrypted global-metadata");
-      return data;
+      data
     }
     Err(e) => {
       println!("Failed to encrypt global-metadata: {}", e);
-      return Vec::new();
+      Vec::new()
     }
-  };
+  }
 }
 
 fn do_vecs_match<T: PartialEq>(a: &Vec<T>, b: &Vec<T>) -> bool {
