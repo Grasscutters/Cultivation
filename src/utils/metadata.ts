@@ -72,7 +72,7 @@ export async function patchGame() {
 
   // Do we have a patch already?
   const patchedExists = await invoke('dir_exists', {
-    path: await getGameMetadataPath() + '\\global-metadata-patched.dat'
+    path: await getBackupMetadataPath() + '\\global-metadata-patched.dat'
   })
 
   if (!patchedExists) {
