@@ -116,13 +116,13 @@ export default class ServerLaunchSection extends React.Component<{}, IState> {
       await setConfigOption('last_ip', this.state.ip)
       await setConfigOption('last_port', this.state.port)
 
-      // Set IP
-      await invoke('set_proxy_addr', { addr: (this.state.httpsEnabled ? 'https':'http') + '://' + this.state.ip + ':' + this.state.port })
       await invoke('enable_process_watcher', {
         process: proc_name || game_exe
       })
 
       if (config.use_internal_proxy) {
+        // Set IP
+        await invoke('set_proxy_addr', { addr: (this.state.httpsEnabled ? 'https':'http') + '://' + this.state.ip + ':' + this.state.port })
         // Connect to proxy
         await invoke('connect', { port: 8365, certificatePath: await dataDir() + '\\cultivation\\ca' })
       }
