@@ -31,6 +31,7 @@ interface IState {
   themes: string[]
   theme: string
   encryption: boolean
+  patch_metadata: boolean
   swag: boolean
 
   // Swag stuff
@@ -52,6 +53,7 @@ export default class Options extends React.Component<IProps, IState> {
       themes: ['default'],
       theme: '',
       encryption: false,
+      patch_metadata: false,
       swag: false,
 
       // Swag stuff
@@ -66,6 +68,7 @@ export default class Options extends React.Component<IProps, IState> {
     this.setCustomBackground = this.setCustomBackground.bind(this)
     this.toggleEncryption = this.toggleEncryption.bind(this)
     this.restoreMetadata = this.restoreMetadata.bind(this)
+    this.toggleMetadata = this.toggleMetadata.bind(this)
   }
 
   async componentDidMount() {
@@ -88,6 +91,7 @@ export default class Options extends React.Component<IProps, IState> {
       themes: (await getThemeList()).map((t) => t.name),
       theme: config.theme || 'default',
       encryption: await translate(encEnabled ? 'options.enabled' : 'options.disabled'),
+      patch_metadata: config.patch_metadata || false,
       swag: config.swag_mode || false,
 
       // Swag stuff
@@ -205,6 +209,16 @@ export default class Options extends React.Component<IProps, IState> {
     })
   }
 
+  async toggleMetadata() {
+    const changedVal = !(await getConfigOption('patch_metadata'))
+
+    await setConfigOption('patch_metadata', changedVal)
+
+    this.setState({
+      patch_metadata: changedVal,
+    })
+  }
+
   render() {
     return (
       <Menu closeFn={this.props.closeFn} className="Options" heading="Options">
@@ -226,6 +240,21 @@ export default class Options extends React.Component<IProps, IState> {
             </BigButton>
           </div>
         </div>
+        <div className="OptionSection" id="menuOptionsContainerPatchMeta">
+          <div className="OptionLabel" id="menuOptionsLabelPatchMeta">
+            <Tr text="options.patch_metadata" />
+          </div>
+          <div className="OptionValue" id="menuOptionsCheckboxPatchMeta">
+            <Checkbox
+              onChange={this.toggleMetadata}
+              checked={this.state?.patch_metadata}
+              id="patchMeta"
+            />
+          </div>
+        </div>
+
+        <Divider />
+
         <div className='OptionSection' id="menuOptionsContainerGCJar">
           <div className='OptionLabel' id="menuOptionsLabelGCJar">
             <Tr text="options.grasscutter_jar" />

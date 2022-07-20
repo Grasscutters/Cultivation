@@ -100,11 +100,13 @@ export default class ServerLaunchSection extends React.Component<{}, IState> {
     
     // Connect to proxy
     if (config.toggle_grasscutter) {
-      const patched = await patchGame()
+      if (config.patch_metadata) {
+        const patched = await patchGame()
 
-      if (!patched) {
-        alert('Could not patch game!')
-        return
+        if (!patched) {
+          alert('Could not patch game!')
+          return
+        }
       }
 
       const game_exe = await getGameExecutable()

@@ -20,7 +20,8 @@ let defaultConfig: Configuration
     cert_generated: false,
     theme: 'default',
     https_enabled: false,
-    debug_enabled: false
+    debug_enabled: false,
+    patch_metadata: true,
   }
 })()
 
@@ -43,6 +44,7 @@ export interface Configuration {
   theme: string
   https_enabled: boolean
   debug_enabled: boolean
+  patch_metadata: boolean
   swag_mode?: boolean
 
   // Swag stuff
@@ -60,7 +62,7 @@ export async function getConfigOption<K extends keyof Configuration>(key: K): Pr
   const config = await getConfig()
   const defaults = defaultConfig
 
-  return config[key] || defaults[key]
+  return config[key] === null || config[key] === undefined ? defaults[key] : config[key]
 }
 
 export async function getConfig() {

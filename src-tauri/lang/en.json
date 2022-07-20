@@ -23,7 +23,8 @@
     "grasscutter_with_game": "Automatically launch Grasscutter with game",
     "language": "Select Language",
     "background": "Set Custom Background (link or image file)",
-    "theme": "Set Theme"
+    "theme": "Set Theme",
+    "patch_metadata": "Automatically Patch Metadata"
   },
   "downloads": {
     "grasscutter_stable_data": "Download Grasscutter Stable Data",
