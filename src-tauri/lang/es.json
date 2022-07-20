@@ -1,0 +1,69 @@
+{
+  "lang_name": "Español",
+  "main": {
+    "title": "Cultivation",
+    "launch_button": "Launch",
+    "gc_enable": "Conectar Via Grasscutter",
+    "https_enable": "Usar HTTPS",
+    "ip_placeholder": "Dirección del servidor...",
+    "port_placeholder": "Puerto...",
+    "files_downloading": "Archivos Descargandose: ",
+    "files_extracting": "Archivos Extrayendose: "
+  },
+  "options": {
+    "enabled": "Activado",
+    "disabled": "Desactivado",
+    "game_path": "Ruta de instalación del juego",
+    "game_executable": "Establecer ejecutable del juego",
+    "recover_metadata": "Recuperación de Metadatos de Emergencia",
+    "grasscutter_jar": "Establecer JAR de Grasscutter",
+    "toggle_encryption": "Alternar Cifrado",
+    "install_certificate": "Instalar Certificado Proxie",
+    "java_path": "Establecer Ruta Personalizada de Java",
+    "grasscutter_with_game": "Iniciar automáticamente Grasscutter con el juego",
+    "language": "Seleccionar Idioma",
+    "background": "Establecer Fondo Personalizado (link o archivo de imagen)",
+    "theme": "Establecer Tema"
+  },
+  "downloads": {
+    "grasscutter_stable_data": "Descargar Datos Estables de Grasscutter",
+    "grasscutter_latest_data": "Descargar Datos más Recientes de Grasscutter",
+    "grasscutter_stable_data_update": "Actualizar Datos Estables de Grasscutter",
+    "grasscutter_latest_data_update": "Actualizar Datos más Recientes de Grasscutter",
+    "grasscutter_stable": "Descargar Grasscutter Estable",
+    "grasscutter_latest": "Descargar Grasscutter más reciente",
+    "grasscutter_stable_update": "Actualizar Grasscutter Estable",
+    "grasscutter_latest_update": "Actualizar Grasscutter más reciente",
+    "resources": "Descargar Recursos de Grasscutter",
+    "game": "Descarga el juego"
+  },
+  "download_status": {
+    "downloading": "Descargando",
+    "extracting": "Extrayendo",
+    "error": "Error",
+    "finished": "Finalizado",
+    "stopped": "Detenido"
+  },
+  "components": {
+    "select_file": "Seleccionar el archivo o carpeta...",
+    "select_folder": "Seleccionar la carpeta...",
+    "download": "Descargar",
+    "install": "Instalar"
+  },
+  "news": {
+    "latest_commits": "Commits Recientes",
+    "latest_version": "Ultima versión"
+  },
+  "help": {
+    "port_help_text": "Asegúrese de que este sea el Dispatch server port, no el Game server port. Este es casi siempre '443'.",
+    "game_help_text": "No necesitas usar una copia separada para jugar con Grasscutter. Esto es para cambiar a 2.6 o si no tienes el juego instalado.",
+    "gc_stable_jar": "Descargue la versión Estable actual de Grasscutter, que incluye el archivo jar y los archivos de datos.",
+    "gc_dev_jar": "Descargue la última versión de Desarrollo de Grasscutter, que incluye archivos jar y archivos de datos.",
+    "gc_stable_data": "Descargue los archivos de Datos Estables actuales de Grasscutter, que no vienen con un archivo jar. Esto es útil para actualizar.",
+    "gc_dev_data": "Descargue los últimos archivos de Datos de Desarrollo de Grasscutter, que no vienen con un archivo jar. Esto es útil para actualizar.",
+    "resources": "Estos también son necesarios para ejecutar un servidor Grasscutter. Este botón estará gris si tiene una carpeta de recursos existente con contenido dentro."
+  },
+  "swag": {
+    "akebi": "Establecer el ejecutable de Akebi"
+  }
+}
