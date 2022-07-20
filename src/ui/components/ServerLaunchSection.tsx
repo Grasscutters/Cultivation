@@ -54,6 +54,7 @@ export default class ServerLaunchSection extends React.Component<{}, IState> {
     this.toggleGrasscutter = this.toggleGrasscutter.bind(this)
     this.playGame = this.playGame.bind(this)
     this.launchAkebi = this.launchAkebi.bind(this)
+    this.launch3dm = this.launch3dm.bind(this)
     this.setIp = this.setIp.bind(this)
     this.setPort = this.setPort.bind(this)
     this.toggleHttps = this.toggleHttps.bind(this)
@@ -188,6 +189,18 @@ export default class ServerLaunchSection extends React.Component<{}, IState> {
     await this.playGame(config.akebi_path, gameExec)
   }
 
+  async launch3dm() {
+    const config = await getConfig()
+
+    // First launch 3dm
+    invoke('run_program', {
+      path: config.migoto_path
+    })
+
+    // Then play the game as normal
+    await this.playGame()
+  }
+
   setIp(text: string) {
     this.setState({
       ip: text
@@ -240,9 +253,15 @@ export default class ServerLaunchSection extends React.Component<{}, IState> {
           <BigButton onClick={this.playGame} id="officialPlay">{this.state.buttonLabel}</BigButton>
           {
             this.state.swag && (
-              <BigButton onClick={this.launchAkebi} id="akebiLaunch">
-                <img className="AkebiIcon" id="akebiIcon" src={Akebi} />
-              </BigButton>
+              <>
+                <BigButton onClick={this.launchAkebi} id="akebiLaunch">
+                  <img className="AkebiIcon" id="akebiIcon" src={Akebi} />
+                </BigButton>
+                <BigButton onClick={this.launch3dm} id="serverLaunch">
+                  3DM
+                </BigButton>
+              </>
+
             )
           }
           <BigButton onClick={this.launchServer} id="serverLaunch">
