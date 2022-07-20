@@ -121,8 +121,10 @@ export default class ServerLaunchSection extends React.Component<{}, IState> {
         process: proc_name || game_exe
       })
 
-      // Connect to proxy
-      await invoke('connect', { port: 8365, certificatePath: await dataDir() + '\\cultivation\\ca' })
+      if (config.use_internal_proxy) {
+        // Connect to proxy
+        await invoke('connect', { port: 8365, certificatePath: await dataDir() + '\\cultivation\\ca' })
+      }
 
       // Open server as well if the options are set
       if (config.grasscutter_with_game) {

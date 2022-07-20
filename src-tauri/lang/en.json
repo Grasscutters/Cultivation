@@ -24,7 +24,8 @@
     "language": "Select Language",
     "background": "Set Custom Background (link or image file)",
     "theme": "Set Theme",
-    "patch_metadata": "Automatically Patch Metadata"
+    "patch_metadata": "Automatically Patch Metadata",
+    "use_proxy": "Use Internal Proxy"
   },
   "downloads": {
     "grasscutter_stable_data": "Download Grasscutter Stable Data",

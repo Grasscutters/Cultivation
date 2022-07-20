@@ -32,6 +32,7 @@ interface IState {
   theme: string
   encryption: boolean
   patch_metadata: boolean
+  use_internal_proxy: boolean
   swag: boolean
 
   // Swag stuff
@@ -54,6 +55,7 @@ export default class Options extends React.Component<IProps, IState> {
       theme: '',
       encryption: false,
       patch_metadata: false,
+      use_internal_proxy: false,
       swag: false,
 
       // Swag stuff
@@ -69,6 +71,7 @@ export default class Options extends React.Component<IProps, IState> {
     this.toggleEncryption = this.toggleEncryption.bind(this)
     this.restoreMetadata = this.restoreMetadata.bind(this)
     this.toggleMetadata = this.toggleMetadata.bind(this)
+    this.toggleProxy = this.toggleProxy.bind(this)
   }
 
   async componentDidMount() {
@@ -92,6 +95,7 @@ export default class Options extends React.Component<IProps, IState> {
       theme: config.theme || 'default',
       encryption: await translate(encEnabled ? 'options.enabled' : 'options.disabled'),
       patch_metadata: config.patch_metadata || false,
+      use_internal_proxy: config.use_internal_proxy || false,
       swag: config.swag_mode || false,
 
       // Swag stuff
@@ -219,6 +223,16 @@ export default class Options extends React.Component<IProps, IState> {
     })
   }
 
+  async toggleProxy() {
+    const changedVal = !(await getConfigOption('use_internal_proxy'))
+
+    await setConfigOption('use_internal_proxy', changedVal)
+
+    this.setState({
+      use_internal_proxy: changedVal,
+    })
+  }
+
   render() {
     return (
       <Menu closeFn={this.props.closeFn} className="Options" heading="Options">
@@ -249,6 +263,18 @@ export default class Options extends React.Component<IProps, IState> {
               onChange={this.toggleMetadata}
               checked={this.state?.patch_metadata}
               id="patchMeta"
+            />
+          </div>
+        </div>
+        <div className="OptionSection" id="menuOptionsContainerUseProxy">
+          <div className="OptionLabel" id="menuOptionsLabelUseProxy">
+            <Tr text="options.use_proxy" />
+          </div>
+          <div className="OptionValue" id="menuOptionsCheckboxUseProxy">
+            <Checkbox
+              onChange={this.toggleProxy}
+              checked={this.state?.use_internal_proxy}
+              id="useProxy"
             />
           </div>
         </div>
