@@ -63,12 +63,16 @@ class App extends React.Component<IProps, IState> {
 
     // Emitted for metadata replacing-purposes
     listen('game_closed', async () => {
-      const unpatched = await unpatchGame()
+      const wasPatched = await getConfigOption('patch_metadata')
 
-      console.log(`unpatched game? ${unpatched}`)
+      if (wasPatched) {
+        const unpatched = await unpatchGame()
 
-      if (!unpatched) {
-        alert(`Could not unpatch game! (You should be able to find your metadata backup in ${await dataDir()}\\cultivation\\)`)
+        console.log(`unpatched game? ${unpatched}`)
+  
+        if (!unpatched) {
+          alert(`Could not unpatch game! (You should be able to find your metadata backup in ${await dataDir()}\\cultivation\\)`)
+        }
       }
     })
 
