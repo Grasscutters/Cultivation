@@ -4,15 +4,15 @@ import { byteToString } from './string'
 
 export default class DownloadHandler {
   downloads: {
-    path: string,
-    progress: number,
-    total: number,
-    total_downloaded: number,
-    status: string,
-    startTime: number,
-    error?: string,
-    speed?: string,
-    onFinish?: () => void,
+    path: string
+    progress: number
+    total: number
+    total_downloaded: number
+    status: string
+    startTime: number
+    error?: string
+    speed?: string
+    onFinish?: () => void
   }[]
 
   // Pass tauri invoke function
@@ -22,13 +22,13 @@ export default class DownloadHandler {
     listen('download_progress', ({ payload }) => {
       // @ts-expect-error Payload may be unknown but backend always returns this object
       const obj: {
-        downloaded: string,
-        total: string,
-        path: string,
-        total_downloaded: string,
+        downloaded: string
+        total: string
+        path: string
+        total_downloaded: string
       } = payload
 
-      const index = this.downloads.findIndex(download => download.path === obj.path)
+      const index = this.downloads.findIndex((download) => download.path === obj.path)
       this.downloads[index].progress = parseInt(obj.downloaded, 10)
       this.downloads[index].total = parseInt(obj.total, 10)
       this.downloads[index].total_downloaded = parseInt(obj.total_downloaded, 10)
@@ -52,7 +52,7 @@ export default class DownloadHandler {
       const filename = payload
 
       // set status to finished
-      const index = this.downloads.findIndex(download => download.path === filename)
+      const index = this.downloads.findIndex((download) => download.path === filename)
       this.downloads[index].status = 'finished'
 
       // Call onFinish callback
@@ -65,12 +65,12 @@ export default class DownloadHandler {
     listen('download_error', ({ payload }) => {
       // @ts-expect-error shut up typescript
       const errorData: {
-        path: string,
-        error: string,
+        path: string
+        error: string
       } = payload
 
       // Set download to error
-      const index = this.downloads.findIndex(download => download.path === errorData.path)
+      const index = this.downloads.findIndex((download) => download.path === errorData.path)
       this.downloads[index].status = 'error'
       this.downloads[index].error = errorData.error
     })
@@ -78,13 +78,13 @@ export default class DownloadHandler {
     // Extraction events
     listen('extract_start', ({ payload }) => {
       // Find the download that is no extracting and set it's status as such
-      const index = this.downloads.findIndex(download => download.path === payload)
+      const index = this.downloads.findIndex((download) => download.path === payload)
       this.downloads[index].status = 'extracting'
     })
 
     listen('extract_end', ({ payload }) => {
       // Find the download that is no extracting and set it's status as such
-      const index = this.downloads.findIndex(download => download.path === payload)
+      const index = this.downloads.findIndex((download) => download.path === payload)
       this.downloads[index].status = 'finished'
     })
   }
@@ -95,16 +95,16 @@ export default class DownloadHandler {
 
   downloadingJar() {
     // Kinda hacky but it works
-    return this.downloads.some(d => d.path.includes('grasscutter.zip'))
+    return this.downloads.some((d) => d.path.includes('grasscutter.zip'))
   }
 
   downloadingResources() {
     // Kinda hacky but it works
-    return this.downloads.some(d => d.path.includes('resources'))
+    return this.downloads.some((d) => d.path.includes('resources'))
   }
-  
+
   downloadingRepo() {
-    return this.downloads.some(d => d.path.includes('grasscutter_repo.zip'))
+    return this.downloads.some((d) => d.path.includes('grasscutter_repo.zip'))
   }
 
   addDownload(url: string, path: string, onFinish?: () => void) {
@@ -128,24 +128,24 @@ export default class DownloadHandler {
     invoke('stop_download', { path })
 
     // Remove from list
-    const index = this.downloads.findIndex(download => download.path === path)
+    const index = this.downloads.findIndex((download) => download.path === path)
     this.downloads.splice(index, 1)
   }
 
   getDownloadProgress(path: string) {
-    const index = this.downloads.findIndex(download => download.path === path)
+    const index = this.downloads.findIndex((download) => download.path === path)
     return this.downloads[index] || null
   }
 
   getDownloadSize(path: string) {
-    const index = this.downloads.findIndex(download => download.path === path)
+    const index = this.downloads.findIndex((download) => download.path === path)
     return byteToString(this.downloads[index].total) || null
   }
 
   getTotalAverage() {
-    const files = this.downloads.filter(d => d.status === 'downloading')
+    const files = this.downloads.filter((d) => d.status === 'downloading')
     const total = files.reduce((acc, d) => acc + d.total, 0)
-    const progress = files.reduce((acc, d) => d.progress !== 0 ? acc + d.progress : acc + d.total_downloaded, 0)
+    const progress = files.reduce((acc, d) => (d.progress !== 0 ? acc + d.progress : acc + d.total_downloaded), 0)
     let speedStr = '0 B/s'
 
     // Get download speed based on startTimes
@@ -158,10 +158,10 @@ export default class DownloadHandler {
 
     return {
       average: (progress / total) * 100 || 0,
-      files: this.downloads.filter(d => d.status === 'downloading').length,
-      extracting: this.downloads.filter(d => d.status === 'extracting').length,
+      files: this.downloads.filter((d) => d.status === 'downloading').length,
+      extracting: this.downloads.filter((d) => d.status === 'extracting').length,
       totalSize: total,
-      speed: speedStr
+      speed: speedStr,
     }
   }
 }

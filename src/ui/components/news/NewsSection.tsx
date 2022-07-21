@@ -6,33 +6,33 @@ import Tr from '../../../utils/language'
 import './NewsSection.css'
 
 interface IProps {
-  selected?: string;
+  selected?: string
 }
 
 interface IState {
-  selected: string;
-  news?: JSX.Element;
-  commitList?: JSX.Element[];
+  selected: string
+  news?: JSX.Element
+  commitList?: JSX.Element[]
 }
 
 interface GrasscutterAPIResponse {
   commits: {
-    gc_stable:   CommitResponse[];
-    gc_dev:      CommitResponse[];
-    cultivation: CommitResponse[];
+    gc_stable: CommitResponse[]
+    gc_dev: CommitResponse[]
+    cultivation: CommitResponse[]
   }
 }
 
 interface CommitResponse {
-  sha: string;
-  commit: Commit;
+  sha: string
+  commit: Commit
 }
 
 interface Commit {
   author: {
-    name: string;
-  };
-  message: string;
+    name: string
+  }
+  message: string
 }
 
 export default class NewsSection extends React.Component<IProps, IState> {
@@ -65,14 +65,16 @@ export default class NewsSection extends React.Component<IProps, IState> {
 
       try {
         grasscutterApiResponse = JSON.parse(response)
-      } catch(e) {
+      } catch (e) {
         grasscutterApiResponse = null
       }
 
       let commits: CommitResponse[]
       if (grasscutterApiResponse?.commits == null) {
         // If it didn't work, use official API
-        const response: string = await invoke('req_get', { url: 'https://api.github.com/repos/Grasscutters/Grasscutter/commits' })
+        const response: string = await invoke('req_get', {
+          url: 'https://api.github.com/repos/Grasscutters/Grasscutter/commits',
+        })
         commits = JSON.parse(response)
       } else {
         commits = grasscutterApiResponse.commits.gc_stable
@@ -80,21 +82,25 @@ export default class NewsSection extends React.Component<IProps, IState> {
 
       // Probably rate-limited
       if (!Array.isArray(commits)) return
-  
+
       // Get only first 5
       const commitsList = commits.slice(0, 10)
       const commitsListHtml = commitsList.map((commitResponse: CommitResponse) => {
         return (
           <tr className="Commit" id="newsCommitsTable" key={commitResponse.sha}>
-            <td className="CommitAuthor"><span>{commitResponse.commit.author.name}</span></td>
-            <td className="CommitMessage"><span>{commitResponse.commit.message}</span></td>
+            <td className="CommitAuthor">
+              <span>{commitResponse.commit.author.name}</span>
+            </td>
+            <td className="CommitMessage">
+              <span>{commitResponse.commit.message}</span>
+            </td>
           </tr>
         )
       })
 
       this.setState({
         commitList: commitsListHtml,
-        news: <>{commitsListHtml}</>
+        news: <>{commitsListHtml}</>,
       })
     }
 
@@ -104,7 +110,7 @@ export default class NewsSection extends React.Component<IProps, IState> {
   async showNews() {
     let news: JSX.Element | JSX.Element[] = <tr></tr>
 
-    switch(this.state.selected) {
+    switch (this.state.selected) {
       case 'commits': {
         const commits = await this.showLatestCommits()
         if (commits != null) {
@@ -114,16 +120,24 @@ export default class NewsSection extends React.Component<IProps, IState> {
       }
 
       case 'latest_version':
-        news = <tr><td>Latest version</td></tr>
+        news = (
+          <tr>
+            <td>Latest version</td>
+          </tr>
+        )
         break
 
       default:
-        news = <tr><td>Unknown</td></tr>
+        news = (
+          <tr>
+            <td>Unknown</td>
+          </tr>
+        )
         break
     }
 
     this.setState({
-      news: <>{news}</>
+      news: <>{news}</>,
     })
   }
 
@@ -131,17 +145,23 @@ export default class NewsSection extends React.Component<IProps, IState> {
     return (
       <div className="NewsSection" id="newsContainer">
         <div className="NewsTabs" id="newsTabsContainer">
-          <div className={'NewsTab ' + (this.state.selected === 'commits' ? 'selected' : '')} id="commits" onClick={() => this.setSelected('commits')}>
+          <div
+            className={'NewsTab ' + (this.state.selected === 'commits' ? 'selected' : '')}
+            id="commits"
+            onClick={() => this.setSelected('commits')}
+          >
             <Tr text="news.latest_commits" />
           </div>
-          <div className={'NewsTab ' + (this.state.selected === 'latest_version' ? 'selected' : '')} id="latest_version" onClick={() => this.setSelected('latest_version')}>
+          <div
+            className={'NewsTab ' + (this.state.selected === 'latest_version' ? 'selected' : '')}
+            id="latest_version"
+            onClick={() => this.setSelected('latest_version')}
+          >
             <Tr text="news.latest_version" />
           </div>
         </div>
         <table className="NewsContent" id="newsContent">
-            <tbody>
-                {this.state.news}
-            </tbody>
+          <tbody>{this.state.news}</tbody>
         </table>
       </div>
     )

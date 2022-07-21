@@ -5,7 +5,7 @@ import { getGameExecutable, getGameFolder } from './game'
 
 export async function patchMetadata() {
   const metadataExists = await invoke('dir_exists', {
-    path: await getGameMetadataPath() + '\\global-metadata.dat'
+    path: (await getGameMetadataPath()) + '\\global-metadata.dat',
   })
 
   if (!metadataExists) {
@@ -16,9 +16,9 @@ export async function patchMetadata() {
 
   // Copy unpatched metadata to backup location
   const copiedMeta = await invoke('copy_file_with_new_name', {
-    path: await getGameMetadataPath() + '\\global-metadata.dat',
+    path: (await getGameMetadataPath()) + '\\global-metadata.dat',
     newPath: await getBackupMetadataPath(),
-    newName: 'global-metadata-unpatched.dat'
+    newName: 'global-metadata-unpatched.dat',
   })
 
   if (!copiedMeta) {
@@ -42,9 +42,9 @@ export async function patchMetadata() {
   console.log('Replacing unpatched game metadata with patched metadata')
 
   const replacedMeta = await invoke('copy_file_with_new_name', {
-    path: await getBackupMetadataPath() + '\\global-metadata-patched.dat',
+    path: (await getBackupMetadataPath()) + '\\global-metadata-patched.dat',
     newPath: await getGameMetadataPath(),
-    newName: 'global-metadata.dat'
+    newName: 'global-metadata.dat',
   })
 
   if (!replacedMeta) {
@@ -58,7 +58,7 @@ export async function patchMetadata() {
 
 export async function patchGame() {
   const backupExists = await invoke('dir_exists', {
-    path: await getBackupMetadataPath() + '\\global-metadata-unpatched.dat'
+    path: (await getBackupMetadataPath()) + '\\global-metadata-unpatched.dat',
   })
 
   if (!backupExists) {
@@ -72,7 +72,7 @@ export async function patchGame() {
 
   // Do we have a patch already?
   const patchedExists = await invoke('dir_exists', {
-    path: await getBackupMetadataPath() + '\\global-metadata-patched.dat'
+    path: (await getBackupMetadataPath()) + '\\global-metadata-patched.dat',
   })
 
   if (!patchedExists) {
@@ -82,12 +82,12 @@ export async function patchGame() {
     if (!patched) {
       return false
     }
-  } 
+  }
 
   // Are we already patched? If so, that's fine, just continue as normal
   const gameIsPatched = await invoke('are_files_identical', {
-    path1: await getBackupMetadataPath() + '\\global-metadata-patched.dat',
-    path2: await getGameMetadataPath() + '\\global-metadata.dat'
+    path1: (await getBackupMetadataPath()) + '\\global-metadata-patched.dat',
+    path2: (await getGameMetadataPath()) + '\\global-metadata.dat',
   })
 
   if (gameIsPatched) {
@@ -96,17 +96,17 @@ export async function patchGame() {
 
   // Is the current backup the same as the games current metadata?
   const backupIsCurrent = await invoke('are_files_identical', {
-    path1: await getBackupMetadataPath() + '\\global-metadata-unpatched.dat',
-    path2: await getGameMetadataPath() + '\\global-metadata.dat'
-  })  
+    path1: (await getBackupMetadataPath()) + '\\global-metadata-unpatched.dat',
+    path2: (await getGameMetadataPath()) + '\\global-metadata.dat',
+  })
 
   // Game has probably been updated. We need to repatch the game...
   if (!backupIsCurrent) {
     const deletedOldBackup = await invoke('delete_file', {
-      path: await getBackupMetadataPath() + '\\global-metadata-unpatched.dat'
+      path: (await getBackupMetadataPath()) + '\\global-metadata-unpatched.dat',
     })
     const deletedOldPatched = await invoke('delete_file', {
-      path: await getBackupMetadataPath() + '\\global-metadata-patched.dat'
+      path: (await getBackupMetadataPath()) + '\\global-metadata-patched.dat',
     })
 
     // It's fine if these deletes fail. The game will be replaced anyway.
@@ -134,9 +134,9 @@ export async function patchGame() {
 
   // Finally, replace the unpatched metadata with the patched one
   const replaced = await invoke('copy_file_with_new_name', {
-    path: await getBackupMetadataPath() + '\\global-metadata-patched.dat',
+    path: (await getBackupMetadataPath()) + '\\global-metadata-patched.dat',
     newPath: await getGameMetadataPath(),
-    newName: 'global-metadata.dat'
+    newName: 'global-metadata.dat',
   })
 
   if (!replaced) {
@@ -148,7 +148,7 @@ export async function patchGame() {
 
 export async function unpatchGame() {
   const backupExists = await invoke('dir_exists', {
-    path: await getBackupMetadataPath() + '\\global-metadata-unpatched.dat'
+    path: (await getBackupMetadataPath()) + '\\global-metadata-unpatched.dat',
   })
 
   if (!backupExists) {
@@ -157,9 +157,9 @@ export async function unpatchGame() {
   }
 
   const replaced = await invoke('copy_file_with_new_name', {
-    path: await getBackupMetadataPath() + '\\global-metadata-unpatched.dat', 
+    path: (await getBackupMetadataPath()) + '\\global-metadata-unpatched.dat',
     newPath: await getGameMetadataPath(),
-    newName: 'global-metadata.dat'
+    newName: 'global-metadata.dat',
   })
 
   return replaced
@@ -172,21 +172,27 @@ export async function getGameMetadataPath() {
     return null
   }
 
-  return (await getGameFolder() + '\\' + gameExec.replace('.exe', '_Data') + '\\Managed\\Metadata').replace(/\\/g, '/')
+  return ((await getGameFolder()) + '\\' + gameExec.replace('.exe', '_Data') + '\\Managed\\Metadata').replace(
+    /\\/g,
+    '/'
+  )
 }
 
 export async function getBackupMetadataPath() {
-  return await dataDir() + 'cultivation\\metadata'
+  return (await dataDir()) + 'cultivation\\metadata'
 }
 
 export async function globalMetadataLink() {
-  const versionAPIUrl = 'https://sdk-os-static.mihoyo.com/hk4e_global/mdk/launcher/api/resource?channel_id=1&key=gcStgarh&launcher_id=10&sub_channel_id=0'
+  const versionAPIUrl =
+    'https://sdk-os-static.mihoyo.com/hk4e_global/mdk/launcher/api/resource?channel_id=1&key=gcStgarh&launcher_id=10&sub_channel_id=0'
 
   // Get versions from API
-  const versions = JSON.parse(await invoke('web_get', {
-    url: versionAPIUrl
-  }))
-  
+  const versions = JSON.parse(
+    await invoke('web_get', {
+      url: versionAPIUrl,
+    })
+  )
+
   if (!versions || versions.retcode !== 0) {
     console.log('Failed to get versions from API')
     return null
@@ -195,7 +201,7 @@ export async function globalMetadataLink() {
   // Get latest version
   const latest = versions.data.game.latest
 
-  return latest.decompressed_path as string + '/GenshinImpact_Data/Managed/Metadata/global-metadata.dat'
+  return (latest.decompressed_path as string) + '/GenshinImpact_Data/Managed/Metadata/global-metadata.dat'
 }
 
 export async function restoreMetadata(manager: DownloadHandler) {
@@ -208,16 +214,16 @@ export async function restoreMetadata(manager: DownloadHandler) {
 
   // Should make sure metadata path exists since the user may have deleted it
   await invoke('dir_create', {
-    path: await getBackupMetadataPath()
+    path: await getBackupMetadataPath(),
   })
 
   // It is possible the unpatched backup is mistakenly patched
   await invoke('delete_file', {
-    path: await getBackupMetadataPath() + '\\global-metadata-unpatched.dat'
+    path: (await getBackupMetadataPath()) + '\\global-metadata-unpatched.dat',
   })
 
   // Download the file
-  manager.addDownload(metaLink, await getBackupMetadataPath() + '\\global-metadata-unpatched.dat', () => {
+  manager.addDownload(metaLink, (await getBackupMetadataPath()) + '\\global-metadata-unpatched.dat', () => {
     unpatchGame()
   })
   console.log('Restoring backedup metadata')

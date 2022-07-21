@@ -12,20 +12,12 @@
   "tauri": {
     "allowlist": {
       "fs": {
-        "scope": [
-          "$DATA",
-          "$DATA/cultivation",
-          "$DATA/cultivation/*"
-        ]
+        "scope": ["$DATA", "$DATA/cultivation", "$DATA/cultivation/*"]
       },
       "protocol": {
         "all": true,
         "asset": true,
-        "assetScope": [
-          "$DATA",
-          "$DATA/cultivation",
-          "$DATA/cultivation/*"
-        ]
+        "assetScope": ["$DATA", "$DATA/cultivation", "$DATA/cultivation/*"]
       },
       "all": true
     },
@@ -37,13 +29,7 @@
         "depends": []
       },
       "externalBin": [],
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ],
+      "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
       "identifier": "io.grasscutter",
       "shortDescription": "A game launcher.",
       "longDescription": "A launcher for a certain anime game that proxies all related game traffic to external servers.",
@@ -54,11 +40,7 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [
-        "lang/*.json",
-        "keys/*",
-        "./mhycrypto.dll"
-      ],
+      "resources": ["lang/*.json", "keys/*", "./mhycrypto.dll"],
       "targets": "all",
       "windows": {
         "allowDowngrades": false,

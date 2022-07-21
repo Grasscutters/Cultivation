@@ -4,10 +4,12 @@ export async function toggleEncryption(path: string) {
   let serverConf
 
   try {
-    serverConf = JSON.parse(await invoke('read_file', {
-      path,
-    }))
-  } catch(e) {
+    serverConf = JSON.parse(
+      await invoke('read_file', {
+        path,
+      })
+    )
+  } catch (e) {
     console.log(`Server config at ${path} not found or invalid`)
     return
   }
@@ -28,10 +30,12 @@ export async function encryptionEnabled(path: string) {
   let serverConf
 
   try {
-    serverConf = JSON.parse(await invoke('read_file', {
-      path,
-    }))
-  } catch(e) {
+    serverConf = JSON.parse(
+      await invoke('read_file', {
+        path,
+      })
+    )
+  } catch (e) {
     console.log(`Server config at ${path} not found or invalid`)
     return false
   }

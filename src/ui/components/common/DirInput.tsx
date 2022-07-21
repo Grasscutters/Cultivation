@@ -14,7 +14,7 @@ interface IProps {
   readonly?: boolean
   placeholder?: string
   folder?: boolean
-  customClearBehaviour?: () => void,
+  customClearBehaviour?: () => void
   openFolder?: string
 }
 
@@ -31,7 +31,7 @@ export default class DirInput extends React.Component<IProps, IState> {
     this.state = {
       value: props.value || '',
       placeholder: this.props.placeholder || 'Select file or folder...',
-      folder: this.props.folder || false
+      folder: this.props.folder || false,
     }
 
     this.handleIconClick = this.handleIconClick.bind(this)
@@ -54,8 +54,8 @@ export default class DirInput extends React.Component<IProps, IState> {
   async componentDidMount() {
     if (!this.props.placeholder) {
       const translation = await translate('components.select_file')
-      this.setState( {
-        placeholder: translation
+      this.setState({
+        placeholder: translation,
       })
     }
   }
@@ -65,15 +65,13 @@ export default class DirInput extends React.Component<IProps, IState> {
 
     if (this.state.folder) {
       path = await open({
-        directory: true
+        directory: true,
       })
     } else {
       console.log(this.props.openFolder)
       path = await open({
-        filters: [
-          { name: 'Files', extensions: this.props.extensions || ['*'] }
-        ],
-        defaultPath: this.props.openFolder
+        filters: [{ name: 'Files', extensions: this.props.extensions || ['*'] }],
+        defaultPath: this.props.openFolder,
       })
     }
 
@@ -81,7 +79,7 @@ export default class DirInput extends React.Component<IProps, IState> {
     if (!path) return
 
     this.setState({
-      value: path
+      value: path,
     })
 
     if (this.props.onChange) this.props.onChange(path)
@@ -89,12 +87,13 @@ export default class DirInput extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div className='DirInput'>
+      <div className="DirInput">
         <TextInput
           value={this.state.value}
           placeholder={this.state.placeholder}
           clearable={this.props.clearable !== undefined ? this.props.clearable : true}
-          readOnly={this.props.readonly !== undefined ? this.props.readonly : true } onChange={(text: string) => {
+          readOnly={this.props.readonly !== undefined ? this.props.readonly : true}
+          onChange={(text: string) => {
             this.setState({ value: text })
 
             if (this.props.onChange) this.props.onChange(text)

@@ -4,10 +4,10 @@ import Close from '../../resources/icons/close.svg'
 import './MiniDialog.css'
 
 interface IProps {
-  children: React.ReactNode[] | React.ReactNode;
-  title?: string;
-  closeable?: boolean;
-  closeFn: () => void;
+  children: React.ReactNode[] | React.ReactNode
+  title?: string
+  closeable?: boolean
+  closeFn: () => void
 }
 
 export default class MiniDialog extends React.Component<IProps, never> {
@@ -19,7 +19,7 @@ export default class MiniDialog extends React.Component<IProps, never> {
     document.addEventListener('mousedown', (evt) => {
       const tgt = evt.target as HTMLElement
       const isInside = tgt.closest('.MiniDialog') !== null
-      
+
       if (!isInside) {
         this.props.closeFn()
       }
@@ -33,13 +33,12 @@ export default class MiniDialog extends React.Component<IProps, never> {
   render() {
     return (
       <div className="MiniDialog" id="miniDialogContainer">
-        {
-          this.props.closeable !== undefined && this.props.closeable ?
-            <div className="MiniDialogTop" id="miniDialogContainerTop" onClick={this.props.closeFn}>
-              <span>{this.props?.title}</span>
-              <img src={Close} className="MiniDialogClose" id="miniDialogButtonClose" />
-            </div> : null
-        }
+        {this.props.closeable !== undefined && this.props.closeable ? (
+          <div className="MiniDialogTop" id="miniDialogContainerTop" onClick={this.props.closeFn}>
+            <span>{this.props?.title}</span>
+            <img src={Close} className="MiniDialogClose" id="miniDialogButtonClose" />
+          </div>
+        ) : null}
 
         <div className="MiniDialogInner" id="miniDialogContent">
           {this.props.children}

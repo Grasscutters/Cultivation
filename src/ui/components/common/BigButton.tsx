@@ -2,14 +2,14 @@ import React from 'react'
 import './BigButton.css'
 
 interface IProps {
-  children: React.ReactNode;
-  onClick: () => unknown;
-  id: string;
-  disabled?: boolean;
+  children: React.ReactNode
+  onClick: () => unknown
+  id: string
+  disabled?: boolean
 }
 
 interface IState {
-  disabled?: boolean;
+  disabled?: boolean
 }
 
 export default class BigButton extends React.Component<IProps, IState> {
@@ -17,7 +17,7 @@ export default class BigButton extends React.Component<IProps, IState> {
     super(props)
 
     this.state = {
-      disabled: this.props.disabled
+      disabled: this.props.disabled,
     }
 
     this.handleClick = this.handleClick.bind(this)
@@ -25,7 +25,7 @@ export default class BigButton extends React.Component<IProps, IState> {
 
   static getDerivedStateFromProps(props: IProps, _state: IState) {
     return {
-      disabled: props.disabled
+      disabled: props.disabled,
     }
   }
 
@@ -37,7 +37,11 @@ export default class BigButton extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div className={'BigButton ' + (this.state.disabled ? 'disabled' : '')} onClick={this.handleClick} id={this.props.id}>
+      <div
+        className={'BigButton ' + (this.state.disabled ? 'disabled' : '')}
+        onClick={this.handleClick}
+        id={this.props.id}
+      >
         <div className="BigButtonText">{this.props.children}</div>
       </div>
     )

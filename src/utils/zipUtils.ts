@@ -7,7 +7,7 @@ export function unzip(file: string, dest: string, onFinish?: () => void) {
     destpath: dest,
   })
 
-  listen('extract_end', ({payload}) => {
+  listen('extract_end', ({ payload }) => {
     if (payload === file && onFinish) {
       onFinish()
     }

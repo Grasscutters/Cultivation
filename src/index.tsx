@@ -7,23 +7,15 @@ import Debug from './ui/Debug'
 
 import { getConfigOption } from './utils/configuration'
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-)
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
-let isDebug = false;
+let isDebug = false
 
-(async() => {
+;async () => {
   isDebug = await getConfigOption('debug_enabled')
-})
+}
 
-root.render(
-  <React.StrictMode>
-    {
-      isDebug ? <Debug /> : <App />
-    }
-  </React.StrictMode>
-)
+root.render(<React.StrictMode>{isDebug ? <Debug /> : <App />}</React.StrictMode>)
 
 import reportWebVitals from './utils/reportWebVitals'
 isDebug && reportWebVitals(console.log)

@@ -1,4 +1,4 @@
-.Checkbox input[type="checkbox"] {
+.Checkbox input[type='checkbox'] {
   display: none;
 }
 
@@ -17,7 +17,7 @@
 
 .CheckboxDisplay img {
   height: 100%;
-  filter: invert(99%) sepia(0%) saturate(1188%) hue-rotate(186deg) brightness(97%) contrast(67%)
+  filter: invert(99%) sepia(0%) saturate(1188%) hue-rotate(186deg) brightness(97%) contrast(67%);
 }
 
 .Checkbox label {

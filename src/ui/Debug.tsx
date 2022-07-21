@@ -3,8 +3,8 @@ import './App.css'
 
 import TopBar from './components/TopBar'
 
-import {invoke} from '@tauri-apps/api/tauri'
-import {dataDir} from '@tauri-apps/api/path'
+import { invoke } from '@tauri-apps/api/tauri'
+import { dataDir } from '@tauri-apps/api/path'
 import TextInput from './components/common/TextInput'
 
 let proxyAddress = ''
@@ -15,7 +15,7 @@ async function setProxyAddress(address: string) {
 }
 
 async function startProxy() {
-  await invoke('connect', { port: 2222, certificatePath: await dataDir() + '\\cultivation\\ca' })
+  await invoke('connect', { port: 2222, certificatePath: (await dataDir()) + '\\cultivation\\ca' })
   await invoke('open_in_browser', { url: 'https://hoyoverse.com' })
 }
 
@@ -24,14 +24,14 @@ async function stopProxy() {
 }
 
 async function generateCertificates() {
-  await invoke('generate_ca_files', { path: await dataDir() + '\\cultivation' })
+  await invoke('generate_ca_files', { path: (await dataDir()) + '\\cultivation' })
 }
 
 async function generateInfo() {
   console.log({
-    certificatePath: await dataDir() + '\\cultivation\\ca',
+    certificatePath: (await dataDir()) + '\\cultivation\\ca',
     isAdmin: await invoke('is_elevated'),
-    connectingTo: proxyAddress
+    connectingTo: proxyAddress,
   })
   alert('check your dev console and send that in #cultivation')
 }
@@ -40,7 +40,7 @@ function none() {
   alert('none')
 }
 
-class Debug extends React.Component{
+class Debug extends React.Component {
   render() {
     return (
       <div className="App">

@@ -25,16 +25,16 @@ import { getTheme, loadTheme } from '../utils/themes'
 import { unpatchGame } from '../utils/metadata'
 
 interface IProps {
-  [key: string]: never;
+  [key: string]: never
 }
 
 interface IState {
-  isDownloading: boolean;
-  optionsOpen: boolean;
-  miniDownloadsOpen: boolean;
-  downloadsOpen: boolean;
-  gameDownloadsOpen: boolean;
-  bgFile: string;
+  isDownloading: boolean
+  optionsOpen: boolean
+  miniDownloadsOpen: boolean
+  downloadsOpen: boolean
+  gameDownloadsOpen: boolean
+  bgFile: string
 }
 
 const DEFAULT_BG = 'https://api.grasscutter.io/cultivation/bgfile'
@@ -57,7 +57,7 @@ class App extends React.Component<IProps, IState> {
       console.log(payload)
     })
 
-    listen('jar_extracted', ({ payload }: { payload: string}) => {
+    listen('jar_extracted', ({ payload }: { payload: string }) => {
       setConfigOption('grasscutter_path', payload)
     })
 
@@ -69,9 +69,11 @@ class App extends React.Component<IProps, IState> {
         const unpatched = await unpatchGame()
 
         console.log(`unpatched game? ${unpatched}`)
-  
+
         if (!unpatched) {
-          alert(`Could not unpatch game! (You should be able to find your metadata backup in ${await dataDir()}\\cultivation\\)`)
+          alert(
+            `Could not unpatch game! (You should be able to find your metadata backup in ${await dataDir()}\\cultivation\\)`
+          )
         }
       }
     })
@@ -108,45 +110,55 @@ class App extends React.Component<IProps, IState> {
     // Get custom bg AFTER theme is loaded !! important !!
     const custom_bg = await getConfigOption('customBackground')
 
-    if(!custom_bg || !/png|jpg|jpeg$/.test(custom_bg)) {
-      if(game_path) {
+    if (!custom_bg || !/png|jpg|jpeg$/.test(custom_bg)) {
+      if (game_path) {
         // Get the bg by invoking, then set the background to that bg.
         const bgLoc: string = await invoke('get_bg_file', {
           bgPath: root_path,
-          appdata: await dataDir()
+          appdata: await dataDir(),
         })
 
-        bgLoc && this.setState({
-          bgFile: bgLoc
-        }, this.forceUpdate)
+        bgLoc &&
+          this.setState(
+            {
+              bgFile: bgLoc,
+            },
+            this.forceUpdate
+          )
       }
     } else {
       const isUrl = /^http(s)?:\/\//gm.test(custom_bg)
 
       if (!isUrl) {
         const isValid = await invoke('dir_exists', {
-          path: custom_bg
+          path: custom_bg,
         })
 
-        this.setState({
-          bgFile: isValid ? convertFileSrc(custom_bg) : DEFAULT_BG
-        }, this.forceUpdate)
+        this.setState(
+          {
+            bgFile: isValid ? convertFileSrc(custom_bg) : DEFAULT_BG,
+          },
+          this.forceUpdate
+        )
       } else {
         // Check if URL returns a valid image.
         const isValid = await invoke('valid_url', {
-          url: custom_bg
+          url: custom_bg,
         })
 
-        this.setState({
-          bgFile: isValid ? custom_bg : DEFAULT_BG
-        }, this.forceUpdate)
+        this.setState(
+          {
+            bgFile: isValid ? custom_bg : DEFAULT_BG,
+          },
+          this.forceUpdate
+        )
       }
     }
 
     if (!cert_generated) {
       // Generate the certificate
       await invoke('generate_ca_files', {
-        path: await dataDir() + 'cultivation'
+        path: (await dataDir()) + 'cultivation',
       })
 
       await setConfigOption('cert_generated', true)
@@ -155,18 +167,23 @@ class App extends React.Component<IProps, IState> {
     // Period check to only show progress bar when downloading files
     setInterval(() => {
       this.setState({
-        isDownloading: downloadHandler.getDownloads().filter(d => d.status !== 'finished')?.length > 0
+        isDownloading: downloadHandler.getDownloads().filter((d) => d.status !== 'finished')?.length > 0,
       })
     }, 1000)
   }
 
   render() {
     return (
-      <div className="App" style={
-        this.state.bgFile ? {
-          background: `url("${this.state.bgFile}") fixed`,
-        } : {}
-      }>
+      <div
+        className="App"
+        style={
+          this.state.bgFile
+            ? {
+                background: `url("${this.state.bgFile}") fixed`,
+              }
+            : {}
+        }
+      >
         <TopBar
           optFunc={() => {
             this.setState({ optionsOpen: !this.state.optionsOpen })
@@ -199,10 +216,7 @@ class App extends React.Component<IProps, IState> {
         {
           // Download menu
           this.state.downloadsOpen ? (
-            <Downloads
-              downloadManager={downloadHandler}
-              closeFn={() => this.setState({ downloadsOpen: false })}
-            />
+            <Downloads downloadManager={downloadHandler} closeFn={() => this.setState({ downloadsOpen: false })} />
           ) : null
         }
 
@@ -219,22 +233,18 @@ class App extends React.Component<IProps, IState> {
         {
           // Game downloads menu
           this.state.gameDownloadsOpen ? (
-            <Game
-              downloadManager={downloadHandler}
-              closeFn={() => this.setState({ gameDownloadsOpen: false })}
-            />
+            <Game downloadManager={downloadHandler} closeFn={() => this.setState({ gameDownloadsOpen: false })} />
           ) : null
         }
 
         <div className="BottomSection" id="bottomSectionContainer">
           <ServerLaunchSection />
 
-          <div id="DownloadProgress"
+          <div
+            id="DownloadProgress"
             onClick={() => this.setState({ miniDownloadsOpen: !this.state.miniDownloadsOpen })}
           >
-            { this.state.isDownloading ?
-              <MainProgressBar downloadManager={downloadHandler} />
-              : null }
+            {this.state.isDownloading ? <MainProgressBar downloadManager={downloadHandler} /> : null}
           </div>
         </div>
       </div>

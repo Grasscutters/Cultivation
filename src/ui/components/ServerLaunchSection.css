@@ -109,17 +109,17 @@
 }
 
 @media (max-width: 1040px) {
-    #playButton {
-        right: 5%;
-    }
+  #playButton {
+    right: 5%;
+  }
 }
 
 @media (max-width: 870px) {
-    #playButton {
-        min-width: 235px;
-    }
+  #playButton {
+    min-width: 235px;
+  }
 
-    #officialPlay {
-        width: 40%;
-    }
+  #officialPlay {
+    width: 40%;
+  }
 }
