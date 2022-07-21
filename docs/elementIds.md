@@ -102,9 +102,9 @@ This does not include commonly used components (buttons, divider lines, commit a
 This is not full list of all classes, rather its list of classes for commonly used components that can not be accessed using element id system.
 
 | .Class                    | Description                                             |
-| ------------------------- | ------------------------------------------------------- | --- |
+| ------------------------- | ------------------------------------------------------- |
 | `.BigButton`              | Class for all buttons                                   |
-| `.BigButtonText`          | Text inside a button                                    |     |
+| `.BigButtonText`          | Text inside a button                                    |
 | `.Checkbox`               | Checkbox container                                      |
 | `.CheckboxDisplay`        | Content of checkbox                                     |
 | `.DirInput`               | Container for DirInput                                  |
