@@ -53,7 +53,7 @@ bool gen_global_metadata_key(uint8_t* src, size_t srcn) {
     return true;
 }
 
-extern "C" void decrypt_global_metadata(uint8_t *data, size_t size) {
+void decrypt_global_metadata_inner(uint8_t *data, size_t size) {
     uint8_t longkey[0xB00];
     uint8_t longkeyp[0xB0];
     uint8_t shortkey[16];
@@ -87,7 +87,16 @@ extern "C" void decrypt_global_metadata(uint8_t *data, size_t size) {
     recrypt_global_metadata_header_string_literals(data, size, literal_dec_key);
 }
 
-extern "C" void encrypt_global_metadata(uint8_t* data, size_t size) {
+extern "C" int decrypt_global_metadata(uint8_t *data, size_t size) {
+    try {
+        decrypt_global_metadata_inner(data, size);
+        return 0;
+    } catch (...) {
+        return -1;
+    }
+}
+
+void encrypt_global_metadata_inner(uint8_t* data, size_t size) {
     uint8_t literal_dec_key[0x5000];
 
     gen_global_metadata_key(data + size - 0x4000, 0x4000);
@@ -124,5 +133,14 @@ extern "C" void encrypt_global_metadata(uint8_t* data, size_t size) {
             memcpy(prev, curr, 16);
             memcpy(&data[off + j * 0x10], curr, 16);
         }
+    }
+}
+
+extern "C" int encrypt_global_metadata(uint8_t* data, size_t size) {
+    try {
+        encrypt_global_metadata_inner(data, size);
+        return 0;
+    } catch (...) {
+        return -1;
     }
 }

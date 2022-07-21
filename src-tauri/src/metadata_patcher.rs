@@ -4,29 +4,10 @@ use std::fs::OpenOptions;
 use std::io::Read;
 use std::io::Write;
 
+// For these two functions, a non-zero return value indicates failure.
 extern "C" {
-  fn decrypt_global_metadata(data: *mut u8, size: u64);
-  fn encrypt_global_metadata(data: *mut u8, size: u64);
-}
-
-fn dll_decrypt_global_metadata(
-  data: *mut u8,
-  size: u64,
-) -> Result<bool, Box<dyn std::error::Error>> {
-  unsafe {
-    decrypt_global_metadata(data, size);
-    Ok(true)
-  }
-}
-
-fn dll_encrypt_global_metadata(
-  data: *mut u8,
-  size: u64,
-) -> Result<bool, Box<dyn std::error::Error>> {
-  unsafe {
-    encrypt_global_metadata(data, size);
-    Ok(true)
-  }
+  fn decrypt_global_metadata(data: *mut u8, size: usize) -> i32;
+  fn encrypt_global_metadata(data: *mut u8, size: usize) -> i32;
 }
 
 #[tauri::command]
@@ -89,15 +70,13 @@ fn decrypt_metadata(file_path: &str) -> Vec<u8> {
   }
 
   // Decrypt metadata file
-  match dll_decrypt_global_metadata(data.as_mut_ptr(), data.len().try_into().unwrap()) {
-    Ok(_) => {
-      println!("Successfully decrypted global-metadata");
-      data
-    }
-    Err(e) => {
-      println!("Failed to decrypt global-metadata: {}", e);
-      Vec::new()
-    }
+  let success = unsafe { decrypt_global_metadata(data.as_mut_ptr(), data.len()) } == 0;
+  if success {
+    println!("Successfully decrypted global-metadata");
+    data
+  } else {
+    println!("Failed to decrypt global-metadata");
+    Vec::new()
   }
 }
 
@@ -150,15 +129,13 @@ fn replace_rsa_key(old_data: &str, to_replace: &str, file_name: &str) -> String 
 
 fn encrypt_metadata(old_data: &[u8]) -> Vec<u8> {
   let mut data = old_data.to_vec();
-  match dll_encrypt_global_metadata(data.as_mut_ptr(), data.len().try_into().unwrap()) {
-    Ok(_) => {
-      println!("Successfully encrypted global-metadata");
-      data
-    }
-    Err(e) => {
-      println!("Failed to encrypt global-metadata: {}", e);
-      Vec::new()
-    }
+  let success = unsafe { encrypt_global_metadata(data.as_mut_ptr(), data.len()) } == 0;
+  if success {
+    println!("Successfully encrypted global-metadata");
+    data
+  } else {
+    println!("Failed to encrypt global-metadata");
+    Vec::new()
   }
 }
 
