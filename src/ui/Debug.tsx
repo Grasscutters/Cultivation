@@ -44,7 +44,7 @@ class Debug extends React.Component {
   render() {
     return (
       <div className="App">
-        <TopBar optFunc={none} downFunc={none} gameFunc={none} />
+        <TopBar optFunc={none} downFunc={none} gameFunc={none} modFunc={none} />
         <TextInput readOnly={false} initalValue={'change to set proxy address'} onChange={setProxyAddress} />
         <button onClick={startProxy}>start proxy</button>
         <button onClick={stopProxy}>stop proxy</button>

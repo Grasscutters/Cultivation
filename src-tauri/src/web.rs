@@ -1,4 +1,4 @@
-use reqwest::header::USER_AGENT;
+use reqwest::header::{CONTENT_TYPE, USER_AGENT};
 
 pub(crate) async fn query(site: &str) -> String {
   let client = reqwest::Client::new();
@@ -6,6 +6,7 @@ pub(crate) async fn query(site: &str) -> String {
   let response = client
     .get(site)
     .header(USER_AGENT, "cultivation")
+    .header(CONTENT_TYPE, "application/json")
     .send()
     .await
     .unwrap();

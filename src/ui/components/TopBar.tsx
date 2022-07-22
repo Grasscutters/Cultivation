@@ -15,6 +15,7 @@ interface IProps {
   optFunc: () => void
   downFunc: () => void
   gameFunc: () => void
+  modFunc: () => void
 }
 
 interface IState {
@@ -115,6 +116,9 @@ export default class TopBar extends React.Component<IProps, IState> {
           </div>
           <div id="downloadsBtn" className="TopButton" onClick={this.props.downFunc}>
             <img src={downBtn} alt="downloads" />
+          </div>
+          <div id="modsBtn" onClick={this.props.modFunc} className="TopButton">
+            MODS
           </div>
           {/* <div id="gameBtn" className="TopButton" onClick={this.props.gameFunc}>
             <img src={gameBtn} alt="game" />
