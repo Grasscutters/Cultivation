@@ -2,11 +2,8 @@ use duct::cmd;
 
 #[tauri::command]
 pub fn run_program(path: String) {
-  // Open in new thread to prevent blocking.
-  std::thread::spawn(move || {
-    // Without unwrap_or, this can crash when UAC prompt is denied
-    open::that(&path).unwrap_or(());
-  });
+  // Without unwrap_or, this can crash when UAC prompt is denied
+  open::that(&path).unwrap_or(());
 }
 
 #[tauri::command]
@@ -18,11 +15,11 @@ pub fn run_program_relative(path: String) {
   let mut path_buf = std::path::PathBuf::from(&path);
   path_buf.pop();
 
-  // Open in new thread to prevent blocking.
-  std::thread::spawn(move || {
-    // Without unwrap_or, this can crash when UAC prompt is denied
-    open::that(&path).unwrap_or(());
-  });
+  // Set new working directory
+  std::env::set_current_dir(&path_buf).unwrap();
+
+  // Without unwrap_or, this can crash when UAC prompt is denied
+  open::that(&path).unwrap_or(());
 
   // Restore the original working directory
   std::env::set_current_dir(&cwd).unwrap();

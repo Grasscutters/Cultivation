@@ -202,11 +202,15 @@ export default class ServerLaunchSection extends React.Component<{}, IState> {
   async launchMigoto() {
     const config = await getConfig()
 
-    // Get game exe from game path, so we can watch it
-    const pathArr = config.game_install_path.replace(/\\/g, '/').split('/')
-    const gameExec = pathArr[pathArr.length - 1]
+    if (!config.migoto_path) return alert('Migoto not installed or set!')
 
-    await this.playGame(config.migoto_path, gameExec)
+    // Get game exe from game path, so we can watch it
+    const pathArr = config.migoto_path.replace(/\\/g, '/').split('/')
+    const migotoExec = pathArr[pathArr.length - 1]
+
+    await invoke('run_program_relative', { path: config.migoto_path })
+
+    await this.playGame()
   }
 
   setIp(text: string) {
