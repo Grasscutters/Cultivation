@@ -157,7 +157,7 @@ export default class ServerLaunchSection extends React.Component<{}, IState> {
       path: exe || config.game_install_path,
     })
 
-    if (gameExists) await invoke('run_program', { path: exe || config.game_install_path })
+    if (gameExists) await invoke('run_program_relative', { path: exe || config.game_install_path })
     else alert('Game not found! At: ' + (exe || config.game_install_path))
   }
 

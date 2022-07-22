@@ -308,6 +308,9 @@ export default class Options extends React.Component<IProps, IState> {
               <div className="OptionLabel" id="menuOptionsLabelAkebi">
                 <Tr text="swag.akebi" />
               </div>
+              <div className="OptionValue" id="menuOptionsDirMigoto">
+                <DirInput onChange={this.setAkebi} value={this.state?.akebi_path} extensions={['exe']} />
+              </div>
             </div>
           </>
         )}
