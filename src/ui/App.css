@@ -35,12 +35,29 @@ select:focus {
 .TopButton {
   height: 60%;
   margin: 0px 10px;
+
+  color: #c5c5c5;
+  transition: color 0.1s ease-in-out;
+}
+
+.TopButton span {
+  display: inline-block;
+  line-height: normal;
+  border-bottom: 1px solid #c5c5c5;
+}
+
+.TopButton img {
   filter: invert(95%) sepia(0%) saturate(18%) hue-rotate(153deg) brightness(88%) contrast(81%);
 
   transition: filter 0.1s ease-in-out;
 }
 
 .TopButton:hover {
+  color: #fff;
+  cursor: pointer;
+}
+
+.TopButton:hover img {
   filter: invert(100%) sepia(0%) saturate(18%) hue-rotate(153deg) brightness(100%) contrast(100%);
   cursor: pointer;
 }

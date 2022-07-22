@@ -7,9 +7,10 @@ import { getTheme, loadTheme } from '../utils/themes'
 import { convertFileSrc, invoke } from '@tauri-apps/api/tauri'
 import { dataDir } from '@tauri-apps/api/path'
 import { Main } from './Main'
+import { Mods } from './Mods'
 
 interface IState {
-  moddingOpen: boolean
+  page: string
   bgFile: string
 }
 
@@ -21,7 +22,7 @@ class App extends React.Component<Readonly<unknown>, IState> {
     super(props)
 
     this.state = {
-      moddingOpen: false,
+      page: 'main',
       bgFile: DEFAULT_BG,
     }
   }
@@ -85,6 +86,13 @@ class App extends React.Component<Readonly<unknown>, IState> {
         )
       }
     }
+
+    window.addEventListener('changePage', (e) => {
+      this.setState({
+        // @ts-expect-error - TS doesn't like our custom event
+        page: e.detail,
+      })
+    })
   }
 
   render() {
@@ -99,11 +107,14 @@ class App extends React.Component<Readonly<unknown>, IState> {
             : {}
         }
       >
-        {this.state.moddingOpen ? null : (
-          <>
-            <Main downloadHandler={downloadHandler} />
-          </>
-        )}
+        {(() => {
+          switch (this.state.page) {
+            case 'modding':
+              return <Mods downloadHandler={downloadHandler} />
+            default:
+              return <Main downloadHandler={downloadHandler} />
+          }
+        })()}
       </div>
     )
   }

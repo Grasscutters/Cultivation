@@ -20,6 +20,11 @@ import { appWindow } from '@tauri-apps/api/window'
 import { unpatchGame } from '../utils/metadata'
 import DownloadHandler from '../utils/download'
 
+// Graphics
+import cogBtn from '../resources/icons/cog.svg'
+import downBtn from '../resources/icons/download.svg'
+import wrenchBtn from '../resources/icons/wrench.svg'
+
 interface IProps {
   downloadHandler: DownloadHandler
 }
@@ -44,8 +49,6 @@ export class Main extends React.Component<IProps, IState> {
       gameDownloadsOpen: false,
       moddingOpen: false,
     }
-
-    invoke('list_submissions')
 
     listen('lang_error', (payload) => {
       console.log(payload)
@@ -111,14 +114,36 @@ export class Main extends React.Component<IProps, IState> {
   render() {
     return (
       <>
-        <TopBar
-          optFunc={() => {
-            this.setState({ optionsOpen: !this.state.optionsOpen })
-          }}
-          downFunc={() => this.setState({ downloadsOpen: !this.state.downloadsOpen })}
-          gameFunc={() => this.setState({ gameDownloadsOpen: !this.state.gameDownloadsOpen })}
-          modFunc={() => this.setState({ moddingOpen: !this.state.moddingOpen })}
-        />
+        <TopBar>
+          <div
+            id="settingsBtn"
+            onClick={() => this.setState({ optionsOpen: !this.state.optionsOpen })}
+            className="TopButton"
+          >
+            <img src={cogBtn} alt="settings" />
+          </div>
+          <div
+            id="downloadsBtn"
+            className="TopButton"
+            onClick={() => this.setState({ downloadsOpen: !this.state.downloadsOpen })}
+          >
+            <img src={downBtn} alt="downloads" />
+          </div>
+          <div
+            id="modsBtn"
+            onClick={() => {
+              // Create and dispatch a custom "openMods" event
+              const event = new CustomEvent('changePage', { detail: 'modding' })
+              window.dispatchEvent(event)
+            }}
+            className="TopButton"
+          >
+            <img src={wrenchBtn} alt="mods" />
+          </div>
+          {/* <div id="gameBtn" className="TopButton" onClick={() => this.setState({ gameDownloadsOpen: !this.state.gameDownloadsOpen })}>
+            <img src={gameBtn} alt="game" />
+          </div> */}
+        </TopBar>
 
         <RightBar />
 
