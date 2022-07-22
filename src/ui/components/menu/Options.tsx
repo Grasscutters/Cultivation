@@ -37,6 +37,7 @@ interface IState {
 
   // Swag stuff
   akebi_path: string
+  migoto_path: string
 }
 
 export default class Options extends React.Component<IProps, IState> {
@@ -60,6 +61,7 @@ export default class Options extends React.Component<IProps, IState> {
 
       // Swag stuff
       akebi_path: '',
+      migoto_path: '',
     }
 
     this.setGameExecutable = this.setGameExecutable.bind(this)
@@ -100,6 +102,7 @@ export default class Options extends React.Component<IProps, IState> {
 
       // Swag stuff
       akebi_path: config.akebi_path || '',
+      migoto_path: config.migoto_path || '',
     })
 
     this.forceUpdate()
@@ -134,6 +137,14 @@ export default class Options extends React.Component<IProps, IState> {
 
     this.setState({
       akebi_path: value,
+    })
+  }
+
+  setMigoto(value: string) {
+    setConfigOption('migoto_path', value)
+
+    this.setState({
+      migoto_path: value,
     })
   }
 
@@ -308,8 +319,16 @@ export default class Options extends React.Component<IProps, IState> {
               <div className="OptionLabel" id="menuOptionsLabelAkebi">
                 <Tr text="swag.akebi" />
               </div>
-              <div className="OptionValue" id="menuOptionsDirMigoto">
+              <div className="OptionValue" id="menuOptionsDirAkebi">
                 <DirInput onChange={this.setAkebi} value={this.state?.akebi_path} extensions={['exe']} />
+              </div>
+            </div>
+            <div className="OptionSection" id="menuOptionsContainerMigoto">
+              <div className="OptionLabel" id="menuOptionsLabelMigoto">
+                <Tr text="swag.migoto" />
+              </div>
+              <div className="OptionValue" id="menuOptionsDirMigoto">
+                <DirInput onChange={this.setMigoto} value={this.state?.migoto_path} extensions={['exe']} />
               </div>
             </div>
           </>

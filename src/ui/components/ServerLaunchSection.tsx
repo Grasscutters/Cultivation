@@ -31,6 +31,8 @@ interface IState {
   httpsEnabled: boolean
 
   swag: boolean
+  akebiSet: boolean
+  migotoSet: boolean
 }
 
 export default class ServerLaunchSection extends React.Component<{}, IState> {
@@ -49,6 +51,8 @@ export default class ServerLaunchSection extends React.Component<{}, IState> {
       httpsLabel: '',
       httpsEnabled: false,
       swag: false,
+      akebiSet: false,
+      migotoSet: false,
     }
 
     this.toggleGrasscutter = this.toggleGrasscutter.bind(this)
@@ -74,6 +78,8 @@ export default class ServerLaunchSection extends React.Component<{}, IState> {
       httpsLabel: await translate('main.https_enable'),
       httpsEnabled: config.https_enabled || false,
       swag: config.swag_mode || false,
+      akebiSet: config.akebi_path !== '',
+      migotoSet: config.migoto_path !== '',
     })
   }
 
@@ -192,6 +198,16 @@ export default class ServerLaunchSection extends React.Component<{}, IState> {
     await this.playGame(config.akebi_path, gameExec)
   }
 
+  async launchMigoto() {
+    const config = await getConfig()
+
+    // Get game exe from game path, so we can watch it
+    const pathArr = config.game_install_path.replace(/\\/g, '/').split('/')
+    const gameExec = pathArr[pathArr.length - 1]
+
+    await this.playGame(config.migoto_path, gameExec)
+  }
+
   setIp(text: string) {
     this.setState({
       ip: text,
@@ -266,9 +282,17 @@ export default class ServerLaunchSection extends React.Component<{}, IState> {
           </BigButton>
           {this.state.swag && (
             <>
-              <BigButton onClick={this.launchAkebi} id="akebiLaunch">
-                <img className="AkebiIcon" id="akebiIcon" src={Akebi} />
-              </BigButton>
+              {this.state.akebiSet && (
+                <BigButton onClick={this.launchAkebi} id="akebiLaunch">
+                  <img className="AkebiIcon" id="akebiIcon" src={Akebi} />
+                </BigButton>
+              )}
+
+              {this.state.migotoSet && (
+                <BigButton onClick={this.launchMigoto} id="migotoLaunch">
+                  3DM
+                </BigButton>
+              )}
             </>
           )}
           <BigButton onClick={this.launchServer} id="serverLaunch">
