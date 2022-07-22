@@ -58,6 +58,7 @@ export default class ServerLaunchSection extends React.Component<{}, IState> {
     this.toggleGrasscutter = this.toggleGrasscutter.bind(this)
     this.playGame = this.playGame.bind(this)
     this.launchAkebi = this.launchAkebi.bind(this)
+    this.launchMigoto = this.launchMigoto.bind(this)
     this.setIp = this.setIp.bind(this)
     this.setPort = this.setPort.bind(this)
     this.toggleHttps = this.toggleHttps.bind(this)
