@@ -1,0 +1,25 @@
+.ModHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+
+  padding: 10px;
+
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  background: rgba(77, 77, 77, 0.6);
+}
+
+.ModHeaderTitle {
+}
+
+.ModHeaderTitle:hover {
+  cursor: pointer;
+}
+
+.ModHeaderTitle.selected {
+  border-bottom: 2px solid #fff;
+}
