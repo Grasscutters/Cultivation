@@ -1,4 +1,5 @@
 import React from 'react'
+import { LoadingCircle } from './LoadingCircle'
 
 import './ModList.css'
 
@@ -16,6 +17,10 @@ export class ModList extends React.Component<IProps, IState> {
   }
 
   render() {
-    return <div className="ModList"></div>
+    return (
+      <div className="ModList">
+        <LoadingCircle />
+      </div>
+    )
   }
 }
