@@ -34,6 +34,8 @@ export class Mods extends React.Component<IProps, IState> {
       isDownloading: false,
       category: '',
     }
+
+    this.setCategory = this.setCategory.bind(this)
   }
 
   async componentDidMount() {
