@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
 
-  width: 20%;
+  width: 23%;
   margin: 10px;
 
   background: rgb(99, 98, 98, 0.2);
@@ -18,6 +18,7 @@
   background: rgb(99, 98, 98, 0.8);
 }
 
+.ModAuthor,
 .ModName {
   width: 100%;
   text-overflow: ellipsis;
@@ -30,12 +31,45 @@
   font-weight: bold;
 }
 
-.ModListItem img {
+.ModAuthor {
+  font-weight: normal;
+  padding: 0 0 0 10px;
+}
+
+.ModTileDownload {
+  position: absolute;
+  object-fit: contain;
+
+  left: 35%;
+  top: 40%;
+
+  z-index: 999;
+
+  width: 40px !important;
+  height: 40px !important;
+
+  filter: invert(1);
+}
+
+.ModImage {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  width: 80%;
-  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ModImage img {
+  object-fit: cover;
+  width: 100%;
+  height: 150px;
 
   margin: 14px;
+}
+
+img.blur {
+  filter: blur(6px);
 }
 
 img.nsfw {
