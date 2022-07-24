@@ -8,6 +8,7 @@ import Download from '../../../resources/icons/download.svg'
 
 interface IProps {
   mod: ModData
+  onClick: (mod: ModData) => void
 }
 
 interface IState {
@@ -31,6 +32,7 @@ export class ModTile extends React.Component<IProps, IState> {
         className="ModListItem"
         onMouseEnter={() => this.setState({ hover: true })}
         onMouseLeave={() => this.setState({ hover: false })}
+        onClick={() => this.props.onClick(mod)}
       >
         <span className="ModName">{mod.name}</span>
         <span className="ModAuthor">{mod.submitter.name}</span>

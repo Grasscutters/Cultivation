@@ -1,5 +1,6 @@
 import React from 'react'
 import DownloadHandler from '../utils/download'
+import { ModData } from '../utils/gamebanana'
 import { ModHeader } from './components/mods/ModHeader'
 import { ModList } from './components/mods/ModList'
 import TopBar from './components/TopBar'
@@ -46,6 +47,10 @@ export class Mods extends React.Component<IProps, IState> {
     return
   }
 
+  async addDownload(mod: ModData) {
+    console.log('Downloading:', mod.name)
+  }
+
   async setCategory(value: string) {
     this.setState({
       category: value,
@@ -59,7 +64,7 @@ export class Mods extends React.Component<IProps, IState> {
 
         <ModHeader onChange={this.setCategory} headers={headers} defaultHeader={'hot'} />
 
-        <ModList mode={this.state.category} />
+        <ModList mode={this.state.category} addDownload={this.addDownload} />
       </div>
     )
   }

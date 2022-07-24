@@ -35,7 +35,7 @@ interface IState {
   miniDownloadsOpen: boolean
   downloadsOpen: boolean
   gameDownloadsOpen: boolean
-  moddingOpen: boolean
+  migotoSet: boolean
 }
 
 export class Main extends React.Component<IProps, IState> {
@@ -47,7 +47,7 @@ export class Main extends React.Component<IProps, IState> {
       miniDownloadsOpen: false,
       downloadsOpen: false,
       gameDownloadsOpen: false,
-      moddingOpen: false,
+      migotoSet: false,
     }
 
     listen('lang_error', (payload) => {
@@ -94,6 +94,10 @@ export class Main extends React.Component<IProps, IState> {
   async componentDidMount() {
     const cert_generated = await getConfigOption('cert_generated')
 
+    this.setState({
+      migotoSet: !!(await getConfigOption('migoto_path')),
+    })
+
     if (!cert_generated) {
       // Generate the certificate
       await invoke('generate_ca_files', {
@@ -129,17 +133,19 @@ export class Main extends React.Component<IProps, IState> {
           >
             <img src={downBtn} alt="downloads" />
           </div>
-          <div
-            id="modsBtn"
-            onClick={() => {
-              // Create and dispatch a custom "openMods" event
-              const event = new CustomEvent('changePage', { detail: 'modding' })
-              window.dispatchEvent(event)
-            }}
-            className="TopButton"
-          >
-            <img src={wrenchBtn} alt="mods" />
-          </div>
+          {this.state.migotoSet && (
+            <div
+              id="modsBtn"
+              onClick={() => {
+                // Create and dispatch a custom "openMods" event
+                const event = new CustomEvent('changePage', { detail: 'modding' })
+                window.dispatchEvent(event)
+              }}
+              className="TopButton"
+            >
+              <img src={wrenchBtn} alt="mods" />
+            </div>
+          )}
           {/* <div id="gameBtn" className="TopButton" onClick={() => this.setState({ gameDownloadsOpen: !this.state.gameDownloadsOpen })}>
             <img src={gameBtn} alt="game" />
           </div> */}

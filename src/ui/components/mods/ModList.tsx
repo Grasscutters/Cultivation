@@ -7,6 +7,7 @@ import { ModTile } from './ModTile'
 
 interface IProps {
   mode: string
+  addDownload: (mod: ModData) => void
 }
 
 interface IState {
@@ -16,6 +17,8 @@ interface IState {
 export class ModList extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
+
+    this.downloadMod = this.downloadMod.bind(this)
   }
 
   async componentDidMount() {
@@ -28,13 +31,17 @@ export class ModList extends React.Component<IProps, IState> {
     })
   }
 
+  async downloadMod(mod: ModData) {
+    this.props.addDownload(mod)
+  }
+
   render() {
     return (
       <div className="ModList">
         {this.state && this.state.modList ? (
           <div className="ModListInner">
             {this.state.modList.map((mod: ModData) => (
-              <ModTile mod={mod} key={mod.id} />
+              <ModTile mod={mod} key={mod.id} onClick={this.downloadMod} />
             ))}
           </div>
         ) : (
