@@ -1,0 +1,13 @@
+.ModListItem {
+  width: 20%;
+}
+
+.ModListItem img {
+  object-fit: cover;
+  width: 80%;
+  height: 100px;
+}
+
+img.nsfw {
+  filter: blur(16px);
+}

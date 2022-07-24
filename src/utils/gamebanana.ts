@@ -62,6 +62,21 @@ export interface RootCategory {
   _sIconUrl: string
 }
 
+export interface ModData {
+  id: number
+  name: string
+  images: string[]
+  dateadded: number
+  submitter: {
+    name: string
+    url: string
+  }
+  nsfw: boolean
+  likes: number
+  views: number
+  type: string
+}
+
 export async function getMods(mode: string) {
   const resp = JSON.parse(
     await invoke('list_submissions', {
@@ -75,25 +90,28 @@ export async function getMods(mode: string) {
 export async function formatGamebananaData(obj: GamebananaResponse[]) {
   if (!obj) return []
 
-  return obj.map((itm) => {
-    const img = itm?._aPreviewMedia?._aImages
+  return obj
+    .map((itm) => {
+      const img = itm?._aPreviewMedia?._aImages
 
-    return {
-      id: itm._idRow,
-      name: itm._sName,
-      images: img
-        ? img.map((i) => {
-            return i._sBaseUrl + i._sFile
-          })
-        : [],
-      dateadded: itm._tsDateAdded,
-      submitter: {
-        name: itm._aSubmitter._sName,
-        url: itm._aSubmitter._sProfileUrl,
-      },
-      nsfw: itm._bIsNsfw,
-      likes: itm?._nLikeCount || 0,
-      views: itm?._nViewCount || 0,
-    }
-  })
+      return {
+        id: itm._idRow,
+        name: itm._sName,
+        images: img
+          ? img.map((i) => {
+              return i._sBaseUrl + '/' + i._sFile220
+            })
+          : [],
+        dateadded: itm._tsDateAdded,
+        submitter: {
+          name: itm._aSubmitter._sName,
+          url: itm._aSubmitter._sProfileUrl,
+        },
+        nsfw: itm._bIsNsfw,
+        likes: itm?._nLikeCount || 0,
+        views: itm?._nViewCount || 0,
+        type: itm._sSingularTitle,
+      } as ModData
+    })
+    .filter((itm) => itm.type === 'Mod')
 }
