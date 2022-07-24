@@ -1,13 +1,76 @@
 .ModListItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   width: 20%;
+  margin: 10px;
+
+  background: rgb(99, 98, 98, 0.2);
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+
+  transition: background-color 0.1s ease-in-out;
+}
+
+.ModListItem:hover {
+  cursor: pointer;
+  background: rgb(99, 98, 98, 0.8);
+}
+
+.ModName {
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 10px 0 0 10px;
+  margin-left: 10px;
+
+  color: #fff;
+  font-weight: bold;
 }
 
 .ModListItem img {
   object-fit: cover;
   width: 80%;
   height: 100px;
+
+  margin: 14px;
 }
 
 img.nsfw {
   filter: blur(16px);
+}
+
+.ModInner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+
+  color: #fff;
+  padding-bottom: 10px;
+}
+
+.ModInner div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0px 8px;
+}
+
+.ModInner div span {
+  margin: 0px 5px;
+}
+
+.ModInner img {
+  object-fit: contain;
+  width: 20px;
+  height: 20px;
+
+  margin: 0px;
+
+  filter: invert(1);
 }
