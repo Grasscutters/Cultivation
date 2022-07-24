@@ -56,7 +56,6 @@ futures-util = "0.3.14"
 rcgen = { version = "0.9", features = ["x509-parser"] }
 
 # metadata stuff
-libloading = "0.7"
 regex = "1"
 
 # other
