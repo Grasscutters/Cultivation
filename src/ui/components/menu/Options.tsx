@@ -68,6 +68,7 @@ export default class Options extends React.Component<IProps, IState> {
     this.setGrasscutterJar = this.setGrasscutterJar.bind(this)
     this.setJavaPath = this.setJavaPath.bind(this)
     this.setAkebi = this.setAkebi.bind(this)
+    this.setMigoto = this.setMigoto.bind(this)
     this.toggleGrasscutterWithGame = this.toggleGrasscutterWithGame.bind(this)
     this.setCustomBackground = this.setCustomBackground.bind(this)
     this.toggleEncryption = this.toggleEncryption.bind(this)
