@@ -40,7 +40,7 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": ["lang/*.json", "keys/*", "./mhycrypto.dll"],
+      "resources": ["lang/*.json", "keys/*"],
       "targets": "all",
       "windows": {
         "allowDowngrades": false,
