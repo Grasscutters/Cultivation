@@ -18,6 +18,8 @@ export class ModList extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
 
+    console.log('Getting')
+
     this.downloadMod = this.downloadMod.bind(this)
   }
 

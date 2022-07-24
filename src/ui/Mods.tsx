@@ -52,9 +52,12 @@ export class Mods extends React.Component<IProps, IState> {
   }
 
   async setCategory(value: string) {
-    this.setState({
-      category: value,
-    })
+    this.setState(
+      {
+        category: value,
+      },
+      this.forceUpdate
+    )
   }
 
   render() {
@@ -62,9 +65,9 @@ export class Mods extends React.Component<IProps, IState> {
       <div className="Mods">
         <TopBar />
 
-        <ModHeader onChange={this.setCategory} headers={headers} defaultHeader={'hot'} />
+        <ModHeader onChange={this.setCategory} headers={headers} defaultHeader={'ripe'} />
 
-        <ModList mode={this.state.category} addDownload={this.addDownload} />
+        <ModList key={this.state.category} mode={this.state.category} addDownload={this.addDownload} />
       </div>
     )
   }
