@@ -61,6 +61,7 @@ fn main() {
       web::valid_url,
       web::web_get,
       gamebanana::list_submissions,
+      gamebanana::list_mods,
       metadata_patcher::patch_metadata
     ])
     .run(tauri::generate_context!())

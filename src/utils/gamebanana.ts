@@ -1,4 +1,5 @@
 import { invoke } from '@tauri-apps/api'
+import { getConfigOption } from './configuration'
 
 // Generated with https://transform.tools/json-to-typescript I'm lazy cry about it
 export interface GamebananaResponse {
@@ -114,4 +115,22 @@ export async function formatGamebananaData(obj: GamebananaResponse[]) {
       } as ModData
     })
     .filter((itm) => itm.type === 'Mod')
+}
+
+export async function getInstalledMods() {
+  const migotoPath = await getConfigOption('migoto_path')
+
+  if (!migotoPath) return []
+
+  const mods = (await invoke('list_mods', {
+    path: migotoPath,
+  })) as Record<string, string>
+
+  // These are returned as JSON strings, so we have to parse them
+  return Object.keys(mods).map((path) => {
+    return {
+      path,
+      info: JSON.parse(mods[path]),
+    }
+  })
 }
