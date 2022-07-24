@@ -17,12 +17,16 @@ interface IState {
 
 const headers = [
   {
-    name: 'hot',
+    name: 'ripe',
     title: 'Hot',
   },
   {
     name: 'new',
     title: 'New',
+  },
+  {
+    name: 'installed',
+    title: 'Installed',
   },
 ]
 
@@ -55,7 +59,7 @@ export class Mods extends React.Component<IProps, IState> {
 
         <ModHeader onChange={this.setCategory} headers={headers} defaultHeader={'hot'} />
 
-        <ModList sort={this.state.category} />
+        <ModList mode={this.state.category} />
       </div>
     )
   }

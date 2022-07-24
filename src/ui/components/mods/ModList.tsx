@@ -1,10 +1,11 @@
 import React from 'react'
+import { getMods } from '../../../utils/gamebanana'
 import { LoadingCircle } from './LoadingCircle'
 
 import './ModList.css'
 
 interface IProps {
-  sort: string
+  mode: string
 }
 
 interface IState {
@@ -14,6 +15,14 @@ interface IState {
 export class ModList extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
+  }
+
+  async componentDidMount() {
+    if (this.props.mode === 'installed') return
+
+    const mods = await getMods(this.props.mode)
+
+    console.log(mods)
   }
 
   render() {
