@@ -1,4 +1,4 @@
-use std::fs::File;
+use std::fs::{read_dir, File};
 use std::path;
 use std::thread;
 
@@ -15,9 +15,19 @@ pub fn unzip(window: tauri::Window, zipfile: String, destpath: String, top_level
 
   let write_path = path::PathBuf::from(&destpath);
 
+  // Get a list of all current directories
+  let mut dirs = vec![];
+  for entry in read_dir(&write_path).unwrap() {
+    let entry = entry.unwrap();
+    let entry_path = entry.path();
+    if entry_path.is_dir() {
+      dirs.push(entry_path);
+    }
+  }
+
   // Run extraction in seperate thread
   thread::spawn(move || {
-    let full_path = write_path;
+    let full_path = &write_path;
 
     window.emit("extract_start", &zipfile).unwrap();
 
@@ -62,6 +72,22 @@ pub fn unzip(window: tauri::Window, zipfile: String, destpath: String, top_level
       }
     };
 
-    window.emit("extract_end", &zipfile).unwrap();
+    // Get any new directory that could have been created
+    let mut new_dir: String = String::new();
+    for entry in read_dir(&write_path).unwrap() {
+      let entry = entry.unwrap();
+      let entry_path = entry.path();
+      if entry_path.is_dir() {
+        if !dirs.contains(&entry_path) {
+          new_dir = entry_path.to_str().unwrap().to_string();
+        }
+      }
+    }
+
+    let mut res_hash = std::collections::HashMap::new();
+    res_hash.insert("file", zipfile.to_string());
+    res_hash.insert("new_folder", new_dir.to_string());
+
+    window.emit("extract_end", &res_hash).unwrap();
   });
 }

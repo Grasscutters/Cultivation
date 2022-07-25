@@ -111,8 +111,9 @@ export default class Downloads extends React.Component<IProps, IState> {
 
   async downloadGrasscutterStableRepo() {
     const folder = await this.getGrasscutterFolder()
-    this.props.downloadManager.addDownload(STABLE_REPO_DOWNLOAD, folder + '\\grasscutter_repo.zip', () => {
-      unzip(folder + '\\grasscutter_repo.zip', folder + '\\', true, this.toggleButtons)
+    this.props.downloadManager.addDownload(STABLE_REPO_DOWNLOAD, folder + '\\grasscutter_repo.zip', async () => {
+      await unzip(folder + '\\grasscutter_repo.zip', folder + '\\', true)
+      this.toggleButtons()
     })
 
     this.toggleButtons()
@@ -120,8 +121,9 @@ export default class Downloads extends React.Component<IProps, IState> {
 
   async downloadGrasscutterDevRepo() {
     const folder = await this.getGrasscutterFolder()
-    this.props.downloadManager.addDownload(DEV_REPO_DOWNLOAD, folder + '\\grasscutter_repo.zip', () => {
-      unzip(folder + '\\grasscutter_repo.zip', folder + '\\', true, this.toggleButtons)
+    this.props.downloadManager.addDownload(DEV_REPO_DOWNLOAD, folder + '\\grasscutter_repo.zip', async () => {
+      await unzip(folder + '\\grasscutter_repo.zip', folder + '\\', true)
+      this.toggleButtons()
     })
 
     this.toggleButtons()
@@ -129,8 +131,9 @@ export default class Downloads extends React.Component<IProps, IState> {
 
   async downloadGrasscutterStable() {
     const folder = await this.getGrasscutterFolder()
-    this.props.downloadManager.addDownload(STABLE_DOWNLOAD, folder + '\\grasscutter.zip', () => {
-      unzip(folder + '\\grasscutter.zip', folder + '\\', true, this.toggleButtons)
+    this.props.downloadManager.addDownload(STABLE_DOWNLOAD, folder + '\\grasscutter.zip', async () => {
+      await unzip(folder + '\\grasscutter.zip', folder + '\\', true)
+      this.toggleButtons
     })
 
     // Also add repo download
@@ -141,8 +144,9 @@ export default class Downloads extends React.Component<IProps, IState> {
 
   async downloadGrasscutterLatest() {
     const folder = await this.getGrasscutterFolder()
-    this.props.downloadManager.addDownload(DEV_DOWNLOAD, folder + '\\grasscutter.zip', () => {
-      unzip(folder + '\\grasscutter.zip', folder + '\\', true, this.toggleButtons)
+    this.props.downloadManager.addDownload(DEV_DOWNLOAD, folder + '\\grasscutter.zip', async () => {
+      await unzip(folder + '\\grasscutter.zip', folder + '\\', true)
+      this.toggleButtons()
     })
 
     // Also add repo download
@@ -165,15 +169,14 @@ export default class Downloads extends React.Component<IProps, IState> {
         })
       }
 
-      await unzip(folder + '\\resources.zip', folder + '\\', true, () => {
-        // Rename folder to resources
-        invoke('rename', {
-          path: folder + '\\Resources',
-          newName: 'resources',
-        })
-
-        this.toggleButtons()
+      await unzip(folder + '\\resources.zip', folder + '\\', true)
+      // Rename folder to resources
+      invoke('rename', {
+        path: folder + '\\Resources',
+        newName: 'resources',
       })
+
+      this.toggleButtons()
     })
 
     this.toggleButtons()

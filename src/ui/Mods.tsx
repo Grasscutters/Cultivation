@@ -1,3 +1,4 @@
+import { invoke } from '@tauri-apps/api'
 import React from 'react'
 import DownloadHandler from '../utils/download'
 import { getModDownload, ModData } from '../utils/gamebanana'
@@ -69,8 +70,15 @@ export class Mods extends React.Component<IProps, IState> {
 
     this.props.downloadHandler.addDownload(firstLink, modPath, async () => {
       console.log('Unzipping:', mod.name)
-      unzip(modPath, modFolder, false, () => {
-        console.log('DONE MOD DOWNLOAD')
+      const unzipRes = await unzip(modPath, modFolder, false)
+
+      console.log(`${unzipRes.new_folder}/modinfo.json`)
+      console.log(unzipRes)
+
+      // Write a modinfo.json file
+      invoke('write_file', {
+        path: `${unzipRes.new_folder}/modinfo.json`,
+        contents: JSON.stringify(mod),
       })
     })
   }
