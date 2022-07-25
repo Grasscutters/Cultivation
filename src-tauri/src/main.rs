@@ -60,6 +60,7 @@ fn main() {
       lang::get_languages,
       web::valid_url,
       web::web_get,
+      gamebanana::get_download_links,
       gamebanana::list_submissions,
       gamebanana::list_mods,
       metadata_patcher::patch_metadata

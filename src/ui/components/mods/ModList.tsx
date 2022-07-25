@@ -24,8 +24,6 @@ export class ModList extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
 
-    console.log('Getting')
-
     this.state = {
       modList: null,
       installedList: null,

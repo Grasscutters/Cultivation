@@ -5,6 +5,7 @@ import './ProgressBar.css'
 
 interface IProps {
   downloadManager: DownloadHandler
+  withStats?: boolean
 }
 
 interface IState {
@@ -70,11 +71,13 @@ export default class ProgressBar extends React.Component<IProps, IState> {
           ></div>
         </div>
 
-        <div className="MainProgressText">
-          <Tr text="main.files_downloading" /> {this.state.files} ({this.state.speed})
-          <br />
-          <Tr text="main.files_extracting" /> {this.state.extracting}
-        </div>
+        {this.props.withStats && (
+          <div className="MainProgressText">
+            <Tr text="main.files_downloading" /> {this.state.files} ({this.state.speed})
+            <br />
+            <Tr text="main.files_extracting" /> {this.state.extracting}
+          </div>
+        )}
       </div>
     )
   }

@@ -9,6 +9,13 @@ static API_URL: &str = "https://api.gamebanana.com";
 static SITE_URL: &str = "https://gamebanana.com";
 
 #[tauri::command]
+pub async fn get_download_links(modId: String) -> String {
+  let res = web::query(format!("{}/apiv9/Mod/{}/DownloadPage", SITE_URL, modId).as_str()).await;
+
+  res
+}
+
+#[tauri::command]
 pub async fn list_submissions(mode: String) -> String {
   let res = web::query(
     format!(

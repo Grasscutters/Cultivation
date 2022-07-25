@@ -1,6 +1,9 @@
 import React from 'react'
 import DownloadHandler from '../utils/download'
-import { ModData } from '../utils/gamebanana'
+import { getModDownload, ModData } from '../utils/gamebanana'
+import { getModsFolder } from '../utils/mods'
+import { unzip } from '../utils/zipUtils'
+import ProgressBar from './components/common/MainProgressBar'
 import { ModHeader } from './components/mods/ModHeader'
 import { ModList } from './components/mods/ModList'
 import TopBar from './components/TopBar'
@@ -40,7 +43,12 @@ export class Mods extends React.Component<IProps, IState> {
       category: '',
     }
 
+    setInterval(() => {
+      console.log(this.props.downloadHandler.downloads)
+    }, 5000)
+
     this.setCategory = this.setCategory.bind(this)
+    this.addDownload = this.addDownload.bind(this)
   }
 
   async componentDidMount() {
@@ -49,6 +57,22 @@ export class Mods extends React.Component<IProps, IState> {
 
   async addDownload(mod: ModData) {
     console.log('Downloading:', mod.name)
+
+    const modFolder = await getModsFolder()
+    const modPath = `${modFolder}${mod.id}.zip`
+    const dlLinks = await getModDownload(String(mod.id))
+
+    if (!modFolder || dlLinks.length === 0) return
+
+    // Not gonna bother allowing sorting for now
+    const firstLink = dlLinks[0].downloadUrl
+
+    this.props.downloadHandler.addDownload(firstLink, modPath, async () => {
+      console.log('Unzipping:', mod.name)
+      unzip(modPath, modFolder, false, () => {
+        console.log('DONE MOD DOWNLOAD')
+      })
+    })
   }
 
   async setCategory(value: string) {
@@ -64,6 +88,10 @@ export class Mods extends React.Component<IProps, IState> {
     return (
       <div className="Mods">
         <TopBar />
+
+        <div className="TopDownloads">
+          <ProgressBar downloadManager={this.props.downloadHandler} />
+        </div>
 
         <ModHeader onChange={this.setCategory} headers={headers} defaultHeader={'ripe'} />
 

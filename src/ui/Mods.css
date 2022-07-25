@@ -3,3 +3,17 @@
   height: 90%;
   width: 100%;
 }
+
+/* Stuff for the top bar progress bar */
+.TopDownloads {
+  position: absolute;
+  top: 10px;
+  left: 35.5%;
+
+  width: 30%;
+}
+
+.TopDownloads .ProgressBar {
+  width: 100%;
+  height: 10px;
+}

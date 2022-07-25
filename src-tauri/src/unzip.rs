@@ -3,7 +3,7 @@ use std::path;
 use std::thread;
 
 #[tauri::command]
-pub fn unzip(window: tauri::Window, zipfile: String, destpath: String) {
+pub fn unzip(window: tauri::Window, zipfile: String, destpath: String, top_level: Option<bool>) {
   // Read file TODO: replace test file
   let f = match File::open(&zipfile) {
     Ok(f) => f,
@@ -21,7 +21,7 @@ pub fn unzip(window: tauri::Window, zipfile: String, destpath: String) {
 
     window.emit("extract_start", &zipfile).unwrap();
 
-    match zip_extract::extract(&f, &full_path, true) {
+    match zip_extract::extract(&f, &full_path, top_level.unwrap_or(false)) {
       Ok(_) => {
         println!(
           "Extracted zip file to: {}",

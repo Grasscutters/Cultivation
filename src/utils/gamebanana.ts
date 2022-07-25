@@ -2,7 +2,7 @@ import { invoke } from '@tauri-apps/api'
 import { getConfigOption } from './configuration'
 
 // Generated with https://transform.tools/json-to-typescript I'm lazy cry about it
-export interface GamebananaResponse {
+interface GamebananaResponse {
   _idRow: number
   _sModelName: string
   _sSingularTitle: string
@@ -23,12 +23,12 @@ export interface GamebananaResponse {
   _tsDateUpdated?: number
 }
 
-export interface PreviewMedia {
+interface PreviewMedia {
   _aImages?: Image[]
   _aMetadata?: Metadata
 }
 
-export interface Image {
+interface Image {
   _sType: string
   _sBaseUrl: string
   _sFile: string
@@ -38,14 +38,14 @@ export interface Image {
   _sCaption?: string
 }
 
-export interface Metadata {
+interface Metadata {
   _sState?: string
   _sSnippet: string
   _nPostCount?: number
   _nBounty?: number
 }
 
-export interface Submitter {
+interface Submitter {
   _idRow: number
   _sName: string
   _bIsOnline: boolean
@@ -57,7 +57,7 @@ export interface Submitter {
   _sHdAvatarUrl?: string
 }
 
-export interface RootCategory {
+interface RootCategory {
   _sName: string
   _sProfileUrl: string
   _sIconUrl: string
@@ -76,6 +76,35 @@ export interface ModData {
   likes: number
   views: number
   type: string
+}
+
+interface GamebananaDownloads {
+  _bIsTrashed: boolean
+  _bIsWithheld: boolean
+  _aFiles: File[]
+  _sLicense: string
+}
+
+interface File {
+  _idRow: number
+  _sFile: string
+  _nFilesize: number
+  _sDescription: string
+  _tsDateAdded: number
+  _nDownloadCount: number
+  _sAnalysisState: string
+  _sDownloadUrl: string
+  _sMd5Checksum: string
+  _sClamAvResult: string
+  _sAnalysisResult: string
+  _bContainsExe: boolean
+}
+
+interface ModDownload {
+  filename: string
+  downloadUrl: string
+  filesize: number
+  containsExe: boolean
 }
 
 export async function getMods(mode: string) {
@@ -132,5 +161,28 @@ export async function getInstalledMods() {
       path,
       info: JSON.parse(mods[path]),
     }
+  })
+}
+
+export async function getModDownload(modId: string) {
+  const resp = JSON.parse(
+    await invoke('get_download_links', {
+      modId,
+    })
+  ) as GamebananaDownloads
+
+  return formatDownloadsData(resp)
+}
+
+export async function formatDownloadsData(obj: GamebananaDownloads) {
+  if (!obj) return []
+
+  return obj._aFiles.map((itm) => {
+    return {
+      filename: itm._sFile,
+      downloadUrl: `https://files.gamebanana.com/mods/${itm._sFile}`,
+      filesize: itm._nFilesize,
+      containsExe: itm._bContainsExe,
+    } as ModDownload
   })
 }
