@@ -44,10 +44,6 @@ export class Mods extends React.Component<IProps, IState> {
       category: '',
     }
 
-    setInterval(() => {
-      console.log(this.props.downloadHandler.downloads)
-    }, 5000)
-
     this.setCategory = this.setCategory.bind(this)
     this.addDownload = this.addDownload.bind(this)
   }
