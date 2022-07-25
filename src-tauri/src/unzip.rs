@@ -3,7 +3,13 @@ use std::path;
 use std::thread;
 
 #[tauri::command]
-pub fn unzip(window: tauri::Window, zipfile: String, destpath: String, top_level: Option<bool>) {
+pub fn unzip(
+  window: tauri::Window,
+  zipfile: String,
+  destpath: String,
+  top_level: Option<bool>,
+  folder_if_loose: Option<bool>,
+) {
   // Read file TODO: replace test file
   let f = match File::open(&zipfile) {
     Ok(f) => f,
@@ -27,9 +33,32 @@ pub fn unzip(window: tauri::Window, zipfile: String, destpath: String, top_level
 
   // Run extraction in seperate thread
   thread::spawn(move || {
-    let full_path = &write_path;
+    let mut full_path = write_path.clone();
 
     window.emit("extract_start", &zipfile).unwrap();
+
+    if folder_if_loose.unwrap_or(false) {
+      // Create a new folder with the same name as the zip file
+      let mut file_name = path::Path::new(&zipfile)
+        .file_name()
+        .unwrap()
+        .to_str()
+        .unwrap();
+
+      // remove ".zip" from the end of the file name
+      file_name = &file_name[..file_name.len() - 4];
+
+      let new_path = full_path.join(file_name);
+      match std::fs::create_dir_all(&new_path) {
+        Ok(_) => {}
+        Err(e) => {
+          println!("Failed to create directory: {}", e);
+          return;
+        }
+      };
+
+      full_path = new_path.clone();
+    }
 
     match zip_extract::extract(&f, &full_path, top_level.unwrap_or(false)) {
       Ok(_) => {

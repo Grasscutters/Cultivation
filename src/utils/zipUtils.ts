@@ -6,12 +6,18 @@ interface UnzipPayload {
   new_folder: string
 }
 
-export function unzip(file: string, dest: string, topLevelStrip?: boolean): Promise<UnzipPayload> {
+export function unzip(
+  file: string,
+  dest: string,
+  topLevelStrip?: boolean,
+  folderIfLoose?: boolean
+): Promise<UnzipPayload> {
   return new Promise((resolve) => {
     invoke('unzip', {
       zipfile: file,
       destpath: dest,
       topLevelStrip,
+      folderIfLoose,
     })
 
     listen('extract_end', ({ payload }) => {
