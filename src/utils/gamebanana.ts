@@ -78,6 +78,16 @@ export interface ModData {
   type: string
 }
 
+export interface PartialModData {
+  name: string
+  images: string[]
+  submitter: {
+    name: string
+  }
+  likes: number
+  views: number
+}
+
 interface GamebananaDownloads {
   _bIsTrashed: boolean
   _bIsWithheld: boolean
@@ -157,9 +167,11 @@ export async function getInstalledMods() {
 
   // These are returned as JSON strings, so we have to parse them
   return Object.keys(mods).map((path) => {
+    const info = JSON.parse(mods[path]) as ModData | PartialModData
+
     return {
       path,
-      info: JSON.parse(mods[path]),
+      info,
     }
   })
 }

@@ -1,13 +1,16 @@
 import React from 'react'
-import { ModData } from '../../../utils/gamebanana'
+import { ModData, PartialModData } from '../../../utils/gamebanana'
 
 import './ModTile.css'
 import Like from '../../../resources/icons/like.svg'
 import Eye from '../../../resources/icons/eye.svg'
 import Download from '../../../resources/icons/download.svg'
+import Folder from '../../../resources/icons/folder.svg'
+import { shell } from '@tauri-apps/api'
 
 interface IProps {
-  mod: ModData
+  mod: ModData | PartialModData
+  path?: string
   onClick: (mod: ModData) => void
 }
 
@@ -24,6 +27,10 @@ export class ModTile extends React.Component<IProps, IState> {
     }
   }
 
+  async openInExplorer() {
+    if (this.props.path) shell.open(this.props.path)
+  }
+
   render() {
     const { mod } = this.props
 
@@ -32,13 +39,26 @@ export class ModTile extends React.Component<IProps, IState> {
         className="ModListItem"
         onMouseEnter={() => this.setState({ hover: true })}
         onMouseLeave={() => this.setState({ hover: false })}
-        onClick={() => this.props.onClick(mod)}
+        onClick={() => {
+          // Disable downloading installed mods
+          if (!('id' in mod)) return this.openInExplorer()
+
+          this.props.onClick(mod)
+        }}
       >
         <span className="ModName">{mod.name}</span>
         <span className="ModAuthor">{mod.submitter.name}</span>
         <div className="ModImage">
-          {this.state.hover && <img src={Download} className="ModTileDownload" alt="Download" />}
-          <img src={mod.images[0]} className={`${mod.nsfw ? 'nsfw' : ''} ${this.state.hover ? 'blur' : ''}`} />
+          {this.state.hover &&
+            (!this.props.path ? (
+              <img src={Download} className="ModTileDownload" alt="Download" />
+            ) : (
+              <img src={Folder} className="ModTileOpen" alt="Open" />
+            ))}
+          <img
+            src={mod.images[0]}
+            className={`${'id' in mod && mod.nsfw ? 'nsfw' : ''} ${this.state.hover ? 'blur' : ''}`}
+          />
         </div>
         <div className="ModInner">
           <div className="likes">

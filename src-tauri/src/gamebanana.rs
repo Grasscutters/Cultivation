@@ -9,8 +9,8 @@ static API_URL: &str = "https://api.gamebanana.com";
 static SITE_URL: &str = "https://gamebanana.com";
 
 #[tauri::command]
-pub async fn get_download_links(modId: String) -> String {
-  let res = web::query(format!("{}/apiv9/Mod/{}/DownloadPage", SITE_URL, modId).as_str()).await;
+pub async fn get_download_links(mod_id: String) -> String {
+  let res = web::query(format!("{}/apiv9/Mod/{}/DownloadPage", SITE_URL, mod_id).as_str()).await;
 
   res
 }
@@ -65,7 +65,7 @@ pub async fn list_mods(path: String) -> HashMap<String, String> {
         mod_info_strings.insert(
           path.to_str().unwrap().to_string(),
           format!(
-            "{{ name: \"{}\" }}",
+            "{{ \"name\": \"{}\" }}",
             path.file_name().unwrap().to_str().unwrap()
           ),
         );
