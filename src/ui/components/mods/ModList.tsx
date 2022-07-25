@@ -51,8 +51,6 @@ export class ModList extends React.Component<IProps, IState> {
 
         const newInfo = mod.info as PartialModData
 
-        console.log(newInfo)
-
         return mod
       })
 

@@ -215,7 +215,6 @@ export default class Options extends React.Component<IProps, IState> {
   }
 
   async restoreMetadata() {
-    console.log(this.props)
     await meta.restoreMetadata(this.props.downloadManager)
   }
 

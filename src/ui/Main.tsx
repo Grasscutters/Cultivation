@@ -65,8 +65,6 @@ export class Main extends React.Component<IProps, IState> {
       if (wasPatched) {
         const unpatched = await unpatchGame()
 
-        console.log(`unpatched game? ${unpatched}`)
-
         if (!unpatched) {
           alert(
             `Could not unpatch game! (You should be able to find your metadata backup in ${await dataDir()}\\cultivation\\)`

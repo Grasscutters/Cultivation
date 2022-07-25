@@ -53,8 +53,6 @@ export class Mods extends React.Component<IProps, IState> {
   }
 
   async addDownload(mod: ModData) {
-    console.log('Downloading:', mod.name)
-
     const modFolder = await getModsFolder()
     const modPath = `${modFolder}${mod.id}.zip`
     const dlLinks = await getModDownload(String(mod.id))
