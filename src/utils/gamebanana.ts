@@ -169,8 +169,13 @@ export async function getInstalledMods() {
   return Object.keys(mods).map((path) => {
     const info = JSON.parse(mods[path]) as ModData | PartialModData
 
+    const modPathArr = path.replace(/\\/g, '/').split('/')
+
+    // If there is a file in this path, remove it from the path
+    if (modPathArr[modPathArr.length - 1].includes('.')) modPathArr.pop()
+
     return {
-      path,
+      path: modPathArr.join('/'),
       info,
     }
   })

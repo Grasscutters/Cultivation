@@ -41,7 +41,8 @@ export class ModTile extends React.Component<IProps, IState> {
         onMouseLeave={() => this.setState({ hover: false })}
         onClick={() => {
           // Disable downloading installed mods
-          if (!('id' in mod)) return this.openInExplorer()
+          if (this.props.path) return this.openInExplorer()
+          if (!('id' in mod)) return
 
           this.props.onClick(mod)
         }}

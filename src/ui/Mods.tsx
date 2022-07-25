@@ -69,11 +69,7 @@ export class Mods extends React.Component<IProps, IState> {
     const firstLink = dlLinks[0].downloadUrl
 
     this.props.downloadHandler.addDownload(firstLink, modPath, async () => {
-      console.log('Unzipping:', mod.name)
       const unzipRes = await unzip(modPath, modFolder, false)
-
-      console.log(`${unzipRes.new_folder}/modinfo.json`)
-      console.log(unzipRes)
 
       // Write a modinfo.json file
       invoke('write_file', {
