@@ -199,9 +199,7 @@ export default class Downloads extends React.Component<IProps, IState> {
             <Tr
               text={this.state.grasscutter_set ? 'downloads.grasscutter_stable' : 'downloads.grasscutter_stable_update'}
             />
-            <HelpButton>
-              <Tr text="help.gc_stable_jar" />
-            </HelpButton>
+            <HelpButton contents="help.gc_stable_jar" />
           </div>
           <div className="DownloadValue" id="downloadMenuButtonGCStable">
             <BigButton
@@ -218,9 +216,7 @@ export default class Downloads extends React.Component<IProps, IState> {
             <Tr
               text={this.state.grasscutter_set ? 'downloads.grasscutter_latest' : 'downloads.grasscutter_latest_update'}
             />
-            <HelpButton>
-              <Tr text="help.gc_dev_jar" />
-            </HelpButton>
+            <HelpButton contents="help.gc_dev_jar" />
           </div>
           <div className="DownloadValue" id="downloadMenuButtonGCDev">
             <BigButton
@@ -244,9 +240,7 @@ export default class Downloads extends React.Component<IProps, IState> {
                   : 'downloads.grasscutter_stable_data_update'
               }
             />
-            <HelpButton>
-              <Tr text="help.gc_stable_data" />
-            </HelpButton>
+            <HelpButton contents="help.gc_stable_data" />
           </div>
           <div className="DownloadValue" id="downloadMenuButtonGCStableData">
             <BigButton
@@ -267,9 +261,7 @@ export default class Downloads extends React.Component<IProps, IState> {
                   : 'downloads.grasscutter_latest_data_update'
               }
             />
-            <HelpButton>
-              <Tr text="help.gc_dev_data" />
-            </HelpButton>
+            <HelpButton contents="help.gc_dev_data" />
           </div>
           <div className="DownloadValue" id="downloadMenuButtonGCDevData">
             <BigButton
@@ -287,9 +279,7 @@ export default class Downloads extends React.Component<IProps, IState> {
         <div className="DownloadMenuSection" id="downloadMenuContainerResources">
           <div className="DownloadLabel" id="downloadMenuLabelResources">
             <Tr text="downloads.resources" />
-            <HelpButton>
-              <Tr text="help.resources" />
-            </HelpButton>
+            <HelpButton contents="help.resources" />
           </div>
           <div className="DownloadValue" id="downloadMenuButtonResources">
             <BigButton

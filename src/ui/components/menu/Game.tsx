@@ -71,9 +71,7 @@ export default class Downloads extends React.Component<IProps, IState> {
               Download Game
             </BigButton>
           )}
-          <HelpButton>
-            <Tr text="main.game_help_text" />
-          </HelpButton>
+          <HelpButton contents="main.game_help_text" />
         </div>
 
         <div className="GameDownloadDir">
