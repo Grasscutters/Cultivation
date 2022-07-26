@@ -49,12 +49,8 @@ export class ModTile extends React.Component<IProps, IState> {
         modEnabled: await modIsEnabled(this.props.mod.name),
       })
 
-      console.log(this.props.mod.name + ' ' + this.state.modEnabled)
-
       return
     }
-
-    console.log(this.props.mod.name + ' ' + this.state.modEnabled)
 
     this.setState({
       modEnabled: await modIsEnabled(String(this.props.mod.id)),

@@ -56,13 +56,15 @@ export class Mods extends React.Component<IProps, IState> {
 
   async addDownload(mod: ModData) {
     const modFolder = await getModsFolder()
-    const modPath = `${modFolder}${mod.id}.zip`
     const dlLinks = await getModDownload(String(mod.id))
-
-    if (!modFolder || dlLinks.length === 0) return
 
     // Not gonna bother allowing sorting for now
     const firstLink = dlLinks[0].downloadUrl
+    const fileExt = firstLink.split('.').pop()
+
+    const modPath = `${modFolder}${mod.id}.${fileExt}`
+
+    if (!modFolder || dlLinks.length === 0) return
 
     this.props.downloadHandler.addDownload(firstLink, modPath, async () => {
       const unzipRes = await unzip(modPath, modFolder, false, true)

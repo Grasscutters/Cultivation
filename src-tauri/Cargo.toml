@@ -31,6 +31,7 @@ sysinfo = "0.24.6"
 
 # ZIP-archive library.
 zip-extract = "0.1.1"
+unrar = "0.4.4"
 zip = "0.6.2"
 
 # For creating a "global" downloads list.
