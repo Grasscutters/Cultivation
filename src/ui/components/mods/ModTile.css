@@ -43,14 +43,19 @@
   justify-content: center;
 }
 
-.Checkbox {
+.ModListItem .Checkbox {
   filter: invert(100%) sepia(2%) saturate(201%) hue-rotate(47deg) brightness(117%) contrast(100%);
 }
 
-.ModTileOpen .ModTileFolder {
+.ModImage .ModTileFolder {
   width: 40px !important;
   height: 40px !important;
   margin: 20px;
+}
+
+.ModTileFolder:hover {
+  cursor: pointer;
+  filter: invert(1) brightness(0.2);
 }
 
 .ModTileOpen,

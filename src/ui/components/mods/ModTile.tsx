@@ -25,7 +25,7 @@ export class ModTile extends React.Component<IProps, IState> {
     super(props)
 
     this.state = {
-      hover: true,
+      hover: false,
       modEnabled: false,
     }
 
@@ -51,7 +51,7 @@ export class ModTile extends React.Component<IProps, IState> {
       <div
         className="ModListItem"
         onMouseEnter={() => this.setState({ hover: true })}
-        onMouseLeave={() => this.setState({ hover: true })}
+        onMouseLeave={() => this.setState({ hover: false })}
         {...(!this.props.path && {
           onClick: () => {
             if (!('id' in mod)) return
@@ -70,7 +70,7 @@ export class ModTile extends React.Component<IProps, IState> {
               <div className="ModTileOpen">
                 <img src={Folder} className="ModTileFolder" alt="Open" onClick={this.openInExplorer} />
                 <Checkbox
-                  checked={/* TODO GET INSTALL STATUS */ this.state.modEnabled}
+                  checked={/* TODO GET ACTUAL INSTALL STATUS */ this.state.modEnabled}
                   id={this.props.mod.name}
                   onChange={this.toggleMod}
                 />
