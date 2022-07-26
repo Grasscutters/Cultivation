@@ -10,6 +10,7 @@ import { ModList } from './components/mods/ModList'
 import TopBar from './components/TopBar'
 
 import './Mods.css'
+import Back from '../resources/icons/back.svg'
 
 interface IProps {
   downloadHandler: DownloadHandler
@@ -85,7 +86,19 @@ export class Mods extends React.Component<IProps, IState> {
   render() {
     return (
       <div className="Mods">
-        <TopBar />
+        <TopBar>
+          <div
+            id="backbtn"
+            className="TopButton"
+            onClick={() => {
+              // Create and dispatch a custom "openMods" event
+              const event = new CustomEvent('changePage', { detail: 'main' })
+              window.dispatchEvent(event)
+            }}
+          >
+            <img src={Back} alt="back" />
+          </div>
+        </TopBar>
 
         <div className="TopDownloads">
           <ProgressBar downloadManager={this.props.downloadHandler} />

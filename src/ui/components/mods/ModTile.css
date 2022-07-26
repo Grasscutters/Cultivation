@@ -36,13 +36,30 @@
   padding: 0 0 0 10px;
 }
 
+.ModTileOpen {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.Checkbox {
+  filter: invert(100%) sepia(2%) saturate(201%) hue-rotate(47deg) brightness(117%) contrast(100%);
+}
+
+.ModTileOpen .ModTileFolder {
+  width: 40px !important;
+  height: 40px !important;
+  margin: 20px;
+}
+
 .ModTileOpen,
 .ModTileDownload {
   position: absolute;
   object-fit: contain;
 
   left: 37.5%;
-  top: 40%;
+  top: 45%;
 
   z-index: 999;
 
@@ -61,7 +78,7 @@
   justify-content: center;
 }
 
-.ModImage img {
+.ModImage .ModImageInner {
   object-fit: cover;
   width: 100%;
   height: 150px;

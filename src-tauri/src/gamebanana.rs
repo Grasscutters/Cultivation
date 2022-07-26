@@ -5,7 +5,6 @@ use std::fs::read_dir;
 use std::io::Read;
 use std::path::PathBuf;
 
-static API_URL: &str = "https://api.gamebanana.com";
 static SITE_URL: &str = "https://gamebanana.com";
 
 #[tauri::command]

@@ -9,7 +9,7 @@ import closeIcon from '../../resources/icons/close.svg'
 import minIcon from '../../resources/icons/min.svg'
 
 interface IProps {
-  children?: React.ReactNode[]
+  children?: React.ReactNode | React.ReactNode[]
 }
 
 interface IState {
