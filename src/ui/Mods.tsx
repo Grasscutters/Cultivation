@@ -11,6 +11,9 @@ import TopBar from './components/TopBar'
 
 import './Mods.css'
 import Back from '../resources/icons/back.svg'
+import Menu from './components/menu/Menu'
+import BigButton from './components/common/BigButton'
+import Tr from '../utils/language'
 
 interface IProps {
   downloadHandler: DownloadHandler
@@ -19,6 +22,7 @@ interface IProps {
 interface IState {
   isDownloading: boolean
   category: string
+  downloadList: { name: string; url: string; mod: ModData }[] | null
 }
 
 const headers = [
@@ -48,6 +52,7 @@ export class Mods extends React.Component<IProps, IState> {
     this.state = {
       isDownloading: false,
       category: '',
+      downloadList: null,
     }
 
     this.setCategory = this.setCategory.bind(this)
@@ -55,19 +60,39 @@ export class Mods extends React.Component<IProps, IState> {
   }
 
   async addDownload(mod: ModData) {
-    const modFolder = await getModsFolder()
     const dlLinks = await getModDownload(String(mod.id))
 
     // Not gonna bother allowing sorting for now
     const firstLink = dlLinks[0].downloadUrl
     const fileExt = firstLink.split('.').pop()
 
-    const modPath = `${modFolder}${mod.id}.${fileExt}`
+    const modName = `${mod.id}.${fileExt}`
 
-    if (!modFolder || dlLinks.length === 0) return
+    if (dlLinks.length === 0) return
 
-    this.props.downloadHandler.addDownload(firstLink, modPath, async () => {
-      const unzipRes = await unzip(modPath, modFolder, false, true)
+    // If there is one download we don't care to choose
+    if (dlLinks.length === 1) {
+      this.downloadMod(firstLink, modName, mod)
+      return
+    }
+
+    this.setState({
+      downloadList: dlLinks.map((link) => ({
+        name: link.filename,
+        url: link.downloadUrl,
+        mod: mod,
+      })),
+    })
+  }
+
+  async downloadMod(link: string, modName: string, mod: ModData) {
+    const modFolder = await getModsFolder()
+    const path = `${modFolder}/${modName}`
+
+    if (!modFolder) return
+
+    this.props.downloadHandler.addDownload(link, path, async () => {
+      const unzipRes = await unzip(path, modFolder, false, true)
 
       // Write a modinfo.json file
       invoke('write_file', {
@@ -94,7 +119,7 @@ export class Mods extends React.Component<IProps, IState> {
             id="backbtn"
             className="TopButton"
             onClick={() => {
-              // Create and dispatch a custom "openMods" event
+              // Create and dispatch a custom "changePage" event
               const event = new CustomEvent('changePage', { detail: 'main' })
               window.dispatchEvent(event)
             }}
@@ -102,6 +127,34 @@ export class Mods extends React.Component<IProps, IState> {
             <img src={Back} alt="back" />
           </div>
         </TopBar>
+
+        {this.state.downloadList && (
+          <Menu className="ModMenu" heading="Links" closeFn={() => this.setState({ downloadList: null })}>
+            <div className="ModDownloadList">
+              {this.state.downloadList.map((o) => {
+                return (
+                  <div className="ModDownloadItem" key={o.name}>
+                    <div className="ModDownloadName">{o.name}</div>
+                    <BigButton
+                      id={o.url}
+                      onClick={() => {
+                        const fileExt = o.url.split('.').pop()
+                        const modName = `${o.mod.id}.${fileExt}`
+
+                        this.downloadMod(o.url, modName, o.mod)
+                        this.setState({
+                          downloadList: null,
+                        })
+                      }}
+                    >
+                      <Tr text="components.download" />
+                    </BigButton>
+                  </div>
+                )
+              })}
+            </div>
+          </Menu>
+        )}
 
         <div className="TopDownloads">
           <ProgressBar downloadManager={this.props.downloadHandler} withStats={false} />
