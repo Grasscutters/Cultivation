@@ -21,38 +21,53 @@ export default class Tr extends React.Component<IProps, IState> {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { text } = this.props
-    getConfigOption('language').then((language: string) => {
-      // Get translation file
-      if (!language) language = 'en'
+    let language = await getConfigOption('language')
 
-      invoke('get_lang', { lang: language }).then((response) => {
-        const translation_obj = JSON.parse((response as string) || '{}')
+    // Get translation file
+    if (!language) language = 'en'
 
-        // Traversal
-        if (text.includes('.')) {
-          const keys = text.split('.')
-          let translation: string | Record<string, string> = translation_obj
+    const response = await invoke('get_lang', { lang: language })
+    const default_resp = await invoke('get_lang', { lang: 'en' })
 
-          for (let i = 0; i < keys.length; i++) {
-            if (!translation) {
-              translation = ''
-            } else {
-              translation = typeof translation !== 'string' ? translation[keys[i]] : (translation as string)
-            }
-          }
+    const translation_obj = JSON.parse((response as string) || '{}')
+    const default_obj = JSON.parse((default_resp as string) || '{}')
 
-          this.setState({
-            translated_text: translation as string,
-          })
+    // Traversal
+    if (text.includes('.')) {
+      const keys = text.split('.')
+      let translation: string | Record<string, string> = translation_obj
+
+      for (let i = 0; i < keys.length; i++) {
+        if (!translation) {
+          translation = ''
         } else {
-          this.setState({
-            translated_text: translation_obj[text] || '',
-          })
+          translation = typeof translation !== 'string' ? translation[keys[i]] : (translation as string)
         }
+      }
+
+      // If we could not find a translation, use the default one
+      if (!translation) {
+        translation = default_obj
+
+        for (let i = 0; i < keys.length; i++) {
+          if (!translation) {
+            translation = ''
+          } else {
+            translation = typeof translation !== 'string' ? translation[keys[i]] : (translation as string)
+          }
+        }
+      }
+
+      this.setState({
+        translated_text: translation as string,
       })
-    })
+    } else {
+      this.setState({
+        translated_text: translation_obj[text] || '',
+      })
+    }
   }
 
   render() {
@@ -82,6 +97,7 @@ export async function getLanguages() {
 export async function translate(text: string) {
   const language = (await getConfigOption('language')) || 'en'
   const translation_json = JSON.parse((await invoke('get_lang', { lang: language })) || '{}')
+  const default_json = JSON.parse(await invoke('get_lang', { lang: 'en' }))
 
   // Traversal
   if (text.includes('.')) {
@@ -93,6 +109,19 @@ export async function translate(text: string) {
         translation = ''
       } else {
         translation = typeof translation !== 'string' ? translation[keys[i]] : (translation as string)
+      }
+    }
+
+    // If we could not find a translation, use the default one
+    if (!translation) {
+      translation = default_json
+
+      for (let i = 0; i < keys.length; i++) {
+        if (!translation) {
+          translation = ''
+        } else {
+          translation = typeof translation !== 'string' ? translation[keys[i]] : (translation as string)
+        }
       }
     }
 
