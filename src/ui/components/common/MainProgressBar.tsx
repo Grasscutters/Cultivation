@@ -71,7 +71,7 @@ export default class ProgressBar extends React.Component<IProps, IState> {
           ></div>
         </div>
 
-        {this.props.withStats && (
+        {(this.props.withStats === undefined || this.props.withStats) && (
           <div className="MainProgressText">
             <Tr text="main.files_downloading" /> {this.state.files} ({this.state.speed})
             <br />

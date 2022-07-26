@@ -8,6 +8,7 @@ import Download from '../../../resources/icons/download.svg'
 import Folder from '../../../resources/icons/folder.svg'
 import { shell } from '@tauri-apps/api'
 import Checkbox from '../common/Checkbox'
+import { disableMod, enableMod, modIsEnabled } from '../../../utils/mods'
 
 interface IProps {
   mod: ModData | PartialModData
@@ -33,15 +34,51 @@ export class ModTile extends React.Component<IProps, IState> {
     this.toggleMod = this.toggleMod.bind(this)
   }
 
+  getModFolderName() {
+    if (!('id' in this.props.mod)) {
+      return this.props.mod.name.includes('DISABLED_') ? this.props.mod.name.split('DISABLED_')[1] : this.props.mod.name
+    }
+
+    return String(this.props.mod.id)
+  }
+
+  async componentDidMount() {
+    if (!('id' in this.props.mod)) {
+      // Partial mod
+      this.setState({
+        modEnabled: await modIsEnabled(this.props.mod.name),
+      })
+
+      console.log(this.props.mod.name + ' ' + this.state.modEnabled)
+
+      return
+    }
+
+    console.log(this.props.mod.name + ' ' + this.state.modEnabled)
+
+    this.setState({
+      modEnabled: await modIsEnabled(String(this.props.mod.id)),
+    })
+  }
+
   async openInExplorer() {
     if (this.props.path) shell.open(this.props.path)
   }
 
   toggleMod() {
-    console.log('Mod toggled')
-    this.setState({
-      modEnabled: !this.state.modEnabled,
-    })
+    this.setState(
+      {
+        modEnabled: !this.state.modEnabled,
+      },
+      () => {
+        if (this.state.modEnabled) {
+          enableMod(String(this.getModFolderName()))
+          return
+        }
+
+        disableMod(String(this.getModFolderName()))
+      }
+    )
   }
 
   render() {
@@ -60,7 +97,7 @@ export class ModTile extends React.Component<IProps, IState> {
           },
         })}
       >
-        <span className="ModName">{mod.name}</span>
+        <span className="ModName">{mod.name.includes('DISABLED_') ? mod.name.split('DISABLED_')[1] : mod.name}</span>
         <span className="ModAuthor">{mod.submitter.name}</span>
         <div className="ModImage">
           {this.state.hover &&

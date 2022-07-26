@@ -36,6 +36,11 @@ const headers = [
   },
 ]
 
+/**
+ * Mods currently install into folder labelled with their GB ID
+ *
+ * @TODO Categorizaiton/sorting (by likes, views, etc)
+ */
 export class Mods extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
@@ -47,10 +52,6 @@ export class Mods extends React.Component<IProps, IState> {
 
     this.setCategory = this.setCategory.bind(this)
     this.addDownload = this.addDownload.bind(this)
-  }
-
-  async componentDidMount() {
-    return
   }
 
   async addDownload(mod: ModData) {
@@ -101,7 +102,7 @@ export class Mods extends React.Component<IProps, IState> {
         </TopBar>
 
         <div className="TopDownloads">
-          <ProgressBar downloadManager={this.props.downloadHandler} />
+          <ProgressBar downloadManager={this.props.downloadHandler} withStats={false} />
         </div>
 
         <ModHeader onChange={this.setCategory} headers={headers} defaultHeader={'ripe'} />

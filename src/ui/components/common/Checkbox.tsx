@@ -35,7 +35,6 @@ export default class Checkbox extends React.Component<IProps, IState> {
 
   handleChange = () => {
     this.setState({ checked: !this.state.checked })
-    console.log(this.props.onChange)
     this.props.onChange()
   }
 
