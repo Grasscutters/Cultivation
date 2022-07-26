@@ -63,7 +63,11 @@
     "gc_dev_jar": "Download the latest development Grasscutter build, which includes jar file and data files.",
     "gc_stable_data": "Download the current stable Grasscutter data files, which does not come with a jar file. This is useful for updating.",
     "gc_dev_data": "Download the latest development Grasscutter data files, which does not come with a jar file. This is useful for updating.",
-    "resources": "These are also required to run a Grasscutter server. This button will be grey if you have an existing resources folder with contents inside"
+    "encryption": "This should usually be disabled.",
+    "resources": "These are also required to run a Grasscutter server. This button will be grey if you have an existing resources folder with contents inside",
+    "emergency_metadata": "In case something went wrong, restore your metadata to the latest official versions metadata.",
+    "use_proxy": "Use the Cultivation internal proxy. You should have this enabled unless you use something like Fiddler",
+    "patch_metadata": "Patch and unpatch your game metadata automatically. Unless playing with old/non-official versions, or you have manually patched your metadata, this should be enabled."
   },
   "swag": {
     "akebi": "Set Akebi Executable",

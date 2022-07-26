@@ -14,6 +14,7 @@ import './Options.css'
 import BigButton from '../common/BigButton'
 import DownloadHandler from '../../../utils/download'
 import * as meta from '../../../utils/metadata'
+import HelpButton from '../common/HelpButton'
 
 interface IProps {
   closeFn: () => void
@@ -247,6 +248,7 @@ export default class Options extends React.Component<IProps, IState> {
         <div className="OptionSection" id="menuOptionsContainermetaDownload">
           <div className="OptionLabel" id="menuOptionsLabelmetaDownload">
             <Tr text="options.recover_metadata" />
+            <HelpButton contents="help.emergency_metadata" />
           </div>
           <div className="OptionValue" id="menuOptionsButtonmetaDownload">
             <BigButton onClick={this.restoreMetadata} id="metaDownload">
@@ -257,6 +259,7 @@ export default class Options extends React.Component<IProps, IState> {
         <div className="OptionSection" id="menuOptionsContainerPatchMeta">
           <div className="OptionLabel" id="menuOptionsLabelPatchMeta">
             <Tr text="options.patch_metadata" />
+            <HelpButton contents="help.patch_metadata" />
           </div>
           <div className="OptionValue" id="menuOptionsCheckboxPatchMeta">
             <Checkbox onChange={this.toggleMetadata} checked={this.state?.patch_metadata} id="patchMeta" />
@@ -265,6 +268,7 @@ export default class Options extends React.Component<IProps, IState> {
         <div className="OptionSection" id="menuOptionsContainerUseProxy">
           <div className="OptionLabel" id="menuOptionsLabelUseProxy">
             <Tr text="options.use_proxy" />
+            <HelpButton contents="help.use_proxy" />
           </div>
           <div className="OptionValue" id="menuOptionsCheckboxUseProxy">
             <Checkbox onChange={this.toggleProxy} checked={this.state?.use_internal_proxy} id="useProxy" />
@@ -284,6 +288,7 @@ export default class Options extends React.Component<IProps, IState> {
         <div className="OptionSection" id="menuOptionsContainerToggleEnc">
           <div className="OptionLabel" id="menuOptionsLabelToggleEnc">
             <Tr text="options.toggle_encryption" />
+            <HelpButton contents="help.encryption" />
           </div>
           <div className="OptionValue" id="menuOptionsButtonToggleEnc">
             <BigButton onClick={this.toggleEncryption} id="toggleEnc">
