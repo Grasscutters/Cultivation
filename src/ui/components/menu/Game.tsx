@@ -1,6 +1,6 @@
 import React from 'react'
 import Menu from './Menu'
-import Tr, { translate } from '../../../utils/language'
+import { translate } from '../../../utils/language'
 import DownloadHandler from '../../../utils/download'
 
 import './Game.css'

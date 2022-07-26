@@ -2,7 +2,6 @@ import React from 'react'
 
 import './HelpButton.css'
 import Help from '../../../resources/icons/help.svg'
-import MiniDialog from '../MiniDialog'
 import { translate } from '../../../utils/language'
 
 interface IProps {
