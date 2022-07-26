@@ -63,7 +63,7 @@
   position: absolute;
   object-fit: contain;
 
-  left: 37.5%;
+  left: 40%;
   top: 45%;
 
   z-index: 999;
@@ -72,6 +72,10 @@
   height: 40px !important;
 
   filter: invert(1);
+}
+
+.ModTileOpen {
+  left: 37.5%;
 }
 
 .ModImage {
