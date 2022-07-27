@@ -1,5 +1,5 @@
 import React from 'react'
-import { getConfig } from '../../../utils/configuration'
+import { getConfig, saveConfig } from '../../../utils/configuration'
 import Checkbox from '../common/Checkbox'
 import Menu from './Menu'
 
@@ -42,11 +42,22 @@ export class ExtrasMenu extends React.Component<IProps, IState> {
     this.setState({
       migoto: config.migoto_path,
       akebi: config.akebi_path,
+      launch_akebi: config?.last_extras?.akebi ?? false,
+      launch_migoto: config?.last_extras?.migoto ?? false,
       // TODO reshade
     })
   }
 
   async launchPreprograms() {
+    const config = await getConfig()
+
+    config.last_extras = {
+      migoto: this.state.launch_migoto,
+      akebi: this.state.launch_akebi,
+    }
+
+    await saveConfig(config)
+
     // This injects independent of the game
     if (this.state.launch_migoto) {
       await this.launchMigoto()

@@ -51,6 +51,10 @@ export interface Configuration {
   // Swag stuff
   akebi_path?: string
   migoto_path?: string
+  last_extras?: {
+    migoto: boolean
+    akebi: boolean
+  }
 }
 
 export async function setConfigOption<K extends keyof Configuration>(key: K, value: Configuration[K]): Promise<void> {
