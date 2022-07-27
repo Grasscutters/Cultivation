@@ -70,7 +70,11 @@
     "patch_metadata": "Patch and unpatch your game metadata automatically. Unless playing with old/non-official versions, or you have manually patched your metadata, this should be enabled."
   },
   "swag": {
+    "akebi_name": "Akebi",
+    "migoto_name": "Migoto",
+    "reshade_name": "Reshade",
     "akebi": "Set Akebi Executable",
-    "migoto": "Set 3dMigoto Executable"
+    "migoto": "Set 3DMigoto Executable",
+    "reshade": "Set Reshade Injector"
   }
 }

@@ -1,20 +1,15 @@
 import React from 'react'
 import { app } from '@tauri-apps/api'
 import { appWindow } from '@tauri-apps/api/window'
-import closeIcon from '../../resources/icons/close.svg'
-import minIcon from '../../resources/icons/min.svg'
-import cogBtn from '../../resources/icons/cog.svg'
-import downBtn from '../../resources/icons/download.svg'
-
+import { getConfig, setConfigOption } from '../../utils/configuration'
 import Tr from '../../utils/language'
 
 import './TopBar.css'
-import { getConfig, setConfigOption } from '../../utils/configuration'
+import closeIcon from '../../resources/icons/close.svg'
+import minIcon from '../../resources/icons/min.svg'
 
 interface IProps {
-  optFunc: () => void
-  downFunc: () => void
-  gameFunc: () => void
+  children?: React.ReactNode | React.ReactNode[]
 }
 
 interface IState {
@@ -110,15 +105,7 @@ export default class TopBar extends React.Component<IProps, IState> {
           <div id="minBtn" onClick={this.handleMinimize} className="TopButton">
             <img src={minIcon} alt="minimize" />
           </div>
-          <div id="settingsBtn" onClick={this.props.optFunc} className="TopButton">
-            <img src={cogBtn} alt="settings" />
-          </div>
-          <div id="downloadsBtn" className="TopButton" onClick={this.props.downFunc}>
-            <img src={downBtn} alt="downloads" />
-          </div>
-          {/* <div id="gameBtn" className="TopButton" onClick={this.props.gameFunc}>
-            <img src={gameBtn} alt="game" />
-          </div> */}
+          {this.props.children}
         </div>
       </div>
     )

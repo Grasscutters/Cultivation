@@ -12,6 +12,7 @@ use sysinfo::{System, SystemExt};
 
 mod downloader;
 mod file_helpers;
+mod gamebanana;
 mod lang;
 mod metadata_patcher;
 mod proxy;
@@ -59,6 +60,9 @@ fn main() {
       lang::get_languages,
       web::valid_url,
       web::web_get,
+      gamebanana::get_download_links,
+      gamebanana::list_submissions,
+      gamebanana::list_mods,
       metadata_patcher::patch_metadata
     ])
     .run(tauri::generate_context!())

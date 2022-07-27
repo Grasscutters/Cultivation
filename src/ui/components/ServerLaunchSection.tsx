@@ -8,12 +8,16 @@ import { translate } from '../../utils/language'
 import { invoke } from '@tauri-apps/api/tauri'
 
 import Server from '../../resources/icons/server.svg'
-import Akebi from '../../resources/icons/akebi.svg'
+import Plus from '../../resources/icons/plus.svg'
 
 import './ServerLaunchSection.css'
 import { dataDir } from '@tauri-apps/api/path'
 import { getGameExecutable } from '../../utils/game'
 import { patchGame, unpatchGame } from '../../utils/metadata'
+
+interface IProps {
+  openExtras: (playGame: () => void) => void
+}
 
 interface IState {
   grasscutterEnabled: boolean
@@ -31,10 +35,12 @@ interface IState {
   httpsEnabled: boolean
 
   swag: boolean
+  akebiSet: boolean
+  migotoSet: boolean
 }
 
-export default class ServerLaunchSection extends React.Component<{}, IState> {
-  constructor(props: {}) {
+export default class ServerLaunchSection extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props)
 
     this.state = {
@@ -49,11 +55,12 @@ export default class ServerLaunchSection extends React.Component<{}, IState> {
       httpsLabel: '',
       httpsEnabled: false,
       swag: false,
+      akebiSet: false,
+      migotoSet: false,
     }
 
     this.toggleGrasscutter = this.toggleGrasscutter.bind(this)
     this.playGame = this.playGame.bind(this)
-    this.launchAkebi = this.launchAkebi.bind(this)
     this.setIp = this.setIp.bind(this)
     this.setPort = this.setPort.bind(this)
     this.toggleHttps = this.toggleHttps.bind(this)
@@ -74,6 +81,8 @@ export default class ServerLaunchSection extends React.Component<{}, IState> {
       httpsLabel: await translate('main.https_enable'),
       httpsEnabled: config.https_enabled || false,
       swag: config.swag_mode || false,
+      akebiSet: config.akebi_path !== '',
+      migotoSet: config.migoto_path !== '',
     })
   }
 
@@ -182,16 +191,6 @@ export default class ServerLaunchSection extends React.Component<{}, IState> {
     })
   }
 
-  async launchAkebi() {
-    const config = await getConfig()
-
-    // Get game exe from game path, so we can watch it
-    const pathArr = config.game_install_path.replace(/\\/g, '/').split('/')
-    const gameExec = pathArr[pathArr.length - 1]
-
-    await this.playGame(config.akebi_path, gameExec)
-  }
-
   setIp(text: string) {
     this.setState({
       ip: text,
@@ -265,11 +264,9 @@ export default class ServerLaunchSection extends React.Component<{}, IState> {
             {this.state.buttonLabel}
           </BigButton>
           {this.state.swag && (
-            <>
-              <BigButton onClick={this.launchAkebi} id="akebiLaunch">
-                <img className="AkebiIcon" id="akebiIcon" src={Akebi} />
-              </BigButton>
-            </>
+            <BigButton onClick={() => this.props.openExtras(this.playGame)} id="ExtrasMenuButton">
+              <img className="ExtrasIcon" id="extrasIcon" src={Plus} />
+            </BigButton>
           )}
           <BigButton onClick={this.launchServer} id="serverLaunch">
             <img className="ServerIcon" id="serverLaunchIcon" src={Server} />

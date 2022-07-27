@@ -1,0 +1,32 @@
+.ExtrasMenu {
+  width: 20%;
+  height: 40%;
+}
+
+.ExtrasMenu .MenuInner {
+  justify-content: space-between;
+  height: 70%;
+}
+
+.ExtrasMenuContent {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ExtraItem {
+  width: 80%;
+
+  padding: 6px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ExtraLaunch .BigButton {
+  padding: 20px 50px;
+}

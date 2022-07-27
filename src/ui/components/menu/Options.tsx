@@ -38,6 +38,8 @@ interface IState {
 
   // Swag stuff
   akebi_path: string
+  migoto_path: string
+  reshade_path: string
 }
 
 export default class Options extends React.Component<IProps, IState> {
@@ -61,12 +63,15 @@ export default class Options extends React.Component<IProps, IState> {
 
       // Swag stuff
       akebi_path: '',
+      migoto_path: '',
+      reshade_path: '',
     }
 
     this.setGameExecutable = this.setGameExecutable.bind(this)
     this.setGrasscutterJar = this.setGrasscutterJar.bind(this)
     this.setJavaPath = this.setJavaPath.bind(this)
     this.setAkebi = this.setAkebi.bind(this)
+    this.setMigoto = this.setMigoto.bind(this)
     this.toggleGrasscutterWithGame = this.toggleGrasscutterWithGame.bind(this)
     this.setCustomBackground = this.setCustomBackground.bind(this)
     this.toggleEncryption = this.toggleEncryption.bind(this)
@@ -101,6 +106,8 @@ export default class Options extends React.Component<IProps, IState> {
 
       // Swag stuff
       akebi_path: config.akebi_path || '',
+      migoto_path: config.migoto_path || '',
+      reshade_path: config.reshade_path || '',
     })
 
     this.forceUpdate()
@@ -135,6 +142,22 @@ export default class Options extends React.Component<IProps, IState> {
 
     this.setState({
       akebi_path: value,
+    })
+  }
+
+  setMigoto(value: string) {
+    setConfigOption('migoto_path', value)
+
+    this.setState({
+      migoto_path: value,
+    })
+  }
+
+  setReshade(value: string) {
+    setConfigOption('reshade_path', value)
+
+    this.setState({
+      reshade_path: value,
     })
   }
 
@@ -204,7 +227,6 @@ export default class Options extends React.Component<IProps, IState> {
   }
 
   async restoreMetadata() {
-    console.log(this.props)
     await meta.restoreMetadata(this.props.downloadManager)
   }
 
@@ -313,8 +335,24 @@ export default class Options extends React.Component<IProps, IState> {
               <div className="OptionLabel" id="menuOptionsLabelAkebi">
                 <Tr text="swag.akebi" />
               </div>
-              <div className="OptionValue" id="menuOptionsDirMigoto">
+              <div className="OptionValue" id="menuOptionsDirAkebi">
                 <DirInput onChange={this.setAkebi} value={this.state?.akebi_path} extensions={['exe']} />
+              </div>
+            </div>
+            <div className="OptionSection" id="menuOptionsContainerMigoto">
+              <div className="OptionLabel" id="menuOptionsLabelMigoto">
+                <Tr text="swag.migoto" />
+              </div>
+              <div className="OptionValue" id="menuOptionsDirMigoto">
+                <DirInput onChange={this.setMigoto} value={this.state?.migoto_path} extensions={['exe']} />
+              </div>
+            </div>
+            <div className="OptionSection" id="menuOptionsContainerReshade">
+              <div className="OptionLabel" id="menuOptionsLabelReshade">
+                <Tr text="swag.reshade" />
+              </div>
+              <div className="OptionValue" id="menuOptionsDirReshade">
+                <DirInput onChange={this.setReshade} value={this.state?.reshade_path} extensions={['exe']} />
               </div>
             </div>
           </>

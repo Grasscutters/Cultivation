@@ -1,0 +1,41 @@
+.Mods {
+  backdrop-filter: blur(10px);
+  height: 90%;
+  width: 100%;
+}
+
+/* Stuff for the top bar progress bar */
+.TopDownloads {
+  position: absolute;
+  top: 10px;
+  left: 35.5%;
+
+  width: 30%;
+}
+
+.TopDownloads .ProgressBar {
+  width: 100%;
+  height: 10px;
+}
+
+.ModMenu {
+  width: 40%;
+}
+
+.ModMenu .BigButton {
+  font-size: 16px;
+  padding: 6px 30px;
+}
+
+.ModDownloadList {
+  width: 80%;
+}
+
+.ModDownloadItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  margin: 10px;
+}
