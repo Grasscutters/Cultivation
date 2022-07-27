@@ -64,6 +64,9 @@ export class ExtrasMenu extends React.Component<IProps, IState> {
 
     await saveConfig(config)
 
+    // Close menu
+    this.props.closeFn()
+
     // This injects independent of the game
     if (this.state.launch_migoto) {
       await this.launchMigoto()
