@@ -242,6 +242,7 @@ pub fn install_ca_files(cert_path: &Path) {
   crate::system_helpers::run_command(
     "certutil",
     vec!["-user", "-addstore", "Root", cert_path.to_str().unwrap()],
+    None,
   );
   println!("Installed certificate.");
 }

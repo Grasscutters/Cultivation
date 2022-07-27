@@ -115,6 +115,7 @@ export class ExtrasMenu extends React.Component<IProps, IState> {
     await invoke('run_command', {
       program: config.reshade_path,
       args: [await getGameExecutable()],
+      relative: true,
     })
   }
 
