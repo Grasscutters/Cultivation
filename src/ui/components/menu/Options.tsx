@@ -38,6 +38,7 @@ interface IState {
   // Swag stuff
   akebi_path: string
   migoto_path: string
+  reshade_path: string
 }
 
 export default class Options extends React.Component<IProps, IState> {
@@ -62,6 +63,7 @@ export default class Options extends React.Component<IProps, IState> {
       // Swag stuff
       akebi_path: '',
       migoto_path: '',
+      reshade_path: '',
     }
 
     this.setGameExecutable = this.setGameExecutable.bind(this)
@@ -104,6 +106,7 @@ export default class Options extends React.Component<IProps, IState> {
       // Swag stuff
       akebi_path: config.akebi_path || '',
       migoto_path: config.migoto_path || '',
+      reshade_path: config.reshade_path || '',
     })
 
     this.forceUpdate()
@@ -146,6 +149,14 @@ export default class Options extends React.Component<IProps, IState> {
 
     this.setState({
       migoto_path: value,
+    })
+  }
+
+  setReshade(value: string) {
+    setConfigOption('reshade_path', value)
+
+    this.setState({
+      reshade_path: value,
     })
   }
 
@@ -329,6 +340,14 @@ export default class Options extends React.Component<IProps, IState> {
               </div>
               <div className="OptionValue" id="menuOptionsDirMigoto">
                 <DirInput onChange={this.setMigoto} value={this.state?.migoto_path} extensions={['exe']} />
+              </div>
+            </div>
+            <div className="OptionSection" id="menuOptionsContainerReshade">
+              <div className="OptionLabel" id="menuOptionsLabelReshade">
+                <Tr text="swag.reshade" />
+              </div>
+              <div className="OptionValue" id="menuOptionsDirReshade">
+                <DirInput onChange={this.setReshade} value={this.state?.reshade_path} extensions={['exe']} />
               </div>
             </div>
           </>

@@ -17,9 +17,10 @@ interface IProps {
 interface IState {
   migoto?: string
   akebi?: string
+  reshade?: string
   launch_migoto: boolean
   launch_akebi: boolean
-  reshade?: string
+  launch_reshade: boolean
 }
 
 export class ExtrasMenu extends React.Component<IProps, IState> {
@@ -29,11 +30,13 @@ export class ExtrasMenu extends React.Component<IProps, IState> {
     this.state = {
       launch_migoto: false,
       launch_akebi: false,
+      launch_reshade: false,
     }
 
     this.launchPreprograms = this.launchPreprograms.bind(this)
     this.toggleMigoto = this.toggleMigoto.bind(this)
     this.toggleAkebi = this.toggleAkebi.bind(this)
+    this.toggleReshade = this.toggleReshade.bind(this)
   }
 
   async componentDidMount() {
@@ -42,9 +45,10 @@ export class ExtrasMenu extends React.Component<IProps, IState> {
     this.setState({
       migoto: config.migoto_path,
       akebi: config.akebi_path,
+      reshade: config.reshade_path,
       launch_akebi: config?.last_extras?.akebi ?? false,
       launch_migoto: config?.last_extras?.migoto ?? false,
-      // TODO reshade
+      launch_reshade: config?.last_extras?.reshade ?? false,
     })
   }
 
@@ -54,6 +58,7 @@ export class ExtrasMenu extends React.Component<IProps, IState> {
     config.last_extras = {
       migoto: this.state.launch_migoto,
       akebi: this.state.launch_akebi,
+      reshade: this.state.launch_reshade,
     }
 
     await saveConfig(config)
@@ -61,6 +66,11 @@ export class ExtrasMenu extends React.Component<IProps, IState> {
     // This injects independent of the game
     if (this.state.launch_migoto) {
       await this.launchMigoto()
+    }
+
+    // This injects independent of the game
+    if (this.state.launch_reshade) {
+      await this.launchReshade()
     }
 
     // This will launch the game
@@ -93,6 +103,14 @@ export class ExtrasMenu extends React.Component<IProps, IState> {
     await invoke('run_program_relative', { path: config.migoto_path })
   }
 
+  async launchReshade() {
+    const config = await getConfig()
+
+    if (!config.reshade_path) return alert('Reshade not installed or set!')
+
+    await invoke('run_program_relative', { path: config.reshade_path })
+  }
+
   toggleMigoto() {
     this.setState({
       launch_migoto: !this.state.launch_migoto,
@@ -105,21 +123,40 @@ export class ExtrasMenu extends React.Component<IProps, IState> {
     })
   }
 
+  toggleReshade() {
+    this.setState({
+      launch_reshade: !this.state.launch_reshade,
+    })
+  }
+
   render() {
     return (
       <Menu closeFn={this.props.closeFn} heading="Extras" className="ExtrasMenu">
         <div className="ExtrasMenuContent">
           {this.state.migoto && (
             <div className="ExtraItem">
-              <div className="ExtraItemLabel">Migoto</div>
+              <div className="ExtraItemLabel">
+                <Tr text="swag.migoto_name" />
+              </div>
               <Checkbox id="MigotoCheckbox" checked={this.state.launch_migoto} onChange={this.toggleMigoto} />
             </div>
           )}
 
           {this.state.akebi && (
             <div className="ExtraItem">
-              <div className="ExtraItemLabel">Akebi</div>
+              <div className="ExtraItemLabel">
+                <Tr text="swag.akebi_name" />
+              </div>
               <Checkbox id="AkebiCheckbox" checked={this.state.launch_akebi} onChange={this.toggleAkebi} />
+            </div>
+          )}
+
+          {this.state.reshade && (
+            <div className="ExtraItem">
+              <div className="ExtraItemLabel">
+                <Tr text="swag.reshade_name" />
+              </div>
+              <Checkbox id="ReshadeCheckbox" checked={this.state.launch_reshade} onChange={this.toggleReshade} />
             </div>
           )}
         </div>

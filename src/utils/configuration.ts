@@ -51,9 +51,11 @@ export interface Configuration {
   // Swag stuff
   akebi_path?: string
   migoto_path?: string
+  reshade_path?: string
   last_extras?: {
     migoto: boolean
     akebi: boolean
+    reshade: boolean
   }
 }
 

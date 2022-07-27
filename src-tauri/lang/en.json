@@ -66,7 +66,11 @@
     "resources": "These are also required to run a Grasscutter server. This button will be grey if you have an existing resources folder with contents inside"
   },
   "swag": {
+    "akebi_name": "Akebi",
+    "migoto_name": "Migoto",
+    "reshade_name": "Reshade",
     "akebi": "Set Akebi Executable",
-    "migoto": "Set 3DMigoto Executable"
+    "migoto": "Set 3DMigoto Executable",
+    "reshade": "Set Reshade Injector"
   }
 }
