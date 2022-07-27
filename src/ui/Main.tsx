@@ -24,7 +24,6 @@ import DownloadHandler from '../utils/download'
 import cogBtn from '../resources/icons/cog.svg'
 import downBtn from '../resources/icons/download.svg'
 import wrenchBtn from '../resources/icons/wrench.svg'
-import Menu from './components/menu/Menu'
 import { ExtrasMenu } from './components/menu/ExtrasMenu'
 
 interface IProps {

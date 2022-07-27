@@ -36,10 +36,6 @@ async function generateInfo() {
   alert('check your dev console and send that in #cultivation')
 }
 
-function none() {
-  alert('none')
-}
-
 class Debug extends React.Component {
   render() {
     return (
