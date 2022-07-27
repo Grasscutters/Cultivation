@@ -1,13 +1,13 @@
 use duct::cmd;
 
 #[tauri::command]
-pub fn run_program(path: String) {
+pub fn run_program(path: String, args: Option<String>) {
   // Without unwrap_or, this can crash when UAC prompt is denied
-  open::that(&path).unwrap_or(());
+  open::that(format!("{} {}", &path, &args.unwrap_or("".into()))).unwrap_or(());
 }
 
 #[tauri::command]
-pub fn run_program_relative(path: String) {
+pub fn run_program_relative(path: String, args: Option<String>) {
   // Save the current working directory
   let cwd = std::env::current_dir().unwrap();
 
@@ -18,8 +18,10 @@ pub fn run_program_relative(path: String) {
   // Set new working directory
   std::env::set_current_dir(&path_buf).unwrap();
 
+  println!("Opening {} {}", &path, args.clone().unwrap_or("".into()));
+
   // Without unwrap_or, this can crash when UAC prompt is denied
-  open::that(&path).unwrap_or(());
+  open::that(format!("{} {}", &path, args.unwrap_or("".into()))).unwrap_or(());
 
   // Restore the original working directory
   std::env::set_current_dir(&cwd).unwrap();
@@ -27,7 +29,13 @@ pub fn run_program_relative(path: String) {
 
 #[tauri::command]
 pub fn run_command(program: &str, args: Vec<&str>) {
-  cmd(program, args).run().expect("Failed to run command");
+  let prog = program.to_string();
+  let args = args.iter().map(|s| s.to_string()).collect::<Vec<String>>();
+
+  // Commands should not block (this is for the reshade injector mostly)
+  std::thread::spawn(move || {
+    cmd(prog, args).run().unwrap();
+  });
 }
 
 #[tauri::command]

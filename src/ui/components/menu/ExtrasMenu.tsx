@@ -7,6 +7,7 @@ import './ExtrasMenu.css'
 import BigButton from '../common/BigButton'
 import { invoke } from '@tauri-apps/api'
 import Tr from '../../../utils/language'
+import { getGameExecutable } from '../../../utils/game'
 
 interface IProps {
   children: React.ReactNode | React.ReactNode[]
@@ -108,7 +109,10 @@ export class ExtrasMenu extends React.Component<IProps, IState> {
 
     if (!config.reshade_path) return alert('Reshade not installed or set!')
 
-    await invoke('run_program_relative', { path: config.reshade_path })
+    await invoke('run_command', {
+      program: config.reshade_path,
+      args: [await getGameExecutable()],
+    })
   }
 
   toggleMigoto() {
