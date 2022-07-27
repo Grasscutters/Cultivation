@@ -24,6 +24,8 @@ import DownloadHandler from '../utils/download'
 import cogBtn from '../resources/icons/cog.svg'
 import downBtn from '../resources/icons/download.svg'
 import wrenchBtn from '../resources/icons/wrench.svg'
+import Menu from './components/menu/Menu'
+import { ExtrasMenu } from './components/menu/ExtrasMenu'
 
 interface IProps {
   downloadHandler: DownloadHandler
@@ -35,7 +37,9 @@ interface IState {
   miniDownloadsOpen: boolean
   downloadsOpen: boolean
   gameDownloadsOpen: boolean
+  extrasOpen: boolean
   migotoSet: boolean
+  playGame: (exe?: string, proc_name?: string) => void
 }
 
 export class Main extends React.Component<IProps, IState> {
@@ -47,7 +51,11 @@ export class Main extends React.Component<IProps, IState> {
       miniDownloadsOpen: false,
       downloadsOpen: false,
       gameDownloadsOpen: false,
+      extrasOpen: false,
       migotoSet: false,
+      playGame: () => {
+        alert('Error launching game')
+      },
     }
 
     listen('lang_error', (payload) => {
@@ -87,6 +95,8 @@ export class Main extends React.Component<IProps, IState> {
         min = false
       }
     }, 1000)
+
+    this.openExtrasMenu = this.openExtrasMenu.bind(this)
   }
 
   async componentDidMount() {
@@ -111,6 +121,13 @@ export class Main extends React.Component<IProps, IState> {
         isDownloading: this.props.downloadHandler.getDownloads().filter((d) => d.status !== 'finished')?.length > 0,
       })
     }, 1000)
+  }
+
+  async openExtrasMenu(playGame: () => void) {
+    this.setState({
+      extrasOpen: true,
+      playGame,
+    })
   }
 
   render() {
@@ -152,6 +169,15 @@ export class Main extends React.Component<IProps, IState> {
         <RightBar />
 
         <NewsSection />
+
+        {
+          // Extras section
+          this.state.extrasOpen && (
+            <ExtrasMenu closeFn={() => this.setState({ extrasOpen: false })} playGame={this.state.playGame}>
+              Yo
+            </ExtrasMenu>
+          )
+        }
 
         {
           // Mini downloads section
@@ -201,7 +227,7 @@ export class Main extends React.Component<IProps, IState> {
         }
 
         <div className="BottomSection" id="bottomSectionContainer">
-          <ServerLaunchSection />
+          <ServerLaunchSection openExtras={this.openExtrasMenu} />
 
           <div
             id="DownloadProgress"

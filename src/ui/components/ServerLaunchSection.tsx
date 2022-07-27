@@ -8,12 +8,16 @@ import { translate } from '../../utils/language'
 import { invoke } from '@tauri-apps/api/tauri'
 
 import Server from '../../resources/icons/server.svg'
-import Akebi from '../../resources/icons/akebi.svg'
+import Plus from '../../resources/icons/plus.svg'
 
 import './ServerLaunchSection.css'
 import { dataDir } from '@tauri-apps/api/path'
 import { getGameExecutable } from '../../utils/game'
 import { patchGame, unpatchGame } from '../../utils/metadata'
+
+interface IProps {
+  openExtras: (playGame: () => void) => void
+}
 
 interface IState {
   grasscutterEnabled: boolean
@@ -35,8 +39,8 @@ interface IState {
   migotoSet: boolean
 }
 
-export default class ServerLaunchSection extends React.Component<{}, IState> {
-  constructor(props: {}) {
+export default class ServerLaunchSection extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props)
 
     this.state = {
@@ -57,8 +61,6 @@ export default class ServerLaunchSection extends React.Component<{}, IState> {
 
     this.toggleGrasscutter = this.toggleGrasscutter.bind(this)
     this.playGame = this.playGame.bind(this)
-    this.launchAkebi = this.launchAkebi.bind(this)
-    this.launchMigoto = this.launchMigoto.bind(this)
     this.setIp = this.setIp.bind(this)
     this.setPort = this.setPort.bind(this)
     this.toggleHttps = this.toggleHttps.bind(this)
@@ -189,30 +191,6 @@ export default class ServerLaunchSection extends React.Component<{}, IState> {
     })
   }
 
-  async launchAkebi() {
-    const config = await getConfig()
-
-    // Get game exe from game path, so we can watch it
-    const pathArr = config.game_install_path.replace(/\\/g, '/').split('/')
-    const gameExec = pathArr[pathArr.length - 1]
-
-    await this.playGame(config.akebi_path, gameExec)
-  }
-
-  async launchMigoto() {
-    const config = await getConfig()
-
-    if (!config.migoto_path) return alert('Migoto not installed or set!')
-
-    // Get game exe from game path, so we can watch it
-    const pathArr = config.migoto_path.replace(/\\/g, '/').split('/')
-    const migotoExec = pathArr[pathArr.length - 1]
-
-    await invoke('run_program_relative', { path: config.migoto_path })
-
-    await this.playGame()
-  }
-
   setIp(text: string) {
     this.setState({
       ip: text,
@@ -286,19 +264,9 @@ export default class ServerLaunchSection extends React.Component<{}, IState> {
             {this.state.buttonLabel}
           </BigButton>
           {this.state.swag && (
-            <>
-              {this.state.akebiSet && (
-                <BigButton onClick={this.launchAkebi} id="akebiLaunch">
-                  <img className="AkebiIcon" id="akebiIcon" src={Akebi} />
-                </BigButton>
-              )}
-
-              {this.state.migotoSet && (
-                <BigButton onClick={this.launchMigoto} id="migotoLaunch">
-                  3DM
-                </BigButton>
-              )}
-            </>
+            <BigButton onClick={() => this.props.openExtras(this.playGame)} id="ExtrasMenuButton">
+              <img className="ExtrasIcon" id="extrasIcon" src={Plus} />
+            </BigButton>
           )}
           <BigButton onClick={this.launchServer} id="serverLaunch">
             <img className="ServerIcon" id="serverLaunchIcon" src={Server} />

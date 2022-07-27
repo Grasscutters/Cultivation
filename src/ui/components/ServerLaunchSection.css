@@ -82,7 +82,12 @@
   width: 5%;
 }
 
-.AkebiIcon,
+#ExtrasMenuButton {
+  width: 5%;
+  padding: 0 20px;
+}
+
+.ExtrasIcon,
 .ServerIcon {
   height: 20px;
   filter: invert(28%) sepia(28%) saturate(1141%) hue-rotate(352deg) brightness(96%) contrast(88%);

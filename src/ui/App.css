@@ -114,6 +114,9 @@ select:focus {
   padding: 0;
 }
 
+.ExtrasMenu {
+}
+
 @media (max-height: 580px) {
   .BottomSection {
     height: 150px;

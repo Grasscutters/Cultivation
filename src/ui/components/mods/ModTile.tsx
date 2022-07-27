@@ -102,11 +102,7 @@ export class ModTile extends React.Component<IProps, IState> {
             ) : (
               <div className="ModTileOpen">
                 <img src={Folder} className="ModTileFolder" alt="Open" onClick={this.openInExplorer} />
-                <Checkbox
-                  checked={/* TODO GET ACTUAL INSTALL STATUS */ this.state.modEnabled}
-                  id={this.props.mod.name}
-                  onChange={this.toggleMod}
-                />
+                <Checkbox checked={this.state.modEnabled} id={this.props.mod.name} onChange={this.toggleMod} />
               </div>
             ))}
           <img
