@@ -111,7 +111,12 @@ fn replace_keys(data: &[u8]) -> Vec<u8> {
 fn replace_rsa_key(old_data: &str, to_replace: &str, file_name: &str) -> String {
   // Read dispatch key file
   unsafe {
-    let mut new_key_file = match File::open(&("keys/".to_owned() + file_name)) {
+    // Get key folder from exe path
+    let mut exe_path = std::env::current_exe().unwrap();
+    exe_path.pop();
+
+    let key_folder = exe_path.to_str().unwrap().to_string();
+    let mut new_key_file = match File::open(format!("{}/keys/{}", key_folder, file_name)) {
       Ok(file) => file,
       Err(e) => {
         println!("Failed to open keys/{}: {}", file_name, e);

@@ -24,6 +24,11 @@ mod web;
 static WATCH_GAME_PROCESS: Lazy<Mutex<String>> = Lazy::new(|| Mutex::new(String::new()));
 
 fn main() {
+  // Always set CWD to the location of the executable.
+  let mut exe_path = std::env::current_exe().unwrap();
+  exe_path.pop();
+  std::env::set_current_dir(&exe_path).unwrap();
+
   tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![
       enable_process_watcher,
