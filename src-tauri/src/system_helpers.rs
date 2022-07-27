@@ -18,29 +18,8 @@ pub fn run_program_relative(path: String, args: Option<String>) {
   // Set new working directory
   std::env::set_current_dir(&path_buf).unwrap();
 
-  println!("Opening {} {}", &path, args.clone().unwrap_or("".into()));
-
   // Without unwrap_or, this can crash when UAC prompt is denied
   open::that(format!("{} {}", &path, args.unwrap_or("".into()))).unwrap_or(());
-
-  // Restore the original working directory
-  std::env::set_current_dir(&cwd).unwrap();
-}
-
-#[tauri::command]
-pub fn run_program_relative(path: String) {
-  // Save the current working directory
-  let cwd = std::env::current_dir().unwrap();
-
-  // Set the new working directory to the path before the executable
-  let mut path_buf = std::path::PathBuf::from(&path);
-  path_buf.pop();
-
-  // Open in new thread to prevent blocking.
-  std::thread::spawn(move || {
-    // Without unwrap_or, this can crash when UAC prompt is denied
-    open::that(&path).unwrap_or(());
-  });
 
   // Restore the original working directory
   std::env::set_current_dir(&cwd).unwrap();

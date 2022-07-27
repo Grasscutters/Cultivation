@@ -1,7 +1,7 @@
 use std::fs::{read_dir, File};
 use std::path;
 use std::thread;
-use unrar::archive::{Archive, OpenArchive};
+use unrar::archive::Archive;
 
 #[tauri::command]
 pub fn unzip(
@@ -132,9 +132,9 @@ pub fn unzip(
 fn extract_rar(
   window: &tauri::Window,
   rarfile: &String,
-  f: &File,
+  _f: &File,
   full_path: &path::PathBuf,
-  top_level: bool,
+  _top_level: bool,
 ) {
   let archive = Archive::new(rarfile.clone());
 

@@ -57,7 +57,7 @@ export default class ProgressBar extends React.Component<IProps, IState> {
             style={{
               width: `${(() => {
                 // Handles no files downloading
-                if (this.state.files === 0) {
+                if (this.state.files === 0 || this.state.average >= 100) {
                   return '100'
                 }
 
