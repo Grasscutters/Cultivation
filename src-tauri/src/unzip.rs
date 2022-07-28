@@ -63,7 +63,7 @@ pub fn unzip(
 
     println!("Is rar file? {}", zipfile.ends_with(".rar"));
 
-    let mut name = "".into();
+    let name;
 
     // If file ends in zip, OR is unknown, extract as zip, otherwise extract as rar
     if zipfile.ends_with(".rar") {

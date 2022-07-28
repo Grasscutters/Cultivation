@@ -18,7 +18,14 @@ pub fn rename(path: String, new_name: String) {
 
   let path_replaced = &path.replace(&new_path.split('/').last().unwrap(), &new_name);
 
-  fs::rename(path, &path_replaced).unwrap();
+  match fs::rename(&path, &path_replaced) {
+    Ok(_) => {
+      println!("Renamed {} to {}", &path, path_replaced);
+    }
+    Err(e) => {
+      println!("Error: {}", e);
+    }
+  };
 }
 
 #[tauri::command]
