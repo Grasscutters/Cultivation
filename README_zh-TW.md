@@ -1,0 +1,88 @@
+[EN](README.md) | [简中](README_zh-CN.md) | 繁中 
+
+# 客戶端修補通知  
+
+對於遊戲版本為2.8及以上時，使用Grasscutter啟動時，Cultivation會自動為您的遊戲客戶端製作一個小補丁，並在關閉遊戲時恢復它。 從理論上講，你應該是完全安全的，但是不明確**如果您使用它連接到官方服務器，修改遊戲客戶端可能會導致封號**，但可能性是非常小的，並且從未接到發生過此類情況的問題，但存在這種可能性！ 
+
+# Cultivation
+
+一個遊戲啟動器，旨在輕松將某動漫遊戲的流量代理到私人服務器。 
+
+雖然此存儲庫是**開放的**。 但這**並不**意味著它已經發布。 
+請不要**安裝、下載或使用在其他地方找到的預編譯版本的Cultivation**。 僅使用此 GitHub 存儲庫中的版本。 
+
+# 目錄 
+
+- [下載](#下載)
+- [開發人員快速入門](#開發人員快速入門)
+  - [安裝](#安裝)
+  - [編譯](#編譯)
+  - [代碼格式化與糾錯](#代碼格式化與糾錯)
+  - [生成更新項目](#生成更新項目)
+- [啟動器主題](#啟動器主題)
+- [畫面](#畫面)
+- [成員](#成員)
+
+# 下載
+
+[在此處查找發布版本！](https://github.com/Grasscutters/Cultivation/releases)
+
+下載後，從某個位置解壓縮並以管理員身份打開。
+
+# 開發人員快速入門
+
+### 安裝
+
+- 安裝 [NodeJS >12](https://nodejs.org/en/)
+- 安裝 [yarn](https://classic.yarnpkg.com/lang/en/docs/install) (`npm`愛好者去哭吧！（滑稽）)
+- 安裝 [Rust](https://www.rust-lang.org/tools/install)
+- `yarn install`
+- `yarn start:dev`
+
+### 編譯
+
+發布版本，
+
+- `yarn build`
+
+調試版本，
+
+- `yarn build --debug`
+
+### 代碼格式化與糾錯
+
+格式化:
+
+- `yarn format`
+
+糾錯, 修復（一些）錯誤:
+
+- `yarn lint`, `yarn lint:fix`
+
+### 生成更新項目
+
+- 將 `TAURI_PRIVATE_KEY` 添加到環境變量，其中包含私鑰的路徑。
+- 將 `TAURI_KEY_PASSWORD` 添加到環境變量，其中包含私鑰的密碼。
+- `yarn build`
+
+更新將生成在 `src-tauri/target/(release|debug)/msi/Cultivation_X.X.X_x64_xx-XX.msi.zip`
+
+# 啟動器主題
+
+完整的主題參考可以[在這裏找到!](/THEMES.md)
+
+# 畫面
+
+![image](https://user-images.githubusercontent.com/25207995/173211603-e5e85df7-7fd3-430b-9246-749ebbc1e483.png)
+![image](https://user-images.githubusercontent.com/25207995/173211543-b7e88943-cfd2-418b-ac48-7f856868129b.png)
+![image](https://user-images.githubusercontent.com/25207995/173211561-a1778fdc-5cfe-4687-9a00-44500d29e470.png)
+![image](https://user-images.githubusercontent.com/25207995/173211573-8cedfa9a-51c9-4670-a4f7-a334a2fabec5.png)
+![image](https://user-images.githubusercontent.com/25207995/173211590-6a2242b5-1e8f-4db9-a5c7-06284688b131.png)
+
+## 成員
+
+- [SpikeHD](https://github.com/SpikeHD): For originally creating **GrassClipper** and creating the amazing UI of Cultivation.
+- [KingRainbow44](https://github.com/KingRainbow44): For building a proxy daemon from scratch and integrating it with Cultivation.
+- [Benj](https://github.com/4Benj): For assistance in client patching.
+- [lilmayofuksu](https://github.com/lilmayofuksu): For assistance in client patching.
+- [Tauri](https://tauri.app): For providing an amazing, efficient, and simple desktop application framework/library.

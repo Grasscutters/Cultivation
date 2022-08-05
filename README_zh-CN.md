@@ -1,4 +1,4 @@
-[EN](README.md) | 简中 | 
+[EN](README.md) | 简中 | [繁中](README_zh-TW.md) 
 
 # 客户端修补通知 
 
