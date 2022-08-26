@@ -64,7 +64,7 @@ pub fn unzip(
     println!("Is rar file? {}", zipfile.ends_with(".rar"));
 
     let name;
-    let mut success;
+    let success;
 
     // If file ends in zip, OR is unknown, extract as zip, otherwise extract as rar
     if zipfile.ends_with(".rar") {
@@ -149,7 +149,7 @@ fn extract_rar(rarfile: &String, _f: &File, full_path: &path::PathBuf, _top_leve
   }
 }
 
-fn extract_zip(zipfile: &String, f: &File, full_path: &path::PathBuf, top_level: bool) -> bool {
+fn extract_zip(_zipfile: &String, f: &File, full_path: &path::PathBuf, top_level: bool) -> bool {
   match zip_extract::extract(f, full_path, top_level) {
     Ok(_) => {
       println!(
