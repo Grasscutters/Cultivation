@@ -15,11 +15,11 @@ pub async fn get_download_links(mod_id: String) -> String {
 }
 
 #[tauri::command]
-pub async fn list_submissions(mode: String) -> String {
+pub async fn list_submissions(mode: String, page: String) -> String {
   let res = web::query(
     format!(
-      "{}/apiv9/Util/Game/Submissions?_idGameRow=8552&_nPage=1&_nPerpage=50&_sMode={}",
-      SITE_URL, mode
+      "{}/apiv9/Util/Game/Submissions?_idGameRow=8552&_nPage={}&_nPerpage=50&_sMode={}",
+      SITE_URL, page, mode
     )
     .as_str(),
   )
