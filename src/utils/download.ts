@@ -75,16 +75,15 @@ export default class DownloadHandler {
       this.downloads[index].error = errorData.error
     })
 
-    // Extraction events
     listen('extract_start', ({ payload }) => {
-      // Find the download that is no extracting and set it's status as such
+      // Find the download that is extracting and set it's status as such
       const index = this.downloads.findIndex((download) => download.path === payload)
       this.downloads[index].status = 'extracting'
     })
 
-    listen('extract_end', ({ payload }) => {
-      // Find the download that is no extracting and set it's status as such
-      const index = this.downloads.findIndex((download) => download.path === payload)
+    listen('extract_end', ({ payload }:any) => {
+      // Find the download that is not extracting and set it's status as such
+      const index = this.downloads.findIndex((download) => download.path === (payload.file ? payload.file : payload.folder) || null)
       this.downloads[index].status = 'finished'
     })
   }
