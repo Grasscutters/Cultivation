@@ -197,7 +197,8 @@ async fn get_bg_file(bg_path: String, appdata: String) -> String {
   let response_data: APIQuery = match serde_json::from_str(&query) {
     Ok(data) => data,
     Err(e) => {
-      println!("Failed to parse response: {}", e);
+      println!("Failed to get bg file response: {}", e);
+      println!("^ please stop reporting this as an error it's so annoying LMFAO");
       return "".to_string();
     }
   };

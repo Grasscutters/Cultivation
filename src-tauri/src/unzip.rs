@@ -64,32 +64,29 @@ pub fn unzip(
     println!("Is rar file? {}", zipfile.ends_with(".rar"));
 
     let name;
+    let mut success;
 
     // If file ends in zip, OR is unknown, extract as zip, otherwise extract as rar
     if zipfile.ends_with(".rar") {
-      extract_rar(
-        &window,
-        &zipfile,
-        &f,
-        &full_path,
-        top_level.unwrap_or(false),
-      );
+      success = extract_rar(&zipfile, &f, &full_path, top_level.unwrap_or(true));
 
       let archive = Archive::new(zipfile.clone());
       name = archive.list().unwrap().next().unwrap().unwrap().filename;
     } else {
-      extract_zip(
-        &window,
-        &zipfile,
-        &f,
-        &full_path,
-        top_level.unwrap_or(false),
-      );
+      success = extract_zip(&zipfile, &f, &full_path, top_level.unwrap_or(true));
 
       // Get the name of the inenr file in the zip file
       let mut zip = zip::ZipArchive::new(&f).unwrap();
       let file = zip.by_index(0).unwrap();
       name = file.name().to_string().clone();
+    }
+
+    if !success {
+      let mut res_hash = std::collections::HashMap::new();
+
+      res_hash.insert("path".to_string(), zipfile.to_string());
+
+      window.emit("download_error", &res_hash).unwrap();
     }
 
     // If the contents is a jar file, emit that we have extracted a new jar file
@@ -129,13 +126,7 @@ pub fn unzip(
   });
 }
 
-fn extract_rar(
-  window: &tauri::Window,
-  rarfile: &String,
-  _f: &File,
-  full_path: &path::PathBuf,
-  _top_level: bool,
-) {
+fn extract_rar(rarfile: &String, _f: &File, full_path: &path::PathBuf, _top_level: bool) -> bool {
   let archive = Archive::new(rarfile.clone());
 
   let mut open_archive = archive
@@ -148,41 +139,29 @@ fn extract_rar(
         "Extracted rar file to: {}",
         full_path.to_str().unwrap_or("Error")
       );
+
+      true
     }
     Err(e) => {
       println!("Failed to extract rar file: {}", e);
-      let mut res_hash = std::collections::HashMap::new();
-
-      res_hash.insert("error".to_string(), e.to_string());
-      res_hash.insert("path".to_string(), rarfile.to_string());
-
-      window.emit("download_error", &res_hash).unwrap();
+      false
     }
   }
 }
 
-fn extract_zip(
-  window: &tauri::Window,
-  zipfile: &String,
-  f: &File,
-  full_path: &path::PathBuf,
-  top_level: bool,
-) {
+fn extract_zip(zipfile: &String, f: &File, full_path: &path::PathBuf, top_level: bool) -> bool {
   match zip_extract::extract(f, full_path, top_level) {
     Ok(_) => {
       println!(
         "Extracted zip file to: {}",
         full_path.to_str().unwrap_or("Error")
       );
+
+      true
     }
     Err(e) => {
       println!("Failed to extract zip file: {}", e);
-      let mut res_hash = std::collections::HashMap::new();
-
-      res_hash.insert("error".to_string(), e.to_string());
-      res_hash.insert("path".to_string(), zipfile.to_string());
-
-      window.emit("download_error", &res_hash).unwrap();
+      false
     }
-  };
+  }
 }

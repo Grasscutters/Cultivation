@@ -21,6 +21,9 @@ export function unzip(
     })
 
     listen('extract_end', ({ payload }) => {
+      console.log(payload)
+      console.log(file)
+
       // @ts-expect-error Payload is an object
       if (payload?.file === file) {
         resolve(payload as UnzipPayload)
