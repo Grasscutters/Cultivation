@@ -1,4 +1,6 @@
 use duct::cmd;
+use ini::Ini;
+use std::path::PathBuf;
 
 #[tauri::command]
 pub fn run_program(path: String, args: Option<String>) {
@@ -86,6 +88,43 @@ pub fn install_location() -> String {
   exe_path.pop();
 
   return exe_path.to_str().unwrap().to_string();
+}
+
+#[tauri::command]
+pub fn set_migoto_target(path: String, migoto_path: String) -> bool {
+  let pathbuf = PathBuf::from(path);
+  let mut migoto_pathbuf = PathBuf::from(migoto_path);
+
+  migoto_pathbuf.pop();
+  migoto_pathbuf.push("d3dx.ini");
+
+  let mut conf = match Ini::load_from_file(&migoto_pathbuf) {
+    Ok(c) => {
+      println!("Loaded migoto ini");
+      c
+    }
+    Err(e) => {
+      println!("Error loading migoto config: {}", e);
+      return false;
+    }
+  };
+
+  // Set options
+  conf
+    .with_section(Some("Loader"))
+    .set("target", pathbuf.to_str().unwrap());
+
+  // Write file
+  match conf.write_to_file(&migoto_pathbuf) {
+    Ok(_) => {
+      println!("Wrote config!");
+      true
+    }
+    Err(e) => {
+      println!("Error writing config: {}", e);
+      false
+    }
+  }
 }
 
 #[cfg(windows)]
