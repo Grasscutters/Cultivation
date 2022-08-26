@@ -75,6 +75,7 @@ export default class DownloadHandler {
       this.downloads[index].error = errorData.error
     })
 
+    // Extraction events
     listen('extract_start', ({ payload }) => {
       // Find the download that is extracting and set it's status as such
       const index = this.downloads.findIndex((download) => download.path === payload)
