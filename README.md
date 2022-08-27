@@ -29,6 +29,8 @@ Please do **NOT install, download, or use pre-compiled versions of Cultivation f
 
 Once downloaded, extract somewhere and open as administrator.
 
+**Windows 7 Users:** You will need to download [WebView](https://developer.microsoft.com/en-us/microsoft-edge/webview2/#download-section) manually.
+
 # Developer Quickstart
 
 ### Setup
