@@ -35,6 +35,11 @@ export async function patchMetadata() {
   })
 
   if (!patchedMeta) {
+    // Remove metadata backup, in case it invalid or something
+    await invoke('delete_file', {
+      path: (await getBackupMetadataPath()) + '\\global-metadata-unpatched.dat',
+    })
+
     return false
   }
 
