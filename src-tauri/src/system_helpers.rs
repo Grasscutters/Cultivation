@@ -2,6 +2,9 @@ use duct::cmd;
 use ini::Ini;
 use std::path::PathBuf;
 
+#[cfg(windows)]
+use registry::{Data, Hive, Security};
+
 #[tauri::command]
 pub fn run_program(path: String, args: Option<String>) {
   // Without unwrap_or, this can crash when UAC prompt is denied
@@ -124,6 +127,28 @@ pub fn set_migoto_target(path: String, migoto_path: String) -> bool {
       println!("Error writing config: {}", e);
       false
     }
+  }
+}
+
+#[tauri::command]
+pub fn wipe_registry(exec_name: String) {
+  // Fetch the 'Internet Settings' registry key.
+  let settings =
+    match Hive::CurrentUser.open(format!("Software\\miHoYo\\{}", exec_name), Security::Write) {
+      Ok(s) => s,
+      Err(e) => {
+        println!("Error getting registry setting: {}", e);
+        return;
+      }
+    };
+
+  // Wipe login cache
+  match settings.set_value(
+    "MIHOYOSDK_ADL_PROD_OVERSEA_h1158948810",
+    &Data::String("".parse().unwrap()),
+  ) {
+    Ok(_) => (),
+    Err(e) => println!("Error wiping registry: {}", e),
   }
 }
 

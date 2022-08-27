@@ -34,6 +34,7 @@ interface IState {
   encryption: boolean
   patch_metadata: boolean
   use_internal_proxy: boolean
+  wipe_login: boolean
   swag: boolean
 
   // Swag stuff
@@ -59,6 +60,7 @@ export default class Options extends React.Component<IProps, IState> {
       encryption: false,
       patch_metadata: false,
       use_internal_proxy: false,
+      wipe_login: false,
       swag: false,
 
       // Swag stuff
@@ -78,6 +80,7 @@ export default class Options extends React.Component<IProps, IState> {
     this.restoreMetadata = this.restoreMetadata.bind(this)
     this.toggleMetadata = this.toggleMetadata.bind(this)
     this.toggleProxy = this.toggleProxy.bind(this)
+    this.toggleLoginWipe = this.toggleLoginWipe.bind(this)
   }
 
   async componentDidMount() {
@@ -102,6 +105,7 @@ export default class Options extends React.Component<IProps, IState> {
       encryption: await translate(encEnabled ? 'options.enabled' : 'options.disabled'),
       patch_metadata: config.patch_metadata || false,
       use_internal_proxy: config.use_internal_proxy || false,
+      wipe_login: config.wipe_login || false,
       swag: config.swag_mode || false,
 
       // Swag stuff
@@ -262,6 +266,16 @@ export default class Options extends React.Component<IProps, IState> {
     })
   }
 
+  async toggleLoginWipe() {
+    const changedVal = !(await getConfigOption('wipe_login'))
+
+    await setConfigOption('wipe_login', changedVal)
+
+    this.setState({
+      wipe_login: changedVal,
+    })
+  }
+
   render() {
     return (
       <Menu closeFn={this.props.closeFn} className="Options" heading="Options">
@@ -300,6 +314,14 @@ export default class Options extends React.Component<IProps, IState> {
           </div>
           <div className="OptionValue" id="menuOptionsCheckboxUseProxy">
             <Checkbox onChange={this.toggleProxy} checked={this.state?.use_internal_proxy} id="useProxy" />
+          </div>
+        </div>
+        <div className="OptionSection" id="menuOptionsContainerWipeLogin">
+          <div className="OptionLabel" id="menuOptionsLabelWipeLogin">
+            <Tr text="options.wipe_login" />
+          </div>
+          <div className="OptionValue" id="menuOptionsCheckboxWipeLogin">
+            <Checkbox onChange={this.toggleLoginWipe} checked={this.state?.wipe_login} id="wipeLogin" />
           </div>
         </div>
 

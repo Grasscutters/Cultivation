@@ -161,6 +161,12 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       }
     }
 
+    // First wipe registry if we have to
+    await invoke('wipe_registry', {
+      // The exe is always PascalCase so we can get the dir using regex
+      execName: (await getGameExecutable())?.split('.exe')[0].replace(/([a-z\d])([A-Z])/g, '$1 $2'),
+    })
+
     // Launch the program
     const gameExists = await invoke('dir_exists', {
       path: exe || config.game_install_path,

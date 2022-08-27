@@ -46,6 +46,7 @@ fn main() {
       system_helpers::install_location,
       system_helpers::is_elevated,
       system_helpers::set_migoto_target,
+      system_helpers::wipe_registry,
       proxy::set_proxy_addr,
       proxy::generate_ca_files,
       unzip::unzip,

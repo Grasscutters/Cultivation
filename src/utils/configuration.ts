@@ -22,6 +22,7 @@ let defaultConfig: Configuration
     debug_enabled: false,
     patch_metadata: true,
     use_internal_proxy: true,
+    wipe_login: false,
   }
 })()
 
@@ -46,6 +47,7 @@ export interface Configuration {
   debug_enabled: boolean
   patch_metadata: boolean
   use_internal_proxy: boolean
+  wipe_login: boolean
   swag_mode?: boolean
 
   // Swag stuff
