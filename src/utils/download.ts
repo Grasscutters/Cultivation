@@ -77,17 +77,20 @@ export default class DownloadHandler {
 
     // Extraction events
     listen('extract_start', ({ payload }) => {
-      // Find the download that is no extracting and set it's status as such
-      // @ts-expect-error Too lazy to make an interface for payloads rn
-      const index = this.downloads.findIndex((download) => download.path === payload.file)
+      // Find the download that is extracting and set it's status as such
+      const index = this.downloads.findIndex((download) => download.path === payload)
       this.downloads[index].status = 'extracting'
     })
 
     listen('extract_end', ({ payload }) => {
-      console.log(payload)
-      // Find the download that is no extracting and set it's status as such
-      // @ts-expect-error Too lazy to make an interface for payloads rn
-      const index = this.downloads.findIndex((download) => download.path === payload.file)
+      // @ts-expect-error shut up typescript
+      const obj: {
+        file: string
+        new_folder: string
+      } = payload
+
+      // Find the download that is not extracting and set it's status as such
+      const index = this.downloads.findIndex((download) => download.path === obj.file || obj.new_folder)
       this.downloads[index].status = 'finished'
     })
   }
