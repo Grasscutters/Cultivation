@@ -1,3 +1,5 @@
+EN | [简中](README_zh-CN.md) | [繁中](README_zh-TW.md) |
+
 # Client Patching Notice
 
 For game versions 2.8 and above, Cultivation automatically makes a small patch to your game client when launching using Grasscutter, and restores it upon closing the game. In theory, you should still be totally safe, however it would be dishonest to not explicitly state that **modifying the game client could, theoretically, lead to a ban if you connect to official servers with it**. It is extremely unlikely AND there are no instances known of it happening, but the possibility exists.
