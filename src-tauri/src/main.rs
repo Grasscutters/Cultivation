@@ -4,7 +4,9 @@
 )]
 
 use once_cell::sync::Lazy;
+use std::io::Write;
 use std::{collections::HashMap, sync::Mutex};
+use tauri::async_runtime::block_on;
 
 use std::thread;
 use structs::APIQuery;
@@ -23,57 +25,94 @@ mod web;
 
 static WATCH_GAME_PROCESS: Lazy<Mutex<String>> = Lazy::new(|| Mutex::new(String::new()));
 
+fn try_flush() {
+  std::io::stdout().flush().unwrap_or(())
+}
+
+fn has_arg(args: &Vec<String>, arg: &str) -> bool {
+  args.contains(&arg.to_string())
+}
+
+async fn arg_handler(args: &Vec<String>) {
+  if has_arg(args, "--proxy") {
+    let mut pathbuf = tauri::api::path::data_dir().unwrap();
+    pathbuf.push("cultivation");
+    pathbuf.push("ca");
+
+    connect(8035, pathbuf.to_str().unwrap().to_string()).await;
+  }
+}
+
 fn main() {
   // Always set CWD to the location of the executable.
   let mut exe_path = std::env::current_exe().unwrap();
   exe_path.pop();
   std::env::set_current_dir(&exe_path).unwrap();
 
-  tauri::Builder::default()
-    .invoke_handler(tauri::generate_handler![
-      enable_process_watcher,
-      connect,
-      disconnect,
-      req_get,
-      get_bg_file,
-      is_game_running,
-      get_theme_list,
-      system_helpers::run_command,
-      system_helpers::run_program,
-      system_helpers::run_program_relative,
-      system_helpers::run_jar,
-      system_helpers::open_in_browser,
-      system_helpers::install_location,
-      system_helpers::is_elevated,
-      system_helpers::set_migoto_target,
-      system_helpers::wipe_registry,
-      proxy::set_proxy_addr,
-      proxy::generate_ca_files,
-      unzip::unzip,
-      file_helpers::rename,
-      file_helpers::dir_create,
-      file_helpers::dir_exists,
-      file_helpers::dir_is_empty,
-      file_helpers::dir_delete,
-      file_helpers::copy_file,
-      file_helpers::copy_file_with_new_name,
-      file_helpers::delete_file,
-      file_helpers::are_files_identical,
-      file_helpers::read_file,
-      file_helpers::write_file,
-      downloader::download_file,
-      downloader::stop_download,
-      lang::get_lang,
-      lang::get_languages,
-      web::valid_url,
-      web::web_get,
-      gamebanana::get_download_links,
-      gamebanana::list_submissions,
-      gamebanana::list_mods,
-      metadata_patcher::patch_metadata
-    ])
-    .run(tauri::generate_context!())
-    .expect("error while running tauri application");
+  let args: Vec<String> = std::env::args().collect();
+
+  block_on(arg_handler(&args));
+
+  // For disabled GUI
+  ctrlc::set_handler(|| {
+    std::process::exit(0);
+  })
+  .unwrap_or(());
+
+  if !has_arg(&args, "--no-gui") {
+    tauri::Builder::default()
+      .invoke_handler(tauri::generate_handler![
+        enable_process_watcher,
+        connect,
+        disconnect,
+        req_get,
+        get_bg_file,
+        is_game_running,
+        get_theme_list,
+        system_helpers::run_command,
+        system_helpers::run_program,
+        system_helpers::run_program_relative,
+        system_helpers::run_jar,
+        system_helpers::open_in_browser,
+        system_helpers::install_location,
+        system_helpers::is_elevated,
+        system_helpers::set_migoto_target,
+        system_helpers::wipe_registry,
+        proxy::set_proxy_addr,
+        proxy::generate_ca_files,
+        unzip::unzip,
+        file_helpers::rename,
+        file_helpers::dir_create,
+        file_helpers::dir_exists,
+        file_helpers::dir_is_empty,
+        file_helpers::dir_delete,
+        file_helpers::copy_file,
+        file_helpers::copy_file_with_new_name,
+        file_helpers::delete_file,
+        file_helpers::are_files_identical,
+        file_helpers::read_file,
+        file_helpers::write_file,
+        downloader::download_file,
+        downloader::stop_download,
+        lang::get_lang,
+        lang::get_languages,
+        web::valid_url,
+        web::web_get,
+        gamebanana::get_download_links,
+        gamebanana::list_submissions,
+        gamebanana::list_mods,
+        metadata_patcher::patch_metadata
+      ])
+      .run(tauri::generate_context!())
+      .expect("error while running tauri application");
+  } else {
+    try_flush();
+    println!("Press enter or CTRL-C twice to quit...");
+    std::io::stdin().read_line(&mut String::new()).unwrap();
+  }
+
+  // Always disconnect upon closing the program
+  disconnect();
 }
 
 #[tauri::command]

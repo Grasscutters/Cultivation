@@ -62,6 +62,7 @@ regex = "1"
 # other
 file_diff = "1.0.0"
 rust-ini = "0.18.0"
+ctrlc = "3.2.3"
 
 [features]
 # by default Tauri runs in production mode
