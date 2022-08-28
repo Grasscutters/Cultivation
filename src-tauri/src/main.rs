@@ -91,6 +91,7 @@ fn main() {
         file_helpers::delete_file,
         file_helpers::are_files_identical,
         file_helpers::read_file,
+        file_helpers::read_local_img,
         file_helpers::write_file,
         downloader::download_file,
         downloader::stop_download,

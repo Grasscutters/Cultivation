@@ -13,12 +13,14 @@ import { disableMod, enableMod, modIsEnabled } from '../../../utils/mods'
 interface IProps {
   mod: ModData | PartialModData
   path?: string
+  imgUrl?: Promise<string>
   onClick: (mod: ModData) => void
 }
 
 interface IState {
   hover: boolean
   modEnabled: boolean
+  imgUrl: string
 }
 
 export class ModTile extends React.Component<IProps, IState> {
@@ -28,6 +30,7 @@ export class ModTile extends React.Component<IProps, IState> {
     this.state = {
       hover: false,
       modEnabled: false,
+      imgUrl: '',
     }
 
     this.openInExplorer = this.openInExplorer.bind(this)
@@ -55,6 +58,11 @@ export class ModTile extends React.Component<IProps, IState> {
     this.setState({
       modEnabled: await modIsEnabled(String(this.props.mod.id)),
     })
+
+    const imgUrl = await this.props.imgUrl
+    if (imgUrl) {
+      this.setState({ imgUrl })
+    }
   }
 
   async openInExplorer() {
@@ -106,7 +114,7 @@ export class ModTile extends React.Component<IProps, IState> {
               </div>
             ))}
           <img
-            src={mod.images[0]}
+            src={this.state.imgUrl}
             className={`ModImageInner ${'id' in mod && mod.nsfw ? 'nsfw' : ''} ${this.state.hover ? 'blur' : ''}`}
           />
         </div>

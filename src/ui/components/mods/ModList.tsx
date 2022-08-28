@@ -1,4 +1,5 @@
 import React from 'react'
+import { invoke } from '@tauri-apps/api'
 import { getInstalledMods, getMods, ModData, PartialModData } from '../../../utils/gamebanana'
 import { LoadingCircle } from './LoadingCircle'
 
@@ -12,12 +13,12 @@ interface IProps {
 
 interface IState {
   modList: ModData[] | null
-  installedList:
-    | {
-        path: string
-        info: ModData | PartialModData
-      }[]
-    | null
+  installedList: InstalledMod[] | null
+}
+
+interface InstalledMod {
+  path: string
+  info: ModData | PartialModData
 }
 
 export class ModList extends React.Component<IProps, IState> {
@@ -70,6 +71,18 @@ export class ModList extends React.Component<IProps, IState> {
     this.props.addDownload(mod)
   }
 
+  async getImg(mod: InstalledMod) {
+    const pattern = /(http|https):\/\/([\w.]+\/?)\S*/
+    let imgurl = mod.info.images[0]
+    if (!pattern.test(imgurl)) {
+      const contents = await invoke<string>('read_local_img', { path: mod.path })
+      if (contents.length > 0) {
+        imgurl = contents
+      }
+    }
+    return imgurl
+  }
+
   render() {
     return (
       <div className="ModList">
@@ -78,7 +91,13 @@ export class ModList extends React.Component<IProps, IState> {
           <div className="ModListInner">
             {this.props.mode === 'installed'
               ? this.state.installedList?.map((mod) => (
-                  <ModTile path={mod.path} mod={mod.info} key={mod.info.name} onClick={this.downloadMod} />
+                  <ModTile
+                    path={mod.path}
+                    mod={mod.info}
+                    key={mod.info.name}
+                    imgUrl={this.getImg(mod)}
+                    onClick={this.downloadMod}
+                  />
                 ))
               : this.state.modList?.map((mod: ModData) => (
                   <ModTile mod={mod} key={mod.id} onClick={this.downloadMod} />

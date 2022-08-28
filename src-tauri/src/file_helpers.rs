@@ -1,3 +1,4 @@
+use base64::encode;
 use file_diff::diff;
 use std::fs;
 use std::io::{Read, Write};
@@ -138,6 +139,38 @@ pub fn read_file(path: String) -> String {
   file.read_to_string(&mut contents).unwrap();
 
   contents
+}
+
+#[tauri::command]
+pub fn read_local_img(path: String) -> String {
+  let exts: Vec<&str> = vec!["png", "jpg", "jpeg"];
+  let target_path = std::path::Path::new(&path);
+  let entries = fs::read_dir(target_path).unwrap();
+  let mut contents = Vec::new();
+  for entry in entries {
+    if let Ok(entry) = entry {
+      let path = entry.path();
+      if path.is_file() {
+        let extension = match path.extension() {
+          Some(ext) => ext.to_str().unwrap(),
+          _ => break,
+        };
+        if exts.contains(&extension) {
+          let mut file = match fs::File::open(&path) {
+            Ok(file) => file,
+            Err(e) => {
+              println!("Failed to open file: {}", e);
+              return String::new();
+            }
+          };
+          file.read_to_end(&mut contents).unwrap();
+          return "data:image/".to_string() + &extension + ";base64," + &encode(&contents);
+        }
+      }
+    }
+  }
+
+  String::new()
 }
 
 #[tauri::command]
