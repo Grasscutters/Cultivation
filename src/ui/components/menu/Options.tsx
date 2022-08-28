@@ -120,6 +120,17 @@ export default class Options extends React.Component<IProps, IState> {
   setGameExecutable(value: string) {
     setConfigOption('game_install_path', value)
 
+    // I hope this stops people setting launcher.exe because oml it's annoying
+    if (value.endsWith('launcher.exe')) {
+      const pathArr = value.replace(/\\/g, '/').split('/')
+      pathArr.pop()
+      const path = pathArr.join('/') + '/Genshin Impact Game/'
+
+      alert(
+        `You have set your game execuatable to "launcher.exe". You should not do this. Your game executable is located in:\n\n${path}`
+      )
+    }
+
     this.setState({
       game_install_path: value,
     })
