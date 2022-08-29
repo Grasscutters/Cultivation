@@ -75,6 +75,8 @@ impl HttpHandler for ProxyHandler {
  * Starts an HTTP(S) proxy server.
  */
 pub async fn create_proxy(proxy_port: u16, certificate_path: String) {
+  let cert_path = std::PathBuf::from(certificate_path);
+
   // Get the certificate and private key.
   let mut private_key_bytes: &[u8] =
     &fs::read(format!("{}\\private.key", certificate_path)).expect("Could not read private key");
@@ -144,17 +146,18 @@ pub fn connect_to_proxy(proxy_port: u16) {
   let mut env_file = match fs::read_to_string("/etc/environment") {
     Ok(f) => f,
     Err(e) => {
-      println!("Error opening /etc/environment: {}", e)
+      println!("Error opening /etc/environment: {}", e);
+      return;
     }
   };
 
   // Append the proxy configuration.
   // We will not remove the current proxy config if it exists, so we can just remove these last lines when we disconnect
-  env_file += format!("\nhttps_proxy=127.0.0.1:{}", proxy_port);
-  env_file += format!("\nhttp_proxy=127.0.0.1:{}", proxy_port);
+  env_file += format!("\nhttps_proxy=127.0.0.1:{}", proxy_port).as_str();
+  env_file += format!("\nhttp_proxy=127.0.0.1:{}", proxy_port).as_str();
 
   // Save
-  fs::write("/etc/environment", env_file);
+  fs::write("/etc/environment", env_file).unwrap();
 }
 
 #[cfg(macos)]

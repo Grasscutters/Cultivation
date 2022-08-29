@@ -130,6 +130,7 @@ pub fn set_migoto_target(path: String, migoto_path: String) -> bool {
   }
 }
 
+#[cfg(windows)]
 #[tauri::command]
 pub fn wipe_registry(exec_name: String) {
   // Fetch the 'Internet Settings' registry key.
@@ -151,6 +152,10 @@ pub fn wipe_registry(exec_name: String) {
     Err(e) => println!("Error wiping registry: {}", e),
   }
 }
+
+#[cfg(unix)]
+#[tauri::command]
+pub fn wipe_registry(_exec_name: String) {}
 
 #[cfg(windows)]
 #[tauri::command]
