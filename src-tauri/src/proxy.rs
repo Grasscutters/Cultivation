@@ -138,9 +138,28 @@ pub fn connect_to_proxy(proxy_port: u16) {
   println!("Connected to the proxy.");
 }
 
-#[cfg(not(windows))]
+#[cfg(unix)]
+pub fn connect_to_proxy(proxy_port: u16) {
+  // Edit /etc/environment to set $http_proxy and $https_proxy
+  let mut env_file = match fs::read_to_string("/etc/environment") {
+    Ok(f) => f,
+    Err(e) => {
+      println!("Error opening /etc/environment: {}", e)
+    }
+  };
+
+  // Append the proxy configuration.
+  // We will not remove the current proxy config if it exists, so we can just remove these last lines when we disconnect
+  env_file += format!("\nhttps_proxy=127.0.0.1:{}", proxy_port);
+  env_file += format!("\nhttp_proxy=127.0.0.1:{}", proxy_port);
+
+  // Save
+  fs::write("/etc/environment", env_file);
+}
+
+#[cfg(macos)]
 pub fn connect_to_proxy(_proxy_port: u16) {
-  println!("Connecting to the proxy is not implemented on this platform.");
+  println!("No Mac support yet. Someone mail me a Macbook and I will do it B)")
 }
 
 /**
