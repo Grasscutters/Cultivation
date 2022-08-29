@@ -1,19 +1,14 @@
 EN | [简中](README_zh-CN.md) | [繁中](README_zh-TW.md) |
 
-# Client Patching Notice
-
-For game versions 2.8 and above, Cultivation automatically makes a small patch to your game client when launching using Grasscutter, and restores it upon closing the game. In theory, you should still be totally safe, however it would be dishonest to not explicitly state that **modifying the game client could, theoretically, lead to a ban if you connect to official servers with it**. It is extremely unlikely AND there are no instances known of it happening, but the possibility exists.
-
 # Cultivation
 
 A game launcher designed to easily proxy traffic from anime game to private servers.
 
-While the Cultivation repository is **open**. This does **not** mean it has released.
-Please do **NOT install, download, or use pre-compiled versions of Cultivation found elsewhere**. Only use releases from this GitHub repository.
-
 # Table Of Contents
 
+- [Client Patching Notice](#client-patching-notice)
 - [Download](#download)
+- [Setup](#setup)
 - [Developer Quick-start](#developer-quickstart)
   - [Setup](#setup)
   - [Building](#building)
@@ -23,6 +18,10 @@ Please do **NOT install, download, or use pre-compiled versions of Cultivation f
 - [Screenshots](#screenshots)
 - [Credits](#credits)
 
+# Client Patching Notice
+
+For game versions 2.8 and above, Cultivation automatically makes a small patch to your game client when launching using Grasscutter, and restores it upon closing the game. In theory, you should still be totally safe, however it would be dishonest to not explicitly state that **modifying the game client could, theoretically, lead to a ban if you connect to official servers with it**. It is extremely unlikely AND there are no instances known of it happening, but the possibility exists.
+
 # Download
 
 [Find release builds here!](https://github.com/Grasscutters/Cultivation/releases)
@@ -30,6 +29,34 @@ Please do **NOT install, download, or use pre-compiled versions of Cultivation f
 Once downloaded, extract somewhere and open as administrator.
 
 **Windows 7 Users:** You will need to download [WebView](https://developer.microsoft.com/en-us/microsoft-edge/webview2/#download-section) manually.
+
+# Setup
+
+5-minute video for those who don't like to/cannot read: https://youtu.be/e0irOYbQe7I
+
+* Download Cultivation
+  * If you are on Windows 10 or 11, use the MSI
+  * If you are on Windows 7, or the MSI doesn't work, use the zip and download [WebView](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)
+  * If you are on Linux or MacOS, [help us port Windows-specific system calls to Linux/MacOS!](https://github.com/Grasscutters/Cultivation/issues/7)
+* Install or extract Cultivation
+* Open Cultivation ***as administrator***
+* Before clicking randomly on stuff, in options (top right cog icon), set your Game Install Path.
+  * If you are using an existing server installation from somewhere else, you can set the `.jar` file in settings as well. All downloads made through Culti will automatically use that path, no additional config needed.
+  * If you use multiple Java versions, you can set the Java path to your Java 17 installation (only required if you are running your own server)
+* Decide if you want to download your own server, or just join a public one
+  * If joining a public one, you're done. Just click "Connect with Grasscutter" and input the address and port. You do not have to continue these instructions.
+    * If you are getting System Error, or 4214,  ask the [Discord support channels](https://discord.gg/grasscutter)
+* Open the "Downloads" menu (top right)
+  * Download "latest grasscutter" (second from the top)
+  * Download "resources" (very bottom)
+* Once all of that is done, click the icon next to "Launch"
+* To play on your new server:
+  * Click "Connect with Grasscutter"
+  * Input `localhost` as the address, and `443` as the port
+  * Ensure HTTPS is disabled
+* Any generic "I am getting XYZ error!" should go in the [Discord support channels](https://discord.gg/grasscutter)
+* Any specific Cultivation issues should go in [the issues section](/issues)
+* Any Grasscutter server related issues should go in [the Grasscutter issues section](https://github.com/Grasscutters/Grasscutter)
 
 # Developer Quickstart
 
