@@ -1,5 +1,5 @@
 use regex::Regex;
-use std::{fs, fs::File, fs::OpenOptions, io::Read, io::Write};
+use std::{fs, path::Path, fs::File, fs::OpenOptions, io::Read, io::Write};
 
 // For these two functions, a non-zero return value indicates failure.
 extern "C" {
@@ -10,6 +10,12 @@ extern "C" {
 #[tauri::command]
 pub fn patch_metadata(metadata_folder: &str) -> bool {
   let metadata_file = &(metadata_folder.to_owned() + "\\global-metadata-unpatched.dat");
+  // check if metadata_file exists
+  if !Path::new(metadata_file).exists() {
+    println!("Metadata file not found");
+    return false;
+  }
+
   println!("Patching metadata file: {}", metadata_file);
   let decrypted = decrypt_metadata(metadata_file);
   if do_vecs_match(&decrypted, &Vec::new()) {
@@ -128,6 +134,7 @@ fn replace_rsa_key(old_data: &str, to_replace: &str, file_name: &str) -> String 
 
 fn encrypt_metadata(old_data: &[u8]) -> Vec<u8> {
   let mut data = old_data.to_vec();
+
   let success = unsafe { encrypt_global_metadata(data.as_mut_ptr(), data.len()) } == 0;
   if success {
     println!("Successfully encrypted global-metadata");

@@ -63,7 +63,7 @@ pub fn copy_file(path: String, new_path: String) -> bool {
   let path_buf = std::path::PathBuf::from(&path);
 
   // If the new path doesn't exist, create it.
-  if !dir_exists(new_path_buf.pop().to_string().as_str()) {
+  if !dir_exists(std::path::PathBuf::from(&new_path).pop().to_string().as_str()) {
     std::fs::create_dir_all(&new_path).unwrap();
   }
 
@@ -85,7 +85,7 @@ pub fn copy_file_with_new_name(path: String, new_path: String, new_name: String)
   let path_buf = std::path::PathBuf::from(&path);
 
   // If the new path doesn't exist, create it.
-  if !dir_exists(new_path_buf.pop().to_string().as_str()) {
+  if !dir_exists(std::path::PathBuf::from(&new_path).pop().to_string().as_str()) {
     match std::fs::create_dir_all(&new_path) {
       Ok(_) => {}
       Err(e) => {
@@ -95,8 +95,10 @@ pub fn copy_file_with_new_name(path: String, new_path: String, new_name: String)
     };
   }
 
+  new_path_buf.push(new_name);
+
   // Copy old to new
-  match std::fs::copy(&path_buf, format!("{}/{}", new_path, new_name)) {
+  match std::fs::copy(&path_buf, &new_path_buf) {
     Ok(_) => true,
     Err(e) => {
       println!("Failed to copy file: {}", e);
