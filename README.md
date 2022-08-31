@@ -26,9 +26,9 @@ For game versions 2.8 and above, Cultivation automatically makes a small patch t
 
 [Find release builds here!](https://github.com/Grasscutters/Cultivation/releases)
 
-Once downloaded, extract somewhere and open as administrator.
+Download and open the MSI, and once installed, run Cultivation as administrator. Refer below for more [detailed setup instructions.](#setup).
 
-**Windows 7 Users:** You will need to download [WebView](https://developer.microsoft.com/en-us/microsoft-edge/webview2/#download-section) manually.
+**Windows 7 Users:** You will need to download [WebView](https://developer.microsoft.com/en-us/microsoft-edge/webview2/#download-section) manually, and download the `.zip` instead of the `.msi`.
 
 # Setup
 
