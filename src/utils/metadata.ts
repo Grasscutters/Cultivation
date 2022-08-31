@@ -1,7 +1,7 @@
 import { invoke } from '@tauri-apps/api'
 import { dataDir } from '@tauri-apps/api/path'
 import DownloadHandler from './download'
-import { getGameExecutable, getGameFolder } from './game'
+import { getGameDataFolder, getGameExecutable, getGameFolder, getGameVersion } from './game'
 
 export async function patchMetadata() {
   const metadataExists = await invoke('dir_exists', {
@@ -171,13 +171,13 @@ export async function unpatchGame() {
 }
 
 export async function getGameMetadataPath() {
-  const gameExec = await getGameExecutable()
+  const gameData = await getGameDataFolder()
 
-  if (!gameExec) {
+  if (!gameData) {
     return null
   }
 
-  return ((await getGameFolder()) + '\\' + gameExec.replace('.exe', '_Data') + '\\Managed\\Metadata').replace(
+  return (gameData + '\\Managed\\Metadata').replace(
     /\\/g,
     '/'
   )
@@ -188,6 +188,7 @@ export async function getBackupMetadataPath() {
 }
 
 export async function globalMetadataLink() {
+  // TODO: Get metadata based on current game version.
   const versionAPIUrl =
     'https://sdk-os-static.mihoyo.com/hk4e_global/mdk/launcher/api/resource?channel_id=1&key=gcStgarh&launcher_id=10&sub_channel_id=0'
 
