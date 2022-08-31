@@ -3,6 +3,7 @@
  * https://github.com/omjadas/hudsucker/blob/main/examples/log.rs
  */
 
+use crate::system_helpers::run_command;
 use once_cell::sync::Lazy;
 use std::{path::PathBuf, str::FromStr, sync::Mutex};
 
@@ -76,11 +77,8 @@ impl HttpHandler for ProxyHandler {
  */
 pub async fn create_proxy(proxy_port: u16, certificate_path: String) {
   let cert_path = PathBuf::from(certificate_path);
-  let mut pk_path = cert_path.clone();
-  let mut ca_path = cert_path.clone();
-
-  pk_path.push("private.key");
-  ca_path.push("cert.crt");
+  let pk_path = cert_path.join("private.key");
+  let ca_path = cert_path.join("cert.crt");
 
   // Get the certificate and private key.
   let mut private_key_bytes: &[u8] = &match fs::read(&pk_path) {
@@ -88,7 +86,7 @@ pub async fn create_proxy(proxy_port: u16, certificate_path: String) {
     Ok(b) => b,
     Err(e) => {
       println!("Encountered {}. Regenerating CA cert and retrying...", e);
-      generate_ca_files(&data_dir().unwrap());
+      generate_ca_files(&data_dir().unwrap().join("cultivation"));
 
       fs::read(&pk_path).expect("Could not read private key")
     }
@@ -99,7 +97,7 @@ pub async fn create_proxy(proxy_port: u16, certificate_path: String) {
     Ok(b) => b,
     Err(e) => {
       println!("Encountered {}. Regenerating CA cert and retrying...", e);
-      generate_ca_files(&data_dir().unwrap());
+      generate_ca_files(&data_dir().unwrap().join("cultivation"));
 
       fs::read(&ca_path).expect("Could not read certificate")
     }
@@ -206,7 +204,26 @@ pub fn disconnect_from_proxy() {
   println!("Disconnected from proxy.");
 }
 
-#[cfg(not(windows))]
+#[cfg(target_os = "linux")]
+pub fn disconnect_from_proxy() {
+  println!("Re-writing environment variables");
+
+  let regexp = regex::Regex::new(
+    // This has to be specific as possible or we risk fuckin up their environment LOL
+    r"(https|http)_proxy=.*127.0.0.1:.*",
+  )
+  .unwrap();
+  let environment = &fs::read_to_string("/etc/environment").expect("Failed to open environment");
+
+  let new_environment = regexp.replace_all(environment, "").to_string();
+
+  // Write new environment
+  fs::write("/etc/environment", new_environment.trim_end()).expect(
+    "Could not write environment, remove proxy declarations manually if they are still set",
+  );
+}
+
+#[cfg(target_os = "macos")]
 pub fn disconnect_from_proxy() {}
 
 /*
@@ -304,11 +321,27 @@ pub fn install_ca_files(cert_path: &Path) {
       "/Library/Keychains/System.keychain",
       cert_path.to_str().unwrap(),
     ],
+    None,
   );
   println!("Installed certificate.");
 }
 
-#[cfg(not(any(windows, target_os = "macos")))]
+// If this is borked on non-debian platforms, so be it
+#[cfg(target_os = "linux")]
+pub fn install_ca_files(cert_path: &Path) {
+  let usr_certs = PathBuf::from("/usr/local/share/ca-certificates");
+  let usr_cert_path = usr_certs.join("cultivation.crt");
+
+  // Create dir if it doesn't exist
+  fs::create_dir_all(&usr_certs).expect("Unable to create local certificate directory");
+
+  fs::copy(cert_path, &usr_cert_path).expect("Unable to copy cert to local certificate directory");
+  run_command("update-ca-certificates", vec![], None);
+
+  println!("Installed certificate.");
+}
+
+#[cfg(not(any(windows, target_os = "macos", target_os = "linux")))]
 pub fn install_ca_files(_cert_path: &Path) {
   println!("Certificate installation is not supported on this platform.");
 }
