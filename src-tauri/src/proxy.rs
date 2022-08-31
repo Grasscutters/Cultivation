@@ -4,7 +4,7 @@
  */
 
 use once_cell::sync::Lazy;
-use std::{str::FromStr, sync::Mutex};
+use std::{path::PathBuf, str::FromStr, sync::Mutex};
 
 use hudsucker::{
   async_trait::async_trait,
@@ -19,7 +19,7 @@ use std::net::SocketAddr;
 use std::path::Path;
 
 use rustls_pemfile as pemfile;
-use tauri::http::Uri;
+use tauri::{api::path::data_dir, http::Uri};
 
 #[cfg(windows)]
 use registry::{Data, Hive, Security};
@@ -75,13 +75,35 @@ impl HttpHandler for ProxyHandler {
  * Starts an HTTP(S) proxy server.
  */
 pub async fn create_proxy(proxy_port: u16, certificate_path: String) {
-  let cert_path = std::PathBuf::from(certificate_path);
+  let cert_path = PathBuf::from(certificate_path);
+  let mut pk_path = cert_path.clone();
+  let mut ca_path = cert_path.clone();
+
+  pk_path.push("private.key");
+  ca_path.push("cert.crt");
 
   // Get the certificate and private key.
-  let mut private_key_bytes: &[u8] =
-    &fs::read(format!("{}\\private.key", certificate_path)).expect("Could not read private key");
-  let mut ca_cert_bytes: &[u8] =
-    &fs::read(format!("{}\\cert.crt", certificate_path)).expect("Could not read certificate");
+  let mut private_key_bytes: &[u8] = &match fs::read(&pk_path) {
+    // Try regenerating the CA stuff and read it again. If that doesn't work, quit.
+    Ok(b) => b,
+    Err(e) => {
+      println!("Encountered {}. Regenerating CA cert and retrying...", e);
+      generate_ca_files(&data_dir().unwrap());
+
+      fs::read(&pk_path).expect("Could not read private key")
+    }
+  };
+
+  let mut ca_cert_bytes: &[u8] = &match fs::read(&ca_path) {
+    // Try regenerating the CA stuff and read it again. If that doesn't work, quit.
+    Ok(b) => b,
+    Err(e) => {
+      println!("Encountered {}. Regenerating CA cert and retrying...", e);
+      generate_ca_files(&data_dir().unwrap());
+
+      fs::read(&ca_path).expect("Could not read certificate")
+    }
+  };
 
   // Parse the private key and certificate.
   let private_key = rustls::PrivateKey(
