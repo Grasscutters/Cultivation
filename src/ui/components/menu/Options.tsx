@@ -404,18 +404,20 @@ export default class Options extends React.Component<IProps, IState> {
             />
           </div>
         </div>
-        <div className="OptionSection" id="menuOptionsContainerHorny">
-          <div className="OptionLabel" id="menuOptionsLabelHorny">
-            <Tr text="options.horny_mode" />
+        {this.state.swag ? (
+          <div className="OptionSection" id="menuOptionsContainerHorny">
+            <div className="OptionLabel" id="menuOptionsLabelHorny">
+              <Tr text="options.horny_mode" />
+            </div>
+            <div className="OptionValue" id="menuOptionsCheckboxHorny">
+              <Checkbox
+                onChange={() => this.toggleOption('horny_mode')}
+                checked={this.state?.horny_mode}
+                id="hornyMode"
+              />
+            </div>
           </div>
-          <div className="OptionValue" id="menuOptionsCheckboxHorny">
-            <Checkbox
-              onChange={() => this.toggleOption('horny_mode')}
-              checked={this.state?.horny_mode}
-              id="hornyMode"
-            />
-          </div>
-        </div>
+        ) : null}
 
         <Divider />
 
