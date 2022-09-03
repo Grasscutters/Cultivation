@@ -1,4 +1,5 @@
 import React from 'react'
+import { getConfigOption } from '../../../utils/configuration'
 import { getInstalledMods, getMods, ModData, PartialModData } from '../../../utils/gamebanana'
 import { LoadingCircle } from './LoadingCircle'
 
@@ -11,6 +12,7 @@ interface IProps {
 }
 
 interface IState {
+  horny: boolean
   modList: ModData[] | null
   installedList:
     | {
@@ -25,6 +27,7 @@ export class ModList extends React.Component<IProps, IState> {
     super(props)
 
     this.state = {
+      horny: false,
       modList: null,
       installedList: null,
     }
@@ -60,8 +63,10 @@ export class ModList extends React.Component<IProps, IState> {
     }
 
     const mods = await getMods(this.props.mode)
+    const horny = await getConfigOption('horny_mode')
 
     this.setState({
+      horny,
       modList: mods,
     })
   }
@@ -81,7 +86,7 @@ export class ModList extends React.Component<IProps, IState> {
                   <ModTile path={mod.path} mod={mod.info} key={mod.info.name} onClick={this.downloadMod} />
                 ))
               : this.state.modList?.map((mod: ModData) => (
-                  <ModTile mod={mod} key={mod.id} onClick={this.downloadMod} />
+                  <ModTile horny={this.state.horny} mod={mod} key={mod.id} onClick={this.downloadMod} />
                 ))}
           </div>
         ) : (

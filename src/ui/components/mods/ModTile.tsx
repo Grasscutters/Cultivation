@@ -12,6 +12,7 @@ import { disableMod, enableMod, modIsEnabled } from '../../../utils/mods'
 
 interface IProps {
   mod: ModData | PartialModData
+  horny?: boolean
   path?: string
   onClick: (mod: ModData) => void
 }
@@ -107,7 +108,9 @@ export class ModTile extends React.Component<IProps, IState> {
             ))}
           <img
             src={mod.images[0]}
-            className={`ModImageInner ${'id' in mod && mod.nsfw ? 'nsfw' : ''} ${this.state.hover ? 'blur' : ''}`}
+            className={`ModImageInner ${'id' in mod && !this.props.horny && mod.nsfw ? 'nsfw' : ''} ${
+              this.state.hover ? 'blur' : ''
+            }`}
           />
         </div>
         <div className="ModInner">
