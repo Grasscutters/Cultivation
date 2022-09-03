@@ -4,7 +4,7 @@ import { dataDir } from '@tauri-apps/api/path'
 import DirInput from '../common/DirInput'
 import Menu from './Menu'
 import Tr, { getLanguages, translate } from '../../../utils/language'
-import { setConfigOption, getConfig, getConfigOption } from '../../../utils/configuration'
+import { setConfigOption, getConfig, getConfigOption, Configuration } from '../../../utils/configuration'
 import Checkbox from '../common/Checkbox'
 import Divider from './Divider'
 import { getThemeList } from '../../../utils/themes'
@@ -78,9 +78,6 @@ export default class Options extends React.Component<IProps, IState> {
     this.setCustomBackground = this.setCustomBackground.bind(this)
     this.toggleEncryption = this.toggleEncryption.bind(this)
     this.restoreMetadata = this.restoreMetadata.bind(this)
-    this.toggleMetadata = this.toggleMetadata.bind(this)
-    this.toggleProxy = this.toggleProxy.bind(this)
-    this.toggleLoginWipe = this.toggleLoginWipe.bind(this)
   }
 
   async componentDidMount() {
@@ -257,33 +254,14 @@ export default class Options extends React.Component<IProps, IState> {
     })
   }
 
-  async toggleMetadata() {
-    const changedVal = !(await getConfigOption('patch_metadata'))
+  async toggleOption(opt: keyof Configuration) {
+    const changedVal = !(await getConfigOption(opt))
 
-    await setConfigOption('patch_metadata', changedVal)
+    await setConfigOption(opt, changedVal)
 
+    // @ts-expect-error shut up bitch
     this.setState({
-      patch_metadata: changedVal,
-    })
-  }
-
-  async toggleProxy() {
-    const changedVal = !(await getConfigOption('use_internal_proxy'))
-
-    await setConfigOption('use_internal_proxy', changedVal)
-
-    this.setState({
-      use_internal_proxy: changedVal,
-    })
-  }
-
-  async toggleLoginWipe() {
-    const changedVal = !(await getConfigOption('wipe_login'))
-
-    await setConfigOption('wipe_login', changedVal)
-
-    this.setState({
-      wipe_login: changedVal,
+      [opt]: changedVal,
     })
   }
 
@@ -315,7 +293,11 @@ export default class Options extends React.Component<IProps, IState> {
             <HelpButton contents="help.patch_metadata" />
           </div>
           <div className="OptionValue" id="menuOptionsCheckboxPatchMeta">
-            <Checkbox onChange={this.toggleMetadata} checked={this.state?.patch_metadata} id="patchMeta" />
+            <Checkbox
+              onChange={() => this.toggleOption('patch_metadata')}
+              checked={this.state?.patch_metadata}
+              id="patchMeta"
+            />
           </div>
         </div>
         <div className="OptionSection" id="menuOptionsContainerUseProxy">
@@ -324,7 +306,11 @@ export default class Options extends React.Component<IProps, IState> {
             <HelpButton contents="help.use_proxy" />
           </div>
           <div className="OptionValue" id="menuOptionsCheckboxUseProxy">
-            <Checkbox onChange={this.toggleProxy} checked={this.state?.use_internal_proxy} id="useProxy" />
+            <Checkbox
+              onChange={() => this.toggleOption('use_internal_proxy')}
+              checked={this.state?.use_internal_proxy}
+              id="useProxy"
+            />
           </div>
         </div>
         <div className="OptionSection" id="menuOptionsContainerWipeLogin">
@@ -332,7 +318,11 @@ export default class Options extends React.Component<IProps, IState> {
             <Tr text="options.wipe_login" />
           </div>
           <div className="OptionValue" id="menuOptionsCheckboxWipeLogin">
-            <Checkbox onChange={this.toggleLoginWipe} checked={this.state?.wipe_login} id="wipeLogin" />
+            <Checkbox
+              onChange={() => this.toggleOption('wipe_login')}
+              checked={this.state?.wipe_login}
+              id="wipeLogin"
+            />
           </div>
         </div>
 
@@ -405,7 +395,7 @@ export default class Options extends React.Component<IProps, IState> {
           </div>
           <div className="OptionValue" id="menuOptionsCheckboxGCWGame">
             <Checkbox
-              onChange={this.toggleGrasscutterWithGame}
+              onChange={() => this.toggleOption('grasscutter_with_game')}
               checked={this.state?.grasscutter_with_game}
               id="gcWithGame"
             />
