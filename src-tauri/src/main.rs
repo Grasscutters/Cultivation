@@ -3,9 +3,13 @@
   windows_subsystem = "windows"
 )]
 
+use file_helpers::dir_exists;
 use once_cell::sync::Lazy;
+use std::fs;
 use std::io::Write;
 use std::{collections::HashMap, sync::Mutex};
+use system_helpers::is_elevated;
+use tauri::api::path::data_dir;
 use tauri::async_runtime::block_on;
 
 use std::thread;
@@ -44,6 +48,17 @@ async fn arg_handler(args: &Vec<String>) {
 }
 
 fn main() {
+  if !is_elevated() {
+    println!("===============================================================================");
+    println!("You running as a non-elevated user. Some stuff will almost definitely not work.");
+    println!("===============================================================================");
+  }
+
+  // Setup datadir/cultivation just in case something went funky and it wasn't made
+  if !dir_exists(&data_dir().unwrap().join("cultivation").to_str().unwrap()) {
+    fs::create_dir_all(&data_dir().unwrap().join("cultivation")).unwrap();
+  }
+
   // Always set CWD to the location of the executable.
   let mut exe_path = std::env::current_exe().unwrap();
   exe_path.pop();
@@ -55,6 +70,7 @@ fn main() {
 
   // For disabled GUI
   ctrlc::set_handler(|| {
+    disconnect();
     std::process::exit(0);
   })
   .unwrap_or(());
