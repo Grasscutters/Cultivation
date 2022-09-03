@@ -26,7 +26,8 @@
     "theme": "Set Theme",
     "patch_metadata": "Automatically Patch Metadata",
     "use_proxy": "Use Internal Proxy",
-    "wipe_login": "Wipe Login Cache"
+    "wipe_login": "Wipe Login Cache",
+    "horny_mode": "Horny Mode"
   },
   "downloads": {
     "grasscutter_stable_data": "Download Grasscutter Stable Data",

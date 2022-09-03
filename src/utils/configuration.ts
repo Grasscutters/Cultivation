@@ -23,6 +23,7 @@ let defaultConfig: Configuration
     patch_metadata: true,
     use_internal_proxy: true,
     wipe_login: false,
+    horny_mode: false,
   }
 })()
 
@@ -48,6 +49,7 @@ export interface Configuration {
   patch_metadata: boolean
   use_internal_proxy: boolean
   wipe_login: boolean
+  horny_mode: boolean
   swag_mode?: boolean
 
   // Swag stuff

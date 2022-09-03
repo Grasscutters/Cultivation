@@ -35,6 +35,7 @@ interface IState {
   patch_metadata: boolean
   use_internal_proxy: boolean
   wipe_login: boolean
+  horny_mode: boolean
   swag: boolean
 
   // Swag stuff
@@ -61,6 +62,7 @@ export default class Options extends React.Component<IProps, IState> {
       patch_metadata: false,
       use_internal_proxy: false,
       wipe_login: false,
+      horny_mode: false,
       swag: false,
 
       // Swag stuff
@@ -103,6 +105,7 @@ export default class Options extends React.Component<IProps, IState> {
       patch_metadata: config.patch_metadata || false,
       use_internal_proxy: config.use_internal_proxy || false,
       wipe_login: config.wipe_login || false,
+      horny_mode: config.horny_mode || false,
       swag: config.swag_mode || false,
 
       // Swag stuff
@@ -398,6 +401,18 @@ export default class Options extends React.Component<IProps, IState> {
               onChange={() => this.toggleOption('grasscutter_with_game')}
               checked={this.state?.grasscutter_with_game}
               id="gcWithGame"
+            />
+          </div>
+        </div>
+        <div className="OptionSection" id="menuOptionsContainerHorny">
+          <div className="OptionLabel" id="menuOptionsLabelHorny">
+            <Tr text="options.horny_mode" />
+          </div>
+          <div className="OptionValue" id="menuOptionsCheckboxHorny">
+            <Checkbox
+              onChange={() => this.toggleOption('horny_mode')}
+              checked={this.state?.horny_mode}
+              id="hornyMode"
             />
           </div>
         </div>
