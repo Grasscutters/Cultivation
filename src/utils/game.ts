@@ -38,22 +38,24 @@ export async function getGameDataFolder() {
 }
 
 export async function getGameVersion() {
-  const GameData = await getGameDataFolder();
+  const GameData = await getGameDataFolder()
 
   if (!GameData) {
     return null
   }
 
-  const settings = JSON.parse(await invoke('read_file', {
-    path: GameData + '\\StreamingAssets\\asb_settings.json',
-  }))
+  const settings = JSON.parse(
+    await invoke('read_file', {
+      path: GameData + '\\StreamingAssets\\asb_settings.json',
+    })
+  )
 
-  const versionRaw = settings.variance.split('.');
+  const versionRaw = settings.variance.split('.')
   const version = {
     major: parseInt(versionRaw[0]),
     minor: parseInt(versionRaw[1].split('_')[0]),
     release: parseInt(versionRaw[1].split('_')[1]),
   }
 
-  return version;
+  return version
 }

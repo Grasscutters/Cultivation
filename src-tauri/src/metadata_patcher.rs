@@ -1,5 +1,5 @@
 use regex::Regex;
-use std::{fs, path::Path, fs::File, fs::OpenOptions, io::Read, io::Write};
+use std::{fs, fs::File, fs::OpenOptions, io::Read, io::Write, path::Path};
 
 // For these two functions, a non-zero return value indicates failure.
 extern "C" {
@@ -115,7 +115,10 @@ fn replace_rsa_key(old_data: &str, to_replace: &str, file_name: &str) -> String 
   // Read dispatch key file
   unsafe {
     // Get key path from current directory
-    let key_file_path = std::env::current_dir().unwrap().join("keys").join(file_name);
+    let key_file_path = std::env::current_dir()
+      .unwrap()
+      .join("keys")
+      .join(file_name);
 
     let key_data = match fs::read(&key_file_path) {
       Ok(file) => file,
