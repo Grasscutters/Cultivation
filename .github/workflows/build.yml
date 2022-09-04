@@ -25,6 +25,8 @@ jobs:
 
       - name: setup node
         uses: actions/setup-node@v1
+        with:
+          node-version: 16
 
       - name: Install Rust
         uses: actions-rs/toolchain@v1
