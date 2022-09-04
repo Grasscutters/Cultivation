@@ -1,6 +1,7 @@
 use file_diff::diff;
 use std::fs;
 use std::io::{Read, Write};
+use std::path::PathBuf;
 
 #[tauri::command]
 pub fn rename(path: String, new_name: String) {
@@ -35,19 +36,19 @@ pub fn dir_create(path: String) {
 
 #[tauri::command]
 pub fn dir_exists(path: &str) -> bool {
-  let path_buf = std::path::PathBuf::from(path);
+  let path_buf = PathBuf::from(path);
   fs::metadata(path_buf).is_ok()
 }
 
 #[tauri::command]
 pub fn dir_is_empty(path: &str) -> bool {
-  let path_buf = std::path::PathBuf::from(path);
+  let path_buf = PathBuf::from(path);
   fs::read_dir(path_buf).unwrap().count() == 0
 }
 
 #[tauri::command]
 pub fn dir_delete(path: &str) {
-  let path_buf = std::path::PathBuf::from(path);
+  let path_buf = PathBuf::from(path);
   fs::remove_dir_all(path_buf).unwrap();
 }
 
@@ -59,11 +60,10 @@ pub fn are_files_identical(path1: &str, path2: &str) -> bool {
 #[tauri::command]
 pub fn copy_file(path: String, new_path: String) -> bool {
   let filename = &path.split('/').last().unwrap();
-  let mut new_path_buf = std::path::PathBuf::from(&new_path);
-  let path_buf = std::path::PathBuf::from(&path);
+  let path_buf = PathBuf::from(&path);
 
   // If the new path doesn't exist, create it.
-  if !dir_exists(std::path::PathBuf::from(&new_path).pop().to_string().as_str()) {
+  if !dir_exists(PathBuf::from(&new_path).pop().to_string().as_str()) {
     std::fs::create_dir_all(&new_path).unwrap();
   }
 
@@ -81,11 +81,11 @@ pub fn copy_file(path: String, new_path: String) -> bool {
 
 #[tauri::command]
 pub fn copy_file_with_new_name(path: String, new_path: String, new_name: String) -> bool {
-  let mut new_path_buf = std::path::PathBuf::from(&new_path);
-  let path_buf = std::path::PathBuf::from(&path);
+  let mut new_path_buf = PathBuf::from(&new_path);
+  let path_buf = PathBuf::from(&path);
 
   // If the new path doesn't exist, create it.
-  if !dir_exists(std::path::PathBuf::from(&new_path).pop().to_string().as_str()) {
+  if !dir_exists(PathBuf::from(&new_path).pop().to_string().as_str()) {
     match std::fs::create_dir_all(&new_path) {
       Ok(_) => {}
       Err(e) => {
@@ -111,7 +111,7 @@ pub fn copy_file_with_new_name(path: String, new_path: String, new_name: String)
 
 #[tauri::command]
 pub fn delete_file(path: String) -> bool {
-  let path_buf = std::path::PathBuf::from(&path);
+  let path_buf = PathBuf::from(&path);
 
   match std::fs::remove_file(path_buf) {
     Ok(_) => true,
@@ -126,7 +126,7 @@ pub fn delete_file(path: String) -> bool {
 
 #[tauri::command]
 pub fn read_file(path: String) -> String {
-  let path_buf = std::path::PathBuf::from(&path);
+  let path_buf = PathBuf::from(&path);
 
   let mut file = match fs::File::open(path_buf) {
     Ok(file) => file,
@@ -144,7 +144,7 @@ pub fn read_file(path: String) -> String {
 
 #[tauri::command]
 pub fn write_file(path: String, contents: String) {
-  let path_buf = std::path::PathBuf::from(&path);
+  let path_buf = PathBuf::from(&path);
 
   // Create file if it exists, otherwise just open and rewrite
   let mut file = match fs::File::create(&path_buf) {

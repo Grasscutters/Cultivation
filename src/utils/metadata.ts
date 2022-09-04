@@ -1,7 +1,7 @@
 import { invoke } from '@tauri-apps/api'
 import { dataDir } from '@tauri-apps/api/path'
 import DownloadHandler from './download'
-import { getGameDataFolder, getGameExecutable, getGameFolder, getGameVersion } from './game'
+import { getGameDataFolder } from './game'
 
 export async function patchMetadata() {
   const metadataExists = await invoke('dir_exists', {
@@ -177,10 +177,7 @@ export async function getGameMetadataPath() {
     return null
   }
 
-  return (gameData + '\\Managed\\Metadata').replace(
-    /\\/g,
-    '/'
-  )
+  return (gameData + '\\Managed\\Metadata').replace(/\\/g, '/')
 }
 
 export async function getBackupMetadataPath() {
