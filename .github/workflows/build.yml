@@ -44,7 +44,7 @@ jobs:
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
-          name: Cultivation
+          name: CultivationWin
           path: Cultivation.zip
 
   build-ubuntu:
@@ -79,5 +79,5 @@ jobs:
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
-          name: Cultivation
+          name: CultivationLinux
           path: Cultivation.zip
