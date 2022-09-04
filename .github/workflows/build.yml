@@ -28,6 +28,8 @@ jobs:
 
       - name: Install Rust
         uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
 
       - name: Install deps and build
         run: yarn && yarn build --debug
