@@ -1,4 +1,4 @@
-name: Check frontend
+name: Build
 
 on:
   push:
