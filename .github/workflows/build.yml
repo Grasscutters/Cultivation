@@ -38,7 +38,7 @@ jobs:
         uses: vimtor/action-zip@v1
         with:
           files: src-tauri/target/debug/Cultivation.exe src-tauri/target/debug/lang/ src-tauri/target/debug/keys/
-          recursive: true
+          recursive: false
           dest: Cultivation.zip
 
       - name: Upload build
@@ -72,8 +72,8 @@ jobs:
       - name: Compress build
         uses: vimtor/action-zip@v1
         with:
-          files: src-tauri/target/debug/cultivation src-tauri/target/debug/bundle/appimage/ src-tauri/target/debug/lang/ src-tauri/target/debug/keys/
-          recursive: true
+          files: src-tauri/target/debug/cultivation src-tauri/target/debug/lang/ src-tauri/target/debug/keys/
+          recursive: false
           dest: Cultivation.zip
 
       - name: Upload build
