@@ -20,7 +20,7 @@
   "scripts": {
     "start": "cross-env BROWSER=none react-scripts start",
     "postbuild:windows": "xcopy /E /H /C /I /Y \".\\src-tauri\\lang\" \".\\src-tauri\\target\\release\\lang\"",
-    "postbuild:linux": "cp -r \".\\src-tauri\\lang\" \".\\lang\"",
+    "postbuild:linux": "cp -r \"./src-tauri/lang\" \"./lang\"",
     "build:windows": "yarn tauri build",
     "build:linux": "yarn tauri build",
     "build": "react-scripts build && run-script-os",
