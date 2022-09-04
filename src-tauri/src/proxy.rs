@@ -3,6 +3,9 @@
  * https://github.com/omjadas/hudsucker/blob/main/examples/log.rs
  */
 
+#[cfg(target_os = "linux")]
+use crate::system_helpers::run_command;
+
 use once_cell::sync::Lazy;
 use std::{path::PathBuf, str::FromStr, sync::Mutex};
 
