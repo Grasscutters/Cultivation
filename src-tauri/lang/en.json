@@ -14,6 +14,7 @@
     "enabled": "Enabled",
     "disabled": "Disabled",
     "game_path": "Set Game Install Path",
+    "game_command": "Game Launch Command",
     "game_executable": "Set Game Executable",
     "recover_metadata": "Emergency Metadata Recovery",
     "grasscutter_jar": "Set Grasscutter JAR",

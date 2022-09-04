@@ -15,6 +15,7 @@ import BigButton from '../common/BigButton'
 import DownloadHandler from '../../../utils/download'
 import * as meta from '../../../utils/metadata'
 import HelpButton from '../common/HelpButton'
+import TextInput from '../common/TextInput'
 
 interface IProps {
   closeFn: () => void
@@ -37,6 +38,7 @@ interface IState {
   wipe_login: boolean
   horny_mode: boolean
   swag: boolean
+  platform: string
 
   // Swag stuff
   akebi_path: string
@@ -64,6 +66,7 @@ export default class Options extends React.Component<IProps, IState> {
       wipe_login: false,
       horny_mode: false,
       swag: false,
+      platform: '',
 
       // Swag stuff
       akebi_path: '',
@@ -85,11 +88,14 @@ export default class Options extends React.Component<IProps, IState> {
   async componentDidMount() {
     const config = await getConfig()
     const languages = await getLanguages()
+    const platform: string = await invoke('get_platform')
 
     // Remove jar from path
     const path = config.grasscutter_path.replace(/\\/g, '/')
     const folderPath = path.substring(0, path.lastIndexOf('/'))
     const encEnabled = await server.encryptionEnabled(folderPath + '/config.json')
+
+    console.log(platform)
 
     this.setState({
       game_install_path: config.game_install_path || '',
@@ -107,6 +113,7 @@ export default class Options extends React.Component<IProps, IState> {
       wipe_login: config.wipe_login || false,
       horny_mode: config.horny_mode || false,
       swag: config.swag_mode || false,
+      platform,
 
       // Swag stuff
       akebi_path: config.akebi_path || '',
@@ -271,14 +278,25 @@ export default class Options extends React.Component<IProps, IState> {
   render() {
     return (
       <Menu closeFn={this.props.closeFn} className="Options" heading="Options">
-        <div className="OptionSection" id="menuOptionsContainerGamePath">
-          <div className="OptionLabel" id="menuOptionsLabelGamePath">
-            <Tr text="options.game_path" />
+        {!this.state.platform || this.state.platform === 'windows' ? (
+          <div className="OptionSection" id="menuOptionsContainerGamePath">
+            <div className="OptionLabel" id="menuOptionsLabelGamePath">
+              <Tr text="options.game_path" />
+            </div>
+            <div className="OptionValue" id="menuOptionsDirGamePath">
+              <DirInput onChange={this.setGameExecutable} value={this.state?.game_install_path} extensions={['exe']} />
+            </div>
           </div>
-          <div className="OptionValue" id="menuOptionsDirGamePath">
-            <DirInput onChange={this.setGameExecutable} value={this.state?.game_install_path} extensions={['exe']} />
+        ) : (
+          <div className="OptionSection" id="menuOptionsContainerGameCommand">
+            <div className="OptionLabel" id="menuOptionsLabelGameCommand">
+              <Tr text="options.game_command" />
+            </div>
+            <div className="OptionValue" id="menuOptionsGameCommand">
+              <TextInput />
+            </div>
           </div>
-        </div>
+        )}
         <div className="OptionSection" id="menuOptionsContainermetaDownload">
           <div className="OptionLabel" id="menuOptionsLabelmetaDownload">
             <Tr text="options.recover_metadata" />

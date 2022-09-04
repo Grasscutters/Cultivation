@@ -168,3 +168,8 @@ pub fn is_elevated() -> bool {
 pub fn is_elevated() -> bool {
   sudo::check() == sudo::RunningAs::Root
 }
+
+#[tauri::command]
+pub fn get_platform() -> &'static str {
+  std::env::consts::OS
+}
