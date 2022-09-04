@@ -34,29 +34,29 @@ Download and open the MSI, and once installed, run Cultivation as administrator.
 
 5-minute video for those who don't like to/cannot read: https://youtu.be/e0irOYbQe7I
 
-* Download Cultivation
-  * If you are on Windows 10 or 11, use the MSI
-  * If you are on Windows 7, or the MSI doesn't work, use the zip and download [WebView](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)
-  * If you are on Linux or MacOS, [help us port Windows-specific system calls to Linux/MacOS!](https://github.com/Grasscutters/Cultivation/issues/7)
-* Install or extract Cultivation
-* Open Cultivation ***as administrator***
-* Before clicking randomly on stuff, in options (top right cog icon), set your Game Install Path.
-  * If you are using an existing server installation from somewhere else, you can set the `.jar` file in settings as well. All downloads made through Culti will automatically use that path, no additional config needed.
-  * If you use multiple Java versions, you can set the Java path to your Java 17 installation (only required if you are running your own server)
-* Decide if you want to download your own server, or just join a public one
-  * If joining a public one, you're done. Just click "Connect with Grasscutter" and input the address and port. You do not have to continue these instructions.
-    * If you are getting System Error, or 4214,  ask the [Discord support channels](https://discord.gg/grasscutter)
-* Open the "Downloads" menu (top right)
-  * Download "latest grasscutter" (second from the top)
-  * Download "resources" (very bottom)
-* Once all of that is done, click the icon next to "Launch"
-* To play on your new server:
-  * Click "Connect with Grasscutter"
-  * Input `localhost` as the address, and `443` as the port
-  * Ensure HTTPS is disabled
-* Any generic "I am getting XYZ error!" should go in the [Discord support channels](https://discord.gg/grasscutter)
-* Any specific Cultivation issues should go in [the issues section](/issues)
-* Any Grasscutter server related issues should go in [the Grasscutter issues section](https://github.com/Grasscutters/Grasscutter)
+- Download Cultivation
+  - If you are on Windows 10 or 11, use the MSI
+  - If you are on Windows 7, or the MSI doesn't work, use the zip and download [WebView](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)
+  - If you are on Linux or MacOS, [help us port Windows-specific system calls to Linux/MacOS!](https://github.com/Grasscutters/Cultivation/issues/7)
+- Install or extract Cultivation
+- Open Cultivation **_as administrator_**
+- Before clicking randomly on stuff, in options (top right cog icon), set your Game Install Path.
+  - If you are using an existing server installation from somewhere else, you can set the `.jar` file in settings as well. All downloads made through Culti will automatically use that path, no additional config needed.
+  - If you use multiple Java versions, you can set the Java path to your Java 17 installation (only required if you are running your own server)
+- Decide if you want to download your own server, or just join a public one
+  - If joining a public one, you're done. Just click "Connect with Grasscutter" and input the address and port. You do not have to continue these instructions.
+    - If you are getting System Error, or 4214, ask the [Discord support channels](https://discord.gg/grasscutter)
+- Open the "Downloads" menu (top right)
+  - Download "latest grasscutter" (second from the top)
+  - Download "resources" (very bottom)
+- Once all of that is done, click the icon next to "Launch"
+- To play on your new server:
+  - Click "Connect with Grasscutter"
+  - Input `localhost` as the address, and `443` as the port
+  - Ensure HTTPS is disabled
+- Any generic "I am getting XYZ error!" should go in the [Discord support channels](https://discord.gg/grasscutter)
+- Any specific Cultivation issues should go in [the issues section](/issues)
+- Any Grasscutter server related issues should go in [the Grasscutter issues section](https://github.com/Grasscutters/Grasscutter)
 
 # Developer Quickstart
 
