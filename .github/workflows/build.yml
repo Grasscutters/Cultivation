@@ -1,0 +1,45 @@
+name: Check frontend
+
+on:
+  push:
+    paths-ignore:
+      - '**.lock'
+      - '**.rs'
+      - '**.toml'
+  pull_request:
+    paths-ignore:
+      - '**.lock'
+      - '**.rs'
+      - '**.toml'
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: setup node
+        uses: actions/setup-node@v1
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+
+      - name: Install deps and build
+        run: yarn && yarn build --debug
+
+      - name: Compress build
+        uses: vimtor/action-zip@v1
+        with:
+          files: src-tauri/target/debug/Cultivation.exe src-tauri/target/debug/lang/ src-tauri/target/debug/keys/
+          recursive: true
+          dest: Cultivation.zip
+
+      - name: Upload build
+        uses: actions/upload-artifact@v3
+        with:
+          name: Cultivation
