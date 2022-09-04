@@ -1,16 +1,6 @@
 name: Build
 
-on:
-  push:
-    paths-ignore:
-      - '**.lock'
-      - '**.rs'
-      - '**.toml'
-  pull_request:
-    paths-ignore:
-      - '**.lock'
-      - '**.rs'
-      - '**.toml'
+on: [push, pull-request]
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
