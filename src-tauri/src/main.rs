@@ -33,11 +33,11 @@ fn try_flush() {
   std::io::stdout().flush().unwrap_or(())
 }
 
-fn has_arg(args: &Vec<String>, arg: &str) -> bool {
+fn has_arg(args: &[String], arg: &str) -> bool {
   args.contains(&arg.to_string())
 }
 
-async fn arg_handler(args: &Vec<String>) {
+async fn arg_handler(args: &[String]) {
   if has_arg(args, "--proxy") {
     let mut pathbuf = tauri::api::path::data_dir().unwrap();
     pathbuf.push("cultivation");
@@ -55,7 +55,7 @@ fn main() {
   }
 
   // Setup datadir/cultivation just in case something went funky and it wasn't made
-  if !dir_exists(&data_dir().unwrap().join("cultivation").to_str().unwrap()) {
+  if !dir_exists(data_dir().unwrap().join("cultivation").to_str().unwrap()) {
     fs::create_dir_all(&data_dir().unwrap().join("cultivation")).unwrap();
   }
 

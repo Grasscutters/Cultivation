@@ -8,7 +8,7 @@ use registry::{Data, Hive, Security};
 #[tauri::command]
 pub fn run_program(path: String, args: Option<String>) {
   // Without unwrap_or, this can crash when UAC prompt is denied
-  open::that(format!("{} {}", &path, &args.unwrap_or("".into()))).unwrap_or(());
+  open::that(format!("{} {}", &path, &args.unwrap_or_else(|| "".into()))).unwrap_or(());
 }
 
 #[tauri::command]
@@ -24,7 +24,7 @@ pub fn run_program_relative(path: String, args: Option<String>) {
   std::env::set_current_dir(&path_buf).unwrap();
 
   // Without unwrap_or, this can crash when UAC prompt is denied
-  open::that(format!("{} {}", &path, args.unwrap_or("".into()))).unwrap_or(());
+  open::that(format!("{} {}", &path, args.unwrap_or_else(|| "".into()))).unwrap_or(());
 
   // Restore the original working directory
   std::env::set_current_dir(&cwd).unwrap();

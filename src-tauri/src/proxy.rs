@@ -3,7 +3,6 @@
  * https://github.com/omjadas/hudsucker/blob/main/examples/log.rs
  */
 
-use crate::system_helpers::run_command;
 use once_cell::sync::Lazy;
 use std::{path::PathBuf, str::FromStr, sync::Mutex};
 
@@ -180,7 +179,7 @@ pub fn connect_to_proxy(proxy_port: u16) {
   fs::write("/etc/environment", env_file).unwrap();
 }
 
-#[cfg(macos)]
+#[cfg(target_od = "macos")]
 pub fn connect_to_proxy(_proxy_port: u16) {
   println!("No Mac support yet. Someone mail me a Macbook and I will do it B)")
 }

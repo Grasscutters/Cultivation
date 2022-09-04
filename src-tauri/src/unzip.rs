@@ -58,7 +58,7 @@ pub fn unzip(
         }
       };
 
-      full_path = new_path.clone();
+      full_path = new_path;
     }
 
     println!("Is rar file? {}", zipfile.ends_with(".rar"));
@@ -78,7 +78,7 @@ pub fn unzip(
       // Get the name of the inenr file in the zip file
       let mut zip = zip::ZipArchive::new(&f).unwrap();
       let file = zip.by_index(0).unwrap();
-      name = file.name().to_string().clone();
+      name = file.name().to_string();
     }
 
     if !success {
@@ -111,23 +111,21 @@ pub fn unzip(
     for entry in read_dir(&write_path).unwrap() {
       let entry = entry.unwrap();
       let entry_path = entry.path();
-      if entry_path.is_dir() {
-        if !dirs.contains(&entry_path) {
-          new_dir = entry_path.to_str().unwrap().to_string();
-        }
+      if entry_path.is_dir() && !dirs.contains(&entry_path) {
+        new_dir = entry_path.to_str().unwrap().to_string();
       }
     }
 
     let mut res_hash = std::collections::HashMap::new();
     res_hash.insert("file", zipfile.to_string());
-    res_hash.insert("new_folder", new_dir.to_string());
+    res_hash.insert("new_folder", new_dir);
 
     window.emit("extract_end", &res_hash).unwrap();
   });
 }
 
-fn extract_rar(rarfile: &String, _f: &File, full_path: &path::PathBuf, _top_level: bool) -> bool {
-  let archive = Archive::new(rarfile.clone());
+fn extract_rar(rarfile: &str, _f: &File, full_path: &path::Path, _top_level: bool) -> bool {
+  let archive = Archive::new(rarfile.to_string());
 
   let mut open_archive = archive
     .extract_to(full_path.to_str().unwrap().to_string())
@@ -149,7 +147,7 @@ fn extract_rar(rarfile: &String, _f: &File, full_path: &path::PathBuf, _top_leve
   }
 }
 
-fn extract_zip(_zipfile: &String, f: &File, full_path: &path::PathBuf, top_level: bool) -> bool {
+fn extract_zip(_zipfile: &str, f: &File, full_path: &path::Path, top_level: bool) -> bool {
   match zip_extract::extract(f, full_path, top_level) {
     Ok(_) => {
       println!(
