@@ -12,7 +12,7 @@ import Plus from '../../resources/icons/plus.svg'
 
 import './ServerLaunchSection.css'
 import { dataDir } from '@tauri-apps/api/path'
-import { getGameExecutable } from '../../utils/game'
+import { getGameExecutable, getGameVersion } from '../../utils/game'
 import { patchGame, unpatchGame } from '../../utils/metadata'
 
 interface IProps {
@@ -110,6 +110,24 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     // Connect to proxy
     if (config.toggle_grasscutter) {
       if (config.patch_metadata) {
+        const gameVersion = await getGameVersion()
+        console.log(gameVersion)
+
+        if(gameVersion == null) {
+          alert('Game version could not be determined. Please make sure you have the game correctly selected and try again.')
+          return
+        }
+
+        if(gameVersion?.major == 2 && gameVersion?.minor < 8) {
+          alert('Game version is too old for metadata patching. Please disable metadata patching in the settings and try again.')
+          return
+        }
+
+        if(gameVersion?.major == 3 && gameVersion?.minor >= 1) {
+          alert('Game version is too new for metadata patching. Please disable metadata patching in the settings to launch the game.\nNOTE: You will require a UA patch to play the game.')
+          return
+        }
+
         const patched = await patchGame()
 
         if (!patched) {

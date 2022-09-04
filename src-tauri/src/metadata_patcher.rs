@@ -1,8 +1,5 @@
 use regex::Regex;
-use std::fs::File;
-use std::fs::OpenOptions;
-use std::io::Read;
-use std::io::Write;
+use std::{fs, path::Path, fs::File, fs::OpenOptions, io::Read, io::Write};
 
 // For these two functions, a non-zero return value indicates failure.
 extern "C" {
@@ -13,6 +10,12 @@ extern "C" {
 #[tauri::command]
 pub fn patch_metadata(metadata_folder: &str) -> bool {
   let metadata_file = &(metadata_folder.to_owned() + "\\global-metadata-unpatched.dat");
+  // check if metadata_file exists
+  if !Path::new(metadata_file).exists() {
+    println!("Metadata file not found");
+    return false;
+  }
+
   println!("Patching metadata file: {}", metadata_file);
   let decrypted = decrypt_metadata(metadata_file);
   if do_vecs_match(&decrypted, &Vec::new()) {
@@ -111,20 +114,17 @@ fn replace_keys(data: &[u8]) -> Vec<u8> {
 fn replace_rsa_key(old_data: &str, to_replace: &str, file_name: &str) -> String {
   // Read dispatch key file
   unsafe {
-    // Get key folder from exe path
-    let mut exe_path = std::env::current_exe().unwrap();
-    exe_path.pop();
+    // Get key path from current directory
+    let key_file_path = std::env::current_dir().unwrap().join("keys").join(file_name);
 
-    let key_folder = exe_path.to_str().unwrap().to_string();
-    let mut new_key_file = match File::open(format!("{}/keys/{}", key_folder, file_name)) {
+    let key_data = match fs::read(&key_file_path) {
       Ok(file) => file,
       Err(e) => {
-        println!("Failed to open keys/{}: {}", file_name, e);
+        println!("Failed to open {}: {}", key_file_path.to_str().unwrap(), e);
         return String::new();
       }
     };
-    let mut key_data = Vec::new();
-    new_key_file.read_to_end(&mut key_data).unwrap();
+
     let new_key = String::from_utf8_unchecked(key_data.to_vec());
 
     // Replace old key with new key
@@ -134,6 +134,7 @@ fn replace_rsa_key(old_data: &str, to_replace: &str, file_name: &str) -> String 
 
 fn encrypt_metadata(old_data: &[u8]) -> Vec<u8> {
   let mut data = old_data.to_vec();
+
   let success = unsafe { encrypt_global_metadata(data.as_mut_ptr(), data.len()) } == 0;
   if success {
     println!("Successfully encrypted global-metadata");
