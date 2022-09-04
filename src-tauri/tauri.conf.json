@@ -53,7 +53,7 @@
       }
     },
     "security": {
-      "csp": "default-src 'self' https://asset.localhost; img-src 'self'; img-src https://* asset: https://asset.localhost"
+      "csp": "default-src 'self' https://asset.localhost/; img-src 'self'; img-src https://* asset: https://asset.localhost/; media-src https://* asset: https://asset.localhost/; script-src 'self' https://asset.localhost/"
     },
     "updater": {
       "active": false,
