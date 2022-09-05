@@ -19,5 +19,5 @@ pub fn reopen_as_admin() {
   exit(0);
 }
 
-#[cfg(linux)]
+#[cfg(target_os = "linux")]
 pub fn reopen_as_admin() {}
