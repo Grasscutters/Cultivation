@@ -10,7 +10,7 @@ pub fn reopen_as_admin() {
   Command::new("powershell.exe")
     .arg("powershell")
     .arg(format!(
-      "-command \"&{{Start-Process -filepath 'cmd' -argumentlist '/c \"{}\"' -verb runas}}\"",
+      "-command \"&{{Start-Process -filepath '{}' -verb runas}}\"",
       install.to_str().unwrap()
     ))
     .spawn()
