@@ -16,6 +16,9 @@ use std::thread;
 use structs::APIQuery;
 use sysinfo::{System, SystemExt};
 
+use crate::admin::reopen_as_admin;
+
+mod admin;
 mod downloader;
 mod file_helpers;
 mod gamebanana;
@@ -52,6 +55,8 @@ fn main() {
     println!("===============================================================================");
     println!("You running as a non-elevated user. Some stuff will almost definitely not work.");
     println!("===============================================================================");
+
+    reopen_as_admin();
   }
 
   // Setup datadir/cultivation just in case something went funky and it wasn't made
