@@ -4,11 +4,13 @@ on:
   push:
     paths:
       - '.github/workflows/build.yml'
-      - 'src-tauri/**'
+      - 'src-tauri/**/*'
+      - 'src/**/*'
   pull_request:
     paths:
       - '.github/workflows/build.yml'
-      - 'src-tauri/**'
+      - 'src-tauri/**/*'
+      - 'src/**/*'
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
