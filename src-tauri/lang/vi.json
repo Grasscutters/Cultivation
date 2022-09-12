@@ -14,18 +14,21 @@
     "enabled": "Bật",
     "disabled": "Tắt",
     "game_path": "Đường dẫn cài game",
+    "game_command": "Lệnh khởi chạy game",
     "game_executable": "Tập tin thực thi game",
-    "recover_metadata": "Khôi phục Metadata khẩn cấp",
+    "recover_metadata": "Khôi phục metadata khẩn cấp",
     "grasscutter_jar": "Tập tin JAR Grasscutter",
     "toggle_encryption": "Bật/tắt mã hóa",
     "install_certificate": "Cài chứng chỉ proxy",
     "java_path": "Đường dẫn Java tùy chỉnh",
     "grasscutter_with_game": "Tự động chạy Grasscutter cùng với game",
-    "language": "Chọn ngôn ngữ",
+    "language": "Ngôn ngữ",
     "background": "Hình nền tùy chỉnh (liên kết hoặc tập tin hình ảnh)",
     "theme": "Giao diện",
-    "patch_metadata": "Tự động sửa Metadata",
-    "use_proxy": "Sử dụng proxy nội bộ"
+    "patch_metadata": "Tự động vá metadata",
+    "use_proxy": "Sử dụng proxy nội bộ",
+    "wipe_login": "Tẩy sạch cache đăng nhập",
+    "horny_mode": "Chế độ hứng tình"
   },
   "downloads": {
     "grasscutter_stable_data": "Tải dữ liệu Grasscutter bản ổn định",
@@ -40,17 +43,17 @@
     "game": "Tải game"
   },
   "download_status": {
-    "downloading": "Đang tải xuống",
+    "downloading": "Đang tải",
     "extracting": "Đang giải nén",
     "error": "Lỗi",
-    "finished": "Hoàn thành",
+    "finished": "Đã hoàn thành",
     "stopped": "Đã dừng"
   },
   "components": {
     "select_file": "Chọn tập tin hoặc thư mục...",
     "select_folder": "Chọn thư mục...",
-    "download": "Tải xuống",
-    "install": "Cài đặt"
+    "download": "Tải",
+    "install": "Cài"
   },
   "news": {
     "latest_commits": "Thay Đổi Gần Đây",
@@ -62,11 +65,19 @@
     "gc_stable_jar": "Tải xuống phiên bản ổn định của Grasscutter, bao gồm tập tin jar và các tệp dữ liệu.",
     "gc_dev_jar": "Tải xuống phiên bản phát triển mới nhất của Grasscutter, bao gồm tập tin jar và các tệp dữ liệu.",
     "gc_stable_data": "Tải xuống tệp dữ liệu phiên bản ổn định hiện hành của Grasscutter. Bản này không đi kèm với tập tin jar, hữu dụng khi muốn cập nhật.",
-    "gc_dev_data": "Tải xuống tệp dữ liệu phiên bản mới nhất của Grasscutter. Bản này không đi kèm với tập tin jar, hữu dụng khi muốn cập nhật.",
-    "resources": "Chúng được yêu cầu để chạy máy chủ Grasscutter. Nút này sẽ có màu xám nếu bạn đã có sẵn một thư mục tài nguyên có nội dung bên trong"
+    "gc_dev_data": "Tải xuống tệp dữ liệu phiên bản mới nhất của Grasscutter.      Bản này không đi kèm với tập tin jar, hữu dụng khi muốn cập nhật.",
+    "encryption": "Mục này nên được tắt.",
+    "resources": "Tài nguyên được yêu cầu để chạy máy chủ Grasscutter. Nút     này sẽ có màu xám nếu bạn đã có sẵn một thư mục tài nguyên (resources) có nội dung bên trong",
+	  "emergency_metadata": "Trong trường hợp gặp vấn đề, khôi phục lại metadata về     phiên bản chính thức mới nhất.",
+  	"use_proxy": "Sử dụng proxy nội bộ của Cultivation. Nên bật tùy chọn này   trừ khi bạn đang sử dụng một ứng dụng khác, như Fiddler",
+  	"patch_metadata": "Tự động vá và sửa lại metadata của game. Tùy chọn này nên  được bật trừ khi bạn đang sử dụng phiên bản cũ, phiên bản không chính thức hoặc bạn đã tự vá metadata rồi."
   },
   "swag": {
+    "akebi_name": "Akebi",
+    "migoto_name": "Migoto",
+    "reshade_name": "Reshade",
     "akebi": "Tập tin thực thi Akebi",
-    "migoto": "Tập tin thực thi 3dMigoto"
+    "migoto": "Tập tin thực thi 3dMigoto",
+    "reshade": "Tập tin inject Reshade"
   }
 }
