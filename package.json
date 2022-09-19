@@ -27,7 +27,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "tauri": "tauri",
-    "start:dev": "tauri dev",
+    "start:dev": "tauri dev -- -- --no-admin",
     "format": "cargo fmt --manifest-path ./src-tauri/Cargo.toml --all && yarn prettier --write --cache --loglevel warn .",
     "lint": "cargo clippy --manifest-path ./src-tauri/Cargo.toml --no-default-features && yarn tsc --noEmit && yarn eslint src",
     "lint:fix": "cargo clippy --manifest-path ./src-tauri/Cargo.toml --no-default-features --fix --allow-dirty && yarn tsc --noEmit && yarn eslint --fix src",

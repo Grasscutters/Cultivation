@@ -51,7 +51,9 @@ async fn arg_handler(args: &[String]) {
 }
 
 fn main() {
-  if !is_elevated() {
+  let args: Vec<String> = std::env::args().collect();
+
+  if !is_elevated() && !has_arg(&args, "--no-admin") {
     println!("===============================================================================");
     println!("You running as a non-elevated user. Some stuff will almost definitely not work.");
     println!("===============================================================================");
@@ -68,8 +70,6 @@ fn main() {
   let mut exe_path = std::env::current_exe().unwrap();
   exe_path.pop();
   std::env::set_current_dir(&exe_path).unwrap();
-
-  let args: Vec<String> = std::env::args().collect();
 
   block_on(arg_handler(&args));
 
