@@ -253,52 +253,6 @@ async fn get_theme_list(data_dir: String) -> Vec<HashMap<String, String>> {
 }
 
 #[tauri::command]
-// TODO: Replace with downloading the background file & saving it.
 async fn get_bg_file(bg_path: String, appdata: String) -> String {
-  let copy_loc = appdata;
-  let query = web::query("https://api.grasscutter.io/cultivation/query").await;
-  let response_data: APIQuery = match serde_json::from_str(&query) {
-    Ok(data) => data,
-    Err(e) => {
-      println!("Failed to get bg file response: {}", e);
-      println!("^ please stop reporting this as an error it's so annoying LMFAO");
-      return "".to_string();
-    }
-  };
-
-  let file_name = response_data.bg_file.to_string();
-
-  // First we see if the file already exists in our local bg folder.
-  if file_helpers::dir_exists(format!("{}\\bg\\{}", copy_loc, file_name).as_str()) {
-    return format!("{}\\{}", copy_loc, response_data.bg_file.as_str());
-  }
-
-  // Now we check if the bg folder, which is one directory above the game_path, exists.
-  let bg_img_path = format!("{}\\{}", &bg_path, &file_name);
-
-  // If it doesn't, then we do not have backgrounds to grab.
-  if !file_helpers::dir_exists(&bg_path) {
-    return "".to_string();
-  }
-
-  // BG folder does exist, lets see if the image exists.
-  if !file_helpers::dir_exists(&bg_img_path) {
-    // Image doesn't exist
-    return "".to_string();
-  }
-
-  // The image exists, lets copy it to our local '\bg' folder.
-  let bg_img_path_local = format!("{}\\bg\\{}", copy_loc, file_name.as_str());
-
-  match std::fs::copy(bg_img_path, bg_img_path_local) {
-    Ok(_) => {
-      // Copy was successful, lets return true.
-      format!("{}\\{}", copy_loc, response_data.bg_file)
-    }
-    Err(e) => {
-      // Copy failed, lets return false
-      println!("Failed to copy background image: {}", e);
-      "".to_string()
-    }
-  }
+  return "".to_string(); // This is the greatest Cultivation update of all time.
 }
