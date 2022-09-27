@@ -52,12 +52,13 @@ impl HttpHandler for ProxyHandler {
     mut request: Request<Body>,
   ) -> RequestOrResponse {
     let uri = request.uri().to_string();
-    let uri_path = request.uri().path();
+    let uri_path_and_query = request.uri().path_and_query().unwrap().as_str();
 
     if uri.contains("hoyoverse.com") || uri.contains("mihoyo.com") || uri.contains("yuanshen.com") {
       // Create new URI.
       let new_uri =
-        Uri::from_str(format!("{}{}", SERVER.lock().unwrap(), uri_path).as_str()).unwrap();
+        Uri::from_str(format!("{}{}", SERVER.lock().unwrap(), uri_path_and_query).as_str())
+          .unwrap();
       // Set request URI to the new one.
       *request.uri_mut() = new_uri;
     }
