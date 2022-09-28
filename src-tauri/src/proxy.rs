@@ -125,7 +125,7 @@ pub async fn create_proxy(proxy_port: u16, certificate_path: String) {
   // Create an instance of the proxy.
   let proxy = ProxyBuilder::new()
     .with_addr(SocketAddr::from(([0, 0, 0, 0], proxy_port)))
-    .with_rustls_client()
+    .with_native_tls_client()
     .with_ca(authority)
     .with_http_handler(ProxyHandler)
     .build();
