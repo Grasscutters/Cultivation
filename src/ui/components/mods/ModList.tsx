@@ -83,7 +83,13 @@ export class ModList extends React.Component<IProps, IState> {
           <div className="ModListInner">
             {this.props.mode === 'installed'
               ? this.state.installedList?.map((mod) => (
-                  <ModTile path={mod.path} mod={mod.info} key={mod.info.name} onClick={this.downloadMod} />
+                  <ModTile
+                    horny={this.state.horny}
+                    path={mod.path}
+                    mod={mod.info}
+                    key={mod.info.name}
+                    onClick={this.downloadMod}
+                  />
                 ))
               : this.state.modList?.map((mod: ModData) => (
                   <ModTile horny={this.state.horny} mod={mod} key={mod.id} onClick={this.downloadMod} />

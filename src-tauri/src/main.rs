@@ -13,7 +13,6 @@ use tauri::api::path::data_dir;
 use tauri::async_runtime::block_on;
 
 use std::thread;
-use structs::APIQuery;
 use sysinfo::{System, SystemExt};
 
 use crate::admin::reopen_as_admin;
@@ -25,7 +24,6 @@ mod gamebanana;
 mod lang;
 mod metadata_patcher;
 mod proxy;
-mod structs;
 mod system_helpers;
 mod unzip;
 mod web;
@@ -87,7 +85,6 @@ fn main() {
         connect,
         disconnect,
         req_get,
-        get_bg_file,
         is_game_running,
         get_theme_list,
         system_helpers::run_command,
@@ -250,9 +247,4 @@ async fn get_theme_list(data_dir: String) -> Vec<HashMap<String, String>> {
   }
 
   themes
-}
-
-#[tauri::command]
-async fn get_bg_file(bg_path: String, appdata: String) -> String {
-  return "".to_string(); // This is the greatest Cultivation update of all time.
 }
