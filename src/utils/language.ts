@@ -2,7 +2,7 @@ import { invoke } from '@tauri-apps/api'
 import React from 'react'
 import { getConfigOption } from './configuration'
 
-interface IProps {
+interface TrProps {
   text: string
 }
 
@@ -11,8 +11,8 @@ interface IState {
   translated_text: string
 }
 
-export default class Tr extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
+export default class Tr extends React.Component<TrProps, IState> {
+  constructor(props: TrProps) {
     super(props)
 
     this.state = {

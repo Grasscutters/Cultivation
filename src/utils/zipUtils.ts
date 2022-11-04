@@ -1,33 +1,35 @@
-import { invoke } from '@tauri-apps/api'
-import { listen } from '@tauri-apps/api/event'
-
-interface UnzipPayload {
-  file: string
-  new_folder: string
-}
+import { invoke } from '@tauri-apps/api';
+import { listen } from '@tauri-apps/api/event';
 
 export function unzip(
   file: string,
   dest: string,
   topLevelStrip?: boolean,
-  folderIfLoose?: boolean
-): Promise<UnzipPayload> {
+  folderIfLoose?: boolean,
+  signal?: AbortSignal
+): Promise<void> {
   return new Promise((resolve) => {
+    if (signal?.aborted) resolve();
+    signal &&
+      (signal.onabort = () => {
+        resolve();
+      });
+
     invoke('unzip', {
       zipfile: file,
       destpath: dest,
       topLevelStrip,
       folderIfLoose,
-    })
+    });
 
-    listen('extract_end', ({ payload }) => {
-      console.log(payload)
-      console.log(file)
-
-      // @ts-expect-error Payload is an object
+    const p = listen('extract_end', ({ payload }) => {
       if (payload?.file === file) {
-        resolve(payload as UnzipPayload)
+        resolve(
+          p.then((unsub) => {
+            unsub();
+          })
+        );
       }
-    })
-  })
+    });
+  });
 }

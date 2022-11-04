@@ -6,6 +6,7 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "importsNotUsedAsValues": "error",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
@@ -14,7 +15,12 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "baseUrl": "src",
+    "types": [
+      "vitest/importMeta"
+    ]
   },
-  "include": ["src"]
+  "include": ["src", "vite.config.ts", "src/vite-env.d.ts"]
 }

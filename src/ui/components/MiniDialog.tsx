@@ -18,7 +18,7 @@ export default class MiniDialog extends React.Component<IProps, never> {
   componentDidMount() {
     document.addEventListener('mousedown', (evt) => {
       const tgt = evt.target as HTMLElement
-      const isInside = tgt.closest('.MiniDialog') !== null
+      const isInside = tgt.closest('.miniDialog') !== null
 
       if (!isInside) {
         this.props.closeFn()

@@ -1,8 +1,8 @@
-.Downloads {
+.downloads {
   width: 40%;
 }
 
-.DownloadMenuSection {
+.downloadMenuSection {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -13,19 +13,19 @@
   min-height: 30px;
 }
 
-.DownloadValue {
+.downloadValue {
   height: 100%;
 }
 
-.DownloadValue .BigButton {
+.downloadValue .BigButton {
   height: 100%;
   min-height: 30px;
 }
 
-.DownloadValue .BigButtonText {
+.downloadValue .BigButtonText {
   font-size: 12px;
 }
 
-.DownloadMenuSection .HelpButton img {
+.downloadMenuSection .helpButton img {
   filter: none;
 }

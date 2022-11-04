@@ -17,6 +17,6 @@
   font-size: 12px;
 }
 
-.OptionSection .HelpButton img {
+.OptionSection .helpButton img {
   filter: invert(0%) sepia(91%) saturate(7464%) hue-rotate(101deg) brightness(0%) contrast(107%);
 }

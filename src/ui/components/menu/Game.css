@@ -11,7 +11,7 @@
   padding: 18px;
 }
 
-.GameDownload .MiniDialog {
+.GameDownload .miniDialog {
   height: 30%;
 }
 
@@ -19,7 +19,7 @@
   height: 50px;
 }
 
-.GameDownload .HelpButton img {
+.GameDownload .helpButton img {
   filter: invert(0%) sepia(91%) saturate(7464%) hue-rotate(101deg) brightness(0%) contrast(107%);
 }
 

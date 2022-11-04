@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noUnusedLocals": false,
+    "types": ["node", "sync", "mocha"]
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["*.test.ts", "*.test.tsx", "*.spec.ts", "*.spec.tsx"]
+}

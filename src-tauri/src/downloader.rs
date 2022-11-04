@@ -1,114 +1,129 @@
 use once_cell::sync::Lazy;
 
-use std::cmp::min;
-use std::fs::File;
-use std::io::Write;
-use std::sync::Mutex;
+use dashmap::{DashMap, DashSet};
+use std::{cmp::min, sync::Mutex};
+use tokio::{fs::File, io::AsyncWriteExt};
 
+use crate::error::{CultivationError, CultivationResult};
 use futures_util::StreamExt;
+use reqwest::Client;
+use tokio_util::sync::CancellationToken;
 
-// This will create a downloads list that will be used to check if we should continue downloading the file
-static DOWNLOADS: Lazy<Mutex<Vec<String>>> = Lazy::new(|| Mutex::new(Vec::new()));
-
-// Lots of help from: https://gist.github.com/giuliano-oliveira/4d11d6b3bb003dba3a1b53f43d81b30d
-// and docs ofc
 #[tauri::command]
-pub async fn download_file(window: tauri::Window, url: &str, path: &str) -> Result<(), String> {
-  // Reqwest setup
-  let res = match reqwest::get(url).await {
-    Ok(r) => r,
-    Err(_e) => {
-      emit_download_err(window, format!("Failed to request {}", url), path);
-      return Err(format!("Failed to request {}", url));
-    }
-  };
-  let total_size = res.content_length().unwrap_or(0);
+pub async fn download_file(
+  window: tauri::Window,
+  client: tauri::State<'_, Client>,
+  downloads: tauri::State<'_, DashSet<String>>,
+  cancellation_tokens: tauri::State<'_, DashMap<String, CancellationToken>>,
+  url: &str,
+  path: &str,
+) -> CultivationResult<()> {
+  let token = CancellationToken::new();
+  cancellation_tokens.insert(path.to_string(), token.clone());
 
-  // Create file path
-  let mut file = match File::create(path) {
-    Ok(f) => f,
-    Err(_e) => {
-      emit_download_err(window, format!("Failed to create file '{}'", path), path);
-      return Err(format!("Failed to create file '{}'", path));
-    }
-  };
-  let mut downloaded: u64 = 0;
-  let mut total_downloaded: u64 = 0;
+  let out = tokio::select! {
+    _ = token.cancelled() => {
+      println!("Cancelled {path}! returning...");
+      Ok(())
+    },
+    r = async move {
+      let res = match client.get(url).send().await {
+        Ok(r) => r,
+        Err(e) => {
+          emit_download_err(window, format!("Failed to request {}", url), path)?;
+          return Err(e.into());
+        }
+      };
+      let total_size = res.content_length().unwrap_or(0);
 
-  // File stream
-  let mut stream = res.bytes_stream();
+      // Create file path
+      let mut file = match File::create(path).await {
+        Ok(f) => f,
+        Err(e) => {
+          emit_download_err(window, format!("Failed to create file '{}'", path), path)?;
+          return Err(CultivationError::Custom(format!("{e}, [path: {}]", path)));
+        }
+      };
+      let mut downloaded: u64 = 0;
+      let mut total_downloaded: u64 = 0;
 
-  // Assuming all goes well, add to the downloads list
-  DOWNLOADS.lock().unwrap().push(path.to_string());
+      // File stream
+      let mut stream = res.bytes_stream();
 
-  // Await chunks
-  while let Some(item) = stream.next().await {
-    // Stop the loop if the download is removed from the list
-    if !DOWNLOADS.lock().unwrap().contains(&path.to_string()) {
-      break;
-    }
+      // Assuming all goes well, add to the downloads list
+      downloads.insert(path.to_string());
 
-    let chunk = match item {
-      Ok(itm) => itm,
-      Err(e) => {
-        emit_download_err(window, "Error while downloading file".to_string(), path);
-        return Err(format!("Error while downloading file: {}", e));
+      // Await chunks
+      while let Some(item) = stream.next().await {
+        // Stop the loop if the download is removed from the list
+        if !downloads.contains(path) {
+          break;
+        }
+
+        if let Err(e) = item {
+          emit_download_err(window, "Error while downloading file".into(), path)?;
+          return Err(e.into());
+        }
+
+        let chunk = item?;
+
+        if let Err(e) = file.write_all(&chunk).await {
+          emit_download_err(window, "Error while writing file".into(), path)?;
+          return Err(CultivationError::Custom(format!("{e}, [path: {}]", path)));
+        }
+
+        // New progress
+        let new = min(downloaded + (chunk.len() as u64), total_size);
+        downloaded = new;
+
+        total_downloaded += chunk.len() as u64;
+
+        let mut res_hash = DashMap::with_capacity(4);
+
+        res_hash.insert("downloaded".to_string(), downloaded.to_string());
+        res_hash.insert("total".to_string(), total_size.to_string());
+        res_hash.insert("path".to_string(), path.to_string());
+        res_hash.insert("total_downloaded".to_string(), total_downloaded.to_string());
+
+        // Create event to send to frontend
+        window.emit("download_progress", &res_hash)?;
       }
-    };
-    let vect = &chunk.to_vec()[..];
 
-    // Write bytes
-    match file.write_all(vect) {
-      Ok(x) => x,
-      Err(e) => {
-        emit_download_err(window, "Error while writing file".to_string(), path);
-        return Err(format!("Error while writing file: {}", e));
-      }
-    }
+      // One more "finish" event
+      window.emit("download_finished", &path)?;
 
-    // New progress
-    let new = min(downloaded + (chunk.len() as u64), total_size);
-    downloaded = new;
+      Ok(())
+    } => r
+  };
 
-    total_downloaded += chunk.len() as u64;
-
-    let mut res_hash = std::collections::HashMap::new();
-
-    res_hash.insert("downloaded".to_string(), downloaded.to_string());
-    res_hash.insert("total".to_string(), total_size.to_string());
-    res_hash.insert("path".to_string(), path.to_string());
-    res_hash.insert("total_downloaded".to_string(), total_downloaded.to_string());
-
-    // Create event to send to frontend
-    window.emit("download_progress", &res_hash).unwrap();
-  }
-
-  // One more "finish" event
-  window.emit("download_finished", &path).unwrap();
-
-  // We are done
-  Ok(())
+  out
 }
 
-pub fn emit_download_err(window: tauri::Window, msg: String, path: &str) {
-  let mut res_hash = std::collections::HashMap::new();
+#[inline]
+pub fn emit_download_err(window: tauri::Window, msg: String, path: &str) -> CultivationResult<()> {
+  let mut res_hash = DashMap::with_capacity(2);
 
   res_hash.insert("error".to_string(), msg);
   res_hash.insert("path".to_string(), path.to_string());
 
-  window.emit("download_error", &res_hash).unwrap();
+  window.emit("download_error", &res_hash)?;
+
+  Ok(())
 }
 
 #[tauri::command]
-pub fn stop_download(path: String) {
-  // Check if the path is in the downloads list
-  let mut downloads = DOWNLOADS.lock().unwrap();
-  let index = downloads.iter().position(|x| x == &path);
-
-  // Remove from list
-  if let Some(i) = index {
-    downloads.remove(i);
+pub fn stop_download(
+  path: String,
+  downloads: tauri::State<'_, DashSet<String>>,
+  cancellation_tokens: tauri::State<'_, DashMap<String, CancellationToken>>,
+) {
+  println!("{:?}", cancellation_tokens);
+  if let Some(token) = cancellation_tokens.get(&path) {
+    println!("Stopping {path}...");
+    token.cancel();
   }
+
+  downloads.remove(&path);
 
   // Delete the file from disk
   if let Err(_e) = std::fs::remove_file(&path) {

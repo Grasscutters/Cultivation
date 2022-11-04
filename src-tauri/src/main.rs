@@ -5,20 +5,23 @@
 
 use file_helpers::dir_exists;
 use once_cell::sync::Lazy;
-use std::fs;
-use std::io::Write;
-use std::{collections::HashMap, sync::Mutex};
+use std::{collections::HashMap, fs, io::Write, sync::Mutex};
 use system_helpers::is_elevated;
-use tauri::api::path::data_dir;
-use tauri::async_runtime::block_on;
+use tauri::{api::path::data_dir, async_runtime::block_on};
 
+use dashmap::{DashMap, DashSet};
+use reqwest::Client;
 use std::thread;
 use sysinfo::{System, SystemExt};
+use tokio_util::sync::CancellationToken;
 
+#[cfg(windows)]
 use crate::admin::reopen_as_admin;
+use crate::error::CultivationResult;
 
 mod admin;
 mod downloader;
+mod error;
 mod file_helpers;
 mod gamebanana;
 mod lang;
@@ -53,15 +56,17 @@ fn main() {
 
   if !is_elevated() && !has_arg(&args, "--no-admin") {
     println!("===============================================================================");
-    println!("You running as a non-elevated user. Some stuff will almost definitely not work.");
+    println!("You are running as a non-elevated user. Some stuff will almost definitely not work.");
     println!("===============================================================================");
 
+    #[cfg(windows)]
     reopen_as_admin();
   }
 
-  // Setup datadir/cultivation just in case something went funky and it wasn't made
+  // Setup datadir/cultivation just in case something went funky and it wasn't
+  // made
   if !dir_exists(data_dir().unwrap().join("cultivation").to_str().unwrap()) {
-    fs::create_dir_all(&data_dir().unwrap().join("cultivation")).unwrap();
+    fs::create_dir_all(data_dir().unwrap().join("cultivation")).unwrap();
   }
 
   // Always set CWD to the location of the executable.
@@ -80,6 +85,9 @@ fn main() {
 
   if !has_arg(&args, "--no-gui") {
     tauri::Builder::default()
+      .manage(Client::new())
+      .manage(DashSet::<String>::with_capacity(4))
+      .manage(DashMap::<String, CancellationToken>::with_capacity(4))
       .invoke_handler(tauri::generate_handler![
         enable_process_watcher,
         connect,
@@ -153,7 +161,8 @@ fn enable_process_watcher(window: tauri::Window, process: String) {
   println!("Starting process watcher...");
 
   thread::spawn(move || {
-    // Initial sleep for 8 seconds, since running 20 different injectors or whatever can take a while
+    // Initial sleep for 8 seconds, since running 20 different injectors or whatever
+    // can take a while
     std::thread::sleep(std::time::Duration::from_secs(10));
 
     let mut system = System::new_all();
@@ -208,9 +217,10 @@ fn disconnect() {
 }
 
 #[tauri::command]
-async fn req_get(url: String) -> String {
-  // Send a GET request to the specified URL and send the response body back to the client.
-  web::query(&url.to_string()).await
+async fn req_get(url: String, client: tauri::State<'_, Client>) -> CultivationResult<String> {
+  // Send a GET request to the specified URL and send the response body back to
+  // the client.
+  web::query(&url.to_string(), client.inner().clone()).await
 }
 
 #[tauri::command]

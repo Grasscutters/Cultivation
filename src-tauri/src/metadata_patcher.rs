@@ -1,5 +1,10 @@
 use regex::Regex;
-use std::{fs, fs::File, fs::OpenOptions, io::Read, io::Write, path::Path};
+use std::{
+  fs,
+  fs::{File, OpenOptions},
+  io::{Read, Write},
+  path::Path,
+};
 
 // For these two functions, a non-zero return value indicates failure.
 extern "C" {
@@ -39,7 +44,7 @@ pub fn patch_metadata(metadata_folder: &str) -> bool {
   let mut file = match OpenOptions::new()
     .create(true)
     .write(true)
-    .open(&(metadata_folder.to_owned() + "\\global-metadata-patched.dat"))
+    .open(metadata_folder.to_owned() + "\\global-metadata-patched.dat")
   {
     Ok(file) => file,
     Err(e) => {

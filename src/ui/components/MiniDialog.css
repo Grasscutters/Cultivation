@@ -1,4 +1,4 @@
-.MiniDialog {
+.miniDialog {
   position: fixed;
   z-index: 99;
 
@@ -30,6 +30,6 @@
   cursor: pointer;
 }
 
-.MiniDialog .ProgressText {
+.miniDialog .progressText {
   color: #000;
 }

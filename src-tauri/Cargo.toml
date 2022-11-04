@@ -12,33 +12,33 @@ rust-version = "1.57"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "1.0.0-rc.8", features = [] }
+tauri-build = { version = "1.2.0", features = [] }
 cc = "1.0"
 
 [target.'cfg(windows)'.dependencies]
 is_elevated = "0.1.2"
-registry = "1.2.1"
+registry = "1.2.2"
 
 [target.'cfg(unix)'.dependencies]
 sudo = "0.6.0"
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.0.6", features = ["api-all"] }
+tauri = { version = "1.2.0", features = ["api-all"] }
+
+# Error handling
+thiserror = "1.0.37"
 
 # Access system process info.
-sysinfo = "0.24.6"
+sysinfo = "0.26.7"
 
 # ZIP-archive library.
 zip-extract = "0.1.1"
 unrar = "0.4.4"
-zip = "0.6.2"
-
-# For creating a "global" downloads list.
-once_cell = "1.13.0"
+zip = "0.6.3"
 
 # Program opener.
-open = "3.0.2"
+open = "3.0.3"
 duct = "0.13.5"
 
 # Serialization.
@@ -46,15 +46,16 @@ serde_json = "1"
 
 # Dependencies for the HTTP(S) proxy.
 http = "0.2"
-hudsucker = "0.17.2"
-tracing = "0.1.21"
-tokio-rustls = "0.23.0"
-tokio-tungstenite = "0.17.0"
-tokio = { version = "1.18.2", features = ["signal"] }
-rustls-pemfile = "1.0.0"
-reqwest = { version = "0.11.3", features = ["stream"] }
-futures-util = "0.3.14"
-rcgen = { version = "0.9", features = ["x509-parser"] }
+hudsucker = "0.18.0"
+tracing = "0.1.37"
+tokio-stream = { version = "0.1.11", features = ["fs"] }
+tokio-rustls = "0.23.4"
+tokio-tungstenite = "0.17.2"
+tokio = { version = "1.21.2", features = ["signal", "rt-multi-thread", "macros", "fs"] }
+rustls-pemfile = "1.0.1"
+reqwest = { version = "0.11.12", features = ["stream"] }
+futures-util = "0.3.25"
+rcgen = { version = "0.10", features = ["x509-parser"] }
 
 # metadata stuff
 regex = "1"
@@ -63,11 +64,18 @@ regex = "1"
 file_diff = "1.0.0"
 rust-ini = "0.18.0"
 ctrlc = "3.2.3"
+once_cell = "1.16.0"
+dashmap = { version = "5.4.0", features = ["serde"] }
+fxhash = "0.2.1"
+flume = "0.10.14"
+tokio-util = "0.7.4"
+async_zip = "0.0.9"
+sanitize-filename = "0.4.0"
 
 [features]
 # by default Tauri runs in production mode
 # when `tauri dev` runs it is executed with `cargo run --no-default-features` if `devPath` is an URL
-default = [ "custom-protocol" ]
+default = ["custom-protocol"]
 # this feature is used used for production builds where `devPath` points to the filesystem
 # DO NOT remove this
-custom-protocol = [ "tauri/custom-protocol" ]
+custom-protocol = ["tauri/custom-protocol"]

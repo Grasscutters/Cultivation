@@ -1,0 +1,113 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "prettier-standard"
+  ],
+  "parserOptions": {
+    "project": "tsconfig.eslint.json",
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "prettier",
+    "simple-import-sort",
+    "import"
+  ],
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true,
+    "jest": true
+  },
+  "rules": {
+    "no-redeclare": "off",
+    "camelcase": "off",
+    "no-use-before-define": "off",
+    "no-lone-blocks": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
+    "simple-import-sort/exports": "error",
+    "simple-import-sort/imports": [
+      "error",
+      {
+        "groups": [
+          // Node.js builtins. You could also generate this regex if you use a `.js` config.
+          // For example: `^(${require("module").builtinModules.join("|")})(/|$)`
+          [
+            "^node:(assert|buffer|child_process|cluster|console|constants|crypto|dgram|dns|domain|events|fs|http|https|module|net|os|path|punycode|querystring|readline|repl|stream|string_decoder|sys|timers|tls|tty|url|util|vm|zlib|freelist|v8|process|async_hooks|http2|perf_hooks)(/.*|$)"
+          ],
+          // Packages
+          ["^\\w"],
+          // Internal packages.
+          ["^(@|config/)(/*|$)"],
+          // Side effect imports.
+          ["^\\u0000"],
+          // Parent imports. Put `..` last.
+          ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
+          // Other relative imports. Put same-folder imports and `.` last.
+          ["^\\./(?=.*/)(?!/?$)", "^\\.(?!/?$)", "^\\./?$"],
+          // Style imports.
+          ["^.+\\.s?css$"]
+        ]
+      }
+    ],
+    "import/no-anonymous-default-export": [
+      "error",
+      {
+        "allowArrowFunction": true,
+        "allowAnonymousFunction": true
+      }
+    ],
+    "no-unused-vars": "off",
+    "prefer-const": "off",
+    "@typescript-eslint/ban-ts-comment": "off", // отключили до разбирательства с типами (есть туду)
+    "@typescript-eslint/no-explicit-any": "off", // пока что отключил, чтоб не падал деплой
+    "@typescript-eslint/triple-slash-reference": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
+    "import/no-named-default": "off",
+    "no-implicit-globals": "error",
+    "max-len": [
+      "warn",
+      {
+        "code": 140,
+        "ignoreComments": true
+      }
+    ],
+    "no-useless-escape": "off",
+    "no-unmodified-loop-condition": "off",
+    "import/export": "off"
+  },
+  "overrides": [
+    {
+      "files": ["src/**/*.js", "src/**/*.ts", "src/**/*.tsx"],
+      "rules": {
+        "import/newline-after-import": "error",
+        "import/no-internal-modules": ["off"],
+        "import/order": [
+          "error",
+          {
+            "newlines-between": "always",
+            "groups": [["builtin", "external", "internal"]],
+            "pathGroupsExcludedImportTypes": [["builtin", "external", "internal"]]
+          }
+        ]
+      }
+    }
+  ]
+}

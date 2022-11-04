@@ -3,11 +3,10 @@ import React from 'react'
 // Major Components
 import TopBar from './components/TopBar'
 import ServerLaunchSection from './components/ServerLaunchSection'
-import MainProgressBar from './components/common/MainProgressBar'
+import MainProgressBar from 'shared/ui/atoms/progress-bar/main-progress-bar'
 import Options from './components/menu/Options'
 import MiniDialog from './components/MiniDialog'
 import DownloadList from './components/common/DownloadList'
-import Downloads from './components/menu/Downloads'
 import NewsSection from './components/news/NewsSection'
 import Game from './components/menu/Game'
 import RightBar from './components/RightBar'
@@ -25,6 +24,7 @@ import cogBtn from '../resources/icons/cog.svg'
 import downBtn from '../resources/icons/download.svg'
 import wrenchBtn from '../resources/icons/wrench.svg'
 import { ExtrasMenu } from './components/menu/ExtrasMenu'
+import { DownloadsMenu } from "widgets/menu/downloads-menu/ui";
 
 interface IProps {
   downloadHandler: DownloadHandler
@@ -198,8 +198,7 @@ export class Main extends React.Component<IProps, IState> {
         {
           // Download menu
           this.state.downloadsOpen ? (
-            <Downloads
-              downloadManager={this.props.downloadHandler}
+            <DownloadsMenu
               closeFn={() => this.setState({ downloadsOpen: false })}
             />
           ) : null
