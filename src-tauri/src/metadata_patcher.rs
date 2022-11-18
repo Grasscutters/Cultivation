@@ -39,7 +39,7 @@ pub fn patch_metadata(metadata_folder: &str) -> bool {
   let mut file = match OpenOptions::new()
     .create(true)
     .write(true)
-    .open(&(metadata_folder.to_owned() + "\\global-metadata-patched.dat"))
+    .open(metadata_folder.to_owned() + "\\global-metadata-patched.dat")
   {
     Ok(file) => file,
     Err(e) => {

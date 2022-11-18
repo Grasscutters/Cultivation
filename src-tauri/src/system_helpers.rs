@@ -27,7 +27,7 @@ pub fn run_program_relative(path: String, args: Option<String>) {
   open::that(format!("{} {}", &path, args.unwrap_or_else(|| "".into()))).unwrap_or(());
 
   // Restore the original working directory
-  std::env::set_current_dir(&cwd).unwrap();
+  std::env::set_current_dir(cwd).unwrap();
 }
 
 #[tauri::command]
@@ -52,7 +52,7 @@ pub fn run_command(program: &str, args: Vec<&str>, relative: Option<bool>) {
     cmd(prog, args).run().unwrap();
 
     // Restore the original working directory
-    std::env::set_current_dir(&cwd).unwrap();
+    std::env::set_current_dir(cwd).unwrap();
   });
 }
 
