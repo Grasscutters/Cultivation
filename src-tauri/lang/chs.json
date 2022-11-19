@@ -14,6 +14,7 @@
     "enabled": "已启用",
     "disabled": "已禁用",
     "game_path": "选择游戏安装路径",
+    "game_command": "启动游戏的命令行",
     "game_executable": "选择游戏可执行文件",
     "recover_metadata": "紧急情况下恢复元数据文件",
     "grasscutter_jar": "选择 Grasscutter JAR 文件",
@@ -25,7 +26,9 @@
     "background": "设置自定义背景（链接或文件）",
     "theme": "设置主题",
     "patch_metadata": "自动修改元数据",
-    "use_proxy": "使用内置代理"
+    "use_proxy": "使用内置代理",
+    "wipe_login": "清除登录缓存",
+    "horny_mode": "Horny 模式"
   },
   "downloads": {
     "grasscutter_stable_data": "下载 Grasscutter 稳定版数据",
@@ -63,6 +66,7 @@
     "gc_dev_jar": "下载最新的 Grasscutter 开发版，包括 JAR 文件和数据。",
     "gc_stable_data": "下载当前的 Grasscutter 稳定版数据，不包括 JAR 文件。此选项在更新时有帮助。",
     "gc_dev_data": "下载最新的 Grasscutter 开发版数据，不包括 JAR 文件。此选项在更新时有帮助。",
+    "encryption": "此项设置通常应该处于关闭状态。",
     "resources": "资源文件在运行 Grasscutter 服务器时是必要的。此选项在已经存在资源文件时不可选。",
     "emergency_metadata": "在出现意外情况时，自动将元数据恢复至原始版本",
     "use_proxy": "使用 Cultivation 的内置代理。除非你使用 Fiddler 等软件，否则应启用此项。",
