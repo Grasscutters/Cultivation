@@ -50,7 +50,7 @@ hudsucker = "0.18.0"
 tracing = "0.1.37"
 tokio-rustls = "0.23.4"
 tokio-tungstenite = "0.17.2"
-tokio = { version = "1.21.2", features = ["signal"] }
+tokio = { version = "1.21.2", features = ["signal", "macros", "rt-multi-thread"] }
 rustls-pemfile = "1.0.1"
 reqwest = { version = "0.11.13", features = ["stream"] }
 futures-util = "0.3.25"
@@ -63,11 +63,12 @@ regex = "1"
 file_diff = "1.0.0"
 rust-ini = "0.18.0"
 ctrlc = "3.2.3"
+thiserror = "1.0.37"
 
 [features]
 # by default Tauri runs in production mode
 # when `tauri dev` runs it is executed with `cargo run --no-default-features` if `devPath` is an URL
-default = [ "custom-protocol" ]
+default = ["custom-protocol"]
 # this feature is used used for production builds where `devPath` points to the filesystem
 # DO NOT remove this
-custom-protocol = [ "tauri/custom-protocol" ]
+custom-protocol = ["tauri/custom-protocol"]

@@ -58,4 +58,4 @@ jobs:
         with:
           name: clippy (${{ runner.os }})
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --manifest-path ./src-tauri/Cargo.toml --no-default-features -- -D warnings
+          args: --manifest-path ./src-tauri/Cargo.toml --no-default-features

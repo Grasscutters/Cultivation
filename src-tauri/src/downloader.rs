@@ -1,13 +1,11 @@
 use once_cell::sync::Lazy;
 
-use std::cmp::min;
-use std::fs::File;
-use std::io::Write;
-use std::sync::Mutex;
+use std::{cmp::min, fs::File, io::Write, sync::Mutex};
 
 use futures_util::StreamExt;
 
-// This will create a downloads list that will be used to check if we should continue downloading the file
+// This will create a downloads list that will be used to check if we should
+// continue downloading the file
 static DOWNLOADS: Lazy<Mutex<Vec<String>>> = Lazy::new(|| Mutex::new(Vec::new()));
 
 // Lots of help from: https://gist.github.com/giuliano-oliveira/4d11d6b3bb003dba3a1b53f43d81b30d
@@ -111,7 +109,5 @@ pub fn stop_download(path: String) {
   }
 
   // Delete the file from disk
-  if let Err(_e) = std::fs::remove_file(&path) {
-    // Do nothing
-  }
+  std::fs::remove_file(&path).unwrap_or(());
 }

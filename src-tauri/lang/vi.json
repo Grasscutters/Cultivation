@@ -68,9 +68,9 @@
     "gc_dev_data": "Tải xuống tệp dữ liệu phiên bản mới nhất của Grasscutter.      Bản này không đi kèm với tập tin jar, hữu dụng khi muốn cập nhật.",
     "encryption": "Mục này nên được tắt.",
     "resources": "Tài nguyên được yêu cầu để chạy máy chủ Grasscutter. Nút     này sẽ có màu xám nếu bạn đã có sẵn một thư mục tài nguyên (resources) có nội dung bên trong",
-	  "emergency_metadata": "Trong trường hợp gặp vấn đề, khôi phục lại metadata về     phiên bản chính thức mới nhất.",
-  	"use_proxy": "Sử dụng proxy nội bộ của Cultivation. Nên bật tùy chọn này   trừ khi bạn đang sử dụng một ứng dụng khác, như Fiddler",
-  	"patch_metadata": "Tự động vá và sửa lại metadata của game. Tùy chọn này nên  được bật trừ khi bạn đang sử dụng phiên bản cũ, phiên bản không chính thức hoặc bạn đã tự vá metadata rồi."
+    "emergency_metadata": "Trong trường hợp gặp vấn đề, khôi phục lại metadata về     phiên bản chính thức mới nhất.",
+    "use_proxy": "Sử dụng proxy nội bộ của Cultivation. Nên bật tùy chọn này   trừ khi bạn đang sử dụng một ứng dụng khác, như Fiddler",
+    "patch_metadata": "Tự động vá và sửa lại metadata của game. Tùy chọn này nên  được bật trừ khi bạn đang sử dụng phiên bản cũ, phiên bản không chính thức hoặc bạn đã tự vá metadata rồi."
   },
   "swag": {
     "akebi_name": "Akebi",
