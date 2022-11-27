@@ -54,7 +54,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - uses: actions/checkout@v3
       - name: Run prettier
         run: pnpm prettier --check .
       - name: Run tsc
