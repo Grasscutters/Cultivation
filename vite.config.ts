@@ -2,6 +2,23 @@ import { defineConfig, splitVendorChunkPlugin } from 'vite';
 import solid from 'vite-plugin-solid';
 
 export default defineConfig({
+  define: {
+    'import.meta.vitest': undefined,
+  },
+  test: {
+    coverage: {
+      reporter: ['lcov', 'text'],
+    },
+    includeSource: ['src/**/*.{js,ts,jsx,tsx}'],
+    environment: 'jsdom',
+    transformMode: {
+      web: [/.[jt]sx?/],
+    },
+    deps: {
+      registerNodeLoader: true,
+    },
+    setupFiles: 'src/setupTests.ts',
+  },
   css: {
     modules: {
       generateScopedName: '[hash:base64:5]',

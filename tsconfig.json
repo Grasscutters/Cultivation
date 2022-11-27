@@ -15,7 +15,10 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "jsxImportSource": "solid-js"
+    "jsxImportSource": "solid-js",
+    "types": [
+      "vitest/importMeta"
+    ]
   },
   "include": ["src", "vite.config.ts", "src/vite-env.d.ts"]
 }

@@ -39,6 +39,13 @@ interface IState {
   resources_exist: boolean;
 }
 
+declare module '../../../shared/lib/tauri' {
+  export interface EventMap {
+    // TODO: type properly
+    jar_extracted: any;
+  }
+}
+
 export default function Downloads(props: IProps) {
   const [state, setState] = createStore<IState>({
     grasscutter_downloading: props.downloadManager.downloadingJar(),

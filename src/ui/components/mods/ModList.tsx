@@ -87,12 +87,7 @@ export function ModList(props: IProps) {
             fallback={
               <For each={modList()}>
                 {(mod) => (
-                  <ModTile
-                    horny={horny()}
-                    mod={mod}
-                    key={mod.id}
-                    onClick={downloadMod}
-                  />
+                  <ModTile horny={horny()} mod={mod} onClick={downloadMod} />
                 )}
               </For>
             }>
@@ -102,7 +97,6 @@ export function ModList(props: IProps) {
                   horny={horny()}
                   path={mod.path}
                   mod={mod.info}
-                  key={mod.info.name}
                   onClick={downloadMod}
                 />
               )}
