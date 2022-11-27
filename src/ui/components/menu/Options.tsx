@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { For, onMount, Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
 import { invoke } from '@tauri-apps/api';
@@ -24,27 +23,6 @@ import Divider from './Divider';
 import Menu from './Menu';
 
 import './Options.css';
-=======
-import { invoke } from '@tauri-apps/api'
-import { dataDir } from '@tauri-apps/api/path'
-import DirInput from '../common/DirInput'
-import Menu from './Menu'
-import Tr, { getLanguages, translate } from '../../../utils/language'
-import { setConfigOption, getConfig, getConfigOption, Configuration } from '../../../utils/configuration'
-import Checkbox from '../common/Checkbox'
-import Divider from './Divider'
-import { getThemeList } from '../../../utils/themes'
-import * as server from '../../../utils/server'
-
-import './Options.css'
-import BigButton from '../common/BigButton'
-import DownloadHandler from '../../../utils/download'
-import * as meta from '../../../utils/metadata'
-import HelpButton from '../common/HelpButton'
-import TextInput from '../common/TextInput'
-import {createStore} from "solid-js/store";
-import {onMount, For, Show} from "solid-js";
->>>>>>> aa45f04 (feat: move to solid-js)
 
 interface IProps {
   closeFn: () => void;
@@ -101,15 +79,9 @@ export default function Options(props: IProps) {
   });
 
   onMount(async () => {
-<<<<<<< HEAD
     const config = await getConfig();
     const languages = await getLanguages();
     const platform: string = await invoke('get_platform');
-=======
-    const config = await getConfig()
-    const languages = await getLanguages()
-    const platform: string = await invoke('get_platform')
->>>>>>> aa45f04 (feat: move to solid-js)
 
     // Remove jar from path
     const path = config.grasscutter_path.replace(/\\/g, '/');
@@ -144,19 +116,11 @@ export default function Options(props: IProps) {
       akebi_path: config.akebi_path || '',
       migoto_path: config.migoto_path || '',
       reshade_path: config.reshade_path || '',
-<<<<<<< HEAD
     });
   });
 
   function setGameExecutable(value: string) {
     setConfigOption('game_install_path', value);
-=======
-    })
-  });
-
-  function setGameExecutable(value: string) {
-    setConfigOption('game_install_path', value)
->>>>>>> aa45f04 (feat: move to solid-js)
 
     // I hope this stops people setting launcher.exe because oml it's annoying
     if (value.endsWith('launcher.exe')) {
@@ -175,11 +139,7 @@ export default function Options(props: IProps) {
   }
 
   function setGrasscutterJar(value: string) {
-<<<<<<< HEAD
     setConfigOption('grasscutter_path', value);
-=======
-    setConfigOption('grasscutter_path', value)
->>>>>>> aa45f04 (feat: move to solid-js)
 
     setState({
       grasscutter_path: value,
@@ -187,11 +147,7 @@ export default function Options(props: IProps) {
   }
 
   function setJavaPath(value: string) {
-<<<<<<< HEAD
     setConfigOption('java_path', value);
-=======
-    setConfigOption('java_path', value)
->>>>>>> aa45f04 (feat: move to solid-js)
 
     setState({
       java_path: value,
@@ -199,11 +155,7 @@ export default function Options(props: IProps) {
   }
 
   function setAkebi(value: string) {
-<<<<<<< HEAD
     setConfigOption('akebi_path', value);
-=======
-    setConfigOption('akebi_path', value)
->>>>>>> aa45f04 (feat: move to solid-js)
 
     setState({
       akebi_path: value,
@@ -211,11 +163,7 @@ export default function Options(props: IProps) {
   }
 
   function setMigoto(value: string) {
-<<<<<<< HEAD
     setConfigOption('migoto_path', value);
-=======
-    setConfigOption('migoto_path', value)
->>>>>>> aa45f04 (feat: move to solid-js)
 
     setState({
       migoto_path: value,
@@ -229,11 +177,7 @@ export default function Options(props: IProps) {
   }
 
   function setReshade(value: string) {
-<<<<<<< HEAD
     setConfigOption('reshade_path', value);
-=======
-    setConfigOption('reshade_path', value)
->>>>>>> aa45f04 (feat: move to solid-js)
 
     setState({
       reshade_path: value,
@@ -241,7 +185,6 @@ export default function Options(props: IProps) {
   }
 
   async function setLanguage(value: string) {
-<<<<<<< HEAD
     await setConfigOption('language', value);
     window.location.reload();
   }
@@ -255,30 +198,6 @@ export default function Options(props: IProps) {
     const isUrl = /^(?:http(s)?:\/\/)/gm.test(value);
 
     if (!value) return await setConfigOption('customBackground', '');
-=======
-    await setConfigOption('language', value)
-    window.location.reload()
-  }
-
-  async function setTheme(value: string) {
-    await setConfigOption('theme', value)
-    window.location.reload()
-  }
-
-  async function toggleGrasscutterWithGame() {
-    const changedVal = !(await getConfigOption('grasscutter_with_game'))
-    setConfigOption('grasscutter_with_game', changedVal)
-
-    setState({
-      grasscutter_with_game: changedVal,
-    })
-  }
-
-  async function setCustomBackground(value: string) {
-    const isUrl = /^(?:http(s)?:\/\/)/gm.test(value)
-
-    if (!value) return await setConfigOption('customBackground', '')
->>>>>>> aa45f04 (feat: move to solid-js)
 
     if (!isUrl) {
       const filename = value.replace(/\\/g, '/').split('/').pop();
@@ -303,11 +222,7 @@ export default function Options(props: IProps) {
   }
 
   async function toggleEncryption() {
-<<<<<<< HEAD
     const config = await getConfig();
-=======
-    const config = await getConfig()
->>>>>>> aa45f04 (feat: move to solid-js)
 
     // Check if grasscutter path is set
     if (!config.grasscutter_path) {
@@ -331,11 +246,7 @@ export default function Options(props: IProps) {
   }
 
   async function restoreMetadata() {
-<<<<<<< HEAD
     await meta.restoreMetadata(props.downloadManager);
-=======
-    await meta.restoreMetadata(props.downloadManager)
->>>>>>> aa45f04 (feat: move to solid-js)
   }
 
   async function installCert() {
@@ -345,11 +256,7 @@ export default function Options(props: IProps) {
   }
 
   async function toggleOption(opt: keyof Configuration) {
-<<<<<<< HEAD
     const changedVal = !(await getConfigOption(opt));
-=======
-    const changedVal = !(await getConfigOption(opt))
->>>>>>> aa45f04 (feat: move to solid-js)
 
     await setConfigOption(opt, changedVal);
 
@@ -360,7 +267,6 @@ export default function Options(props: IProps) {
 
   return (
     <Menu closeFn={props.closeFn} class="Options" heading="Options">
-<<<<<<< HEAD
       <Show
         when={!state.platform || state.platform === 'windows'}
         keyed={false}
@@ -374,32 +280,16 @@ export default function Options(props: IProps) {
             </div>
           </div>
         }>
-=======
-      <Show when={!state.platform || state.platform === 'windows'} keyed={false} fallback={(
-        <div class="OptionSection" id="menuOptionsContainerGameCommand">
-          <div class="OptionLabel" id="menuOptionsLabelGameCommand">
-            <Tr text="options.game_command" />
-          </div>
-          <div class="OptionValue" id="menuOptionsGameCommand">
-            <TextInput />
-          </div>
-        </div>
-      )}>
->>>>>>> aa45f04 (feat: move to solid-js)
         <div class="OptionSection" id="menuOptionsContainerGamePath">
           <div class="OptionLabel" id="menuOptionsLabelGamePath">
             <Tr text="options.game_path" />
           </div>
           <div class="OptionValue" id="menuOptionsDirGamePath">
-<<<<<<< HEAD
             <DirInput
               onChange={setGameExecutable}
               value={state?.game_install_path}
               extensions={['exe']}
             />
-=======
-            <DirInput onChange={setGameExecutable} value={state?.game_install_path} extensions={['exe']} />
->>>>>>> aa45f04 (feat: move to solid-js)
           </div>
         </div>
       </Show>
@@ -412,7 +302,6 @@ export default function Options(props: IProps) {
           <BigButton onClick={restoreMetadata} id="metaDownload">
             <Tr text="components.download" />
           </BigButton>
-<<<<<<< HEAD
         </div>
       </div>
       <div class="OptionSection" id="menuOptionsContainerPatchMeta">
@@ -543,195 +432,10 @@ export default function Options(props: IProps) {
             onChange={() => toggleOption('grasscutter_with_game')}
             checked={state?.grasscutter_with_game}
             id="gcWithGame"
-=======
-        </div>
-      </div>
-      <div class="OptionSection" id="menuOptionsContainerPatchMeta">
-        <div class="OptionLabel" id="menuOptionsLabelPatchMeta">
-          <Tr text="options.patch_metadata" />
-          <HelpButton contents="help.patch_metadata" />
-        </div>
-        <div class="OptionValue" id="menuOptionsCheckboxPatchMeta">
-          <Checkbox
-            onChange={() => toggleOption('patch_metadata')}
-            checked={state?.patch_metadata}
-            id="patchMeta"
-          />
-        </div>
-      </div>
-      <div class="OptionSection" id="menuOptionsContainerUseProxy">
-        <div class="OptionLabel" id="menuOptionsLabelUseProxy">
-          <Tr text="options.use_proxy" />
-          <HelpButton contents="help.use_proxy" />
-        </div>
-        <div class="OptionValue" id="menuOptionsCheckboxUseProxy">
-          <Checkbox
-            onChange={() => toggleOption('use_internal_proxy')}
-            checked={state?.use_internal_proxy}
-            id="useProxy"
-          />
-        </div>
-      </div>
-      <div class="OptionSection" id="menuOptionsContainerWipeLogin">
-        <div class="OptionLabel" id="menuOptionsLabelWipeLogin">
-          <Tr text="options.wipe_login" />
-        </div>
-        <div class="OptionValue" id="menuOptionsCheckboxWipeLogin">
-          <Checkbox
-            onChange={() => toggleOption('wipe_login')}
-            checked={state?.wipe_login}
-            id="wipeLogin"
           />
         </div>
       </div>
 
-      <Divider />
-
-      <div class="OptionSection" id="menuOptionsContainerGCJar">
-        <div class="OptionLabel" id="menuOptionsLabelGCJar">
-          <Tr text="options.grasscutter_jar" />
-        </div>
-        <div class="OptionValue" id="menuOptionsDirGCJar">
-          <DirInput onChange={setGrasscutterJar} value={state?.grasscutter_path} extensions={['jar']} />
-        </div>
-      </div>
-      <div class="OptionSection" id="menuOptionsContainerToggleEnc">
-        <div class="OptionLabel" id="menuOptionsLabelToggleEnc">
-          <Tr text="options.toggle_encryption" />
-          <HelpButton contents="help.encryption" />
-        </div>
-        <div class="OptionValue" id="menuOptionsButtonToggleEnc">
-          <BigButton onClick={toggleEncryption} id="toggleEnc">
-            {state.encryption}
-          </BigButton>
-        </div>
-      </div>
-      <div class="OptionSection" id="menuOptionsContainerInstallCert">
-        <div class="OptionLabel" id="menuOptionsLabelInstallCert">
-          <Tr text="options.install_certificate" />
-        </div>
-        <div class="OptionValue" id="menuOptionsButtonInstallCert">
-          <BigButton disabled={false} onClick={installCert} id="installCert">
-            <Tr text="components.install" />
-          </BigButton>
-        </div>
-      </div>
-
-      <Show when={state.swag} keyed={false}>
-        <>
-          <Divider />
-          <div class="OptionSection" id="menuOptionsContainerAkebi">
-            <div class="OptionLabel" id="menuOptionsLabelAkebi">
-              <Tr text="swag.akebi" />
-            </div>
-            <div class="OptionValue" id="menuOptionsDirAkebi">
-              <DirInput onChange={setAkebi} value={state?.akebi_path} extensions={['exe']} />
-            </div>
-          </div>
-          <div class="OptionSection" id="menuOptionsContainerMigoto">
-            <div class="OptionLabel" id="menuOptionsLabelMigoto">
-              <Tr text="swag.migoto" />
-            </div>
-            <div class="OptionValue" id="menuOptionsDirMigoto">
-              <DirInput onChange={setMigoto} value={state?.migoto_path} extensions={['exe']} />
-            </div>
-          </div>
-          <div class="OptionSection" id="menuOptionsContainerReshade">
-            <div class="OptionLabel" id="menuOptionsLabelReshade">
-              <Tr text="swag.reshade" />
-            </div>
-            <div class="OptionValue" id="menuOptionsDirReshade">
-              <DirInput onChange={setReshade} value={state?.reshade_path} extensions={['exe']} />
-            </div>
-          </div>
-        </>
-      </Show>
-
-      <Divider />
-
-      <div class="OptionSection" id="menuOptionsContainerGCWGame">
-        <div class="OptionLabel" id="menuOptionsLabelGCWDame">
-          <Tr text="options.grasscutter_with_game" />
-        </div>
-        <div class="OptionValue" id="menuOptionsCheckboxGCWGame">
-          <Checkbox
-            onChange={() => toggleOption('grasscutter_with_game')}
-            checked={state?.grasscutter_with_game}
-            id="gcWithGame"
-          />
-        </div>
-      </div>
-
-      <Show when={state.swag} keyed={false}>
-        <div class="OptionSection" id="menuOptionsContainerHorny">
-          <div class="OptionLabel" id="menuOptionsLabelHorny">
-            <Tr text="options.horny_mode" />
-          </div>
-          <div class="OptionValue" id="menuOptionsCheckboxHorny">
-            <Checkbox
-              onChange={() => toggleOption('horny_mode')}
-              checked={state?.horny_mode}
-              id="hornyMode"
-            />
-          </div>
-        </div>
-      </Show>
-
-      <Divider />
-
-      <div class="OptionSection" id="menuOptionsContainerThemes">
-        <div class="OptionLabel" id="menuOptionsLabelThemes">
-          <Tr text="options.theme" />
-        </div>
-        <div class="OptionValue" id="menuOptionsSelectThemes">
-          <select
-            value={state.theme}
-            id="menuOptionsSelectMenuThemes"
-            onChange={(event) => {
-              setTheme(event.currentTarget.value)
-            }}
-          >
-            <For each={state.themes}>{(t) => (
-              <option value={t}>
-                {t}
-              </option>
-            )}</For>
-          </select>
-        </div>
-      </div>
-
-      <Divider />
-
-      <div class="OptionSection" id="menuOptionsContainerJavaPath">
-        <div class="OptionLabel" id="menuOptionsLabelJavaPath">
-          <Tr text="options.java_path" />
-        </div>
-        <div class="OptionValue" id="menuOptionsDirJavaPath">
-          <DirInput onChange={setJavaPath} value={state?.java_path} extensions={['exe']} />
-        </div>
-      </div>
-
-      <div class="OptionSection" id="menuOptionsContainerBG">
-        <div class="OptionLabel" id="menuOptionsLabelBG">
-          <Tr text="options.background" />
-        </div>
-        <div class="OptionValue" id="menuOptionsDirBG">
-          <DirInput
-            onChange={setCustomBackground}
-            value={state?.bg_url_or_path}
-            extensions={['png', 'jpg', 'jpeg']}
-            readonly={false}
-            clearable={true}
-            customClearBehaviour={async () => {
-              await setConfigOption('customBackground', '')
-              window.location.reload()
-            }}
->>>>>>> aa45f04 (feat: move to solid-js)
-          />
-        </div>
-      </div>
-
-<<<<<<< HEAD
       <Show when={state.swag} keyed={false}>
         <div class="OptionSection" id="menuOptionsContainerHorny">
           <div class="OptionLabel" id="menuOptionsLabelHorny">
@@ -806,18 +510,11 @@ export default function Options(props: IProps) {
         <div class="OptionLabel" id="menuOptionsLabelLang">
           <Tr text="options.language" />
         </div>
-=======
-      <div class="OptionSection" id="menuOptionsContainerLang">
-        <div class="OptionLabel" id="menuOptionsLabelLang">
-          <Tr text="options.language" />
-        </div>
->>>>>>> aa45f04 (feat: move to solid-js)
         <div class="OptionValue" id="menuOptionsSelectLang">
           <select
             value={state.current_language}
             id="menuOptionsSelectMenuLang"
             onChange={(event) => {
-<<<<<<< HEAD
               setLanguage(event.currentTarget.value);
             }}>
             <For each={state.language_options}>
@@ -827,23 +524,9 @@ export default function Options(props: IProps) {
                 </option>
               )}
             </For>
-=======
-              setLanguage(event.currentTarget.value)
-            }}
-          >
-            <For each={state.language_options}>{(lang) => (
-              <option value={Object.keys(lang)[0]}>
-                {lang[Object.keys(lang)[0]]}
-              </option>
-            )}</For>
->>>>>>> aa45f04 (feat: move to solid-js)
           </select>
         </div>
       </div>
     </Menu>
-<<<<<<< HEAD
   );
-=======
-  )
->>>>>>> aa45f04 (feat: move to solid-js)
 }
