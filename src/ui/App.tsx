@@ -1,102 +1,72 @@
-import React from 'react'
-import './App.css'
+import { createSignal, Match, onMount, Switch } from 'solid-js';
+import { convertFileSrc, invoke } from '@tauri-apps/api/tauri';
 
-import DownloadHandler from '../utils/download'
-import { getConfigOption } from '../utils/configuration'
-import { getTheme, loadTheme } from '../utils/themes'
-import { convertFileSrc, invoke } from '@tauri-apps/api/tauri'
-import { Main } from './Main'
-import { Mods } from './Mods'
+import { getConfigOption } from '../utils/configuration';
+import DownloadHandler from '../utils/download';
+import { getTheme, loadTheme } from '../utils/themes';
+import { Main } from './Main';
+import { Mods } from './Mods';
 
-interface IState {
-  page: string
-  bgFile: string
-}
+import './App.css';
 
-const downloadHandler = new DownloadHandler()
-const DEFAULT_BG = 'https://api.grasscutter.io/cultivation/bgfile'
+const downloadHandler = new DownloadHandler();
+const DEFAULT_BG = 'https://api.grasscutter.io/cultivation/bgfile';
 
-class App extends React.Component<Readonly<unknown>, IState> {
-  constructor(props: Readonly<unknown>) {
-    super(props)
+export default function App() {
+  const [page, setPage] = createSignal('main');
+  const [bgFile, setBgFile] = createSignal(DEFAULT_BG);
 
-    this.state = {
-      page: 'main',
-      bgFile: DEFAULT_BG,
-    }
-  }
-
-  async componentDidMount() {
+  onMount(async () => {
     // Load a theme if it exists
-    const theme = await getConfigOption('theme')
+    const theme = await getConfigOption('theme');
     if (theme && theme !== 'default') {
-      const themeObj = await getTheme(theme)
-      await loadTheme(themeObj, document)
+      const themeObj = await getTheme(theme);
+      await loadTheme(themeObj, document);
     }
 
     // Get custom bg AFTER theme is loaded !! important !!
-    const custom_bg = await getConfigOption('customBackground')
+    const custom_bg = await getConfigOption('customBackground');
 
     if (custom_bg) {
-      const isUrl = /^http(s)?:\/\//gm.test(custom_bg)
+      const isUrl = /^http(s)?:\/\//gm.test(custom_bg);
 
       if (!isUrl) {
         const isValid = await invoke('dir_exists', {
           path: custom_bg,
-        })
+        });
 
-        this.setState(
-          {
-            bgFile: isValid ? convertFileSrc(custom_bg) : DEFAULT_BG,
-          },
-          this.forceUpdate
-        )
+        setBgFile(isValid ? convertFileSrc(custom_bg) : DEFAULT_BG);
       } else {
         // Check if URL returns a valid image.
         const isValid = await invoke('valid_url', {
           url: custom_bg,
-        })
+        });
 
-        this.setState(
-          {
-            bgFile: isValid ? custom_bg : DEFAULT_BG,
-          },
-          this.forceUpdate
-        )
+        setBgFile(isValid ? custom_bg : DEFAULT_BG);
       }
     }
 
     window.addEventListener('changePage', (e) => {
-      this.setState({
-        // @ts-expect-error - TS doesn't like our custom event
-        page: e.detail,
-      })
-    })
-  }
+      // @ts-expect-error - TS doesn't like our custom event
+      setPage(e.detail);
+    });
+  });
 
-  render() {
-    return (
-      <div
-        className="App"
-        style={
-          this.state.bgFile
-            ? {
-                background: `url("${this.state.bgFile}") fixed`,
-              }
-            : {}
-        }
-      >
-        {(() => {
-          switch (this.state.page) {
-            case 'modding':
-              return <Mods downloadHandler={downloadHandler} />
-            default:
-              return <Main downloadHandler={downloadHandler} />
-          }
-        })()}
-      </div>
-    )
-  }
+  return (
+    <div
+      class="App"
+      style={
+        bgFile()
+          ? {
+              background: `url("${bgFile()}") fixed`,
+            }
+          : {}
+      }>
+      <Switch fallback={<Main downloadHandler={downloadHandler} />}>
+        <Match when={page() === 'modding'} keyed={false}>
+          <Mods downloadHandler={downloadHandler} />
+        </Match>
+      </Switch>
+    </div>
+  );
 }
-
-export default App

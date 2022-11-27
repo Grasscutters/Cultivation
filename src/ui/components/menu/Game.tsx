@@ -1,92 +1,75 @@
-import React from 'react'
-import Menu from './Menu'
-import { translate } from '../../../utils/language'
-import DownloadHandler from '../../../utils/download'
+import { createSignal, onMount, Show } from 'solid-js';
 
-import './Game.css'
-import DirInput from '../common/DirInput'
-import BigButton from '../common/BigButton'
-import HelpButton from '../common/HelpButton'
-import { unzip } from '../../../utils/zipUtils'
+import DownloadHandler from '../../../utils/download';
+import { translate } from '../../../utils/language';
+import { unzip } from '../../../utils/zipUtils';
+import BigButton from '../common/BigButton';
+import DirInput from '../common/DirInput';
+import HelpButton from '../common/HelpButton';
+import Menu from './Menu';
 
-const GAME_DOWNLOAD = ''
+import './Game.css';
+
+const GAME_DOWNLOAD = '';
 
 interface IProps {
-  closeFn: () => void
-  downloadManager: DownloadHandler
+  closeFn: () => void;
+  downloadManager: DownloadHandler;
 }
 
-interface IState {
-  gameDownloading: boolean
-  gameDownloadFolder: string
-  dirPlaceholder: string
-}
+export default function Downloads(props: IProps) {
+  const [gameDownloading, setGameDownloading] = createSignal(false);
+  const [gameDownloadFolder, setGameDownloadFolder] = createSignal('');
+  const [dirPlaceholder, setDirPlaceholder] = createSignal('');
 
-export default class Downloads extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
+  onMount(async () =>
+    setDirPlaceholder(await translate('components.select_folder'))
+  );
 
-    this.state = {
-      gameDownloading: false,
-      gameDownloadFolder: '',
-      dirPlaceholder: '',
-    }
+  async function downloadGame() {
+    const folder = gameDownloadFolder();
+    props.downloadManager.addDownload(
+      GAME_DOWNLOAD,
+      folder + '\\game.zip',
+      async () => {
+        await unzip(folder + '\\game.zip', folder + '\\', true);
+        setGameDownloading(false);
+      }
+    );
 
-    this.downloadGame = this.downloadGame.bind(this)
+    setGameDownloading(true);
   }
 
-  async componentDidMount() {
-    this.setState({
-      dirPlaceholder: await translate('components.select_folder'),
-    })
-
-    console.log(this.state)
-  }
-
-  async downloadGame() {
-    const folder = this.state.gameDownloadFolder
-    this.props.downloadManager.addDownload(GAME_DOWNLOAD, folder + '\\game.zip', async () => {
-      await unzip(folder + '\\game.zip', folder + '\\', true)
-      this.setState({
-        gameDownloading: false,
-      })
-    })
-
-    this.setState({
-      gameDownloading: true,
-    })
-  }
-
-  render() {
-    return (
-      <Menu heading="Download Game" closeFn={this.props.closeFn} className="GameDownloadMenu">
-        <div className="GameDownload">
-          {this.state.gameDownloadFolder !== '' && !this.state.gameDownloading ? (
-            <BigButton id="downloadGameBtn" onClick={this.downloadGame}>
-              Download Game
-            </BigButton>
-          ) : (
+  return (
+    <Menu
+      heading="Download Game"
+      closeFn={props.closeFn}
+      class="GameDownloadMenu">
+      <div class="GameDownload">
+        <Show
+          when={gameDownloadFolder() !== '' && !gameDownloading()}
+          keyed={false}
+          fallback={
             <BigButton id="disabledGameBtn" onClick={() => null} disabled>
               Download Game
             </BigButton>
-          )}
-          <HelpButton contents="main.game_help_text" />
-        </div>
+          }>
+          <BigButton id="downloadGameBtn" onClick={downloadGame}>
+            Download Game
+          </BigButton>
+        </Show>
+        <HelpButton contents="main.game_help_text" />
+      </div>
 
-        <div className="GameDownloadDir">
-          <DirInput
-            folder
-            placeholder={this.state.dirPlaceholder}
-            clearable={false}
-            readonly={true}
-            onChange={(value: string) =>
-              this.setState({
-                gameDownloadFolder: value,
-              })
-            }
-          />
-        </div>
-      </Menu>
-    )
-  }
+      <div class="GameDownloadDir">
+        <DirInput
+          folder
+          placeholder={dirPlaceholder()}
+          clearable={false}
+          readonly={true}
+          onChange={setGameDownloadFolder}
+        />
+      </div>
+    </Menu>
+  );
 }

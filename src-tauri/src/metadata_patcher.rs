@@ -1,5 +1,10 @@
 use regex::Regex;
-use std::{fs, fs::File, fs::OpenOptions, io::Read, io::Write, path::Path};
+use std::{
+  fs,
+  fs::{File, OpenOptions},
+  io::{Read, Write},
+  path::Path,
+};
 
 // For these two functions, a non-zero return value indicates failure.
 extern "C" {

@@ -1,35 +1,34 @@
-import React from 'react'
-import DownloadHandler from '../../../utils/download'
-import ProgressBar from './ProgressBar'
+import DownloadHandler from '../../../utils/download';
+import ProgressBar from './ProgressBar';
 
-import './DownloadSection.css'
+import './DownloadSection.css';
 
 interface IProps {
-  downloadManager: DownloadHandler
-  downloadName: string
+  downloadManager: DownloadHandler;
+  downloadName: string;
 }
 
-export default class DownloadSection extends React.Component<IProps, never> {
-  constructor(props: IProps) {
-    super(props)
+export default function DownloadSection(props: IProps) {
+  function getFilenameFromPath() {
+    const name = props.downloadName.replace(/\\/g, '/');
+    return name.split('/').pop();
   }
 
-  getFilenameFromPath() {
-    const name = this.props.downloadName.replace(/\\/g, '/')
-    return name.split('/').pop()
-  }
-
-  render() {
-    return (
-      <div className="DownloadSection">
-        <div className="DownloadTitle">
-          <div className="DownloadPath">{this.getFilenameFromPath()}</div>
-          <div className="DownloadStatus"> - {this.props.downloadManager.getDownloadSize(this.props.downloadName)}</div>
-        </div>
-        <div className="DownloadSectionInner">
-          <ProgressBar path={this.props.downloadName} downloadManager={this.props.downloadManager} />
+  return (
+    <div class="DownloadSection">
+      <div class="DownloadTitle">
+        <div class="DownloadPath">{getFilenameFromPath()}</div>
+        <div class="DownloadStatus">
+          {' '}
+          - {props.downloadManager.getDownloadSize(props.downloadName)}
         </div>
       </div>
-    )
-  }
+      <div class="DownloadSectionInner">
+        <ProgressBar
+          path={props.downloadName}
+          downloadManager={props.downloadManager}
+        />
+      </div>
+    </div>
+  );
 }

@@ -1,13 +1,13 @@
 {
   "$schema": "..\\node_modules/@tauri-apps/cli\\schema.json",
   "build": {
-    "beforeDevCommand": "yarn start",
-    "devPath": "http://localhost:3000",
+    "beforeDevCommand": "pnpm start",
+    "devPath": "http://localhost:5173",
     "distDir": "../build"
   },
   "package": {
     "productName": "Cultivation",
-    "version": "1.0.10"
+    "version": "2.0.0"
   },
   "tauri": {
     "allowlist": {

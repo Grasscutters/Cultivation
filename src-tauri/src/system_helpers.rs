@@ -2,32 +2,33 @@ use duct::cmd;
 use ini::Ini;
 use std::path::PathBuf;
 
+use crate::error::CultivationResult;
 #[cfg(windows)]
 use registry::{Data, Hive, Security};
 
 #[tauri::command]
-pub fn run_program(path: String, args: Option<String>) {
+pub fn run_program(path: String, args: Option<String>) -> CultivationResult<()> {
   // Without unwrap_or, this can crash when UAC prompt is denied
-  open::that(format!("{} {}", &path, &args.unwrap_or_else(|| "".into()))).unwrap_or(());
+  open::that(format!("{} {}", &path, &args.unwrap_or_else(|| "".into()))).map_err(Into::into)
 }
 
 #[tauri::command]
-pub fn run_program_relative(path: String, args: Option<String>) {
+pub fn run_program_relative(path: String, args: Option<String>) -> CultivationResult<()> {
   // Save the current working directory
-  let cwd = std::env::current_dir().unwrap();
+  let cwd = std::env::current_dir()?;
 
   // Set the new working directory to the path before the executable
   let mut path_buf = std::path::PathBuf::from(&path);
   path_buf.pop();
 
   // Set new working directory
-  std::env::set_current_dir(&path_buf).unwrap();
+  std::env::set_current_dir(&path_buf)?;
 
   // Without unwrap_or, this can crash when UAC prompt is denied
-  open::that(format!("{} {}", &path, args.unwrap_or_else(|| "".into()))).unwrap_or(());
+  open::that(format!("{} {}", &path, args.unwrap_or_else(|| "".into())))?;
 
   // Restore the original working directory
-  std::env::set_current_dir(cwd).unwrap();
+  std::env::set_current_dir(cwd).map_err(Into::into)
 }
 
 #[tauri::command]
@@ -65,6 +66,7 @@ pub fn run_jar(path: String, execute_in: String, java_path: String) {
   };
 
   // Open the program from the specified path.
+  // TODO: incredibly niche (only windows)
   match open::with(
     format!("/k cd /D \"{}\" & {}", &execute_in, &command),
     "C:\\Windows\\System32\\cmd.exe",
