@@ -229,11 +229,9 @@ pub fn disconnect_from_proxy() {
   let new_environment = regexp.replace_all(environment, "").to_string();
 
   // Write new environment
-  std::fs::write("/etc/environment", new_environment.trim_end())
-    .await
-    .expect(
-      "Could not write environment, remove proxy declarations manually if they are still set",
-    );
+  std::fs::write("/etc/environment", new_environment.trim_end()).expect(
+    "Could not write environment, remove proxy declarations manually if they are still set",
+  );
 }
 
 #[cfg(target_os = "macos")]
