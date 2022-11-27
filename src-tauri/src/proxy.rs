@@ -143,7 +143,7 @@ pub async fn create_proxy(proxy_port: u16, certificate_path: String) -> Cultivat
  * Connects to the local HTTP(S) proxy server.
  */
 #[cfg(windows)]
-pub fn connect_to_proxy(proxy_port: u16) {
+pub fn connect_to_proxy(proxy_port: u16) -> CultivationResult<()> {
   // Create 'ProxyServer' string.
   let server_string: String = format!(
     "http=127.0.0.1:{};https=127.0.0.1:{}",
@@ -155,16 +155,15 @@ pub fn connect_to_proxy(proxy_port: u16) {
     .open(
       r"Software\Microsoft\Windows\CurrentVersion\Internet Settings",
       Security::Write,
-    )
-    .unwrap();
+    )?;
 
   // Set registry values.
   settings
-    .set_value("ProxyServer", &Data::String(server_string.parse().unwrap()))
-    .unwrap();
-  settings.set_value("ProxyEnable", &Data::U32(1)).unwrap();
+    .set_value("ProxyServer", &Data::String(server_string.parse().unwrap()))?;
+  settings.set_value("ProxyEnable", &Data::U32(1))?;
 
   println!("Connected to the proxy.");
+  Ok(())
 }
 
 #[cfg(unix)]

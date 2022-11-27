@@ -42,6 +42,10 @@ pub enum CultivationError {
   #[cfg_attr(debug_assertions, error("Certificate generation failed: {}", .0))]
   #[cfg_attr(not(debug_assertions), error("Certificate generation has failed."))]
   Certificate(#[from] rcgen::RcgenError),
+  #[cfg(windows)]
+  #[cfg_attr(debug_assertions, error("Registry error: {}", .0))]
+  #[cfg_attr(not(debug_assertions), error("Registry error has occured"))]
+  Registry(#[from] registry::Error),
   #[cfg_attr(debug_assertions, error("Custom error: {}", .0))]
   #[cfg_attr(not(debug_assertions), error("Something went wrong"))]
   #[allow(unused)]
