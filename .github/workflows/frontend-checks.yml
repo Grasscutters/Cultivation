@@ -23,10 +23,10 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Install modules
-        run: yarn
+        run: pnpm
       - name: Run prettier
-        run: yarn prettier --check .
+        run: pnpm prettier --check .
       - name: Run tsc
-        run: yarn tsc --noEmit
+        run: pnpm tsc --noEmit
       - name: Run ESLint
-        run: yarn eslint src
+        run: pnpm eslint src
