@@ -151,15 +151,13 @@ pub fn connect_to_proxy(proxy_port: u16) -> CultivationResult<()> {
   );
 
   // Fetch the 'Internet Settings' registry key.
-  let settings = Hive::CurrentUser
-    .open(
-      r"Software\Microsoft\Windows\CurrentVersion\Internet Settings",
-      Security::Write,
-    )?;
+  let settings = Hive::CurrentUser.open(
+    r"Software\Microsoft\Windows\CurrentVersion\Internet Settings",
+    Security::Write,
+  )?;
 
   // Set registry values.
-  settings
-    .set_value("ProxyServer", &Data::String(server_string.parse().unwrap()))?;
+  settings.set_value("ProxyServer", &Data::String(server_string.parse().unwrap()))?;
   settings.set_value("ProxyEnable", &Data::U32(1))?;
 
   println!("Connected to the proxy.");
