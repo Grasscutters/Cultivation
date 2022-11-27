@@ -4,17 +4,22 @@
 )]
 #![deny(clippy::all, unused)]
 
+use dashmap::DashMap;
 use once_cell::sync::Lazy;
-use std::{collections::HashMap, fs, io::Write, path::Path, sync::Mutex};
+use reqwest::Client;
+use std::{path::Path, sync::Mutex};
 use system_helpers::is_elevated;
-use tauri::{api::path::data_dir, async_runtime::block_on};
+use tauri::api::path::data_dir;
 
-use std::thread;
 use sysinfo::{System, SystemExt};
+use tokio::{fs, io::AsyncWriteExt};
+use tokio_util::sync::CancellationToken;
 
 #[cfg(windows)]
 use crate::admin::reopen_as_admin;
 use crate::error::CultivationResult;
+
+pub(crate) type Downloads = DashMap<String, CancellationToken>;
 
 mod admin;
 mod downloader;
@@ -30,8 +35,8 @@ mod web;
 
 static WATCH_GAME_PROCESS: Lazy<Mutex<String>> = Lazy::new(|| Mutex::new(String::new()));
 
-fn try_flush() -> CultivationResult<()> {
-  std::io::stdout().flush().map_err(Into::into)
+async fn try_flush() -> CultivationResult<()> {
+  tokio::io::stdout().flush().await.map_err(Into::into)
 }
 
 fn has_arg(args: &[String], arg: &str) -> bool {
@@ -52,7 +57,10 @@ async fn arg_handler(args: &[String]) -> CultivationResult<()> {
   }
 }
 
-fn main() -> CultivationResult<()> {
+#[tokio::main]
+async fn main() -> CultivationResult<()> {
+  let downloads = Downloads::with_capacity(4);
+
   let args: Vec<String> = std::env::args().collect();
 
   if !is_elevated() && !has_arg(&args, "--no-admin") {
@@ -67,7 +75,7 @@ fn main() -> CultivationResult<()> {
   // Setup datadir/cultivation just in case something went funky and it wasn't
   // made
   if !Path::exists(&data_dir().unwrap().join("cultivation")) {
-    fs::create_dir_all(data_dir().unwrap().join("cultivation"))?;
+    fs::create_dir_all(data_dir().unwrap().join("cultivation")).await?;
   }
 
   // Always set CWD to the location of the executable.
@@ -75,7 +83,7 @@ fn main() -> CultivationResult<()> {
   exe_path.pop();
   std::env::set_current_dir(&exe_path)?;
 
-  block_on(arg_handler(&args))?;
+  arg_handler(&args).await?;
 
   // For disabled GUI
   ctrlc::set_handler(|| {
@@ -85,6 +93,8 @@ fn main() -> CultivationResult<()> {
 
   if !has_arg(&args, "--no-gui") {
     tauri::Builder::default()
+      .manage(downloads)
+      .manage(Client::new())
       .invoke_handler(tauri::generate_handler![
         enable_process_watcher,
         connect,
@@ -129,7 +139,7 @@ fn main() -> CultivationResult<()> {
       ])
       .run(tauri::generate_context!())?;
   } else {
-    try_flush()?;
+    try_flush().await?;
     println!("Press enter or CTRL-C twice to quit...");
     std::io::stdin().read_line(&mut String::new())?;
   }
@@ -149,24 +159,24 @@ fn is_game_running() -> bool {
 }
 
 #[tauri::command]
-fn enable_process_watcher(window: tauri::Window, process: String) -> CultivationResult<()> {
+async fn enable_process_watcher(window: tauri::Window, process: String) -> CultivationResult<()> {
   *WATCH_GAME_PROCESS.lock().unwrap() = process;
 
-  window.listen("disable_process_watcher", |_e| {
+  let id = window.listen("disable_process_watcher", |_e| {
     *WATCH_GAME_PROCESS.lock().unwrap() = "".to_string();
   });
 
   println!("Starting process watcher...");
 
-  thread::spawn(move || {
+  tokio::spawn(async move {
     // Initial sleep for 8 seconds, since running 20 different injectors or whatever
     // can take a while
-    thread::sleep(std::time::Duration::from_secs(10));
+    tokio::time::sleep(tokio::time::Duration::from_secs(10)).await;
 
     let mut system = System::new_all();
 
     loop {
-      thread::sleep(std::time::Duration::from_secs(5));
+      tokio::time::sleep(tokio::time::Duration::from_secs(5)).await;
 
       // Refresh system info
       system.refresh_all();
@@ -181,6 +191,7 @@ fn enable_process_watcher(window: tauri::Window, process: String) -> Cultivation
         // If the game process closes, disable the proxy.
         if !exists {
           println!("Game closed");
+          window.unlisten(id);
 
           *WATCH_GAME_PROCESS.lock().unwrap() = "".to_string();
           disconnect();
@@ -201,7 +212,7 @@ async fn connect(port: u16, certificate_path: String) -> CultivationResult<()> {
   println!("Connecting to proxy...");
 
   // Change proxy settings.
-  proxy::connect_to_proxy(port);
+  proxy::connect_to_proxy(port)?;
 
   // Create and start a proxy.
   proxy::create_proxy(port, certificate_path).await?;
@@ -227,28 +238,29 @@ async fn req_get(url: String) -> CultivationResult<String> {
 }
 
 #[tauri::command]
-async fn get_theme_list(data_dir: String) -> CultivationResult<Vec<HashMap<String, String>>> {
+async fn get_theme_list(data_dir: String) -> CultivationResult<Vec<DashMap<String, String>>> {
   let theme_loc = format!("{}/themes", data_dir);
 
   // Ensure folder exists
-  if !std::path::Path::new(&theme_loc).exists() {
-    fs::create_dir_all(&theme_loc)?;
+  if !Path::new(&theme_loc).exists() {
+    fs::create_dir_all(&theme_loc).await?;
   }
 
   // Read each index.json folder in each theme folder
   let mut themes = Vec::new();
 
-  for entry in fs::read_dir(&theme_loc)? {
-    let entry = entry?;
+  let mut dir_reader = fs::read_dir(&theme_loc).await?;
+
+  while let Some(entry) = dir_reader.next_entry().await? {
     let path = entry.path();
 
     if path.is_dir() {
       let index_path = format!("{}/index.json", path.to_str().unwrap());
 
-      if std::path::Path::new(&index_path).exists() {
-        let theme_json = fs::read_to_string(&index_path)?;
+      if Path::new(&index_path).exists() {
+        let theme_json = fs::read_to_string(&index_path).await?;
 
-        let mut map = HashMap::new();
+        let map = DashMap::with_capacity(2);
 
         map.insert("json".to_string(), theme_json);
         map.insert("path".to_string(), path.to_str().unwrap().to_string());

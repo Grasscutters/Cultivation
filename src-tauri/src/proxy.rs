@@ -16,7 +16,8 @@ use hudsucker::{
 };
 use rcgen::*;
 
-use std::{fs, net::SocketAddr, path::Path};
+use std::{net::SocketAddr, path::Path};
+use tokio::fs;
 
 use rustls_pemfile as pemfile;
 use tauri::{api::path::data_dir, http::Uri};
@@ -81,27 +82,30 @@ pub async fn create_proxy(proxy_port: u16, certificate_path: String) -> Cultivat
   let pk_path = cert_path.join("private.key");
   let ca_path = cert_path.join("cert.crt");
 
+  async fn regen_cert(
+    e: tokio::io::Error,
+    path: &PathBuf,
+    dir: &Path,
+  ) -> CultivationResult<Vec<u8>> {
+    println!("Encountered {}. Regenerating CA cert and retrying...", e);
+    generate_ca_files(dir).await?;
+
+    fs::read(path).await.map_err(Into::into)
+  }
+
+  let cultivation_dir = &data_dir().unwrap().join("cultivation");
+
   // Get the certificate and private key.
-  let mut private_key_bytes: &[u8] = &match fs::read(&pk_path) {
+  let mut private_key_bytes: &[u8] = &match fs::read(&pk_path).await {
     // Try regenerating the CA stuff and read it again. If that doesn't work, quit.
     Ok(b) => b,
-    Err(e) => {
-      println!("Encountered {}. Regenerating CA cert and retrying...", e);
-      generate_ca_files(&data_dir().unwrap().join("cultivation"))?;
-
-      fs::read(&pk_path)?
-    }
+    Err(e) => regen_cert(e, &pk_path, cultivation_dir).await?,
   };
 
-  let mut ca_cert_bytes: &[u8] = &match fs::read(&ca_path) {
+  let mut ca_cert_bytes: &[u8] = &match fs::read(&ca_path).await {
     // Try regenerating the CA stuff and read it again. If that doesn't work, quit.
     Ok(b) => b,
-    Err(e) => {
-      println!("Encountered {}. Regenerating CA cert and retrying...", e);
-      generate_ca_files(&data_dir().unwrap().join("cultivation"))?;
-
-      fs::read(&ca_path)?
-    }
+    Err(e) => regen_cert(e, &ca_path, cultivation_dir).await?,
   };
 
   // Parse the private key and certificate.
@@ -164,13 +168,13 @@ pub fn connect_to_proxy(proxy_port: u16) {
 }
 
 #[cfg(unix)]
-pub fn connect_to_proxy(proxy_port: u16) {
+pub fn connect_to_proxy(proxy_port: u16) -> CultivationResult<()> {
   // Edit /etc/environment to set $http_proxy and $https_proxy
-  let mut env_file = match fs::read_to_string("/etc/environment") {
+  let mut env_file = match std::fs::read_to_string("/etc/environment") {
     Ok(f) => f,
     Err(e) => {
       println!("Error opening /etc/environment: {}", e);
-      return;
+      return Ok(());
     }
   };
 
@@ -181,7 +185,9 @@ pub fn connect_to_proxy(proxy_port: u16) {
   env_file += format!("\nhttp_proxy=127.0.0.1:{}", proxy_port).as_str();
 
   // Save
-  fs::write("/etc/environment", env_file).unwrap();
+  std::fs::write("/etc/environment", env_file)?;
+
+  Ok(())
 }
 
 #[cfg(target_od = "macos")]
@@ -217,14 +223,17 @@ pub fn disconnect_from_proxy() {
     r"(https|http)_proxy=.*127.0.0.1:.*",
   )
   .unwrap();
-  let environment = &fs::read_to_string("/etc/environment").expect("Failed to open environment");
+  let environment =
+    &std::fs::read_to_string("/etc/environment").expect("Failed to open environment");
 
   let new_environment = regexp.replace_all(environment, "").to_string();
 
   // Write new environment
-  fs::write("/etc/environment", new_environment.trim_end()).expect(
-    "Could not write environment, remove proxy declarations manually if they are still set",
-  );
+  std::fs::write("/etc/environment", new_environment.trim_end())
+    .await
+    .expect(
+      "Could not write environment, remove proxy declarations manually if they are still set",
+    );
 }
 
 #[cfg(target_os = "macos")]
@@ -236,7 +245,7 @@ pub fn disconnect_from_proxy() {}
  * store. Source: https://github.com/zu1k/good-mitm/raw/master/src/ca/gen.rs
  */
 #[tauri::command]
-pub fn generate_ca_files(path: &Path) -> CultivationResult<()> {
+pub async fn generate_ca_files(path: &Path) -> CultivationResult<()> {
   let mut params = CertificateParams::default();
   let mut details = DistinguishedName::new();
 
@@ -263,15 +272,15 @@ pub fn generate_ca_files(path: &Path) -> CultivationResult<()> {
 
   // Make certificate directory.
   let cert_dir = path.join("ca");
-  fs::create_dir(&cert_dir)?;
+  fs::create_dir(&cert_dir).await?;
 
   // Write the certificate to a file.
   let cert_path = cert_dir.join("cert.crt");
-  fs::write(&cert_path, cert_crt)?;
+  fs::write(&cert_path, cert_crt).await?;
 
   // Write the private key to a file.
   let private_key_path = cert_dir.join("private.key");
-  fs::write(private_key_path, private_key)?;
+  fs::write(private_key_path, private_key).await?;
 
   // Install certificate into the system's Root CA store.
   install_ca_files(&cert_path);
@@ -317,9 +326,10 @@ pub fn install_ca_files(cert_path: &Path) {
   let usr_cert_path = usr_certs.join("cultivation.crt");
 
   // Create dir if it doesn't exist
-  fs::create_dir_all(&usr_certs).expect("Unable to create local certificate directory");
+  std::fs::create_dir_all(&usr_certs).expect("Unable to create local certificate directory");
 
-  fs::copy(cert_path, &usr_cert_path).expect("Unable to copy cert to local certificate directory");
+  std::fs::copy(cert_path, &usr_cert_path)
+    .expect("Unable to copy cert to local certificate directory");
   run_command("update-ca-certificates", vec![], None);
 
   println!("Installed certificate.");
