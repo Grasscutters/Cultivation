@@ -1,17 +1,19 @@
-import './HelpButton.css'
-import Help from '../../../resources/icons/help.svg'
-import { translate } from '../../../utils/language'
-import {JSX} from "solid-js";
+import { JSX } from 'solid-js';
+
+import Help from '../../../resources/icons/help.svg';
+import { translate } from '../../../utils/language';
+
+import './HelpButton.css';
 
 interface IProps {
-  children?: JSX.Element
-  contents?: string
-  id?: string
+  children?: JSX.Element;
+  contents?: string;
+  id?: string;
 }
 
 export default function HelpButton(props: IProps) {
   async function showAlert() {
-    if (props.contents) alert(await translate(props.contents))
+    if (props.contents) alert(await translate(props.contents));
   }
 
   return (
@@ -20,5 +22,5 @@ export default function HelpButton(props: IProps) {
         <img src={Help} />
       </div>
     </div>
-  )
+  );
 }

@@ -1,5 +1,5 @@
-import { defineConfig, splitVendorChunkPlugin } from 'vite'
-import solid from 'vite-plugin-solid'
+import { defineConfig, splitVendorChunkPlugin } from 'vite';
+import solid from 'vite-plugin-solid';
 
 export default defineConfig({
   css: {
@@ -26,4 +26,4 @@ export default defineConfig({
     // produce sourcemaps for debug builds
     sourcemap: !!process.env.TAURI_DEBUG,
   },
-})
+});

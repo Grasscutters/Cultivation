@@ -1,30 +1,33 @@
-import cc from 'classcat'
-import './BigButton.css'
-import {JSX} from "solid-js";
+import { JSX } from 'solid-js';
+import cc from 'classcat';
+
+import './BigButton.css';
 
 interface IProps {
-  children: JSX.Element
-  onClick: () => unknown
-  id: string
-  disabled?: boolean
+  children: JSX.Element;
+  onClick: () => unknown;
+  id: string;
+  disabled?: boolean;
 }
 
 export default function BigButton(props: IProps) {
   function handleClick() {
-    if (props.disabled) return
+    if (props.disabled) return;
 
-    props.onClick()
+    props.onClick();
   }
 
   return (
     <div
-      class={cc(['BigButton', {
-        'disabled': props.disabled
-      }])}
+      class={cc([
+        'BigButton',
+        {
+          disabled: props.disabled,
+        },
+      ])}
       onClick={handleClick}
-      id={props.id}
-    >
+      id={props.id}>
       <div class="BigButtonText">{props.children}</div>
     </div>
-  )
+  );
 }

@@ -1,25 +1,21 @@
-import { ModData, PartialModData } from '../../../utils/gamebanana'
+import { createSignal, onMount, Show } from 'solid-js';
+import { shell } from '@tauri-apps/api';
 
-import './ModTile.css'
-import Like from '../../../resources/icons/like.svg'
-import Eye from '../../../resources/icons/eye.svg'
-import Download from '../../../resources/icons/download.svg'
-import Folder from '../../../resources/icons/folder.svg'
-import { shell } from '@tauri-apps/api'
-import Checkbox from '../common/Checkbox'
-import { disableMod, enableMod, modIsEnabled } from '../../../utils/mods'
-import {createSignal, onMount, Show} from "solid-js";
+import Download from '../../../resources/icons/download.svg';
+import Eye from '../../../resources/icons/eye.svg';
+import Folder from '../../../resources/icons/folder.svg';
+import Like from '../../../resources/icons/like.svg';
+import { ModData, PartialModData } from '../../../utils/gamebanana';
+import { disableMod, enableMod, modIsEnabled } from '../../../utils/mods';
+import Checkbox from '../common/Checkbox';
+
+import './ModTile.css';
 
 interface IProps {
-  mod: ModData | PartialModData
-  horny?: boolean
-  path?: string
-  onClick: (mod: ModData) => void
-}
-
-interface IState {
-  hover: boolean
-  modEnabled: boolean
+  mod: ModData | PartialModData;
+  horny?: boolean;
+  path?: string;
+  onClick: (mod: ModData) => void;
 }
 
 export function ModTile(props: IProps) {
@@ -28,10 +24,12 @@ export function ModTile(props: IProps) {
 
   function getModFolderName() {
     if (!('id' in props.mod)) {
-      return props.mod.name.includes('DISABLED_') ? props.mod.name.split('DISABLED_')[1] : props.mod.name
+      return props.mod.name.includes('DISABLED_')
+        ? props.mod.name.split('DISABLED_')[1]
+        : props.mod.name;
     }
 
-    return String(props.mod.id)
+    return String(props.mod.id);
   }
 
   onMount(async () => {
@@ -39,14 +37,14 @@ export function ModTile(props: IProps) {
       // Partial mod
       setModEnabled(await modIsEnabled(props.mod.name));
 
-      return
+      return;
     }
 
     setModEnabled(await modIsEnabled(String(props.mod.id)));
   });
 
   function openInExplorer() {
-    if (props.path) shell.open(props.path)
+    if (props.path) shell.open(props.path);
   }
 
   function toggleMod() {
@@ -60,30 +58,46 @@ export function ModTile(props: IProps) {
       class="ModListItem"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      onClick={!props.path ? (() => {
+      onClick={() => {
+        if (props.path) return;
         if (!('id' in props.mod)) return;
 
-        props.onClick(props.mod)
-      }) : undefined}
-    >
-      <span class="ModName">{props.mod.name.includes('DISABLED_') ? props.mod.name.split('DISABLED_')[1] : props.mod.name}</span>
+        props.onClick(props.mod);
+      }}>
+      <span class="ModName">
+        {props.mod.name.includes('DISABLED_')
+          ? props.mod.name.split('DISABLED_')[1]
+          : props.mod.name}
+      </span>
       <span class="ModAuthor">{props.mod.submitter.name}</span>
       <div class="ModImage">
         <Show when={hover()} keyed={false}>
-          <Show when={!props.path} keyed={false} fallback={(
-            <div class="ModTileOpen">
-              <img src={Folder} class="ModTileFolder" alt="Open" onClick={openInExplorer} />
-              <Checkbox checked={modEnabled()} id={props.mod.name} onChange={toggleMod} />
-            </div>
-          )}>
+          <Show
+            when={!props.path}
+            keyed={false}
+            fallback={
+              <div class="ModTileOpen">
+                <img
+                  src={Folder}
+                  class="ModTileFolder"
+                  alt="Open"
+                  onClick={openInExplorer}
+                />
+                <Checkbox
+                  checked={modEnabled()}
+                  id={props.mod.name}
+                  onChange={toggleMod}
+                />
+              </div>
+            }>
             <img src={Download} class="ModTileDownload" alt="Download" />
           </Show>
         </Show>
         <img
           src={props.mod.images[0]}
-          class={`ModImageInner ${'id' in props.mod && !props.horny && props.mod.nsfw ? 'nsfw' : ''} ${
-            hover() ? 'blur' : ''
-          }`}
+          class={`ModImageInner ${
+            'id' in props.mod && !props.horny && props.mod.nsfw ? 'nsfw' : ''
+          } ${hover() ? 'blur' : ''}`}
         />
       </div>
       <div class="ModInner">
@@ -97,5 +111,5 @@ export function ModTile(props: IProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

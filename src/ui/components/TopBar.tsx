@@ -1,15 +1,16 @@
-import { app } from '@tauri-apps/api'
-import { appWindow } from '@tauri-apps/api/window'
-import { getConfig, setConfigOption } from '../../utils/configuration'
-import Tr from '../../utils/language'
+import { batch, createSignal, JSX, onCleanup, onMount } from 'solid-js';
+import { app } from '@tauri-apps/api';
+import { appWindow } from '@tauri-apps/api/window';
 
-import './TopBar.css'
-import closeIcon from '../../resources/icons/close.svg'
-import minIcon from '../../resources/icons/min.svg'
-import { batch, createSignal, JSX, onCleanup, onMount } from "solid-js";
+import closeIcon from '../../resources/icons/close.svg';
+import minIcon from '../../resources/icons/min.svg';
+import { getConfig, setConfigOption } from '../../utils/configuration';
+import Tr from '../../utils/language';
+
+import './TopBar.css';
 
 interface IProps {
-  children?: JSX.Element
+  children?: JSX.Element;
 }
 
 export default function TopBar(props: IProps) {
@@ -37,45 +38,43 @@ export default function TopBar(props: IProps) {
   }
 
   async function activateClick() {
-    const config = await getConfig()
+    const config = await getConfig();
 
     // They already got it, no need to reactivate
-    if (config.swag_mode) return
+    if (config.swag_mode) return;
 
     if (clicks() === 2) {
       setTimeout(() => {
         // Have got to clear it, so it goes back to regular colors
-        setClicks(0)
-      }, 600)
+        setClicks(0);
+      }, 600);
 
       // Activate... SWAG MODE
-      await setConfigOption('swag_mode', true)
+      await setConfigOption('swag_mode', true);
 
       // Reload the window
-      window.location.reload()
+      window.location.reload();
 
-      return
+      return;
     }
 
     if (clicks() < 3) {
       batch(() => {
         setClicks((clicks) => clicks + 1);
-        setIntv(window.setTimeout(() => setClicks(0), 1500))
+        setIntv(window.setTimeout(() => setClicks(0), 1500));
       });
-
-      return
     }
   }
 
   return (
     <div class="TopBar" id="topBarContainer" data-tauri-drag-region>
       <div id="title">
-          <span data-tauri-drag-region>
-            <Tr text="main.title" />
-          </span>
+        <span data-tauri-drag-region>
+          <Tr text="main.title" />
+        </span>
         <span data-tauri-drag-region id="version">
-            {version()}
-          </span>
+          {version()}
+        </span>
       </div>
       {/**
        * HEY YOU
@@ -84,7 +83,10 @@ export default function TopBar(props: IProps) {
        * Just do me a favor and don't go telling everyone about how you found it. If you are just helping someone who
        * for some reason needs it, that's fine, but not EVERYONE needs it, which is why it exists in the first place.
        */}
-      <div id="unassumingButton" class={clicks() === 2 ? 'spin' : ''} onClick={activateClick}>
+      <div
+        id="unassumingButton"
+        class={clicks() === 2 ? 'spin' : ''}
+        onClick={activateClick}>
         ?
       </div>
       <div class="TopBtns" id="topBarButtonContainer">
@@ -97,5 +99,5 @@ export default function TopBar(props: IProps) {
         {props.children}
       </div>
     </div>
-  )
+  );
 }

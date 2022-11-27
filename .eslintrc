@@ -1,0 +1,89 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "eslint:recommended",
+    "plugin:solid/typescript",
+    "plugin:@typescript-eslint/recommended",
+    "prettier-standard"
+  ],
+  "parserOptions": {
+    "project": "tsconfig.eslint.json",
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest"
+  },
+  "plugins": ["@typescript-eslint", "prettier", "solid", "import"],
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true,
+    "jest": true
+  },
+  "rules": {
+    "no-redeclare": "off",
+    "camelcase": "off",
+    "no-use-before-define": "off",
+    "no-lone-blocks": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
+    "import/no-anonymous-default-export": [
+      "error",
+      {
+        "allowArrowFunction": true,
+        "allowAnonymousFunction": true
+      }
+    ],
+    "solid/reactivity": "off",
+    "no-unused-vars": "off",
+    "prefer-const": "off",
+    "@typescript-eslint/ban-ts-comment": "off", // отключили до разбирательства с типами (есть туду)
+    "@typescript-eslint/no-explicit-any": "off", // пока что отключил, чтоб не падал деплой
+    "@typescript-eslint/triple-slash-reference": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
+    "import/no-named-default": "off",
+    "no-implicit-globals": "error",
+    "max-len": [
+      "warn",
+      {
+        "code": 140,
+        "ignoreComments": true
+      }
+    ],
+    "no-useless-escape": "off",
+    "no-unmodified-loop-condition": "off",
+    "import/export": "off"
+  },
+  "overrides": [
+    {
+      "files": ["src/**/*.js", "src/**/*.ts", "src/**/*.tsx"],
+      "rules": {
+        "import/newline-after-import": "error",
+        "import/no-internal-modules": ["off"],
+        "import/order": [
+          "error",
+          {
+            "newlines-between": "always",
+            "groups": [["builtin", "external", "internal"]],
+            "pathGroupsExcludedImportTypes": [
+              ["builtin", "external", "internal"]
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

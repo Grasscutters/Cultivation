@@ -1,50 +1,56 @@
-import { invoke } from '@tauri-apps/api'
-import { dataDir } from '@tauri-apps/api/path'
-import DirInput from '../common/DirInput'
-import Menu from './Menu'
-import Tr, { getLanguages, translate } from '../../../utils/language'
-import { setConfigOption, getConfig, getConfigOption, Configuration } from '../../../utils/configuration'
-import Checkbox from '../common/Checkbox'
-import Divider from './Divider'
-import { getThemeList } from '../../../utils/themes'
-import * as server from '../../../utils/server'
+import { For, onMount, Show } from 'solid-js';
+import { createStore } from 'solid-js/store';
+import { invoke } from '@tauri-apps/api';
+import { dataDir } from '@tauri-apps/api/path';
 
-import './Options.css'
-import BigButton from '../common/BigButton'
-import DownloadHandler from '../../../utils/download'
-import * as meta from '../../../utils/metadata'
-import HelpButton from '../common/HelpButton'
-import TextInput from '../common/TextInput'
-import {createStore} from "solid-js/store";
-import {onMount, For, Show} from "solid-js";
+import {
+  Configuration,
+  getConfig,
+  getConfigOption,
+  setConfigOption,
+} from '../../../utils/configuration';
+import DownloadHandler from '../../../utils/download';
+import Tr, { getLanguages, translate } from '../../../utils/language';
+import * as meta from '../../../utils/metadata';
+import * as server from '../../../utils/server';
+import { getThemeList } from '../../../utils/themes';
+import BigButton from '../common/BigButton';
+import Checkbox from '../common/Checkbox';
+import DirInput from '../common/DirInput';
+import HelpButton from '../common/HelpButton';
+import TextInput from '../common/TextInput';
+import Divider from './Divider';
+import Menu from './Menu';
+
+import './Options.css';
 
 interface IProps {
-  closeFn: () => void
-  downloadManager: DownloadHandler
+  closeFn: () => void;
+  downloadManager: DownloadHandler;
 }
 
 interface IState {
-  game_install_path: string
-  grasscutter_path: string
-  java_path: string
-  grasscutter_with_game: boolean
-  language_options: { [key: string]: string }[]
-  current_language: string
-  bg_url_or_path: string
-  themes: string[]
-  theme: string
-  encryption: boolean
-  patch_metadata: boolean
-  use_internal_proxy: boolean
-  wipe_login: boolean
-  horny_mode: boolean
-  swag: boolean
-  platform: string
+  game_install_path: string;
+  grasscutter_path: string;
+  java_path: string;
+  grasscutter_with_game: boolean;
+  language_options: { [key: string]: string }[];
+  current_language: string;
+  bg_url_or_path: string;
+  themes: string[];
+  theme: string;
+  encryption: boolean;
+  patch_metadata: boolean;
+  use_internal_proxy: boolean;
+  wipe_login: boolean;
+  horny_mode: boolean;
+  swag: boolean;
+  platform: string;
 
   // Swag stuff
-  akebi_path: string
-  migoto_path: string
-  reshade_path: string
+  akebi_path: string;
+  migoto_path: string;
+  reshade_path: string;
 }
 
 export default function Options(props: IProps) {
@@ -73,16 +79,18 @@ export default function Options(props: IProps) {
   });
 
   onMount(async () => {
-    const config = await getConfig()
-    const languages = await getLanguages()
-    const platform: string = await invoke('get_platform')
+    const config = await getConfig();
+    const languages = await getLanguages();
+    const platform: string = await invoke('get_platform');
 
     // Remove jar from path
-    const path = config.grasscutter_path.replace(/\\/g, '/')
-    const folderPath = path.substring(0, path.lastIndexOf('/'))
-    const encEnabled = await server.encryptionEnabled(folderPath + '/config.json')
+    const path = config.grasscutter_path.replace(/\\/g, '/');
+    const folderPath = path.substring(0, path.lastIndexOf('/'));
+    const encEnabled = await server.encryptionEnabled(
+      folderPath + '/config.json'
+    );
 
-    console.log(platform)
+    console.log(platform);
 
     setState({
       game_install_path: config.game_install_path || '',
@@ -94,7 +102,9 @@ export default function Options(props: IProps) {
       bg_url_or_path: config.customBackground || '',
       themes: (await getThemeList()).map((t) => t.name),
       theme: config.theme || 'default',
-      encryption: await translate(encEnabled ? 'options.enabled' : 'options.disabled'),
+      encryption: await translate(
+        encEnabled ? 'options.enabled' : 'options.disabled'
+      ),
       patch_metadata: config.patch_metadata || false,
       use_internal_proxy: config.use_internal_proxy || false,
       wipe_login: config.wipe_login || false,
@@ -106,177 +116,180 @@ export default function Options(props: IProps) {
       akebi_path: config.akebi_path || '',
       migoto_path: config.migoto_path || '',
       reshade_path: config.reshade_path || '',
-    })
+    });
   });
 
   function setGameExecutable(value: string) {
-    setConfigOption('game_install_path', value)
+    setConfigOption('game_install_path', value);
 
     // I hope this stops people setting launcher.exe because oml it's annoying
     if (value.endsWith('launcher.exe')) {
-      const pathArr = value.replace(/\\/g, '/').split('/')
-      pathArr.pop()
-      const path = pathArr.join('/') + '/Genshin Impact Game/'
+      const pathArr = value.replace(/\\/g, '/').split('/');
+      pathArr.pop();
+      const path = pathArr.join('/') + '/Genshin Impact Game/';
 
       alert(
         `You have set your game execuatable to "launcher.exe". You should not do this. Your game executable is located in:\n\n${path}`
-      )
+      );
     }
 
     setState({
       game_install_path: value,
-    })
+    });
   }
 
   function setGrasscutterJar(value: string) {
-    setConfigOption('grasscutter_path', value)
+    setConfigOption('grasscutter_path', value);
 
     setState({
       grasscutter_path: value,
-    })
+    });
   }
 
   function setJavaPath(value: string) {
-    setConfigOption('java_path', value)
+    setConfigOption('java_path', value);
 
     setState({
       java_path: value,
-    })
+    });
   }
 
   function setAkebi(value: string) {
-    setConfigOption('akebi_path', value)
+    setConfigOption('akebi_path', value);
 
     setState({
       akebi_path: value,
-    })
+    });
   }
 
   function setMigoto(value: string) {
-    setConfigOption('migoto_path', value)
+    setConfigOption('migoto_path', value);
 
     setState({
       migoto_path: value,
-    })
+    });
 
     // Set game exe in Migoto ini
     invoke('set_migoto_target', {
       path: state.game_install_path,
       migotoPath: value,
-    })
+    });
   }
 
   function setReshade(value: string) {
-    setConfigOption('reshade_path', value)
+    setConfigOption('reshade_path', value);
 
     setState({
       reshade_path: value,
-    })
+    });
   }
 
   async function setLanguage(value: string) {
-    await setConfigOption('language', value)
-    window.location.reload()
+    await setConfigOption('language', value);
+    window.location.reload();
   }
 
   async function setTheme(value: string) {
-    await setConfigOption('theme', value)
-    window.location.reload()
-  }
-
-  async function toggleGrasscutterWithGame() {
-    const changedVal = !(await getConfigOption('grasscutter_with_game'))
-    setConfigOption('grasscutter_with_game', changedVal)
-
-    setState({
-      grasscutter_with_game: changedVal,
-    })
+    await setConfigOption('theme', value);
+    window.location.reload();
   }
 
   async function setCustomBackground(value: string) {
-    const isUrl = /^(?:http(s)?:\/\/)/gm.test(value)
+    const isUrl = /^(?:http(s)?:\/\/)/gm.test(value);
 
-    if (!value) return await setConfigOption('customBackground', '')
+    if (!value) return await setConfigOption('customBackground', '');
 
     if (!isUrl) {
-      const filename = value.replace(/\\/g, '/').split('/').pop()
-      const localBgPath = ((await dataDir()) as string).replace(/\\/g, '/')
+      const filename = value.replace(/\\/g, '/').split('/').pop();
+      const localBgPath = ((await dataDir()) as string).replace(/\\/g, '/');
 
-      await setConfigOption('customBackground', `${localBgPath}/cultivation/bg/${filename}`)
+      await setConfigOption(
+        'customBackground',
+        `${localBgPath}/cultivation/bg/${filename}`
+      );
 
       // Copy the file over to the local directory
       await invoke('copy_file', {
         path: value.replace(/\\/g, '/'),
         newPath: `${localBgPath}cultivation/bg/`,
-      })
+      });
 
-      window.location.reload()
+      window.location.reload();
     } else {
-      await setConfigOption('customBackground', value)
-      window.location.reload()
+      await setConfigOption('customBackground', value);
+      window.location.reload();
     }
   }
 
   async function toggleEncryption() {
-    const config = await getConfig()
+    const config = await getConfig();
 
     // Check if grasscutter path is set
     if (!config.grasscutter_path) {
-      alert('Grasscutter not set!')
-      return
+      alert('Grasscutter not set!');
+      return;
     }
 
     // Remove jar from path
-    const path = config.grasscutter_path.replace(/\\/g, '/')
-    const folderPath = path.substring(0, path.lastIndexOf('/'))
+    const path = config.grasscutter_path.replace(/\\/g, '/');
+    const folderPath = path.substring(0, path.lastIndexOf('/'));
 
-    await server.toggleEncryption(folderPath + '/config.json')
+    await server.toggleEncryption(folderPath + '/config.json');
 
     setState({
       encryption: await translate(
-        (await server.encryptionEnabled(folderPath + '/config.json')) ? 'options.enabled' : 'options.disabled'
+        (await server.encryptionEnabled(folderPath + '/config.json'))
+          ? 'options.enabled'
+          : 'options.disabled'
       ),
-    })
+    });
   }
 
   async function restoreMetadata() {
-    await meta.restoreMetadata(props.downloadManager)
+    await meta.restoreMetadata(props.downloadManager);
   }
 
   async function installCert() {
     await invoke('generate_ca_files', {
       path: (await dataDir()) + 'cultivation',
-    })
+    });
   }
 
   async function toggleOption(opt: keyof Configuration) {
-    const changedVal = !(await getConfigOption(opt))
+    const changedVal = !(await getConfigOption(opt));
 
-    await setConfigOption(opt, changedVal)
+    await setConfigOption(opt, changedVal);
 
     setState({
       [opt]: changedVal,
-    })
+    });
   }
 
   return (
     <Menu closeFn={props.closeFn} class="Options" heading="Options">
-      <Show when={!state.platform || state.platform === 'windows'} keyed={false} fallback={(
-        <div class="OptionSection" id="menuOptionsContainerGameCommand">
-          <div class="OptionLabel" id="menuOptionsLabelGameCommand">
-            <Tr text="options.game_command" />
+      <Show
+        when={!state.platform || state.platform === 'windows'}
+        keyed={false}
+        fallback={
+          <div class="OptionSection" id="menuOptionsContainerGameCommand">
+            <div class="OptionLabel" id="menuOptionsLabelGameCommand">
+              <Tr text="options.game_command" />
+            </div>
+            <div class="OptionValue" id="menuOptionsGameCommand">
+              <TextInput />
+            </div>
           </div>
-          <div class="OptionValue" id="menuOptionsGameCommand">
-            <TextInput />
-          </div>
-        </div>
-      )}>
+        }>
         <div class="OptionSection" id="menuOptionsContainerGamePath">
           <div class="OptionLabel" id="menuOptionsLabelGamePath">
             <Tr text="options.game_path" />
           </div>
           <div class="OptionValue" id="menuOptionsDirGamePath">
-            <DirInput onChange={setGameExecutable} value={state?.game_install_path} extensions={['exe']} />
+            <DirInput
+              onChange={setGameExecutable}
+              value={state?.game_install_path}
+              extensions={['exe']}
+            />
           </div>
         </div>
       </Show>
@@ -337,7 +350,11 @@ export default function Options(props: IProps) {
           <Tr text="options.grasscutter_jar" />
         </div>
         <div class="OptionValue" id="menuOptionsDirGCJar">
-          <DirInput onChange={setGrasscutterJar} value={state?.grasscutter_path} extensions={['jar']} />
+          <DirInput
+            onChange={setGrasscutterJar}
+            value={state?.grasscutter_path}
+            extensions={['jar']}
+          />
         </div>
       </div>
       <div class="OptionSection" id="menuOptionsContainerToggleEnc">
@@ -370,7 +387,11 @@ export default function Options(props: IProps) {
               <Tr text="swag.akebi" />
             </div>
             <div class="OptionValue" id="menuOptionsDirAkebi">
-              <DirInput onChange={setAkebi} value={state?.akebi_path} extensions={['exe']} />
+              <DirInput
+                onChange={setAkebi}
+                value={state?.akebi_path}
+                extensions={['exe']}
+              />
             </div>
           </div>
           <div class="OptionSection" id="menuOptionsContainerMigoto">
@@ -378,7 +399,11 @@ export default function Options(props: IProps) {
               <Tr text="swag.migoto" />
             </div>
             <div class="OptionValue" id="menuOptionsDirMigoto">
-              <DirInput onChange={setMigoto} value={state?.migoto_path} extensions={['exe']} />
+              <DirInput
+                onChange={setMigoto}
+                value={state?.migoto_path}
+                extensions={['exe']}
+              />
             </div>
           </div>
           <div class="OptionSection" id="menuOptionsContainerReshade">
@@ -386,7 +411,11 @@ export default function Options(props: IProps) {
               <Tr text="swag.reshade" />
             </div>
             <div class="OptionValue" id="menuOptionsDirReshade">
-              <DirInput onChange={setReshade} value={state?.reshade_path} extensions={['exe']} />
+              <DirInput
+                onChange={setReshade}
+                value={state?.reshade_path}
+                extensions={['exe']}
+              />
             </div>
           </div>
         </>
@@ -433,14 +462,11 @@ export default function Options(props: IProps) {
             value={state.theme}
             id="menuOptionsSelectMenuThemes"
             onChange={(event) => {
-              setTheme(event.currentTarget.value)
-            }}
-          >
-            <For each={state.themes}>{(t) => (
-              <option value={t}>
-                {t}
-              </option>
-            )}</For>
+              setTheme(event.currentTarget.value);
+            }}>
+            <For each={state.themes}>
+              {(t) => <option value={t}>{t}</option>}
+            </For>
           </select>
         </div>
       </div>
@@ -452,7 +478,11 @@ export default function Options(props: IProps) {
           <Tr text="options.java_path" />
         </div>
         <div class="OptionValue" id="menuOptionsDirJavaPath">
-          <DirInput onChange={setJavaPath} value={state?.java_path} extensions={['exe']} />
+          <DirInput
+            onChange={setJavaPath}
+            value={state?.java_path}
+            extensions={['exe']}
+          />
         </div>
       </div>
 
@@ -467,9 +497,10 @@ export default function Options(props: IProps) {
             extensions={['png', 'jpg', 'jpeg']}
             readonly={false}
             clearable={true}
-            customClearBehaviour={async () => {
-              await setConfigOption('customBackground', '')
-              window.location.reload()
+            customClearBehaviour={() => {
+              setConfigOption('customBackground', '').then(
+                window.location.reload
+              );
             }}
           />
         </div>
@@ -484,17 +515,18 @@ export default function Options(props: IProps) {
             value={state.current_language}
             id="menuOptionsSelectMenuLang"
             onChange={(event) => {
-              setLanguage(event.currentTarget.value)
-            }}
-          >
-            <For each={state.language_options}>{(lang) => (
-              <option value={Object.keys(lang)[0]}>
-                {lang[Object.keys(lang)[0]]}
-              </option>
-            )}</For>
+              setLanguage(event.currentTarget.value);
+            }}>
+            <For each={state.language_options}>
+              {(lang) => (
+                <option value={Object.keys(lang)[0]}>
+                  {lang[Object.keys(lang)[0]]}
+                </option>
+              )}
+            </For>
           </select>
         </div>
       </div>
     </Menu>
-  )
+  );
 }

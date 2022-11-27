@@ -1,38 +1,33 @@
 /* eslint-disable indent */
-import { invoke } from '@tauri-apps/api/tauri'
-import Tr from '../../../utils/language'
+import { batch, createSignal, JSX, onMount } from 'solid-js';
+import { invoke } from '@tauri-apps/api/tauri';
 
-import './NewsSection.css'
-import { batch, createSignal, JSX, onMount } from "solid-js";
+import Tr from '../../../utils/language';
+
+import './NewsSection.css';
 
 interface IProps {
-  selected?: string
-}
-
-interface IState {
-  selected: string
-  news?: JSX.Element
-  commitList?: JSX.Element[]
+  selected?: string;
 }
 
 interface GrasscutterAPIResponse {
   commits: {
-    gc_stable: CommitResponse[]
-    gc_dev: CommitResponse[]
-    cultivation: CommitResponse[]
-  }
+    gc_stable: CommitResponse[];
+    gc_dev: CommitResponse[];
+    cultivation: CommitResponse[];
+  };
 }
 
 interface CommitResponse {
-  sha: string
-  commit: Commit
+  sha: string;
+  commit: Commit;
 }
 
 interface Commit {
   author: {
-    name: string
-  }
-  message: string
+    name: string;
+  };
+  message: string;
 }
 
 // TODO: this is such a weird component, needs to be refactored.
@@ -49,15 +44,15 @@ export default function NewsSection(props: IProps) {
   }
 
   async function showNews() {
-    let news: JSX.Element | JSX.Element[] = <tr></tr>
+    let news: JSX.Element | JSX.Element[] = <tr />;
 
     switch (selected()) {
       case 'commits': {
-        const commits = await showLatestCommits()
+        const commits = await showLatestCommits();
         if (commits != null) {
-          news = commits
+          news = commits;
         }
-        break
+        break;
       }
 
       case 'latest_version':
@@ -65,16 +60,16 @@ export default function NewsSection(props: IProps) {
           <tr>
             <td>Latest version</td>
           </tr>
-        )
-        break
+        );
+        break;
 
       default:
         news = (
           <tr>
             <td>Unknown</td>
           </tr>
-        )
-        break
+        );
+        break;
     }
 
     setNews(<>{news}</>);
@@ -82,43 +77,47 @@ export default function NewsSection(props: IProps) {
 
   async function showLatestCommits() {
     if (!commitList()) {
-      const response: string = await invoke('req_get', { url: 'https://api.grasscutter.io/cultivation/query' })
-      let grasscutterApiResponse: GrasscutterAPIResponse | null = null
+      const response: string = await invoke('req_get', {
+        url: 'https://api.grasscutter.io/cultivation/query',
+      });
+      let grasscutterApiResponse: GrasscutterAPIResponse | null = null;
 
       try {
-        grasscutterApiResponse = JSON.parse(response)
+        grasscutterApiResponse = JSON.parse(response);
       } catch (e) {
-        grasscutterApiResponse = null
+        grasscutterApiResponse = null;
       }
 
-      let commits: CommitResponse[]
+      let commits: CommitResponse[];
       if (grasscutterApiResponse?.commits == null) {
         // If it didn't work, use official API
         const response: string = await invoke('req_get', {
           url: 'https://api.github.com/repos/Grasscutters/Grasscutter/commits',
-        })
-        commits = JSON.parse(response)
+        });
+        commits = JSON.parse(response);
       } else {
-        commits = grasscutterApiResponse.commits.gc_stable
+        commits = grasscutterApiResponse.commits.gc_stable;
       }
 
       // Probably rate-limited
-      if (!Array.isArray(commits)) return
+      if (!Array.isArray(commits)) return;
 
       // Get only first 5
-      const commitsList = commits.slice(0, 10)
-      const commitsListHtml = commitsList.map((commitResponse: CommitResponse) => {
-        return (
-          <tr class="Commit" id="newsCommitsTable">
-            <td class="CommitAuthor">
-              <span>{commitResponse.commit.author.name}</span>
-            </td>
-            <td class="CommitMessage">
-              <span>{commitResponse.commit.message}</span>
-            </td>
-          </tr>
-        )
-      })
+      const commitsList = commits.slice(0, 10);
+      const commitsListHtml = commitsList.map(
+        (commitResponse: CommitResponse) => {
+          return (
+            <tr class="Commit" id="newsCommitsTable">
+              <td class="CommitAuthor">
+                <span>{commitResponse.commit.author.name}</span>
+              </td>
+              <td class="CommitMessage">
+                <span>{commitResponse.commit.message}</span>
+              </td>
+            </tr>
+          );
+        }
+      );
 
       batch(() => {
         setCommitList(commitsListHtml);
@@ -135,15 +134,15 @@ export default function NewsSection(props: IProps) {
         <div
           class={'NewsTab ' + (selected() === 'commits' ? 'selected' : '')}
           id="commits"
-          onClick={() => setSelection('commits')}
-        >
+          onClick={() => setSelection('commits')}>
           <Tr text="news.latest_commits" />
         </div>
         <div
-          class={'NewsTab ' + (selected() === 'latest_version' ? 'selected' : '')}
+          class={
+            'NewsTab ' + (selected() === 'latest_version' ? 'selected' : '')
+          }
           id="latest_version"
-          onClick={() => setSelection('latest_version')}
-        >
+          onClick={() => setSelection('latest_version')}>
           <Tr text="news.latest_version" />
         </div>
       </div>
@@ -151,5 +150,5 @@ export default function NewsSection(props: IProps) {
         <tbody>{news()}</tbody>
       </table>
     </div>
-  )
+  );
 }

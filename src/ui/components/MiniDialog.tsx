@@ -1,21 +1,23 @@
-import Close from '../../resources/icons/close.svg'
-import './MiniDialog.css'
-import {JSX, onCleanup, onMount, Show} from "solid-js";
+import { JSX, onCleanup, onMount, Show } from 'solid-js';
+
+import Close from '../../resources/icons/close.svg';
+
+import './MiniDialog.css';
 
 interface IProps {
-  children: JSX.Element
-  title?: string
-  closeable?: boolean
-  closeFn: () => void
+  children: JSX.Element;
+  title?: string;
+  closeable?: boolean;
+  closeFn: () => void;
 }
 
 export default function MiniDialog(props: IProps) {
   function mouseDownHandler(evt: MouseEvent) {
-    const tgt = evt.target as HTMLElement
-    const isInside = tgt.closest('.MiniDialog') !== null
+    const tgt = evt.target as HTMLElement;
+    const isInside = tgt.closest('.MiniDialog') !== null;
 
     if (!isInside) {
-      props.closeFn()
+      props.closeFn();
     }
   }
 
@@ -25,8 +27,13 @@ export default function MiniDialog(props: IProps) {
 
   return (
     <div class="MiniDialog" id="miniDialogContainer">
-      <Show when={props.closeable !== undefined && props.closeable} keyed={false}>
-        <div class="MiniDialogTop" id="miniDialogContainerTop" onClick={props.closeFn}>
+      <Show
+        when={props.closeable !== undefined && props.closeable}
+        keyed={false}>
+        <div
+          class="MiniDialogTop"
+          id="miniDialogContainerTop"
+          onClick={props.closeFn}>
           <span>{props?.title}</span>
           <img src={Close} class="MiniDialogClose" id="miniDialogButtonClose" />
         </div>
@@ -36,5 +43,5 @@ export default function MiniDialog(props: IProps) {
         {props.children}
       </div>
     </div>
-  )
+  );
 }

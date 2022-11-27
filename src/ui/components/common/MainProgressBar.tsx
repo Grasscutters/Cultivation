@@ -1,27 +1,30 @@
-import DownloadHandler from '../../../utils/download'
-import Tr from '../../../utils/language'
-import './ProgressBar.css'
-import {createStore} from "solid-js/store";
-import {onCleanup, Show} from "solid-js";
+import { onCleanup, Show } from 'solid-js';
+import { createStore } from 'solid-js/store';
+
+import DownloadHandler from '../../../utils/download';
+import Tr from '../../../utils/language';
+
+import './ProgressBar.css';
 
 interface IProps {
-  downloadManager: DownloadHandler
-  withStats?: boolean
+  downloadManager: DownloadHandler;
+  withStats?: boolean;
 }
 
 interface IState {
-  average: number
-  files: number
-  extracting: number
-  total: number
-  speed: string
+  average: number;
+  files: number;
+  extracting: number;
+  total: number;
+  speed: string;
 }
 
 /**
  * This component differes because it averages all downloads together
  */
 export default function ProgressBar(props: IProps) {
-  const { average, files, extracting, totalSize } = props.downloadManager.getTotalAverage();
+  const { average, files, extracting, totalSize } =
+    props.downloadManager.getTotalAverage();
 
   const [state, setState] = createStore<IState>({
     average,
@@ -32,14 +35,14 @@ export default function ProgressBar(props: IProps) {
   });
 
   const interval = window.setInterval(() => {
-    const prog = props.downloadManager.getTotalAverage()
+    const prog = props.downloadManager.getTotalAverage();
     setState({
       average: prog?.average || 0,
       files: prog?.files,
       extracting: prog?.extracting,
       total: prog?.totalSize || 0,
       speed: prog?.speed || '0 B/s',
-    })
+    });
   }, 200);
 
   onCleanup(() => window.clearInterval(interval));
@@ -53,20 +56,22 @@ export default function ProgressBar(props: IProps) {
             width: `${(() => {
               // Handles no files downloading
               if (state.files === 0 || state.average >= 100) {
-                return '100'
+                return '100';
               }
 
               if (state.total <= 0) {
-                return '0'
+                return '0';
               }
 
-              return state.average
+              return state.average;
             })()}%`,
           }}
-         />
+        />
       </div>
 
-      <Show when={props.withStats === undefined || props.withStats} keyed={false}>
+      <Show
+        when={props.withStats === undefined || props.withStats}
+        keyed={false}>
         <div class="MainProgressText">
           <Tr text="main.files_downloading" /> {state.files} ({state.speed})
           <br />
@@ -74,5 +79,5 @@ export default function ProgressBar(props: IProps) {
         </div>
       </Show>
     </div>
-  )
+  );
 }

@@ -1,13 +1,14 @@
-import './Menu.css'
+import { JSX } from 'solid-js';
 
-import Close from '../../../resources/icons/close.svg'
-import {JSX} from "solid-js";
+import Close from '../../../resources/icons/close.svg';
+
+import './Menu.css';
 
 interface IProps {
-  children: JSX.Element
-  class?: string
-  heading: string
-  closeFn: () => void
+  children: JSX.Element;
+  class?: string;
+  heading: string;
+  closeFn: () => void;
 }
 
 export default function Menu(props: IProps) {
@@ -17,7 +18,10 @@ export default function Menu(props: IProps) {
         <div class="MenuHeading" id="menuHeading">
           {props.heading}
         </div>
-        <div class="MenuExit" id="menuButtonCloseContainer" onClick={props.closeFn}>
+        <div
+          class="MenuExit"
+          id="menuButtonCloseContainer"
+          onClick={props.closeFn}>
           <img src={Close} class="MenuClose" id="menuButtonCloseIcon" />
         </div>
       </div>
@@ -25,5 +29,5 @@ export default function Menu(props: IProps) {
         {props.children}
       </div>
     </div>
-  )
+  );
 }

@@ -1,18 +1,22 @@
-import DownloadHandler from '../../../utils/download'
-import DownloadSection from './DownloadSection'
+import { createMemo, For, Show } from 'solid-js';
 
-import './DownloadList.css'
-import {createMemo, For, Show} from "solid-js";
+import DownloadHandler from '../../../utils/download';
+import DownloadSection from './DownloadSection';
+
+import './DownloadList.css';
 
 interface IProps {
-  downloadManager: DownloadHandler
+  downloadManager: DownloadHandler;
 }
 
 export default function DownloadList(props: IProps) {
   const list = createMemo(() => props.downloadManager.getDownloads());
   return (
     <div class="DownloadList">
-      <Show when={list().length > 0} keyed={false} fallback="No downloads present">
+      <Show
+        when={list().length > 0}
+        keyed={false}
+        fallback="No downloads present">
         <For each={list()}>
           {(download) => (
             <DownloadSection
@@ -23,5 +27,5 @@ export default function DownloadList(props: IProps) {
         </For>
       </Show>
     </div>
-  )
+  );
 }

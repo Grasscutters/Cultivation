@@ -1,43 +1,47 @@
-import Checkbox from './common/Checkbox'
-import BigButton from './common/BigButton'
-import TextInput from './common/TextInput'
-import HelpButton from './common/HelpButton'
-import { getConfig, saveConfig, setConfigOption } from '../../utils/configuration'
-import { translate } from '../../utils/language'
-import { invoke } from '@tauri-apps/api/tauri'
+import { onMount, Show } from 'solid-js';
+import { createStore } from 'solid-js/store';
+import { dataDir } from '@tauri-apps/api/path';
+import { invoke } from '@tauri-apps/api/tauri';
 
-import Server from '../../resources/icons/server.svg'
-import Plus from '../../resources/icons/plus.svg'
+import Plus from '../../resources/icons/plus.svg';
+import Server from '../../resources/icons/server.svg';
+import {
+  getConfig,
+  saveConfig,
+  setConfigOption,
+} from '../../utils/configuration';
+import { getGameExecutable, getGameVersion } from '../../utils/game';
+import { translate } from '../../utils/language';
+import { patchGame, unpatchGame } from '../../utils/metadata';
+import BigButton from './common/BigButton';
+import Checkbox from './common/Checkbox';
+import HelpButton from './common/HelpButton';
+import TextInput from './common/TextInput';
 
-import './ServerLaunchSection.css'
-import { dataDir } from '@tauri-apps/api/path'
-import { getGameExecutable, getGameVersion } from '../../utils/game'
-import { patchGame, unpatchGame } from '../../utils/metadata'
-import {createStore} from "solid-js/store";
-import {onMount, Show} from "solid-js";
+import './ServerLaunchSection.css';
 
 interface IProps {
-  openExtras: (playGame: () => void) => void
+  openExtras: (playGame: () => void) => void;
 }
 
 interface IState {
-  grasscutterEnabled: boolean
-  buttonLabel: string
-  checkboxLabel: string
-  ip: string
-  port: string
+  grasscutterEnabled: boolean;
+  buttonLabel: string;
+  checkboxLabel: string;
+  ip: string;
+  port: string;
 
-  ipPlaceholder: string
-  portPlaceholder: string
+  ipPlaceholder: string;
+  portPlaceholder: string;
 
-  portHelpText: string
+  portHelpText: string;
 
-  httpsLabel: string
-  httpsEnabled: boolean
+  httpsLabel: string;
+  httpsEnabled: boolean;
 
-  swag: boolean
-  akebiSet: boolean
-  migotoSet: boolean
+  swag: boolean;
+  akebiSet: boolean;
+  migotoSet: boolean;
 }
 
 export default function ServerLaunchSection(props: IProps) {
@@ -58,7 +62,7 @@ export default function ServerLaunchSection(props: IProps) {
   });
 
   onMount(async () => {
-    const config = await getConfig()
+    const config = await getConfig();
 
     setState({
       grasscutterEnabled: config.toggle_grasscutter || false,
@@ -74,104 +78,117 @@ export default function ServerLaunchSection(props: IProps) {
       swag: config.swag_mode || false,
       akebiSet: config.akebi_path !== '',
       migotoSet: config.migoto_path !== '',
-    })
+    });
   });
 
   async function toggleGrasscutter() {
-    const config = await getConfig()
+    const config = await getConfig();
 
-    config.toggle_grasscutter = !config.toggle_grasscutter
+    config.toggle_grasscutter = !config.toggle_grasscutter;
 
     // Set state as well
     setState('grasscutterEnabled', config.toggle_grasscutter);
 
-    await saveConfig(config)
+    await saveConfig(config);
   }
 
   async function playGame(exe?: string, proc_name?: string) {
-    const config = await getConfig()
+    const config = await getConfig();
 
     if (!(await getGameExecutable())) {
-      alert('Game executable not set!')
-      return
+      alert('Game executable not set!');
+      return;
     }
 
     // Connect to proxy
     if (config.toggle_grasscutter) {
       if (config.patch_metadata) {
-        const gameVersion = await getGameVersion()
-        console.log(gameVersion)
+        const gameVersion = await getGameVersion();
+        console.log(gameVersion);
 
         if (gameVersion == null) {
           alert(
             'Game version could not be determined. Please make sure you have the game correctly selected and try again.'
-          )
-          return
+          );
+          return;
         }
 
-        if (gameVersion?.major == 2 && gameVersion?.minor < 8) {
+        if (gameVersion?.major === 2 && gameVersion?.minor < 8) {
           alert(
             'Game version is too old for metadata patching. Please disable metadata patching in the settings and try again.'
-          )
-          return
+          );
+          return;
         }
 
-        if (gameVersion?.major == 3 && gameVersion?.minor >= 1) {
+        if (gameVersion?.major === 3 && gameVersion?.minor >= 1) {
           alert(
-            'Game version is too new for metadata patching. Please disable metadata patching in the settings to launch the game.\nNOTE: You will require a UA patch to play the game.'
-          )
-          return
+            'Game version is too new for metadata patching. ' +
+              'Please disable metadata patching in the settings' +
+              ' to launch the game.\nNOTE: ' +
+              'You will require a UA patch to play the game.'
+          );
+          return;
         }
 
-        const patched = await patchGame()
+        const patched = await patchGame();
 
         if (!patched) {
-          alert('Could not patch game!')
-          return
+          alert('Could not patch game!');
+          return;
         }
       }
 
-      const game_exe = await getGameExecutable()
+      const game_exe = await getGameExecutable();
 
       // Save last connected server and port
       // TODO[perf]: could be batched
-      await setConfigOption('last_ip', state.ip)
-      await setConfigOption('last_port', state.port)
+      await setConfigOption('last_ip', state.ip);
+      await setConfigOption('last_port', state.port);
 
       await invoke('enable_process_watcher', {
         process: proc_name || game_exe,
-      })
+      });
 
       if (config.use_internal_proxy) {
         // Set IP
         await invoke('set_proxy_addr', {
-          addr: (state.httpsEnabled ? 'https' : 'http') + '://' + state.ip + ':' + state.port,
-        })
+          addr:
+            (state.httpsEnabled ? 'https' : 'http') +
+            '://' +
+            state.ip +
+            ':' +
+            state.port,
+        });
         // Connect to proxy
-        await invoke('connect', { port: 8365, certificatePath: (await dataDir()) + '\\cultivation\\ca' })
+        await invoke('connect', {
+          port: 8365,
+          certificatePath: (await dataDir()) + '\\cultivation\\ca',
+        });
       }
 
       // Open server as well if the options are set
       if (config.grasscutter_with_game) {
-        const jarFolderArr = config.grasscutter_path.replace(/\\/g, '/').split('/')
-        jarFolderArr.pop()
+        const jarFolderArr = config.grasscutter_path
+          .replace(/\\/g, '/')
+          .split('/');
+        jarFolderArr.pop();
 
-        const jarFolder = jarFolderArr.join('/')
+        const jarFolder = jarFolderArr.join('/');
 
         await invoke('run_jar', {
           path: config.grasscutter_path,
           executeIn: jarFolder,
           javaPath: config.java_path || '',
-        })
+        });
       }
     } else {
-      const unpatched = await unpatchGame()
+      const unpatched = await unpatchGame();
 
       if (!unpatched) {
         alert(
           `Could not unpatch game, aborting launch! (You can find your metadata backup in ${await dataDir()}\\cultivation\\)`
-        )
-        return
+        );
+        return;
       }
     }
 
@@ -179,30 +196,42 @@ export default function ServerLaunchSection(props: IProps) {
       // First wipe registry if we have to
       await invoke('wipe_registry', {
         // The exe is always PascalCase so we can get the dir using regex
-        execName: (await getGameExecutable())?.split('.exe')[0].replace(/([a-z\d])([A-Z])/g, '$1 $2'),
-      })
+        execName: (await getGameExecutable())
+          ?.split('.exe')[0]
+          .replace(/([a-z\d])([A-Z])/g, '$1 $2'),
+      });
     }
 
     // Launch the program
     const gameExists = await invoke('dir_exists', {
       path: exe || config.game_install_path,
-    })
+    });
 
-    if (gameExists) await invoke('run_program_relative', { path: exe || config.game_install_path })
-    else alert('Game not found! At: ' + (exe || config.game_install_path))
+    if (gameExists)
+      await invoke('run_program_relative', {
+        path: exe || config.game_install_path,
+      });
+    else alert('Game not found! At: ' + (exe || config.game_install_path));
   }
 
   async function launchServer() {
-    const config = await getConfig()
+    const config = await getConfig();
 
-    if (!config.grasscutter_path) return alert('Grasscutter not installed or set!')
+    if (!config.grasscutter_path)
+      return alert('Grasscutter not installed or set!');
 
-    let jarFolder = config.grasscutter_path
+    let jarFolder = config.grasscutter_path;
 
     if (jarFolder.includes('/')) {
-      jarFolder = jarFolder.substring(0, config.grasscutter_path.lastIndexOf('/'))
+      jarFolder = jarFolder.substring(
+        0,
+        config.grasscutter_path.lastIndexOf('/')
+      );
     } else {
-      jarFolder = jarFolder.substring(0, config.grasscutter_path.lastIndexOf('\\'))
+      jarFolder = jarFolder.substring(
+        0,
+        config.grasscutter_path.lastIndexOf('\\')
+      );
     }
 
     // Launch the jar
@@ -210,26 +239,26 @@ export default function ServerLaunchSection(props: IProps) {
       path: config.grasscutter_path,
       executeIn: jarFolder,
       javaPath: config.java_path || '',
-    })
+    });
   }
 
   function setIp(text: string) {
-    setState('ip', text)
+    setState('ip', text);
   }
 
   function setPort(text: string) {
-    setState('port', text)
+    setState('port', text);
   }
 
   async function toggleHttps() {
-    const config = await getConfig()
+    const config = await getConfig();
 
-    config.https_enabled = !config.https_enabled
+    config.https_enabled = !config.https_enabled;
 
     // Set state as well
     setState('httpsEnabled', config.https_enabled);
 
-    await saveConfig(config)
+    await saveConfig(config);
   }
 
   return (
@@ -277,7 +306,9 @@ export default function ServerLaunchSection(props: IProps) {
           {state.buttonLabel}
         </BigButton>
         <Show when={state.swag} keyed={false}>
-          <BigButton onClick={() => props.openExtras(playGame)} id="ExtrasMenuButton">
+          <BigButton
+            onClick={() => props.openExtras(playGame)}
+            id="ExtrasMenuButton">
             <img class="ExtrasIcon" id="extrasIcon" src={Plus} />
           </BigButton>
         </Show>
@@ -286,5 +317,5 @@ export default function ServerLaunchSection(props: IProps) {
         </BigButton>
       </div>
     </div>
-  )
+  );
 }

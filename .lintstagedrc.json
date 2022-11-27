@@ -1,4 +1,0 @@
-{
-  "src-tauri/**/*.rs": "rustfmt --edition 2021",
-  "*": "pnpm prettier --write --ignore-unknown"
-}

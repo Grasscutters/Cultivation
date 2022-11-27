@@ -1,45 +1,43 @@
 // Major Components
-import TopBar from './components/TopBar'
-import ServerLaunchSection from './components/ServerLaunchSection'
-import MainProgressBar from './components/common/MainProgressBar'
-import Options from './components/menu/Options'
-import MiniDialog from './components/MiniDialog'
-import DownloadList from './components/common/DownloadList'
-import Downloads from './components/menu/Downloads'
-import NewsSection from './components/news/NewsSection'
-import Game from './components/menu/Game'
-import RightBar from './components/RightBar'
-
-import { getConfigOption, setConfigOption } from '../utils/configuration'
-import { invoke } from '@tauri-apps/api'
-import { listen, UnlistenFn } from '@tauri-apps/api/event'
-import { dataDir } from '@tauri-apps/api/path'
-import { appWindow } from '@tauri-apps/api/window'
-import { unpatchGame } from '../utils/metadata'
-import DownloadHandler from '../utils/download'
+import { batch, onCleanup, onMount, Show } from 'solid-js';
+import { createMutable } from 'solid-js/store';
+import { invoke } from '@tauri-apps/api';
+import { listen, UnlistenFn } from '@tauri-apps/api/event';
+import { dataDir } from '@tauri-apps/api/path';
+import { appWindow } from '@tauri-apps/api/window';
 
 // Graphics
-import cogBtn from '../resources/icons/cog.svg'
-import downBtn from '../resources/icons/download.svg'
-import wrenchBtn from '../resources/icons/wrench.svg'
-import { ExtrasMenu } from './components/menu/ExtrasMenu'
-import { createMutable } from "solid-js/store";
-import { batch, onCleanup, onMount, Show } from "solid-js";
-
+import cogBtn from '../resources/icons/cog.svg';
+import downBtn from '../resources/icons/download.svg';
+import wrenchBtn from '../resources/icons/wrench.svg';
+import { getConfigOption, setConfigOption } from '../utils/configuration';
+import DownloadHandler from '../utils/download';
+import { unpatchGame } from '../utils/metadata';
+import DownloadList from './components/common/DownloadList';
+import MainProgressBar from './components/common/MainProgressBar';
+import Downloads from './components/menu/Downloads';
+import { ExtrasMenu } from './components/menu/ExtrasMenu';
+import Game from './components/menu/Game';
+import Options from './components/menu/Options';
+import MiniDialog from './components/MiniDialog';
+import NewsSection from './components/news/NewsSection';
+import RightBar from './components/RightBar';
+import ServerLaunchSection from './components/ServerLaunchSection';
+import TopBar from './components/TopBar';
 
 interface IProps {
-  downloadHandler: DownloadHandler
+  downloadHandler: DownloadHandler;
 }
 
 interface IState {
-  isDownloading: boolean
-  optionsOpen: boolean
-  miniDownloadsOpen: boolean
-  downloadsOpen: boolean
-  gameDownloadsOpen: boolean
-  extrasOpen: boolean
-  migotoSet: boolean
-  playGame: (exe?: string, proc_name?: string) => void
+  isDownloading: boolean;
+  optionsOpen: boolean;
+  miniDownloadsOpen: boolean;
+  downloadsOpen: boolean;
+  gameDownloadsOpen: boolean;
+  extrasOpen: boolean;
+  migotoSet: boolean;
+  playGame: (exe?: string, proc_name?: string) => void;
 }
 
 export function Main(props: IProps) {
@@ -53,46 +51,51 @@ export function Main(props: IProps) {
     extrasOpen: false,
     migotoSet: false,
     playGame: () => {
-      alert('Error launching game')
+      alert('Error launching game');
     },
   });
 
-  unlisteners.push(listen('lang_error', (payload) => {
-    console.log(payload)
-  }));
+  unlisteners.push(
+    listen('lang_error', (payload) => {
+      console.log(payload);
+    })
+  );
 
-  unlisteners.push(listen('jar_extracted', ({ payload }: { payload: string }) => {
-    setConfigOption('grasscutter_path', payload)
-  }));
+  unlisteners.push(
+    listen('jar_extracted', ({ payload }: { payload: string }) => {
+      setConfigOption('grasscutter_path', payload);
+    })
+  );
 
   unlisteners.push(
     // Emitted for metadata replacing-purposes
     listen('game_closed', async () => {
-      const wasPatched = await getConfigOption('patch_metadata')
+      const wasPatched = await getConfigOption('patch_metadata');
 
       if (wasPatched) {
-        const unpatched = await unpatchGame()
+        const unpatched = await unpatchGame();
 
         if (!unpatched) {
           alert(
             `Could not unpatch game! (You should be able to find your metadata backup in ${await dataDir()}\\cultivation\\)`
-          )
+          );
         }
       }
-    }));
+    })
+  );
 
-  let min = false
+  let min = false;
 
   // periodically check if we need to min/max based on whether the game is open
   const id = window.setInterval(async () => {
-    const gameOpen = await invoke('is_game_running')
+    const gameOpen = await invoke('is_game_running');
 
     if (gameOpen && !min) {
-      appWindow.minimize()
-      min = true
+      appWindow.minimize();
+      min = true;
     } else if (!gameOpen && min) {
-      appWindow.unminimize()
-      min = false
+      appWindow.unminimize();
+      min = false;
     }
   }, 1000);
 
@@ -106,7 +109,7 @@ export function Main(props: IProps) {
   });
 
   onMount(async () => {
-    const cert_generated = await getConfigOption('cert_generated')
+    const cert_generated = await getConfigOption('cert_generated');
 
     state.migotoSet = !!(await getConfigOption('migoto_path'));
 
@@ -114,22 +117,25 @@ export function Main(props: IProps) {
       // Generate the certificate
       await invoke('generate_ca_files', {
         path: (await dataDir()) + 'cultivation',
-      })
+      });
 
-      await setConfigOption('cert_generated', true)
+      await setConfigOption('cert_generated', true);
     }
 
     // Period check to only show progress bar when downloading files
     setInterval(() => {
-      state.isDownloading = props.downloadHandler.getDownloads().filter((d) => d.status !== 'finished')?.length > 0
-    }, 1000)
+      state.isDownloading =
+        props.downloadHandler
+          .getDownloads()
+          .filter((d) => d.status !== 'finished')?.length > 0;
+    }, 1000);
   });
 
   async function openExtrasMenu(playGame: () => void) {
     batch(() => {
       state.extrasOpen = true;
       state.playGame = playGame;
-    })
+    });
   }
 
   return (
@@ -137,16 +143,14 @@ export function Main(props: IProps) {
       <TopBar>
         <div
           id="settingsBtn"
-          onClick={() => state.optionsOpen = !state.optionsOpen}
-          class="TopButton"
-        >
+          onClick={() => (state.optionsOpen = !state.optionsOpen)}
+          class="TopButton">
           <img src={cogBtn} alt="settings" />
         </div>
         <div
           id="downloadsBtn"
           class="TopButton"
-          onClick={() => state.downloadsOpen = !state.downloadsOpen}
-        >
+          onClick={() => (state.downloadsOpen = !state.downloadsOpen)}>
           <img src={downBtn} alt="downloads" />
         </div>
         <Show when={state.migotoSet} keyed={false}>
@@ -154,11 +158,12 @@ export function Main(props: IProps) {
             id="modsBtn"
             onClick={() => {
               // Create and dispatch a custom "openMods" event
-              const event = new CustomEvent('changePage', { detail: 'modding' })
-              window.dispatchEvent(event)
+              const event = new CustomEvent('changePage', {
+                detail: 'modding',
+              });
+              window.dispatchEvent(event);
             }}
-            class="TopButton"
-          >
+            class="TopButton">
             <img src={wrenchBtn} alt="mods" />
           </div>
         </Show>
@@ -172,7 +177,9 @@ export function Main(props: IProps) {
       <NewsSection />
 
       <Show when={state.extrasOpen} keyed={false}>
-        <ExtrasMenu closeFn={() => state.extrasOpen = false} playGame={state.playGame}>
+        <ExtrasMenu
+          closeFn={() => (state.extrasOpen = false)}
+          playGame={state.playGame}>
           Yo
         </ExtrasMenu>
       </Show>
@@ -181,8 +188,7 @@ export function Main(props: IProps) {
         <div class="MiniDownloads" id="miniDownloadContainer">
           <MiniDialog
             title="Downloads"
-            closeFn={() => state.miniDownloadsOpen = false}
-          >
+            closeFn={() => (state.miniDownloadsOpen = false)}>
             <DownloadList downloadManager={props.downloadHandler} />
           </MiniDialog>
           <div class="arrow-down" />
@@ -192,18 +198,21 @@ export function Main(props: IProps) {
       <Show when={state.downloadsOpen} keyed={false}>
         <Downloads
           downloadManager={props.downloadHandler}
-          closeFn={() => state.downloadsOpen = false}
+          closeFn={() => (state.downloadsOpen = false)}
         />
       </Show>
 
       <Show when={state.optionsOpen} keyed={false}>
-        <Options closeFn={() => state.optionsOpen = !state.optionsOpen} downloadManager={props.downloadHandler} />
+        <Options
+          closeFn={() => (state.optionsOpen = !state.optionsOpen)}
+          downloadManager={props.downloadHandler}
+        />
       </Show>
 
       <Show when={state.gameDownloadsOpen} keyed={false}>
         <Game
           downloadManager={props.downloadHandler}
-          closeFn={() => state.gameDownloadsOpen = false}
+          closeFn={() => (state.gameDownloadsOpen = false)}
         />
       </Show>
 
@@ -211,13 +220,12 @@ export function Main(props: IProps) {
         <ServerLaunchSection openExtras={openExtrasMenu} />
         <div
           id="DownloadProgress"
-          onClick={() => state.miniDownloadsOpen = !state.miniDownloadsOpen}
-        >
+          onClick={() => (state.miniDownloadsOpen = !state.miniDownloadsOpen)}>
           <Show when={state.isDownloading} keyed={false}>
             <MainProgressBar downloadManager={props.downloadHandler} />
           </Show>
         </div>
       </div>
     </>
-  )
+  );
 }
