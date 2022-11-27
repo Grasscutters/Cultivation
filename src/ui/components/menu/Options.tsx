@@ -1,103 +1,98 @@
-import React from 'react'
-import { invoke } from '@tauri-apps/api'
-import { dataDir } from '@tauri-apps/api/path'
-import DirInput from '../common/DirInput'
-import Menu from './Menu'
-import Tr, { getLanguages, translate } from '../../../utils/language'
-import { setConfigOption, getConfig, getConfigOption, Configuration } from '../../../utils/configuration'
-import Checkbox from '../common/Checkbox'
-import Divider from './Divider'
-import { getThemeList } from '../../../utils/themes'
-import * as server from '../../../utils/server'
+import { For, onMount, Show } from 'solid-js';
+import { createStore } from 'solid-js/store';
+import { invoke } from '@tauri-apps/api';
+import { dataDir } from '@tauri-apps/api/path';
 
-import './Options.css'
-import BigButton from '../common/BigButton'
-import DownloadHandler from '../../../utils/download'
-import * as meta from '../../../utils/metadata'
-import HelpButton from '../common/HelpButton'
-import TextInput from '../common/TextInput'
+import {
+  Configuration,
+  getConfig,
+  getConfigOption,
+  setConfigOption,
+} from '../../../utils/configuration';
+import DownloadHandler from '../../../utils/download';
+import Tr, { getLanguages, translate } from '../../../utils/language';
+import * as meta from '../../../utils/metadata';
+import * as server from '../../../utils/server';
+import { getThemeList } from '../../../utils/themes';
+import BigButton from '../common/BigButton';
+import Checkbox from '../common/Checkbox';
+import DirInput from '../common/DirInput';
+import HelpButton from '../common/HelpButton';
+import TextInput from '../common/TextInput';
+import Divider from './Divider';
+import Menu from './Menu';
+
+import './Options.css';
 
 interface IProps {
-  closeFn: () => void
-  downloadManager: DownloadHandler
+  closeFn: () => void;
+  downloadManager: DownloadHandler;
 }
 
 interface IState {
-  game_install_path: string
-  grasscutter_path: string
-  java_path: string
-  grasscutter_with_game: boolean
-  language_options: { [key: string]: string }[]
-  current_language: string
-  bg_url_or_path: string
-  themes: string[]
-  theme: string
-  encryption: boolean
-  patch_metadata: boolean
-  use_internal_proxy: boolean
-  wipe_login: boolean
-  horny_mode: boolean
-  swag: boolean
-  platform: string
+  game_install_path: string;
+  grasscutter_path: string;
+  java_path: string;
+  grasscutter_with_game: boolean;
+  language_options: { [key: string]: string }[];
+  current_language: string;
+  bg_url_or_path: string;
+  themes: string[];
+  theme: string;
+  encryption: boolean;
+  patch_metadata: boolean;
+  use_internal_proxy: boolean;
+  wipe_login: boolean;
+  horny_mode: boolean;
+  swag: boolean;
+  platform: string;
 
   // Swag stuff
-  akebi_path: string
-  migoto_path: string
-  reshade_path: string
+  akebi_path: string;
+  migoto_path: string;
+  reshade_path: string;
 }
 
-export default class Options extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
+export default function Options(props: IProps) {
+  const [state, setState] = createStore<IState>({
+    game_install_path: '',
+    grasscutter_path: '',
+    java_path: '',
+    grasscutter_with_game: false,
+    language_options: [],
+    current_language: 'en',
+    bg_url_or_path: '',
+    themes: ['default'],
+    theme: '',
+    encryption: false,
+    patch_metadata: false,
+    use_internal_proxy: false,
+    wipe_login: false,
+    horny_mode: false,
+    swag: false,
+    platform: '',
 
-    this.state = {
-      game_install_path: '',
-      grasscutter_path: '',
-      java_path: '',
-      grasscutter_with_game: false,
-      language_options: [],
-      current_language: 'en',
-      bg_url_or_path: '',
-      themes: ['default'],
-      theme: '',
-      encryption: false,
-      patch_metadata: false,
-      use_internal_proxy: false,
-      wipe_login: false,
-      horny_mode: false,
-      swag: false,
-      platform: '',
+    // Swag stuff
+    akebi_path: '',
+    migoto_path: '',
+    reshade_path: '',
+  });
 
-      // Swag stuff
-      akebi_path: '',
-      migoto_path: '',
-      reshade_path: '',
-    }
-
-    this.setGameExecutable = this.setGameExecutable.bind(this)
-    this.setGrasscutterJar = this.setGrasscutterJar.bind(this)
-    this.setJavaPath = this.setJavaPath.bind(this)
-    this.setAkebi = this.setAkebi.bind(this)
-    this.setMigoto = this.setMigoto.bind(this)
-    this.toggleGrasscutterWithGame = this.toggleGrasscutterWithGame.bind(this)
-    this.setCustomBackground = this.setCustomBackground.bind(this)
-    this.toggleEncryption = this.toggleEncryption.bind(this)
-    this.restoreMetadata = this.restoreMetadata.bind(this)
-  }
-
-  async componentDidMount() {
-    const config = await getConfig()
-    const languages = await getLanguages()
-    const platform: string = await invoke('get_platform')
+  onMount(async () => {
+    const config = await getConfig();
+    const languages = await getLanguages();
+    const platform: string = await invoke('get_platform');
 
     // Remove jar from path
-    const path = config.grasscutter_path.replace(/\\/g, '/')
-    const folderPath = path.substring(0, path.lastIndexOf('/'))
-    const encEnabled = await server.encryptionEnabled(folderPath + '/config.json')
+    const path = config.grasscutter_path.replace(/\\/g, '/');
+    const folderPath = path.substring(0, path.lastIndexOf('/'));
+    const encEnabled = await server.encryptionEnabled(
+      folderPath + '/config.json'
+    );
 
-    console.log(platform)
+    console.log(platform);
 
-    this.setState({
+    setState({
       game_install_path: config.game_install_path || '',
       grasscutter_path: config.grasscutter_path || '',
       java_path: config.java_path || '',
@@ -107,7 +102,9 @@ export default class Options extends React.Component<IProps, IState> {
       bg_url_or_path: config.customBackground || '',
       themes: (await getThemeList()).map((t) => t.name),
       theme: config.theme || 'default',
-      encryption: await translate(encEnabled ? 'options.enabled' : 'options.disabled'),
+      encryption: await translate(
+        encEnabled ? 'options.enabled' : 'options.disabled'
+      ),
       patch_metadata: config.patch_metadata || false,
       use_internal_proxy: config.use_internal_proxy || false,
       wipe_login: config.wipe_login || false,
@@ -119,398 +116,417 @@ export default class Options extends React.Component<IProps, IState> {
       akebi_path: config.akebi_path || '',
       migoto_path: config.migoto_path || '',
       reshade_path: config.reshade_path || '',
-    })
+    });
+  });
 
-    this.forceUpdate()
-  }
-
-  setGameExecutable(value: string) {
-    setConfigOption('game_install_path', value)
+  function setGameExecutable(value: string) {
+    setConfigOption('game_install_path', value);
 
     // I hope this stops people setting launcher.exe because oml it's annoying
     if (value.endsWith('launcher.exe')) {
-      const pathArr = value.replace(/\\/g, '/').split('/')
-      pathArr.pop()
-      const path = pathArr.join('/') + '/Genshin Impact Game/'
+      const pathArr = value.replace(/\\/g, '/').split('/');
+      pathArr.pop();
+      const path = pathArr.join('/') + '/Genshin Impact Game/';
 
       alert(
         `You have set your game execuatable to "launcher.exe". You should not do this. Your game executable is located in:\n\n${path}`
-      )
+      );
     }
 
-    this.setState({
+    setState({
       game_install_path: value,
-    })
+    });
   }
 
-  setGrasscutterJar(value: string) {
-    setConfigOption('grasscutter_path', value)
+  function setGrasscutterJar(value: string) {
+    setConfigOption('grasscutter_path', value);
 
-    this.setState({
+    setState({
       grasscutter_path: value,
-    })
+    });
   }
 
-  setJavaPath(value: string) {
-    setConfigOption('java_path', value)
+  function setJavaPath(value: string) {
+    setConfigOption('java_path', value);
 
-    this.setState({
+    setState({
       java_path: value,
-    })
+    });
   }
 
-  setAkebi(value: string) {
-    setConfigOption('akebi_path', value)
+  function setAkebi(value: string) {
+    setConfigOption('akebi_path', value);
 
-    this.setState({
+    setState({
       akebi_path: value,
-    })
+    });
   }
 
-  setMigoto(value: string) {
-    setConfigOption('migoto_path', value)
+  function setMigoto(value: string) {
+    setConfigOption('migoto_path', value);
 
-    this.setState({
+    setState({
       migoto_path: value,
-    })
+    });
 
     // Set game exe in Migoto ini
     invoke('set_migoto_target', {
-      path: this.state.game_install_path,
+      path: state.game_install_path,
       migotoPath: value,
-    })
+    });
   }
 
-  setReshade(value: string) {
-    setConfigOption('reshade_path', value)
+  function setReshade(value: string) {
+    setConfigOption('reshade_path', value);
 
-    this.setState({
+    setState({
       reshade_path: value,
-    })
+    });
   }
 
-  async setLanguage(value: string) {
-    await setConfigOption('language', value)
-    window.location.reload()
+  async function setLanguage(value: string) {
+    await setConfigOption('language', value);
+    window.location.reload();
   }
 
-  async setTheme(value: string) {
-    await setConfigOption('theme', value)
-    window.location.reload()
+  async function setTheme(value: string) {
+    await setConfigOption('theme', value);
+    window.location.reload();
   }
 
-  async toggleGrasscutterWithGame() {
-    const changedVal = !(await getConfigOption('grasscutter_with_game'))
-    setConfigOption('grasscutter_with_game', changedVal)
+  async function setCustomBackground(value: string) {
+    const isUrl = /^(?:http(s)?:\/\/)/gm.test(value);
 
-    this.setState({
-      grasscutter_with_game: changedVal,
-    })
-  }
-
-  async setCustomBackground(value: string) {
-    const isUrl = /^(?:http(s)?:\/\/)/gm.test(value)
-
-    if (!value) return await setConfigOption('customBackground', '')
+    if (!value) return await setConfigOption('customBackground', '');
 
     if (!isUrl) {
-      const filename = value.replace(/\\/g, '/').split('/').pop()
-      const localBgPath = ((await dataDir()) as string).replace(/\\/g, '/')
+      const filename = value.replace(/\\/g, '/').split('/').pop();
+      const localBgPath = ((await dataDir()) as string).replace(/\\/g, '/');
 
-      await setConfigOption('customBackground', `${localBgPath}/cultivation/bg/${filename}`)
+      await setConfigOption(
+        'customBackground',
+        `${localBgPath}/cultivation/bg/${filename}`
+      );
 
       // Copy the file over to the local directory
       await invoke('copy_file', {
         path: value.replace(/\\/g, '/'),
         newPath: `${localBgPath}cultivation/bg/`,
-      })
+      });
 
-      window.location.reload()
+      window.location.reload();
     } else {
-      await setConfigOption('customBackground', value)
-      window.location.reload()
+      await setConfigOption('customBackground', value);
+      window.location.reload();
     }
   }
 
-  async toggleEncryption() {
-    const config = await getConfig()
+  async function toggleEncryption() {
+    const config = await getConfig();
 
     // Check if grasscutter path is set
     if (!config.grasscutter_path) {
-      alert('Grasscutter not set!')
-      return
+      alert('Grasscutter not set!');
+      return;
     }
 
     // Remove jar from path
-    const path = config.grasscutter_path.replace(/\\/g, '/')
-    const folderPath = path.substring(0, path.lastIndexOf('/'))
+    const path = config.grasscutter_path.replace(/\\/g, '/');
+    const folderPath = path.substring(0, path.lastIndexOf('/'));
 
-    await server.toggleEncryption(folderPath + '/config.json')
+    await server.toggleEncryption(folderPath + '/config.json');
 
-    this.setState({
+    setState({
       encryption: await translate(
-        (await server.encryptionEnabled(folderPath + '/config.json')) ? 'options.enabled' : 'options.disabled'
+        (await server.encryptionEnabled(folderPath + '/config.json'))
+          ? 'options.enabled'
+          : 'options.disabled'
       ),
-    })
+    });
   }
 
-  async restoreMetadata() {
-    await meta.restoreMetadata(this.props.downloadManager)
+  async function restoreMetadata() {
+    await meta.restoreMetadata(props.downloadManager);
   }
 
-  async installCert() {
+  async function installCert() {
     await invoke('generate_ca_files', {
       path: (await dataDir()) + 'cultivation',
-    })
+    });
   }
 
-  async toggleOption(opt: keyof Configuration) {
-    const changedVal = !(await getConfigOption(opt))
+  async function toggleOption(opt: keyof Configuration) {
+    const changedVal = !(await getConfigOption(opt));
 
-    await setConfigOption(opt, changedVal)
+    await setConfigOption(opt, changedVal);
 
-    // @ts-expect-error shut up bitch
-    this.setState({
+    setState({
       [opt]: changedVal,
-    })
+    });
   }
 
-  render() {
-    return (
-      <Menu closeFn={this.props.closeFn} className="Options" heading="Options">
-        {!this.state.platform || this.state.platform === 'windows' ? (
-          <div className="OptionSection" id="menuOptionsContainerGamePath">
-            <div className="OptionLabel" id="menuOptionsLabelGamePath">
-              <Tr text="options.game_path" />
-            </div>
-            <div className="OptionValue" id="menuOptionsDirGamePath">
-              <DirInput onChange={this.setGameExecutable} value={this.state?.game_install_path} extensions={['exe']} />
-            </div>
-          </div>
-        ) : (
-          <div className="OptionSection" id="menuOptionsContainerGameCommand">
-            <div className="OptionLabel" id="menuOptionsLabelGameCommand">
+  return (
+    <Menu closeFn={props.closeFn} class="Options" heading="Options">
+      <Show
+        when={!state.platform || state.platform === 'windows'}
+        keyed={false}
+        fallback={
+          <div class="OptionSection" id="menuOptionsContainerGameCommand">
+            <div class="OptionLabel" id="menuOptionsLabelGameCommand">
               <Tr text="options.game_command" />
             </div>
-            <div className="OptionValue" id="menuOptionsGameCommand">
+            <div class="OptionValue" id="menuOptionsGameCommand">
               <TextInput />
             </div>
           </div>
-        )}
-        <div className="OptionSection" id="menuOptionsContainermetaDownload">
-          <div className="OptionLabel" id="menuOptionsLabelmetaDownload">
-            <Tr text="options.recover_metadata" />
-            <HelpButton contents="help.emergency_metadata" />
+        }>
+        <div class="OptionSection" id="menuOptionsContainerGamePath">
+          <div class="OptionLabel" id="menuOptionsLabelGamePath">
+            <Tr text="options.game_path" />
           </div>
-          <div className="OptionValue" id="menuOptionsButtonmetaDownload">
-            <BigButton onClick={this.restoreMetadata} id="metaDownload">
-              <Tr text="components.download" />
-            </BigButton>
-          </div>
-        </div>
-        <div className="OptionSection" id="menuOptionsContainerPatchMeta">
-          <div className="OptionLabel" id="menuOptionsLabelPatchMeta">
-            <Tr text="options.patch_metadata" />
-            <HelpButton contents="help.patch_metadata" />
-          </div>
-          <div className="OptionValue" id="menuOptionsCheckboxPatchMeta">
-            <Checkbox
-              onChange={() => this.toggleOption('patch_metadata')}
-              checked={this.state?.patch_metadata}
-              id="patchMeta"
+          <div class="OptionValue" id="menuOptionsDirGamePath">
+            <DirInput
+              onChange={setGameExecutable}
+              value={state?.game_install_path}
+              extensions={['exe']}
             />
           </div>
         </div>
-        <div className="OptionSection" id="menuOptionsContainerUseProxy">
-          <div className="OptionLabel" id="menuOptionsLabelUseProxy">
-            <Tr text="options.use_proxy" />
-            <HelpButton contents="help.use_proxy" />
-          </div>
-          <div className="OptionValue" id="menuOptionsCheckboxUseProxy">
-            <Checkbox
-              onChange={() => this.toggleOption('use_internal_proxy')}
-              checked={this.state?.use_internal_proxy}
-              id="useProxy"
-            />
-          </div>
+      </Show>
+      <div class="OptionSection" id="menuOptionsContainermetaDownload">
+        <div class="OptionLabel" id="menuOptionsLabelmetaDownload">
+          <Tr text="options.recover_metadata" />
+          <HelpButton contents="help.emergency_metadata" />
         </div>
-        <div className="OptionSection" id="menuOptionsContainerWipeLogin">
-          <div className="OptionLabel" id="menuOptionsLabelWipeLogin">
-            <Tr text="options.wipe_login" />
-          </div>
-          <div className="OptionValue" id="menuOptionsCheckboxWipeLogin">
-            <Checkbox
-              onChange={() => this.toggleOption('wipe_login')}
-              checked={this.state?.wipe_login}
-              id="wipeLogin"
-            />
-          </div>
+        <div class="OptionValue" id="menuOptionsButtonmetaDownload">
+          <BigButton onClick={restoreMetadata} id="metaDownload">
+            <Tr text="components.download" />
+          </BigButton>
         </div>
+      </div>
+      <div class="OptionSection" id="menuOptionsContainerPatchMeta">
+        <div class="OptionLabel" id="menuOptionsLabelPatchMeta">
+          <Tr text="options.patch_metadata" />
+          <HelpButton contents="help.patch_metadata" />
+        </div>
+        <div class="OptionValue" id="menuOptionsCheckboxPatchMeta">
+          <Checkbox
+            onChange={() => toggleOption('patch_metadata')}
+            checked={state?.patch_metadata}
+            id="patchMeta"
+          />
+        </div>
+      </div>
+      <div class="OptionSection" id="menuOptionsContainerUseProxy">
+        <div class="OptionLabel" id="menuOptionsLabelUseProxy">
+          <Tr text="options.use_proxy" />
+          <HelpButton contents="help.use_proxy" />
+        </div>
+        <div class="OptionValue" id="menuOptionsCheckboxUseProxy">
+          <Checkbox
+            onChange={() => toggleOption('use_internal_proxy')}
+            checked={state?.use_internal_proxy}
+            id="useProxy"
+          />
+        </div>
+      </div>
+      <div class="OptionSection" id="menuOptionsContainerWipeLogin">
+        <div class="OptionLabel" id="menuOptionsLabelWipeLogin">
+          <Tr text="options.wipe_login" />
+        </div>
+        <div class="OptionValue" id="menuOptionsCheckboxWipeLogin">
+          <Checkbox
+            onChange={() => toggleOption('wipe_login')}
+            checked={state?.wipe_login}
+            id="wipeLogin"
+          />
+        </div>
+      </div>
 
-        <Divider />
+      <Divider />
 
-        <div className="OptionSection" id="menuOptionsContainerGCJar">
-          <div className="OptionLabel" id="menuOptionsLabelGCJar">
-            <Tr text="options.grasscutter_jar" />
-          </div>
-          <div className="OptionValue" id="menuOptionsDirGCJar">
-            <DirInput onChange={this.setGrasscutterJar} value={this.state?.grasscutter_path} extensions={['jar']} />
-          </div>
+      <div class="OptionSection" id="menuOptionsContainerGCJar">
+        <div class="OptionLabel" id="menuOptionsLabelGCJar">
+          <Tr text="options.grasscutter_jar" />
         </div>
-        <div className="OptionSection" id="menuOptionsContainerToggleEnc">
-          <div className="OptionLabel" id="menuOptionsLabelToggleEnc">
-            <Tr text="options.toggle_encryption" />
-            <HelpButton contents="help.encryption" />
-          </div>
-          <div className="OptionValue" id="menuOptionsButtonToggleEnc">
-            <BigButton onClick={this.toggleEncryption} id="toggleEnc">
-              {this.state.encryption}
-            </BigButton>
-          </div>
+        <div class="OptionValue" id="menuOptionsDirGCJar">
+          <DirInput
+            onChange={setGrasscutterJar}
+            value={state?.grasscutter_path}
+            extensions={['jar']}
+          />
         </div>
-        <div className="OptionSection" id="menuOptionsContainerInstallCert">
-          <div className="OptionLabel" id="menuOptionsLabelInstallCert">
-            <Tr text="options.install_certificate" />
-          </div>
-          <div className="OptionValue" id="menuOptionsButtonInstallCert">
-            <BigButton disabled={false} onClick={this.installCert} id="installCert">
-              <Tr text="components.install" />
-            </BigButton>
-          </div>
+      </div>
+      <div class="OptionSection" id="menuOptionsContainerToggleEnc">
+        <div class="OptionLabel" id="menuOptionsLabelToggleEnc">
+          <Tr text="options.toggle_encryption" />
+          <HelpButton contents="help.encryption" />
         </div>
-        {this.state.swag && (
-          <>
-            <Divider />
-            <div className="OptionSection" id="menuOptionsContainerAkebi">
-              <div className="OptionLabel" id="menuOptionsLabelAkebi">
-                <Tr text="swag.akebi" />
-              </div>
-              <div className="OptionValue" id="menuOptionsDirAkebi">
-                <DirInput onChange={this.setAkebi} value={this.state?.akebi_path} extensions={['exe']} />
-              </div>
-            </div>
-            <div className="OptionSection" id="menuOptionsContainerMigoto">
-              <div className="OptionLabel" id="menuOptionsLabelMigoto">
-                <Tr text="swag.migoto" />
-              </div>
-              <div className="OptionValue" id="menuOptionsDirMigoto">
-                <DirInput onChange={this.setMigoto} value={this.state?.migoto_path} extensions={['exe']} />
-              </div>
-            </div>
-            <div className="OptionSection" id="menuOptionsContainerReshade">
-              <div className="OptionLabel" id="menuOptionsLabelReshade">
-                <Tr text="swag.reshade" />
-              </div>
-              <div className="OptionValue" id="menuOptionsDirReshade">
-                <DirInput onChange={this.setReshade} value={this.state?.reshade_path} extensions={['exe']} />
-              </div>
-            </div>
-          </>
-        )}
+        <div class="OptionValue" id="menuOptionsButtonToggleEnc">
+          <BigButton onClick={toggleEncryption} id="toggleEnc">
+            {state.encryption}
+          </BigButton>
+        </div>
+      </div>
+      <div class="OptionSection" id="menuOptionsContainerInstallCert">
+        <div class="OptionLabel" id="menuOptionsLabelInstallCert">
+          <Tr text="options.install_certificate" />
+        </div>
+        <div class="OptionValue" id="menuOptionsButtonInstallCert">
+          <BigButton disabled={false} onClick={installCert} id="installCert">
+            <Tr text="components.install" />
+          </BigButton>
+        </div>
+      </div>
 
-        <Divider />
-
-        <div className="OptionSection" id="menuOptionsContainerGCWGame">
-          <div className="OptionLabel" id="menuOptionsLabelGCWDame">
-            <Tr text="options.grasscutter_with_game" />
-          </div>
-          <div className="OptionValue" id="menuOptionsCheckboxGCWGame">
-            <Checkbox
-              onChange={() => this.toggleOption('grasscutter_with_game')}
-              checked={this.state?.grasscutter_with_game}
-              id="gcWithGame"
-            />
-          </div>
-        </div>
-        {this.state.swag ? (
-          <div className="OptionSection" id="menuOptionsContainerHorny">
-            <div className="OptionLabel" id="menuOptionsLabelHorny">
-              <Tr text="options.horny_mode" />
+      <Show when={state.swag} keyed={false}>
+        <>
+          <Divider />
+          <div class="OptionSection" id="menuOptionsContainerAkebi">
+            <div class="OptionLabel" id="menuOptionsLabelAkebi">
+              <Tr text="swag.akebi" />
             </div>
-            <div className="OptionValue" id="menuOptionsCheckboxHorny">
-              <Checkbox
-                onChange={() => this.toggleOption('horny_mode')}
-                checked={this.state?.horny_mode}
-                id="hornyMode"
+            <div class="OptionValue" id="menuOptionsDirAkebi">
+              <DirInput
+                onChange={setAkebi}
+                value={state?.akebi_path}
+                extensions={['exe']}
               />
             </div>
           </div>
-        ) : null}
-
-        <Divider />
-
-        <div className="OptionSection" id="menuOptionsContainerThemes">
-          <div className="OptionLabel" id="menuOptionsLabelThemes">
-            <Tr text="options.theme" />
+          <div class="OptionSection" id="menuOptionsContainerMigoto">
+            <div class="OptionLabel" id="menuOptionsLabelMigoto">
+              <Tr text="swag.migoto" />
+            </div>
+            <div class="OptionValue" id="menuOptionsDirMigoto">
+              <DirInput
+                onChange={setMigoto}
+                value={state?.migoto_path}
+                extensions={['exe']}
+              />
+            </div>
           </div>
-          <div className="OptionValue" id="menuOptionsSelectThemes">
-            <select
-              value={this.state.theme}
-              id="menuOptionsSelectMenuThemes"
-              onChange={(event) => {
-                this.setTheme(event.target.value)
-              }}
-            >
-              {this.state.themes.map((t) => (
-                <option key={t} value={t}>
-                  {t}
-                </option>
-              ))}
-            </select>
+          <div class="OptionSection" id="menuOptionsContainerReshade">
+            <div class="OptionLabel" id="menuOptionsLabelReshade">
+              <Tr text="swag.reshade" />
+            </div>
+            <div class="OptionValue" id="menuOptionsDirReshade">
+              <DirInput
+                onChange={setReshade}
+                value={state?.reshade_path}
+                extensions={['exe']}
+              />
+            </div>
           </div>
+        </>
+      </Show>
+
+      <Divider />
+
+      <div class="OptionSection" id="menuOptionsContainerGCWGame">
+        <div class="OptionLabel" id="menuOptionsLabelGCWDame">
+          <Tr text="options.grasscutter_with_game" />
         </div>
-
-        <Divider />
-
-        <div className="OptionSection" id="menuOptionsContainerJavaPath">
-          <div className="OptionLabel" id="menuOptionsLabelJavaPath">
-            <Tr text="options.java_path" />
-          </div>
-          <div className="OptionValue" id="menuOptionsDirJavaPath">
-            <DirInput onChange={this.setJavaPath} value={this.state?.java_path} extensions={['exe']} />
-          </div>
+        <div class="OptionValue" id="menuOptionsCheckboxGCWGame">
+          <Checkbox
+            onChange={() => toggleOption('grasscutter_with_game')}
+            checked={state?.grasscutter_with_game}
+            id="gcWithGame"
+          />
         </div>
+      </div>
 
-        <div className="OptionSection" id="menuOptionsContainerBG">
-          <div className="OptionLabel" id="menuOptionsLabelBG">
-            <Tr text="options.background" />
+      <Show when={state.swag} keyed={false}>
+        <div class="OptionSection" id="menuOptionsContainerHorny">
+          <div class="OptionLabel" id="menuOptionsLabelHorny">
+            <Tr text="options.horny_mode" />
           </div>
-          <div className="OptionValue" id="menuOptionsDirBG">
-            <DirInput
-              onChange={this.setCustomBackground}
-              value={this.state?.bg_url_or_path}
-              extensions={['png', 'jpg', 'jpeg']}
-              readonly={false}
-              clearable={true}
-              customClearBehaviour={async () => {
-                await setConfigOption('customBackground', '')
-                window.location.reload()
-              }}
+          <div class="OptionValue" id="menuOptionsCheckboxHorny">
+            <Checkbox
+              onChange={() => toggleOption('horny_mode')}
+              checked={state?.horny_mode}
+              id="hornyMode"
             />
           </div>
         </div>
+      </Show>
 
-        <div className="OptionSection" id="menuOptionsContainerLang">
-          <div className="OptionLabel" id="menuOptionsLabelLang">
-            <Tr text="options.language" />
-          </div>
-          <div className="OptionValue" id="menuOptionsSelectLang">
-            <select
-              value={this.state.current_language}
-              id="menuOptionsSelectMenuLang"
-              onChange={(event) => {
-                this.setLanguage(event.target.value)
-              }}
-            >
-              {this.state.language_options.map((lang) => (
-                <option key={Object.keys(lang)[0]} value={Object.keys(lang)[0]}>
+      <Divider />
+
+      <div class="OptionSection" id="menuOptionsContainerThemes">
+        <div class="OptionLabel" id="menuOptionsLabelThemes">
+          <Tr text="options.theme" />
+        </div>
+        <div class="OptionValue" id="menuOptionsSelectThemes">
+          <select
+            value={state.theme}
+            id="menuOptionsSelectMenuThemes"
+            onChange={(event) => {
+              setTheme(event.currentTarget.value);
+            }}>
+            <For each={state.themes}>
+              {(t) => <option value={t}>{t}</option>}
+            </For>
+          </select>
+        </div>
+      </div>
+
+      <Divider />
+
+      <div class="OptionSection" id="menuOptionsContainerJavaPath">
+        <div class="OptionLabel" id="menuOptionsLabelJavaPath">
+          <Tr text="options.java_path" />
+        </div>
+        <div class="OptionValue" id="menuOptionsDirJavaPath">
+          <DirInput
+            onChange={setJavaPath}
+            value={state?.java_path}
+            extensions={['exe']}
+          />
+        </div>
+      </div>
+
+      <div class="OptionSection" id="menuOptionsContainerBG">
+        <div class="OptionLabel" id="menuOptionsLabelBG">
+          <Tr text="options.background" />
+        </div>
+        <div class="OptionValue" id="menuOptionsDirBG">
+          <DirInput
+            onChange={setCustomBackground}
+            value={state?.bg_url_or_path}
+            extensions={['png', 'jpg', 'jpeg']}
+            readonly={false}
+            clearable={true}
+            customClearBehaviour={() => {
+              setConfigOption('customBackground', '').then(
+                window.location.reload
+              );
+            }}
+          />
+        </div>
+      </div>
+
+      <div class="OptionSection" id="menuOptionsContainerLang">
+        <div class="OptionLabel" id="menuOptionsLabelLang">
+          <Tr text="options.language" />
+        </div>
+        <div class="OptionValue" id="menuOptionsSelectLang">
+          <select
+            value={state.current_language}
+            id="menuOptionsSelectMenuLang"
+            onChange={(event) => {
+              setLanguage(event.currentTarget.value);
+            }}>
+            <For each={state.language_options}>
+              {(lang) => (
+                <option value={Object.keys(lang)[0]}>
                   {lang[Object.keys(lang)[0]]}
                 </option>
-              ))}
-            </select>
-          </div>
+              )}
+            </For>
+          </select>
         </div>
-      </Menu>
-    )
-  }
+      </div>
+    </Menu>
+  );
 }

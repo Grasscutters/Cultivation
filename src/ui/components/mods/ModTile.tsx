@@ -1,129 +1,115 @@
-import React from 'react'
-import { ModData, PartialModData } from '../../../utils/gamebanana'
+import { createSignal, onMount, Show } from 'solid-js';
+import { shell } from '@tauri-apps/api';
 
-import './ModTile.css'
-import Like from '../../../resources/icons/like.svg'
-import Eye from '../../../resources/icons/eye.svg'
-import Download from '../../../resources/icons/download.svg'
-import Folder from '../../../resources/icons/folder.svg'
-import { shell } from '@tauri-apps/api'
-import Checkbox from '../common/Checkbox'
-import { disableMod, enableMod, modIsEnabled } from '../../../utils/mods'
+import Download from '../../../resources/icons/download.svg';
+import Eye from '../../../resources/icons/eye.svg';
+import Folder from '../../../resources/icons/folder.svg';
+import Like from '../../../resources/icons/like.svg';
+import { ModData, PartialModData } from '../../../utils/gamebanana';
+import { disableMod, enableMod, modIsEnabled } from '../../../utils/mods';
+import Checkbox from '../common/Checkbox';
+
+import './ModTile.css';
 
 interface IProps {
-  mod: ModData | PartialModData
-  horny?: boolean
-  path?: string
-  onClick: (mod: ModData) => void
+  mod: ModData | PartialModData;
+  horny?: boolean;
+  path?: string;
+  onClick: (mod: ModData) => void;
 }
 
-interface IState {
-  hover: boolean
-  modEnabled: boolean
-}
+export function ModTile(props: IProps) {
+  const [hover, setHover] = createSignal(false);
+  const [modEnabled, setModEnabled] = createSignal(false);
 
-export class ModTile extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
-
-    this.state = {
-      hover: false,
-      modEnabled: false,
+  function getModFolderName() {
+    if (!('id' in props.mod)) {
+      return props.mod.name.includes('DISABLED_')
+        ? props.mod.name.split('DISABLED_')[1]
+        : props.mod.name;
     }
 
-    this.openInExplorer = this.openInExplorer.bind(this)
-    this.toggleMod = this.toggleMod.bind(this)
+    return String(props.mod.id);
   }
 
-  getModFolderName() {
-    if (!('id' in this.props.mod)) {
-      return this.props.mod.name.includes('DISABLED_') ? this.props.mod.name.split('DISABLED_')[1] : this.props.mod.name
-    }
-
-    return String(this.props.mod.id)
-  }
-
-  async componentDidMount() {
-    if (!('id' in this.props.mod)) {
+  onMount(async () => {
+    if (!('id' in props.mod)) {
       // Partial mod
-      this.setState({
-        modEnabled: await modIsEnabled(this.props.mod.name),
-      })
+      setModEnabled(await modIsEnabled(props.mod.name));
 
-      return
+      return;
     }
 
-    this.setState({
-      modEnabled: await modIsEnabled(String(this.props.mod.id)),
-    })
+    setModEnabled(await modIsEnabled(String(props.mod.id)));
+  });
+
+  function openInExplorer() {
+    if (props.path) shell.open(props.path);
   }
 
-  async openInExplorer() {
-    if (this.props.path) shell.open(this.props.path)
+  function toggleMod() {
+    setModEnabled((e) => !e);
+    const folderName = String(getModFolderName());
+    modEnabled() ? enableMod(folderName) : disableMod(folderName);
   }
 
-  toggleMod() {
-    this.setState(
-      {
-        modEnabled: !this.state.modEnabled,
-      },
-      () => {
-        if (this.state.modEnabled) {
-          enableMod(String(this.getModFolderName()))
-          return
-        }
+  return (
+    <div
+      class="ModListItem"
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      onClick={() => {
+        if (props.path) return;
+        if (!('id' in props.mod)) return;
 
-        disableMod(String(this.getModFolderName()))
-      }
-    )
-  }
-
-  render() {
-    const { mod } = this.props
-
-    return (
-      <div
-        className="ModListItem"
-        onMouseEnter={() => this.setState({ hover: true })}
-        onMouseLeave={() => this.setState({ hover: false })}
-        {...(!this.props.path && {
-          onClick: () => {
-            if (!('id' in mod)) return
-
-            this.props.onClick(mod)
-          },
-        })}
-      >
-        <span className="ModName">{mod.name.includes('DISABLED_') ? mod.name.split('DISABLED_')[1] : mod.name}</span>
-        <span className="ModAuthor">{mod.submitter.name}</span>
-        <div className="ModImage">
-          {this.state.hover &&
-            (!this.props.path ? (
-              <img src={Download} className="ModTileDownload" alt="Download" />
-            ) : (
-              <div className="ModTileOpen">
-                <img src={Folder} className="ModTileFolder" alt="Open" onClick={this.openInExplorer} />
-                <Checkbox checked={this.state.modEnabled} id={this.props.mod.name} onChange={this.toggleMod} />
+        props.onClick(props.mod);
+      }}>
+      <span class="ModName">
+        {props.mod.name.includes('DISABLED_')
+          ? props.mod.name.split('DISABLED_')[1]
+          : props.mod.name}
+      </span>
+      <span class="ModAuthor">{props.mod.submitter.name}</span>
+      <div class="ModImage">
+        <Show when={hover()} keyed={false}>
+          <Show
+            when={!props.path}
+            keyed={false}
+            fallback={
+              <div class="ModTileOpen">
+                <img
+                  src={Folder}
+                  class="ModTileFolder"
+                  alt="Open"
+                  onClick={openInExplorer}
+                />
+                <Checkbox
+                  checked={modEnabled()}
+                  id={props.mod.name}
+                  onChange={toggleMod}
+                />
               </div>
-            ))}
-          <img
-            src={mod.images[0]}
-            className={`ModImageInner ${'id' in mod && !this.props.horny && mod.nsfw ? 'nsfw' : ''} ${
-              this.state.hover ? 'blur' : ''
-            }`}
-          />
+            }>
+            <img src={Download} class="ModTileDownload" alt="Download" />
+          </Show>
+        </Show>
+        <img
+          src={props.mod.images[0]}
+          class={`ModImageInner ${
+            'id' in props.mod && !props.horny && props.mod.nsfw ? 'nsfw' : ''
+          } ${hover() ? 'blur' : ''}`}
+        />
+      </div>
+      <div class="ModInner">
+        <div class="likes">
+          <img src={Like} />
+          <span>{props.mod.likes.toLocaleString()}</span>
         </div>
-        <div className="ModInner">
-          <div className="likes">
-            <img src={Like} />
-            <span>{mod.likes.toLocaleString()}</span>
-          </div>
-          <div className="views">
-            <img src={Eye} />
-            <span>{mod.views.toLocaleString()}</span>
-          </div>
+        <div class="views">
+          <img src={Eye} />
+          <span>{props.mod.views.toLocaleString()}</span>
         </div>
       </div>
-    )
-  }
+    </div>
+  );
 }

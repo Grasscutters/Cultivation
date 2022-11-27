@@ -1,0 +1,18 @@
+pre-commit:
+  parallel: true
+  commands:
+    prettier-js:
+      glob: "*.{ts,js,tsx}"
+      run: prettier --write {staged_files}
+    prettier-json:
+      glob: "{*.json,.prettierrc,.lintstagedrc,.eslintrc}"
+      run: prettier --write --parser json {staged_files}
+    lint:
+      exclude: ".prettierrc.js|commitlint.config.js"
+      glob: "*.{ts,tsx}"
+      run: eslint --fix {staged_files}
+
+commit-msg:
+  scripts:
+    'commitlint.sh':
+      runner: bash

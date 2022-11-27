@@ -1,9 +1,9 @@
-import { invoke } from '@tauri-apps/api'
-import { listen } from '@tauri-apps/api/event'
+import { invoke } from '@tauri-apps/api';
+import { listen } from '@tauri-apps/api/event';
 
 interface UnzipPayload {
-  file: string
-  new_folder: string
+  file: string;
+  new_folder: string;
 }
 
 export function unzip(
@@ -18,16 +18,16 @@ export function unzip(
       destpath: dest,
       topLevelStrip,
       folderIfLoose,
-    })
+    });
 
     listen('extract_end', ({ payload }) => {
-      console.log(payload)
-      console.log(file)
+      console.log(payload);
+      console.log(file);
 
       // @ts-expect-error Payload is an object
       if (payload?.file === file) {
-        resolve(payload as UnzipPayload)
+        resolve(payload as UnzipPayload);
       }
-    })
-  })
+    });
+  });
 }

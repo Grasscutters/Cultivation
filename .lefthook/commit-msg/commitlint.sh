@@ -1,0 +1,1 @@
+echo $(head -n1 $1) | pnpx commitlint --color

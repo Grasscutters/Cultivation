@@ -1,15 +1,20 @@
+use crate::error::CultivationResult;
 use file_diff::diff;
-use std::fs;
-use std::io::{Read, Write};
-use std::path::PathBuf;
+use std::{
+  fs,
+  io::{Read, Write},
+  path::PathBuf,
+};
 
+// TODO: remove this file helper, already exists an api for this in tauri.
 #[tauri::command]
-pub fn rename(path: String, new_name: String) {
+#[deprecated = "file helper is redundant"]
+pub fn rename(path: String, new_name: String) -> CultivationResult<()> {
   let mut new_path = path.clone();
 
   // Check if file/folder to replace exists
   if fs::metadata(&path).is_err() {
-    return;
+    return Ok(());
   }
 
   // Check if path uses forward or back slashes
@@ -19,37 +24,38 @@ pub fn rename(path: String, new_name: String) {
 
   let path_replaced = &path.replace(new_path.split('/').last().unwrap(), &new_name);
 
-  match fs::rename(&path, path_replaced) {
-    Ok(_) => {
-      println!("Renamed {} to {}", &path, path_replaced);
-    }
-    Err(e) => {
-      println!("Error: {}", e);
-    }
-  };
+  fs::rename(&path, path_replaced).map_err(Into::into)
 }
 
+// TODO: remove this file helper, already exists an api for this in tauri.
 #[tauri::command]
-pub fn dir_create(path: String) {
-  fs::create_dir_all(path).unwrap();
+#[deprecated = "file helper is redundant"]
+pub fn dir_create(path: String) -> CultivationResult<()> {
+  fs::create_dir_all(path).map_err(Into::into)
 }
 
+// TODO: remove this file helper, already exists an api for this in tauri.
 #[tauri::command]
+#[deprecated = "file helper is redundant"]
 pub fn dir_exists(path: &str) -> bool {
   let path_buf = PathBuf::from(path);
   fs::metadata(path_buf).is_ok()
 }
 
+// TODO: remove this file helper, already exists an api for this in tauri.
 #[tauri::command]
-pub fn dir_is_empty(path: &str) -> bool {
+#[deprecated = "file helper is redundant"]
+pub fn dir_is_empty(path: &str) -> CultivationResult<bool> {
   let path_buf = PathBuf::from(path);
-  fs::read_dir(path_buf).unwrap().count() == 0
+  Ok(fs::read_dir(path_buf)?.count() == 0)
 }
 
+// TODO: remove this file helper, already exists an api for this in tauri.
 #[tauri::command]
-pub fn dir_delete(path: &str) {
+#[deprecated = "file helper is redundant"]
+pub fn dir_delete(path: &str) -> CultivationResult<()> {
   let path_buf = PathBuf::from(path);
-  fs::remove_dir_all(path_buf).unwrap();
+  fs::remove_dir_all(path_buf).map_err(Into::into)
 }
 
 #[tauri::command]
@@ -57,109 +63,79 @@ pub fn are_files_identical(path1: &str, path2: &str) -> bool {
   diff(path1, path2)
 }
 
+// TODO: remove this file helper, already exists an api for this in tauri.
 #[tauri::command]
-pub fn copy_file(path: String, new_path: String) -> bool {
+#[deprecated = "file helper is redundant"]
+pub fn copy_file(path: String, new_path: String) -> CultivationResult<()> {
   let filename = &path.split('/').last().unwrap();
   let path_buf = PathBuf::from(&path);
 
   // If the new path doesn't exist, create it.
   if !dir_exists(PathBuf::from(&new_path).pop().to_string().as_str()) {
-    std::fs::create_dir_all(&new_path).unwrap();
+    std::fs::create_dir_all(&new_path)?;
   }
 
   // Copy old to new
-  match std::fs::copy(path_buf, format!("{}/{}", new_path, filename)) {
-    Ok(_) => true,
-    Err(e) => {
-      println!("Failed to copy file: {}", e);
-      println!("Path: {}", path);
-      println!("New Path: {}", new_path);
-      false
-    }
-  }
+  std::fs::copy(path_buf, format!("{}/{}", new_path, filename))?;
+  Ok(())
 }
 
+// TODO: remove this file helper, already exists an api for this in tauri.
 #[tauri::command]
-pub fn copy_file_with_new_name(path: String, new_path: String, new_name: String) -> bool {
+#[deprecated = "file helper is redundant"]
+pub fn copy_file_with_new_name(
+  path: String,
+  new_path: String,
+  new_name: String,
+) -> CultivationResult<()> {
   let mut new_path_buf = PathBuf::from(&new_path);
   let path_buf = PathBuf::from(&path);
 
   // If the new path doesn't exist, create it.
   if !dir_exists(PathBuf::from(&new_path).pop().to_string().as_str()) {
-    match std::fs::create_dir_all(&new_path) {
-      Ok(_) => {}
-      Err(e) => {
-        println!("Failed to create directory: {}", e);
-        return false;
-      }
-    };
+    std::fs::create_dir_all(&new_path)?;
   }
 
   new_path_buf.push(new_name);
 
   // Copy old to new
-  match std::fs::copy(path_buf, &new_path_buf) {
-    Ok(_) => true,
-    Err(e) => {
-      println!("Failed to copy file: {}", e);
-      println!("Path: {}", path);
-      println!("New Path: {}", new_path);
-      false
-    }
-  }
+  std::fs::copy(path_buf, &new_path_buf)?;
+
+  Ok(())
 }
 
+// TODO: remove this file helper, already exists an api for this in tauri.
 #[tauri::command]
-pub fn delete_file(path: String) -> bool {
+#[deprecated = "file helper is redundant"]
+pub fn delete_file(path: String) -> CultivationResult<()> {
   let path_buf = PathBuf::from(&path);
 
-  match std::fs::remove_file(path_buf) {
-    Ok(_) => true,
-    Err(e) => {
-      println!("Failed to delete file: {}", e);
-      false
-    }
-  };
-
-  false
+  std::fs::remove_file(path_buf).map_err(Into::into)
 }
 
+// TODO: remove this file helper, already exists an api for this in tauri.
 #[tauri::command]
-pub fn read_file(path: String) -> String {
+#[deprecated = "file helper is redundant"]
+pub fn read_file(path: String) -> CultivationResult<String> {
   let path_buf = PathBuf::from(&path);
 
-  let mut file = match fs::File::open(path_buf) {
-    Ok(file) => file,
-    Err(e) => {
-      println!("Failed to open file: {}", e);
-      return String::new();
-    }
-  };
+  let mut file = fs::File::open(path_buf)?;
 
   let mut contents = String::new();
   file.read_to_string(&mut contents).unwrap();
 
-  contents
+  Ok(contents)
 }
 
+// TODO: remove this file helper, already exists an api for this in tauri.
 #[tauri::command]
-pub fn write_file(path: String, contents: String) {
+#[deprecated = "file helper is redundant"]
+pub fn write_file(path: String, contents: String) -> CultivationResult<()> {
   let path_buf = PathBuf::from(&path);
 
   // Create file if it exists, otherwise just open and rewrite
-  let mut file = match fs::File::create(path_buf) {
-    Ok(file) => file,
-    Err(e) => {
-      println!("Failed to open file: {}", e);
-      return;
-    }
-  };
+  let mut file = fs::File::create(path_buf)?;
 
   // Write contents to file
-  match file.write_all(contents.as_bytes()) {
-    Ok(_) => (),
-    Err(e) => {
-      println!("Failed to write to file: {}", e);
-    }
-  }
+  file.write_all(contents.as_bytes()).map_err(Into::into)
 }

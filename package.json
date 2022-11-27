@@ -3,48 +3,35 @@
   "version": "1.0.10",
   "private": true,
   "dependencies": {
-    "@tauri-apps/api": "^1.0.0-rc.5",
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^13.0.0",
-    "@testing-library/user-event": "^14.2.6",
-    "@types/jest": "^28.1.6",
-    "@types/node": "^18.0.6",
-    "@types/react": "^18.0.0",
-    "@types/react-dom": "^18.0.0",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "react-scripts": "5.0.1",
-    "typescript": "^4.4.2",
-    "web-vitals": "^2.1.0"
+    "@solid-devtools/overlay": "^0.3.1",
+    "@solid-primitives/timer": "^1.3.4",
+    "@tauri-apps/api": "^1.2.0",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/user-event": "^14.4.3",
+    "@types/jest": "^29.2.3",
+    "@types/node": "^18.11.9",
+    "classcat": "^5.0.4",
+    "typescript": "^4.9.3",
+    "web-vitals": "^3.1.0"
   },
   "scripts": {
-    "start": "cross-env BROWSER=none react-scripts start",
+    "start": "cross-env BROWSER=none vite",
     "postbuild:windows": "xcopy /E /H /C /I /Y \".\\src-tauri\\lang\" \".\\src-tauri\\target\\release\\lang\"",
     "postbuild:linux": "cp -r \"./src-tauri/lang\" \"./lang\"",
-    "build:windows": "yarn tauri build",
-    "build:linux": "yarn tauri build",
-    "build": "react-scripts build && run-script-os",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "build:windows": "pnpm tauri build",
+    "build:linux": "pnpm tauri build",
+    "build": "vite build && run-script-os",
+    "test": "vitest",
     "tauri": "tauri",
     "start:dev": "tauri dev -- -- --no-admin",
+    "fe:lint:fix": "eslint src --fix",
     "format": "cargo fmt --manifest-path ./src-tauri/Cargo.toml --all && yarn prettier --write --cache --loglevel warn .",
     "lint": "cargo clippy --manifest-path ./src-tauri/Cargo.toml --no-default-features && yarn tsc --noEmit && yarn eslint src",
     "lint:fix": "cargo clippy --manifest-path ./src-tauri/Cargo.toml --no-default-features --fix --allow-dirty && yarn tsc --noEmit && yarn eslint --fix src",
-    "prepare": "husky install"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "prepare": "lefthook install"
   },
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
+    "production": [">0.2%", "not dead", "not op_mini all"],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
@@ -52,16 +39,39 @@
     ]
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.0.0-rc.11",
-    "@typescript-eslint/eslint-plugin": "^5.22.0",
-    "@typescript-eslint/parser": "^5.22.0",
+    "@commitlint/cli": "^17.3.0",
+    "@commitlint/config-conventional": "^17.3.0",
+    "@tauri-apps/cli": "^1.2.1",
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
+    "@typescript-eslint/parser": "^5.44.0",
+    "commitizen": "^4.2.5",
     "cross-env": "^7.0.3",
-    "eslint": "^8.15.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-react": "^7.29.4",
-    "husky": "^8.0.0",
-    "lint-staged": "^13.0.3",
-    "prettier": "^2.7.1",
-    "run-script-os": "^1.1.6"
+    "eslint-config-prettier-standard": "^4.0.1",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.5.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-simple-import-sort": "^8.0.0",
+    "eslint-plugin-solid": "^0.8.0",
+    "lefthook": "^1.2.2",
+    "lint-staged": "^13.0.4",
+    "prettier": "^2.8.0",
+    "prettier-config-standard": "^5.0.0",
+    "run-script-os": "^1.1.6",
+    "solid-js": "^1.6.2",
+    "solid-testing-library": "^0.5.0",
+    "vite": "^3.2.4",
+    "vite-plugin-solid": "^2.4.0",
+    "vitest": "^0.25.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

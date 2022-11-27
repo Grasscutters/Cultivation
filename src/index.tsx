@@ -1,21 +1,31 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+import { Show } from 'solid-js';
+import { render } from 'solid-js/web';
+import { attachDevtoolsOverlay } from '@solid-devtools/overlay';
 
-import './index.css'
-import App from './ui/App'
-import Debug from './ui/Debug'
+import App from './ui/App';
+import Debug from './ui/Debug';
+import { getConfigOption } from './utils/configuration';
+import reportWebVitals from './utils/reportWebVitals';
 
-import { getConfigOption } from './utils/configuration'
+import './index.css';
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
+attachDevtoolsOverlay({});
 
-let isDebug = false
+const root = document.getElementById('root') as HTMLElement;
 
-;async () => {
-  isDebug = await getConfigOption('debug_enabled')
-}
+let isDebug = false;
 
-root.render(<React.StrictMode>{isDebug ? <Debug /> : <App />}</React.StrictMode>)
+(async () => {
+  isDebug = await getConfigOption('debug_enabled');
+})();
 
-import reportWebVitals from './utils/reportWebVitals'
-isDebug && reportWebVitals(console.log)
+render(
+  () => (
+    <Show when={isDebug} keyed={false} fallback={<App />}>
+      <Debug />
+    </Show>
+  ),
+  root
+);
+
+isDebug && reportWebVitals(console.log);

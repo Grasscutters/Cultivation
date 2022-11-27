@@ -1,52 +1,38 @@
-import React from 'react'
+import { createSignal, For } from 'solid-js';
 
-import './ModHeader.css'
+import './ModHeader.css';
 
 interface IProps {
   headers: {
-    title: string
-    name: string
-  }[]
-  onChange: (value: string) => void
-  defaultHeader: string
+    title: string;
+    name: string;
+  }[];
+  onChange: (value: string) => void;
+  defaultHeader: string;
 }
 
-interface IState {
-  selected: string
-}
+export function ModHeader(props: IProps) {
+  const [selected, setSelected] = createSignal(props.defaultHeader);
 
-export class ModHeader extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
+  function setSelection(selection: string) {
+    setSelected(selection);
 
-    this.state = {
-      selected: this.props.defaultHeader,
-    }
+    props.onChange(selection);
   }
 
-  setSelected(value: string) {
-    this.setState({
-      selected: value,
-    })
-
-    this.props.onChange(value)
-  }
-
-  render() {
-    return (
-      <div className="ModHeader">
-        {this.props.headers.map((header, index) => {
-          return (
-            <div
-              key={index}
-              className={`ModHeaderTitle ${this.state.selected === header.name ? 'selected' : ''}`}
-              onClick={() => this.setSelected(header.name)}
-            >
-              {header.title}
-            </div>
-          )
-        })}
-      </div>
-    )
-  }
+  return (
+    <div class="ModHeader">
+      <For each={props.headers}>
+        {(header) => (
+          <div
+            class={`ModHeaderTitle ${
+              selected() === header.name ? 'selected' : ''
+            }`}
+            onClick={() => setSelection(header.name)}>
+            {header.title}
+          </div>
+        )}
+      </For>
+    </div>
+  );
 }
