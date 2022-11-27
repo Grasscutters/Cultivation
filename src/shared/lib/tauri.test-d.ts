@@ -1,4 +1,4 @@
-import { test, assertType, expectTypeOf } from 'vitest';
+import { test, expectTypeOf } from 'vitest';
 import { invoke } from '@tauri-apps/api/tauri';
 import { listen } from '@tauri-apps/api/event';
 
