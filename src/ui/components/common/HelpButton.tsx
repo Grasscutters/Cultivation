@@ -1,33 +1,24 @@
-import React from 'react'
-
 import './HelpButton.css'
 import Help from '../../../resources/icons/help.svg'
 import { translate } from '../../../utils/language'
+import {JSX} from "solid-js";
 
 interface IProps {
-  children?: React.ReactNode[] | React.ReactNode
+  children?: JSX.Element
   contents?: string
   id?: string
 }
 
-export default class HelpButton extends React.Component<IProps, never> {
-  constructor(props: IProps) {
-    super(props)
-
-    this.showAlert = this.showAlert.bind(this)
+export default function HelpButton(props: IProps) {
+  async function showAlert() {
+    if (props.contents) alert(await translate(props.contents))
   }
 
-  async showAlert() {
-    if (this.props.contents) alert(await translate(this.props.contents))
-  }
-
-  render() {
-    return (
-      <div className="HelpSection">
-        <div className="HelpButton" onClick={this.showAlert}>
-          <img src={Help} />
-        </div>
+  return (
+    <div class="HelpSection">
+      <div class="HelpButton" onClick={showAlert}>
+        <img src={Help} />
       </div>
-    )
-  }
+    </div>
+  )
 }

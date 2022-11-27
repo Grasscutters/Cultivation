@@ -1,4 +1,3 @@
-import React from 'react'
 import Menu from './Menu'
 import Tr from '../../../utils/language'
 import DownloadHandler from '../../../utils/download'
@@ -12,6 +11,8 @@ import { getConfigOption } from '../../../utils/configuration'
 import { invoke } from '@tauri-apps/api'
 import { listen } from '@tauri-apps/api/event'
 import HelpButton from '../common/HelpButton'
+import {createStore} from "solid-js/store";
+import {onCleanup, onMount} from "solid-js";
 
 const STABLE_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/stable.zip'
 const DEV_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/development.zip'
@@ -32,36 +33,26 @@ interface IState {
   resources_exist: boolean
 }
 
-export default class Downloads extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
+export default function Downloads(props: IProps) {
+  const [state, setState] = createStore<IState>({
+    grasscutter_downloading: props.downloadManager.downloadingJar(),
+    resources_downloading: props.downloadManager.downloadingResources(),
+    repo_downloading: props.downloadManager.downloadingRepo(),
+    grasscutter_set: false,
+    resources_exist: false,
+  });
 
-    this.state = {
-      grasscutter_downloading: this.props.downloadManager.downloadingJar(),
-      resources_downloading: this.props.downloadManager.downloadingResources(),
-      repo_downloading: this.props.downloadManager.downloadingRepo(),
-      grasscutter_set: false,
-      resources_exist: false,
-    }
+  const unlisten = listen('jar_extracted', () => {
+    setState('grasscutter_set', true);
+  });
 
-    this.getGrasscutterFolder = this.getGrasscutterFolder.bind(this)
-    this.downloadGrasscutterStableRepo = this.downloadGrasscutterStableRepo.bind(this)
-    this.downloadGrasscutterDevRepo = this.downloadGrasscutterDevRepo.bind(this)
-    this.downloadGrasscutterStable = this.downloadGrasscutterStable.bind(this)
-    this.downloadGrasscutterLatest = this.downloadGrasscutterLatest.bind(this)
-    this.downloadResources = this.downloadResources.bind(this)
-    this.toggleButtons = this.toggleButtons.bind(this)
-  }
+  onCleanup(() => unlisten.then((ul) => ul()));
 
-  async componentDidMount() {
+  onMount(async () => {
     const gc_path = await getConfigOption('grasscutter_path')
 
-    listen('jar_extracted', () => {
-      this.setState({ grasscutter_set: true }, this.forceUpdate)
-    })
-
     if (!gc_path || gc_path === '') {
-      this.setState({
+      setState({
         grasscutter_set: false,
         resources_exist: false,
       })
@@ -80,14 +71,14 @@ export default class Downloads extends React.Component<IProps, IState> {
           path: path + '\\resources',
         })) as boolean)
 
-      this.setState({
+      setState({
         grasscutter_set: gc_path !== '',
         resources_exist,
       })
     }
-  }
+  });
 
-  async getGrasscutterFolder() {
+  async function getGrasscutterFolder() {
     const path = await getConfigOption('grasscutter_path')
     let folderPath
 
@@ -109,55 +100,55 @@ export default class Downloads extends React.Component<IProps, IState> {
     return folderPath
   }
 
-  async downloadGrasscutterStableRepo() {
-    const folder = await this.getGrasscutterFolder()
-    this.props.downloadManager.addDownload(STABLE_REPO_DOWNLOAD, folder + '\\grasscutter_repo.zip', async () => {
+  async function downloadGrasscutterStableRepo() {
+    const folder = await getGrasscutterFolder()
+    props.downloadManager.addDownload(STABLE_REPO_DOWNLOAD, folder + '\\grasscutter_repo.zip', async () => {
       await unzip(folder + '\\grasscutter_repo.zip', folder + '\\', true)
-      this.toggleButtons()
+      toggleButtons()
     })
 
-    this.toggleButtons()
+    toggleButtons()
   }
 
-  async downloadGrasscutterDevRepo() {
-    const folder = await this.getGrasscutterFolder()
-    this.props.downloadManager.addDownload(DEV_REPO_DOWNLOAD, folder + '\\grasscutter_repo.zip', async () => {
+  async function downloadGrasscutterDevRepo() {
+    const folder = await getGrasscutterFolder()
+    props.downloadManager.addDownload(DEV_REPO_DOWNLOAD, folder + '\\grasscutter_repo.zip', async () => {
       await unzip(folder + '\\grasscutter_repo.zip', folder + '\\', true)
-      this.toggleButtons()
+      toggleButtons()
     })
 
-    this.toggleButtons()
+    toggleButtons()
   }
 
-  async downloadGrasscutterStable() {
-    const folder = await this.getGrasscutterFolder()
-    this.props.downloadManager.addDownload(STABLE_DOWNLOAD, folder + '\\grasscutter.zip', async () => {
+  async function downloadGrasscutterStable() {
+    const folder = await getGrasscutterFolder()
+    props.downloadManager.addDownload(STABLE_DOWNLOAD, folder + '\\grasscutter.zip', async () => {
       await unzip(folder + '\\grasscutter.zip', folder + '\\', true)
-      this.toggleButtons
+      toggleButtons
     })
 
     // Also add repo download
-    this.downloadGrasscutterStableRepo()
+    downloadGrasscutterStableRepo()
 
-    this.toggleButtons()
+    toggleButtons()
   }
 
-  async downloadGrasscutterLatest() {
-    const folder = await this.getGrasscutterFolder()
-    this.props.downloadManager.addDownload(DEV_DOWNLOAD, folder + '\\grasscutter.zip', async () => {
+  async function downloadGrasscutterLatest() {
+    const folder = await getGrasscutterFolder()
+    props.downloadManager.addDownload(DEV_DOWNLOAD, folder + '\\grasscutter.zip', async () => {
       await unzip(folder + '\\grasscutter.zip', folder + '\\', true)
-      this.toggleButtons()
+      toggleButtons()
     })
 
     // Also add repo download
-    this.downloadGrasscutterDevRepo()
+    downloadGrasscutterDevRepo()
 
-    this.toggleButtons()
+    toggleButtons()
   }
 
-  async downloadResources() {
-    const folder = await this.getGrasscutterFolder()
-    this.props.downloadManager.addDownload(RESOURCES_DOWNLOAD, folder + '\\resources.zip', async () => {
+  async function downloadResources() {
+    const folder = await getGrasscutterFolder()
+    props.downloadManager.addDownload(RESOURCES_DOWNLOAD, folder + '\\resources.zip', async () => {
       // Delete the existing folder if it exists
       if (
         await invoke('dir_exists', {
@@ -176,125 +167,124 @@ export default class Downloads extends React.Component<IProps, IState> {
         newName: 'resources',
       })
 
-      this.toggleButtons()
+      toggleButtons()
     })
 
-    this.toggleButtons()
+    toggleButtons()
   }
 
-  async toggleButtons() {
+  async function toggleButtons() {
     const gc_path = await getConfigOption('grasscutter_path')
 
     // Set states since we know we are downloading something if this is called
-    this.setState({
-      grasscutter_downloading: this.props.downloadManager.downloadingJar(),
-      resources_downloading: this.props.downloadManager.downloadingResources(),
-      repo_downloading: this.props.downloadManager.downloadingRepo(),
+    setState({
+      grasscutter_downloading: props.downloadManager.downloadingJar(),
+      resources_downloading: props.downloadManager.downloadingResources(),
+      repo_downloading: props.downloadManager.downloadingRepo(),
       grasscutter_set: gc_path !== '',
     })
   }
 
-  render() {
-    return (
-      <Menu closeFn={this.props.closeFn} className="Downloads" heading="Downloads">
-        <div className="DownloadMenuSection" id="downloadMenuContainerGCStable">
-          <div className="DownloadLabel" id="downloadMenuLabelGCStable">
-            <Tr
-              text={this.state.grasscutter_set ? 'downloads.grasscutter_stable' : 'downloads.grasscutter_stable_update'}
-            />
-            <HelpButton contents="help.gc_stable_jar" />
-          </div>
-          <div className="DownloadValue" id="downloadMenuButtonGCStable">
-            <BigButton
-              disabled={this.state.grasscutter_downloading}
-              onClick={this.downloadGrasscutterStable}
-              id="grasscutterStableBtn"
-            >
-              <Tr text="components.download" />
-            </BigButton>
-          </div>
+  return (
+    <Menu closeFn={props.closeFn} class="Downloads" heading="Downloads">
+      <div class="DownloadMenuSection" id="downloadMenuContainerGCStable">
+        <div class="DownloadLabel" id="downloadMenuLabelGCStable">
+          <Tr
+            text={state.grasscutter_set ? 'downloads.grasscutter_stable' : 'downloads.grasscutter_stable_update'}
+          />
+          <HelpButton contents="help.gc_stable_jar" />
         </div>
-        <div className="DownloadMenuSection" id="downloadMenuContainerGCDev">
-          <div className="DownloadLabel" id="downloadMenuLabelGCDev">
-            <Tr
-              text={this.state.grasscutter_set ? 'downloads.grasscutter_latest' : 'downloads.grasscutter_latest_update'}
-            />
-            <HelpButton contents="help.gc_dev_jar" />
-          </div>
-          <div className="DownloadValue" id="downloadMenuButtonGCDev">
-            <BigButton
-              disabled={this.state.grasscutter_downloading}
-              onClick={this.downloadGrasscutterLatest}
-              id="grasscutterLatestBtn"
-            >
-              <Tr text="components.download" />
-            </BigButton>
-          </div>
+        <div class="DownloadValue" id="downloadMenuButtonGCStable">
+          <BigButton
+            disabled={state.grasscutter_downloading}
+            onClick={downloadGrasscutterStable}
+            id="grasscutterStableBtn"
+          >
+            <Tr text="components.download" />
+          </BigButton>
         </div>
+      </div>
+      <div class="DownloadMenuSection" id="downloadMenuContainerGCDev">
+        <div class="DownloadLabel" id="downloadMenuLabelGCDev">
+          <Tr
+            text={state.grasscutter_set ? 'downloads.grasscutter_latest' : 'downloads.grasscutter_latest_update'}
+          />
+          <HelpButton contents="help.gc_dev_jar" />
+        </div>
+        <div class="DownloadValue" id="downloadMenuButtonGCDev">
+          <BigButton
+            disabled={state.grasscutter_downloading}
+            onClick={downloadGrasscutterLatest}
+            id="grasscutterLatestBtn"
+          >
+            <Tr text="components.download" />
+          </BigButton>
+        </div>
+      </div>
 
-        <Divider />
+      <Divider />
 
-        <div className="DownloadMenuSection" id="downloadMenuContainerGCStableData">
-          <div className="DownloadLabel" id="downloadMenuLabelGCStableData">
-            <Tr
-              text={
-                this.state.grasscutter_set
-                  ? 'downloads.grasscutter_stable_data'
-                  : 'downloads.grasscutter_stable_data_update'
-              }
-            />
-            <HelpButton contents="help.gc_stable_data" />
-          </div>
-          <div className="DownloadValue" id="downloadMenuButtonGCStableData">
-            <BigButton
-              disabled={this.state.repo_downloading}
-              onClick={this.downloadGrasscutterStableRepo}
-              id="grasscutterStableRepo"
-            >
-              <Tr text="components.download" />
-            </BigButton>
-          </div>
+      <div class="DownloadMenuSection" id="downloadMenuContainerGCStableData">
+        <div class="DownloadLabel" id="downloadMenuLabelGCStableData">
+          <Tr
+            text={
+              state.grasscutter_set
+                ? 'downloads.grasscutter_stable_data'
+                : 'downloads.grasscutter_stable_data_update'
+            }
+          />
+          <HelpButton contents="help.gc_stable_data" />
         </div>
-        <div className="DownloadMenuSection" id="downloadMenuContainerGCDevData">
-          <div className="DownloadLabel" id="downloadMenuLabelGCDevData">
-            <Tr
-              text={
-                this.state.grasscutter_set
-                  ? 'downloads.grasscutter_latest_data'
-                  : 'downloads.grasscutter_latest_data_update'
-              }
-            />
-            <HelpButton contents="help.gc_dev_data" />
-          </div>
-          <div className="DownloadValue" id="downloadMenuButtonGCDevData">
-            <BigButton
-              disabled={this.state.repo_downloading}
-              onClick={this.downloadGrasscutterStableRepo}
-              id="grasscutterDevRepo"
-            >
-              <Tr text="components.download" />
-            </BigButton>
-          </div>
+        <div class="DownloadValue" id="downloadMenuButtonGCStableData">
+          <BigButton
+            disabled={state.repo_downloading}
+            onClick={downloadGrasscutterStableRepo}
+            id="grasscutterStableRepo"
+          >
+            <Tr text="components.download" />
+          </BigButton>
         </div>
+      </div>
+      <div class="DownloadMenuSection" id="downloadMenuContainerGCDevData">
+        <div class="DownloadLabel" id="downloadMenuLabelGCDevData">
+          <Tr
+            text={
+              state.grasscutter_set
+                ? 'downloads.grasscutter_latest_data'
+                : 'downloads.grasscutter_latest_data_update'
+            }
+          />
+          <HelpButton contents="help.gc_dev_data" />
+        </div>
+        <div class="DownloadValue" id="downloadMenuButtonGCDevData">
+          <BigButton
+            disabled={state.repo_downloading}
+            onClick={downloadGrasscutterStableRepo}
+            id="grasscutterDevRepo"
+          >
+            <Tr text="components.download" />
+          </BigButton>
+        </div>
+      </div>
 
-        <Divider />
+      <Divider />
 
-        <div className="DownloadMenuSection" id="downloadMenuContainerResources">
-          <div className="DownloadLabel" id="downloadMenuLabelResources">
-            <Tr text="downloads.resources" />
-            <HelpButton contents="help.resources" />
-          </div>
-          <div className="DownloadValue" id="downloadMenuButtonResources">
-            <BigButton
-              disabled={this.state.resources_downloading || !this.state.grasscutter_set || this.state.resources_exist}
-              onClick={this.downloadResources}
-              id="resourcesBtn"
-            >
-              <Tr text="components.download" />
-            </BigButton>
-          </div>
+      <div class="DownloadMenuSection" id="downloadMenuContainerResources">
+        <div class="DownloadLabel" id="downloadMenuLabelResources">
+          <Tr text="downloads.resources" />
+          <HelpButton contents="help.resources" />
         </div>
-      </Menu>
-    )
-  }
+        <div class="DownloadValue" id="downloadMenuButtonResources">
+          <BigButton
+            disabled={state.resources_downloading || !state.grasscutter_set || state.resources_exist}
+            onClick={downloadResources}
+            id="resourcesBtn"
+          >
+            <Tr text="components.download" />
+          </BigButton>
+        </div>
+      </div>
+    </Menu>
+  )
 }
+

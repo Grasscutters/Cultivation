@@ -1,6 +1,6 @@
 import { invoke } from '@tauri-apps/api'
-import React from 'react'
 import { getConfigOption } from './configuration'
+import { createSignal, onMount } from "solid-js";
 
 interface IProps {
   text: string
@@ -11,18 +11,12 @@ interface IState {
   translated_text: string
 }
 
-export default class Tr extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
+export default function Tr(props: IProps) {
+  const [language, setLanguage] = createSignal('en');
+  const [translatedText, setTranslatedText] = createSignal('');
 
-    this.state = {
-      language: 'en',
-      translated_text: '',
-    }
-  }
-
-  async componentDidMount() {
-    const { text } = this.props
+  onMount(async () => {
+    const { text } = props;
     let language = await getConfigOption('language')
 
     // Get translation file
@@ -60,19 +54,13 @@ export default class Tr extends React.Component<IProps, IState> {
         }
       }
 
-      this.setState({
-        translated_text: translation as string,
-      })
+      setTranslatedText(translation as string);
     } else {
-      this.setState({
-        translated_text: translation_obj[text] || '',
-      })
+      setTranslatedText(translation_obj[text] || '');
     }
-  }
+  });
 
-  render() {
-    return this.state.translated_text
-  }
+  return <>{translatedText()}</>;
 }
 
 export async function getLanguages() {

@@ -1,10 +1,11 @@
-import React from 'react'
 import { capitalize } from '../../../utils/string'
 
 import Stop from '../../../resources/icons/close.svg'
 import './ProgressBar.css'
 import DownloadHandler from '../../../utils/download'
 import { translate } from '../../../utils/language'
+import {createStore} from "solid-js/store";
+import {makeTimer} from "@solid-primitives/timer";
 
 interface IProps {
   path: string
@@ -17,76 +18,65 @@ interface IState {
   total: number
 }
 
-export default class ProgressBar extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
+export default function ProgressBar(props: IProps) {
+  const [state, setState] = createStore<IState>({
+    progress: 0,
+    status: '',
+    total: props.downloadManager.getDownloadProgress(props.path)?.total || 0,
+  });
 
-    this.state = {
-      progress: 0,
-      status: '',
-      total: this.props.downloadManager.getDownloadProgress(this.props.path)?.total || 0,
+  const disposeTimer = makeTimer(async () => {
+    const prog = props.downloadManager.getDownloadProgress(props.path)
+    setState({
+      progress: prog?.progress || 0,
+      status: (await translate(`download_status.${prog?.status || 'stopped'}`)) || 'stopped',
+      total: prog?.total || 0,
+    })
+
+    if (state.status === 'finished' || state.status === 'error') {
+      // Ensure progress is 100%
+      disposeTimer();
     }
+  }, 500, setInterval);
 
-    this.stopDownload = this.stopDownload.bind(this)
+  function stopDownload() {
+    props.downloadManager.stopDownload(props.path)
   }
 
-  componentDidMount() {
-    // Periodically check the progress of passed file path
-    const intv = setInterval(async () => {
-      const prog = this.props.downloadManager.getDownloadProgress(this.props.path)
-      this.setState({
-        progress: prog?.progress || 0,
-        status: (await translate(`download_status.${prog?.status || 'stopped'}`)) || 'stopped',
-        total: prog?.total || 0,
-      })
+  return (
+    <div class="ProgressBarWrapper">
+      <div
+        style={{
+          width: '80%',
+        }}
+      >
+        <div class="ProgressBar">
+          <div
+            class="InnerProgress"
+            style={{
+              width: `${(() => {
+                // Handles files with content-lengths of 0
+                if (state.status === 'finished') {
+                  return '100'
+                }
 
-      if (this.state.status === 'finished' || this.state.status === 'error') {
-        // Ensure progress is 100%
-        clearInterval(intv)
-      }
-    }, 500)
-  }
+                if (state.total <= 0) {
+                  return '0'
+                }
 
-  stopDownload() {
-    this.props.downloadManager.stopDownload(this.props.path)
-  }
-
-  render() {
-    return (
-      <div className="ProgressBarWrapper">
-        <div
-          style={{
-            width: '80%',
-          }}
-        >
-          <div className="ProgressBar">
-            <div
-              className="InnerProgress"
-              style={{
-                width: `${(() => {
-                  // Handles files with content-lengths of 0
-                  if (this.state.status === 'finished') {
-                    return '100'
-                  }
-
-                  if (this.state.total <= 0) {
-                    return '0'
-                  }
-
-                  return (this.state.progress / this.state.total) * 100
-                })()}%`,
-              }}
-            ></div>
-          </div>
-          <div className="DownloadControls">
-            <div onClick={this.stopDownload} className="downloadStop">
-              <img src={Stop}></img>
-            </div>
+                return (state.progress / state.total) * 100
+              })()}%`,
+            }}
+           />
+        </div>
+        <div class="DownloadControls">
+          <div onClick={stopDownload} class="downloadStop">
+            <img src={Stop} />
           </div>
         </div>
-
-        <div className="ProgressText">{capitalize(this.state.status) || 'Waiting'}</div>
       </div>
-    )
-  }
+
+      <div class="ProgressText">{capitalize(state.status) || 'Waiting'}</div>
+    </div>
+  )
 }

@@ -1,4 +1,3 @@
-import React from 'react'
 import './App.css'
 
 import TopBar from './components/TopBar'
@@ -36,19 +35,15 @@ async function generateInfo() {
   alert('check your dev console and send that in #cultivation')
 }
 
-class Debug extends React.Component {
-  render() {
-    return (
-      <div className="App">
-        <TopBar />
-        <TextInput readOnly={false} initalValue={'change to set proxy address'} onChange={setProxyAddress} />
-        <button onClick={startProxy}>start proxy</button>
-        <button onClick={stopProxy}>stop proxy</button>
-        <button onClick={generateCertificates}>generate certificates</button>
-        <button onClick={generateInfo}>dump info</button>
-      </div>
-    )
-  }
+export default function Debug() {
+  return (
+    <div class="App">
+      <TopBar />
+      <TextInput readOnly={false} initalValue={'change to set proxy address'} onChange={setProxyAddress} />
+      <button onClick={startProxy}>start proxy</button>
+      <button onClick={stopProxy}>stop proxy</button>
+      <button onClick={generateCertificates}>generate certificates</button>
+      <button onClick={generateInfo}>dump info</button>
+    </div>
+  )
 }
-
-export default Debug

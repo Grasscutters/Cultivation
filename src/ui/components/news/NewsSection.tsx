@@ -1,9 +1,9 @@
 /* eslint-disable indent */
 import { invoke } from '@tauri-apps/api/tauri'
-import React from 'react'
 import Tr from '../../../utils/language'
 
 import './NewsSection.css'
+import { batch, createSignal, JSX, onMount } from "solid-js";
 
 interface IProps {
   selected?: string
@@ -35,31 +35,53 @@ interface Commit {
   message: string
 }
 
-export default class NewsSection extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
+// TODO: this is such a weird component, needs to be refactored.
+export default function NewsSection(props: IProps) {
+  const [selected, setSelected] = createSignal(props.selected || 'commits');
+  const [news, setNews] = createSignal<JSX.Element>();
+  const [commitList, setCommitList] = createSignal<JSX.Element>();
 
-    this.state = {
-      selected: props.selected || 'commits',
+  onMount(showNews);
+
+  function setSelection(item: string) {
+    setSelected(item);
+    showNews();
+  }
+
+  async function showNews() {
+    let news: JSX.Element | JSX.Element[] = <tr></tr>
+
+    switch (selected()) {
+      case 'commits': {
+        const commits = await showLatestCommits()
+        if (commits != null) {
+          news = commits
+        }
+        break
+      }
+
+      case 'latest_version':
+        news = (
+          <tr>
+            <td>Latest version</td>
+          </tr>
+        )
+        break
+
+      default:
+        news = (
+          <tr>
+            <td>Unknown</td>
+          </tr>
+        )
+        break
     }
 
-    this.setSelected = this.setSelected.bind(this)
-    this.showNews = this.showNews.bind(this)
+    setNews(<>{news}</>);
   }
 
-  componentDidMount() {
-    // Call showNews off the bat
-    this.showNews()
-  }
-
-  setSelected(item: string) {
-    this.setState({ selected: item }, () => {
-      this.showNews()
-    })
-  }
-
-  async showLatestCommits() {
-    if (!this.state.commitList) {
+  async function showLatestCommits() {
+    if (!commitList()) {
       const response: string = await invoke('req_get', { url: 'https://api.grasscutter.io/cultivation/query' })
       let grasscutterApiResponse: GrasscutterAPIResponse | null = null
 
@@ -87,83 +109,47 @@ export default class NewsSection extends React.Component<IProps, IState> {
       const commitsList = commits.slice(0, 10)
       const commitsListHtml = commitsList.map((commitResponse: CommitResponse) => {
         return (
-          <tr className="Commit" id="newsCommitsTable" key={commitResponse.sha}>
-            <td className="CommitAuthor">
+          <tr class="Commit" id="newsCommitsTable">
+            <td class="CommitAuthor">
               <span>{commitResponse.commit.author.name}</span>
             </td>
-            <td className="CommitMessage">
+            <td class="CommitMessage">
               <span>{commitResponse.commit.message}</span>
             </td>
           </tr>
         )
       })
 
-      this.setState({
-        commitList: commitsListHtml,
-        news: <>{commitsListHtml}</>,
-      })
+      batch(() => {
+        setCommitList(commitsListHtml);
+        setNews(<>{commitsListHtml}</>);
+      });
     }
 
-    return this.state.commitList
+    return commitList();
   }
 
-  async showNews() {
-    let news: JSX.Element | JSX.Element[] = <tr></tr>
-
-    switch (this.state.selected) {
-      case 'commits': {
-        const commits = await this.showLatestCommits()
-        if (commits != null) {
-          news = commits
-        }
-        break
-      }
-
-      case 'latest_version':
-        news = (
-          <tr>
-            <td>Latest version</td>
-          </tr>
-        )
-        break
-
-      default:
-        news = (
-          <tr>
-            <td>Unknown</td>
-          </tr>
-        )
-        break
-    }
-
-    this.setState({
-      news: <>{news}</>,
-    })
-  }
-
-  render() {
-    return (
-      <div className="NewsSection" id="newsContainer">
-        <div className="NewsTabs" id="newsTabsContainer">
-          <div
-            className={'NewsTab ' + (this.state.selected === 'commits' ? 'selected' : '')}
-            id="commits"
-            onClick={() => this.setSelected('commits')}
-          >
-            <Tr text="news.latest_commits" />
-          </div>
-          <div
-            className={'NewsTab ' + (this.state.selected === 'latest_version' ? 'selected' : '')}
-            id="latest_version"
-            onClick={() => this.setSelected('latest_version')}
-          >
-            <Tr text="news.latest_version" />
-          </div>
+  return (
+    <div class="NewsSection" id="newsContainer">
+      <div class="NewsTabs" id="newsTabsContainer">
+        <div
+          class={'NewsTab ' + (selected() === 'commits' ? 'selected' : '')}
+          id="commits"
+          onClick={() => setSelection('commits')}
+        >
+          <Tr text="news.latest_commits" />
         </div>
-        <table className="NewsContent" id="newsContent">
-          <tbody>{this.state.news}</tbody>
-        </table>
+        <div
+          class={'NewsTab ' + (selected() === 'latest_version' ? 'selected' : '')}
+          id="latest_version"
+          onClick={() => setSelection('latest_version')}
+        >
+          <Tr text="news.latest_version" />
+        </div>
       </div>
-    )
-  }
+      <table class="NewsContent" id="newsContent">
+        <tbody>{news()}</tbody>
+      </table>
+    </div>
+  )
 }

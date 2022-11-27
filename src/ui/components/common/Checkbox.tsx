@@ -1,7 +1,7 @@
-import React from 'react'
 import checkmark from '../../../resources/icons/check.svg'
 
 import './Checkbox.css'
+import {createEffect, createSignal, Show} from "solid-js";
 
 interface IProps {
   label?: string
@@ -10,43 +10,30 @@ interface IProps {
   id?: string
 }
 
-interface IState {
-  checked: boolean
-}
 
-export default class Checkbox extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
+export default function Checkbox(props: IProps) {
+  const [checked, setChecked] = createSignal(props.checked);
 
-    this.state = {
-      checked: props.checked,
-    }
+  createEffect(() => {
+    if (props.checked !== checked()) setChecked(props.checked)
+  });
+
+  function handleChange() {
+    setChecked((c) => !c);
+    props.onChange()
   }
 
-  static getDerivedStateFromProps(props: IProps, state: IState) {
-    if (props.checked !== state.checked) {
-      return {
-        checked: props.checked,
-      }
-    }
-
-    return { checked: props.checked }
-  }
-
-  handleChange = () => {
-    this.setState({ checked: !this.state.checked })
-    this.props.onChange()
-  }
-
-  render() {
-    return (
-      <div className="Checkbox">
-        <input type="checkbox" id={this.props.id} checked={this.state.checked} onChange={this.handleChange} />
-        <label htmlFor={this.props.id}>
-          <div className="CheckboxDisplay">{this.state.checked ? <img src={checkmark} alt="Checkmark" /> : null}</div>
-          <span>{this.props.label || ''}</span>
-        </label>
-      </div>
-    )
-  }
+  return (
+    <div class="Checkbox">
+      <input type="checkbox" id={props.id} checked={checked()} onChange={handleChange} />
+      <label for={props.id}>
+        <div class="CheckboxDisplay">
+          <Show when={checked()} keyed={false}>
+            <img src={checkmark} alt="Checkmark" />
+          </Show>
+        </div>
+        <span>{props.label || ''}</span>
+      </label>
+    </div>
+  )
 }

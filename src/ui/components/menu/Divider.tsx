@@ -1,13 +1,9 @@
-import React from 'react'
-
 import './Divider.css'
 
-export default class Divider extends React.Component {
-  render() {
-    return (
-      <div className="Divider">
-        <div className="DividerLine"></div>
-      </div>
-    )
-  }
+export default function Divider() {
+  return (
+    <div class="Divider">
+      <div class="DividerLine" />
+    </div>
+  )
 }

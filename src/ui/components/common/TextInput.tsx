@@ -1,7 +1,6 @@
-import React from 'react'
-
 import './TextInput.css'
 import Close from '../../../resources/icons/close.svg'
+import { createSignal, JSX, onMount, Show } from "solid-js";
 
 interface IProps {
   value?: string
@@ -12,66 +11,44 @@ interface IProps {
   id?: string
   clearable?: boolean
   customClearBehaviour?: () => void
-  style?: React.CSSProperties
+  style?: JSX.CSSProperties
 }
 
-interface IState {
-  value: string
-}
+export default function TextInput(props: IProps) {
+  const [value, setValue] = createSignal(props.value || '');
 
-export default class TextInput extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
+  onMount(() => {
+    if (props.initalValue) setValue(props.initalValue)
+  });
 
-    this.state = {
-      value: props.value || '',
-    }
-  }
+  return (
+    <div class="TextInputWrapper" style={props.style || {}}>
+      <input
+        id={props?.id}
+        readOnly={props.readOnly || false}
+        placeholder={props.placeholder || ''}
+        class="TextInput"
+        value={value()}
+        onChange={(e) => {
+          setValue(e.currentTarget.value);
+          if (props.onChange) props.onChange(e.currentTarget.value)
+        }}
+      />
+      <Show when={props.clearable} keyed={false}>
+        <div
+          class="TextClear"
+          onClick={() => {
+            // Run custom behaviour first
+            if (props.customClearBehaviour) return props.customClearBehaviour()
 
-  async componentDidMount() {
-    if (this.props.initalValue) {
-      this.setState({
-        value: this.props.initalValue,
-      })
-    }
-  }
+            setValue('');
 
-  static getDerivedStateFromProps(props: IProps, state: IState) {
-    return { value: props.value || state.value }
-  }
-
-  render() {
-    return (
-      <div className="TextInputWrapper" style={this.props.style || {}}>
-        <input
-          id={this.props?.id}
-          readOnly={this.props.readOnly || false}
-          placeholder={this.props.placeholder || ''}
-          className="TextInput"
-          value={this.state.value}
-          onChange={(e) => {
-            this.setState({ value: e.target.value })
-            if (this.props.onChange) this.props.onChange(e.target.value)
+            if (props.onChange) props.onChange('')
           }}
-        />
-        {this.props.clearable ? (
-          <div
-            className="TextClear"
-            onClick={() => {
-              // Run custom behaviour first
-              if (this.props.customClearBehaviour) return this.props.customClearBehaviour()
-
-              this.setState({ value: '' })
-
-              if (this.props.onChange) this.props.onChange('')
-
-              this.forceUpdate()
-            }}
-          >
-            <img src={Close} className="TextInputClear" />
-          </div>
-        ) : null}
-      </div>
-    )
-  }
+        >
+          <img src={Close} class="TextInputClear" />
+        </div>
+      </Show>
+    </div>
+  )
 }

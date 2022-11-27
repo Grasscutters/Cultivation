@@ -1,29 +1,27 @@
-import React from 'react'
 import DownloadHandler from '../../../utils/download'
 import DownloadSection from './DownloadSection'
 
 import './DownloadList.css'
+import {createMemo, For, Show} from "solid-js";
 
 interface IProps {
   downloadManager: DownloadHandler
 }
 
-export default class DownloadList extends React.Component<IProps, never> {
-  constructor(props: IProps) {
-    super(props)
-  }
-
-  render() {
-    const list = this.props.downloadManager.getDownloads().map((download) => {
-      return (
-        <DownloadSection
-          key={download.path}
-          downloadName={download.path}
-          downloadManager={this.props.downloadManager}
-        />
-      )
-    })
-
-    return <div className="DownloadList">{list.length > 0 ? list : 'No downloads present'}</div>
-  }
+export default function DownloadList(props: IProps) {
+  const list = createMemo(() => props.downloadManager.getDownloads());
+  return (
+    <div class="DownloadList">
+      <Show when={list().length > 0} keyed={false} fallback="No downloads present">
+        <For each={list()}>
+          {(download) => (
+            <DownloadSection
+              downloadName={download.path}
+              downloadManager={props.downloadManager}
+            />
+          )}
+        </For>
+      </Show>
+    </div>
+  )
 }

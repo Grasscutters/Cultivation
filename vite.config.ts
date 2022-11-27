@@ -1,5 +1,5 @@
 import { defineConfig, splitVendorChunkPlugin } from 'vite'
-import react from '@vitejs/plugin-react'
+import solid from 'vite-plugin-solid'
 
 export default defineConfig({
   css: {
@@ -7,7 +7,7 @@ export default defineConfig({
       generateScopedName: '[hash:base64:5]',
     },
   },
-  plugins: [react(), splitVendorChunkPlugin()],
+  plugins: [solid(), splitVendorChunkPlugin()],
   // prevent vite from obscuring rust errors
   clearScreen: false,
   // Tauri expects a fixed port, fail if that port is not available

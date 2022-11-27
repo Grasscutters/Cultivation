@@ -1,49 +1,40 @@
-import React from 'react'
-
 import Close from '../../resources/icons/close.svg'
 import './MiniDialog.css'
+import {JSX, onCleanup, onMount, Show} from "solid-js";
 
 interface IProps {
-  children: React.ReactNode[] | React.ReactNode
+  children: JSX.Element
   title?: string
   closeable?: boolean
   closeFn: () => void
 }
 
-export default class MiniDialog extends React.Component<IProps, never> {
-  constructor(props: IProps) {
-    super(props)
+export default function MiniDialog(props: IProps) {
+  function mouseDownHandler(evt: MouseEvent) {
+    const tgt = evt.target as HTMLElement
+    const isInside = tgt.closest('.MiniDialog') !== null
+
+    if (!isInside) {
+      props.closeFn()
+    }
   }
 
-  componentDidMount() {
-    document.addEventListener('mousedown', (evt) => {
-      const tgt = evt.target as HTMLElement
-      const isInside = tgt.closest('.MiniDialog') !== null
+  onMount(() => document.addEventListener('mousedown', mouseDownHandler));
 
-      if (!isInside) {
-        this.props.closeFn()
-      }
-    })
-  }
+  onCleanup(() => document.removeEventListener('mousedown', mouseDownHandler));
 
-  componentWillUnmount() {
-    document.removeEventListener('mousedown', this.props.closeFn)
-  }
-
-  render() {
-    return (
-      <div className="MiniDialog" id="miniDialogContainer">
-        {this.props.closeable !== undefined && this.props.closeable ? (
-          <div className="MiniDialogTop" id="miniDialogContainerTop" onClick={this.props.closeFn}>
-            <span>{this.props?.title}</span>
-            <img src={Close} className="MiniDialogClose" id="miniDialogButtonClose" />
-          </div>
-        ) : null}
-
-        <div className="MiniDialogInner" id="miniDialogContent">
-          {this.props.children}
+  return (
+    <div class="MiniDialog" id="miniDialogContainer">
+      <Show when={props.closeable !== undefined && props.closeable} keyed={false}>
+        <div class="MiniDialogTop" id="miniDialogContainerTop" onClick={props.closeFn}>
+          <span>{props?.title}</span>
+          <img src={Close} class="MiniDialogClose" id="miniDialogButtonClose" />
         </div>
+      </Show>
+
+      <div class="MiniDialogInner" id="miniDialogContent">
+        {props.children}
       </div>
-    )
-  }
+    </div>
+  )
 }

@@ -1,4 +1,3 @@
-import React from 'react'
 import Checkbox from './common/Checkbox'
 import BigButton from './common/BigButton'
 import TextInput from './common/TextInput'
@@ -14,6 +13,8 @@ import './ServerLaunchSection.css'
 import { dataDir } from '@tauri-apps/api/path'
 import { getGameExecutable, getGameVersion } from '../../utils/game'
 import { patchGame, unpatchGame } from '../../utils/metadata'
+import {createStore} from "solid-js/store";
+import {onMount, Show} from "solid-js";
 
 interface IProps {
   openExtras: (playGame: () => void) => void
@@ -39,37 +40,27 @@ interface IState {
   migotoSet: boolean
 }
 
-export default class ServerLaunchSection extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
+export default function ServerLaunchSection(props: IProps) {
+  const [state, setState] = createStore<IState>({
+    grasscutterEnabled: false,
+    buttonLabel: '',
+    checkboxLabel: '',
+    ip: '',
+    port: '',
+    ipPlaceholder: '',
+    portPlaceholder: '',
+    portHelpText: '',
+    httpsLabel: '',
+    httpsEnabled: false,
+    swag: false,
+    akebiSet: false,
+    migotoSet: false,
+  });
 
-    this.state = {
-      grasscutterEnabled: false,
-      buttonLabel: '',
-      checkboxLabel: '',
-      ip: '',
-      port: '',
-      ipPlaceholder: '',
-      portPlaceholder: '',
-      portHelpText: '',
-      httpsLabel: '',
-      httpsEnabled: false,
-      swag: false,
-      akebiSet: false,
-      migotoSet: false,
-    }
-
-    this.toggleGrasscutter = this.toggleGrasscutter.bind(this)
-    this.playGame = this.playGame.bind(this)
-    this.setIp = this.setIp.bind(this)
-    this.setPort = this.setPort.bind(this)
-    this.toggleHttps = this.toggleHttps.bind(this)
-  }
-
-  async componentDidMount() {
+  onMount(async () => {
     const config = await getConfig()
 
-    this.setState({
+    setState({
       grasscutterEnabled: config.toggle_grasscutter || false,
       buttonLabel: await translate('main.launch_button'),
       checkboxLabel: await translate('main.gc_enable'),
@@ -84,22 +75,20 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       akebiSet: config.akebi_path !== '',
       migotoSet: config.migoto_path !== '',
     })
-  }
+  });
 
-  async toggleGrasscutter() {
+  async function toggleGrasscutter() {
     const config = await getConfig()
 
     config.toggle_grasscutter = !config.toggle_grasscutter
 
     // Set state as well
-    this.setState({
-      grasscutterEnabled: config.toggle_grasscutter,
-    })
+    setState('grasscutterEnabled', config.toggle_grasscutter);
 
     await saveConfig(config)
   }
 
-  async playGame(exe?: string, proc_name?: string) {
+  async function playGame(exe?: string, proc_name?: string) {
     const config = await getConfig()
 
     if (!(await getGameExecutable())) {
@@ -145,8 +134,9 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       const game_exe = await getGameExecutable()
 
       // Save last connected server and port
-      await setConfigOption('last_ip', this.state.ip)
-      await setConfigOption('last_port', this.state.port)
+      // TODO[perf]: could be batched
+      await setConfigOption('last_ip', state.ip)
+      await setConfigOption('last_port', state.port)
 
       await invoke('enable_process_watcher', {
         process: proc_name || game_exe,
@@ -155,7 +145,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       if (config.use_internal_proxy) {
         // Set IP
         await invoke('set_proxy_addr', {
-          addr: (this.state.httpsEnabled ? 'https' : 'http') + '://' + this.state.ip + ':' + this.state.port,
+          addr: (state.httpsEnabled ? 'https' : 'http') + '://' + state.ip + ':' + state.port,
         })
         // Connect to proxy
         await invoke('connect', { port: 8365, certificatePath: (await dataDir()) + '\\cultivation\\ca' })
@@ -202,7 +192,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     else alert('Game not found! At: ' + (exe || config.game_install_path))
   }
 
-  async launchServer() {
+  async function launchServer() {
     const config = await getConfig()
 
     if (!config.grasscutter_path) return alert('Grasscutter not installed or set!')
@@ -223,88 +213,78 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     })
   }
 
-  setIp(text: string) {
-    this.setState({
-      ip: text,
-    })
+  function setIp(text: string) {
+    setState('ip', text)
   }
 
-  setPort(text: string) {
-    this.setState({
-      port: text,
-    })
+  function setPort(text: string) {
+    setState('port', text)
   }
 
-  async toggleHttps() {
+  async function toggleHttps() {
     const config = await getConfig()
 
     config.https_enabled = !config.https_enabled
 
     // Set state as well
-    this.setState({
-      httpsEnabled: config.https_enabled,
-    })
+    setState('httpsEnabled', config.https_enabled);
 
     await saveConfig(config)
   }
 
-  render() {
-    return (
-      <div id="playButton">
-        <div id="serverControls">
-          <Checkbox
-            id="enableGC"
-            label={this.state.checkboxLabel}
-            onChange={this.toggleGrasscutter}
-            checked={this.state.grasscutterEnabled}
-          />
-        </div>
-
-        {this.state.grasscutterEnabled && (
-          <div>
-            <div className="ServerConfig" id="serverConfigContainer">
-              <TextInput
-                id="ip"
-                key="ip"
-                placeholder={this.state.ipPlaceholder}
-                onChange={this.setIp}
-                initalValue={this.state.ip}
-              />
-              <TextInput
-                style={{
-                  width: '10%',
-                }}
-                id="port"
-                key="port"
-                placeholder={this.state.portPlaceholder}
-                onChange={this.setPort}
-                initalValue={this.state.port}
-              />
-              <HelpButton contents={this.state.portHelpText} />
-              <Checkbox
-                id="httpsEnable"
-                label={this.state.httpsLabel}
-                onChange={this.toggleHttps}
-                checked={this.state.httpsEnabled}
-              />
-            </div>
-          </div>
-        )}
-
-        <div className="ServerLaunchButtons" id="serverLaunchContainer">
-          <BigButton onClick={this.playGame} id="officialPlay">
-            {this.state.buttonLabel}
-          </BigButton>
-          {this.state.swag && (
-            <BigButton onClick={() => this.props.openExtras(this.playGame)} id="ExtrasMenuButton">
-              <img className="ExtrasIcon" id="extrasIcon" src={Plus} />
-            </BigButton>
-          )}
-          <BigButton onClick={this.launchServer} id="serverLaunch">
-            <img className="ServerIcon" id="serverLaunchIcon" src={Server} />
-          </BigButton>
-        </div>
+  return (
+    <div id="playButton">
+      <div id="serverControls">
+        <Checkbox
+          id="enableGC"
+          label={state.checkboxLabel}
+          onChange={toggleGrasscutter}
+          checked={state.grasscutterEnabled}
+        />
       </div>
-    )
-  }
+
+      <Show when={state.grasscutterEnabled} keyed={false}>
+        <div>
+          <div class="ServerConfig" id="serverConfigContainer">
+            <TextInput
+              id="ip"
+              placeholder={state.ipPlaceholder}
+              onChange={setIp}
+              initalValue={state.ip}
+            />
+            <TextInput
+              style={{
+                width: '10%',
+              }}
+              id="port"
+              placeholder={state.portPlaceholder}
+              onChange={setPort}
+              initalValue={state.port}
+            />
+            <HelpButton contents={state.portHelpText} />
+            <Checkbox
+              id="httpsEnable"
+              label={state.httpsLabel}
+              onChange={toggleHttps}
+              checked={state.httpsEnabled}
+            />
+          </div>
+        </div>
+      </Show>
+
+      <div class="ServerLaunchButtons" id="serverLaunchContainer">
+        <BigButton onClick={playGame} id="officialPlay">
+          {state.buttonLabel}
+        </BigButton>
+        <Show when={state.swag} keyed={false}>
+          <BigButton onClick={() => props.openExtras(playGame)} id="ExtrasMenuButton">
+            <img class="ExtrasIcon" id="extrasIcon" src={Plus} />
+          </BigButton>
+        </Show>
+        <BigButton onClick={launchServer} id="serverLaunch">
+          <img class="ServerIcon" id="serverLaunchIcon" src={Server} />
+        </BigButton>
+      </div>
+    </div>
+  )
 }

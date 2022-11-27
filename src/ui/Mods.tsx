@@ -1,5 +1,4 @@
 import { invoke } from '@tauri-apps/api'
-import React from 'react'
 import DownloadHandler from '../utils/download'
 import { getModDownload, ModData } from '../utils/gamebanana'
 import { getModsFolder } from '../utils/mods'
@@ -14,15 +13,10 @@ import Back from '../resources/icons/back.svg'
 import Menu from './components/menu/Menu'
 import BigButton from './components/common/BigButton'
 import Tr from '../utils/language'
+import {createSignal, For, Show} from "solid-js";
 
 interface IProps {
   downloadHandler: DownloadHandler
-}
-
-interface IState {
-  isDownloading: boolean
-  category: string
-  downloadList: { name: string; url: string; mod: ModData }[] | null
 }
 
 const headers = [
@@ -45,21 +39,12 @@ const headers = [
  *
  * @TODO Categorizaiton/sorting (by likes, views, etc)
  */
-export class Mods extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
+export function Mods(props: IProps) {
+  const [downloading, setDownloading] = createSignal(false);
+  const [category, setCategory] = createSignal('');
+  const [downloadList, setDownloadList] = createSignal<{ name: string; url: string; mod: ModData }[] | null>(null);
 
-    this.state = {
-      isDownloading: false,
-      category: '',
-      downloadList: null,
-    }
-
-    this.setCategory = this.setCategory.bind(this)
-    this.addDownload = this.addDownload.bind(this)
-  }
-
-  async addDownload(mod: ModData) {
+  async function addDownload(mod: ModData) {
     const dlLinks = await getModDownload(String(mod.id))
 
     // Not gonna bother allowing sorting for now
@@ -72,26 +57,24 @@ export class Mods extends React.Component<IProps, IState> {
 
     // If there is one download we don't care to choose
     if (dlLinks.length === 1) {
-      this.downloadMod(firstLink, modName, mod)
+      downloadMod(firstLink, modName, mod)
       return
     }
 
-    this.setState({
-      downloadList: dlLinks.map((link) => ({
-        name: link.filename,
-        url: link.downloadUrl,
-        mod: mod,
-      })),
-    })
+    setDownloadList(dlLinks.map((link) => ({
+      name: link.filename,
+      url: link.downloadUrl,
+      mod: mod,
+    })));
   }
 
-  async downloadMod(link: string, modName: string, mod: ModData) {
+  async function downloadMod(link: string, modName: string, mod: ModData) {
     const modFolder = await getModsFolder()
     const path = `${modFolder}/${modName}`
 
     if (!modFolder) return
 
-    this.props.downloadHandler.addDownload(link, path, async () => {
+    props.downloadHandler.addDownload(link, path, async () => {
       const unzipRes = await unzip(path, modFolder, false, true)
 
       // Write a modinfo.json file
@@ -102,68 +85,55 @@ export class Mods extends React.Component<IProps, IState> {
     })
   }
 
-  async setCategory(value: string) {
-    this.setState(
-      {
-        category: value,
-      },
-      this.forceUpdate
-    )
-  }
-
-  render() {
-    return (
-      <div className="Mods">
-        <TopBar>
-          <div
-            id="backbtn"
-            className="TopButton"
-            onClick={() => {
-              // Create and dispatch a custom "changePage" event
-              const event = new CustomEvent('changePage', { detail: 'main' })
-              window.dispatchEvent(event)
-            }}
-          >
-            <img src={Back} alt="back" />
-          </div>
-        </TopBar>
-
-        {this.state.downloadList && (
-          <Menu className="ModMenu" heading="Links" closeFn={() => this.setState({ downloadList: null })}>
-            <div className="ModDownloadList">
-              {this.state.downloadList.map((o) => {
-                return (
-                  <div className="ModDownloadItem" key={o.name}>
-                    <div className="ModDownloadName">{o.name}</div>
-                    <BigButton
-                      id={o.url}
-                      onClick={() => {
-                        const fileExt = o.url.split('.').pop()
-                        const modName = `${o.mod.id}.${fileExt}`
-
-                        this.downloadMod(o.url, modName, o.mod)
-                        this.setState({
-                          downloadList: null,
-                        })
-                      }}
-                    >
-                      <Tr text="components.download" />
-                    </BigButton>
-                  </div>
-                )
-              })}
-            </div>
-          </Menu>
-        )}
-
-        <div className="TopDownloads">
-          <ProgressBar downloadManager={this.props.downloadHandler} withStats={false} />
+  return (
+    <div class="Mods">
+      <TopBar>
+        <div
+          id="backbtn"
+          class="TopButton"
+          onClick={() => {
+            // Create and dispatch a custom "changePage" event
+            const event = new CustomEvent('changePage', { detail: 'main' })
+            window.dispatchEvent(event)
+          }}
+        >
+          <img src={Back} alt="back" />
         </div>
+      </TopBar>
 
-        <ModHeader onChange={this.setCategory} headers={headers} defaultHeader={'ripe'} />
+      <Show when={downloadList()} keyed={false}>
+        <Menu class="ModMenu" heading="Links" closeFn={() => setDownloadList(null)}>
+          <div class="ModDownloadList">
+            <For each={downloadList()}>{(o) => {
+              return (
+                <div class="ModDownloadItem" >
+                  <div class="ModDownloadName">{o.name}</div>
+                  <BigButton
+                    id={o.url}
+                    onClick={() => {
+                      const fileExt = o.url.split('.').pop()
+                      const modName = `${o.mod.id}.${fileExt}`
 
-        <ModList key={this.state.category} mode={this.state.category} addDownload={this.addDownload} />
+                      downloadMod(o.url, modName, o.mod)
+                      setDownloadList(null)
+                    }}
+                  >
+                    <Tr text="components.download" />
+                  </BigButton>
+                </div>
+              )
+            }}</For>
+          </div>
+        </Menu>
+      </Show>
+
+      <div class="TopDownloads">
+        <ProgressBar downloadManager={props.downloadHandler} withStats={false} />
       </div>
-    )
-  }
+
+      <ModHeader onChange={setCategory} headers={headers} defaultHeader={'ripe'} />
+
+      <ModList mode={category()} addDownload={addDownload} />
+    </div>
+  )
 }

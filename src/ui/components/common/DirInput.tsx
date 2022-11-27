@@ -1,10 +1,10 @@
-import React from 'react'
 import { open } from '@tauri-apps/api/dialog'
 import { translate } from '../../../utils/language'
 import TextInput from './TextInput'
 import File from '../../../resources/icons/folder.svg'
 
 import './DirInput.css'
+import {createEffect, createSignal, onMount} from "solid-js";
 
 interface IProps {
   value?: string
@@ -24,86 +24,65 @@ interface IState {
   folder: boolean
 }
 
-export default class DirInput extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
+export default function DirInput(props: IProps) {
+  const [value, setValue] = createSignal(props.value);
+  const [placeholder, setPlaceholder] = createSignal(props.placeholder || 'Select file or folder...');
+  const [folder, setFolder] = createSignal(props.folder || false);
 
-    this.state = {
-      value: props.value || '',
-      placeholder: this.props.placeholder || 'Select file or folder...',
-      folder: this.props.folder || false,
-    }
+  createEffect(() => {
+    if (props.value && value() === '') setValue(props.value || '');
+  });
 
-    this.handleIconClick = this.handleIconClick.bind(this)
-  }
+  createEffect(() => {
+    if (props.placeholder) setPlaceholder(props.placeholder)
+  });
 
-  static getDerivedStateFromProps(props: IProps, state: IState) {
-    const newState = state
-
-    if (props.value && state.value === '') {
-      newState.value = props.value || ''
-    }
-
-    if (props.placeholder) {
-      newState.placeholder = props.placeholder
-    }
-
-    return newState
-  }
-
-  async componentDidMount() {
-    if (!this.props.placeholder) {
+  onMount(async () => {
+    if (!props.placeholder) {
       const translation = await translate('components.select_file')
-      this.setState({
-        placeholder: translation,
-      })
+      setPlaceholder(translation)
     }
-  }
+  });
 
-  async handleIconClick() {
+  async function handleIconClick() {
     let path
 
-    if (this.state.folder) {
+    if (folder()) {
       path = await open({
         directory: true,
       })
     } else {
       path = await open({
-        filters: [{ name: 'Files', extensions: this.props.extensions || ['*'] }],
-        defaultPath: this.props.openFolder,
+        filters: [{ name: 'Files', extensions: props.extensions || ['*'] }],
+        defaultPath: props.openFolder,
       })
     }
 
     if (Array.isArray(path)) path = path[0]
     if (!path) return
 
-    this.setState({
-      value: path,
-    })
+    setValue(path)
 
-    if (this.props.onChange) this.props.onChange(path)
+    if (props.onChange) props.onChange(path)
   }
 
-  render() {
-    return (
-      <div className="DirInput">
-        <TextInput
-          value={this.state.value}
-          placeholder={this.state.placeholder}
-          clearable={this.props.clearable !== undefined ? this.props.clearable : true}
-          readOnly={this.props.readonly !== undefined ? this.props.readonly : true}
-          onChange={(text: string) => {
-            this.setState({ value: text })
+  return (
+    <div class="DirInput">
+      <TextInput
+        value={value()}
+        placeholder={placeholder()}
+        clearable={props.clearable !== undefined ? props.clearable : true}
+        readOnly={props.readonly !== undefined ? props.readonly : true}
+        onChange={(text: string) => {
+          setValue(text)
 
-            if (this.props.onChange) this.props.onChange(text)
-            this.forceUpdate()
-          }}
-          customClearBehaviour={this.props.customClearBehaviour}
-        />
-        <div className="FileSelectIcon" onClick={this.handleIconClick}>
-          <img src={File} />
-        </div>
+          props.onChange?.(text)
+        }}
+        customClearBehaviour={props.customClearBehaviour}
+      />
+      <div class="FileSelectIcon" onClick={handleIconClick}>
+        <img src={File} />
       </div>
-    )
-  }
+    </div>
+  )
 }
