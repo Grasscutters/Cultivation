@@ -284,7 +284,7 @@ pub fn generate_ca_files(path: &Path) -> CultivationResult<()> {
  */
 #[cfg(windows)]
 pub fn install_ca_files(cert_path: &Path) {
-  crate::system_helpers::run_command(
+  run_command(
     "certutil",
     vec!["-user", "-addstore", "Root", cert_path.to_str().unwrap()],
     None,
