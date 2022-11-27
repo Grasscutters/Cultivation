@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { onCleanup, onMount } from 'solid-js';
 import { createStore } from 'solid-js/store';
 import { invoke } from '@tauri-apps/api';
@@ -12,6 +13,23 @@ import BigButton from '../common/BigButton';
 import HelpButton from '../common/HelpButton';
 import Divider from './Divider';
 import Menu from './Menu';
+=======
+import Menu from './Menu'
+import Tr from '../../../utils/language'
+import DownloadHandler from '../../../utils/download'
+import { unzip } from '../../../utils/zipUtils'
+import BigButton from '../common/BigButton'
+import { dataDir } from '@tauri-apps/api/path'
+
+import './Downloads.css'
+import Divider from './Divider'
+import { getConfigOption } from '../../../utils/configuration'
+import { invoke } from '@tauri-apps/api'
+import { listen } from '@tauri-apps/api/event'
+import HelpButton from '../common/HelpButton'
+import {createStore} from "solid-js/store";
+import {onCleanup, onMount} from "solid-js";
+>>>>>>> aa45f04 (feat: move to solid-js)
 
 import './Downloads.css';
 
@@ -55,7 +73,11 @@ export default function Downloads(props: IProps) {
   onCleanup(() => unlisten.then((ul) => ul()));
 
   onMount(async () => {
+<<<<<<< HEAD
     const gc_path = await getConfigOption('grasscutter_path');
+=======
+    const gc_path = await getConfigOption('grasscutter_path')
+>>>>>>> aa45f04 (feat: move to solid-js)
 
     if (!gc_path || gc_path === '') {
       setState({
@@ -85,8 +107,13 @@ export default function Downloads(props: IProps) {
   });
 
   async function getGrasscutterFolder() {
+<<<<<<< HEAD
     const path = await getConfigOption('grasscutter_path');
     let folderPath;
+=======
+    const path = await getConfigOption('grasscutter_path')
+    let folderPath
+>>>>>>> aa45f04 (feat: move to solid-js)
 
     // Set to default if not set
     if (!path || path === '') {
@@ -107,6 +134,7 @@ export default function Downloads(props: IProps) {
   }
 
   async function downloadGrasscutterStableRepo() {
+<<<<<<< HEAD
     const folder = await getGrasscutterFolder();
     props.downloadManager.addDownload(
       STABLE_REPO_DOWNLOAD,
@@ -114,9 +142,69 @@ export default function Downloads(props: IProps) {
       async () => {
         await unzip(folder + '\\grasscutter_repo.zip', folder + '\\', true);
         toggleButtons();
+=======
+    const folder = await getGrasscutterFolder()
+    props.downloadManager.addDownload(STABLE_REPO_DOWNLOAD, folder + '\\grasscutter_repo.zip', async () => {
+      await unzip(folder + '\\grasscutter_repo.zip', folder + '\\', true)
+      toggleButtons()
+    })
+
+    toggleButtons()
+  }
+
+  async function downloadGrasscutterDevRepo() {
+    const folder = await getGrasscutterFolder()
+    props.downloadManager.addDownload(DEV_REPO_DOWNLOAD, folder + '\\grasscutter_repo.zip', async () => {
+      await unzip(folder + '\\grasscutter_repo.zip', folder + '\\', true)
+      toggleButtons()
+    })
+
+    toggleButtons()
+  }
+
+  async function downloadGrasscutterStable() {
+    const folder = await getGrasscutterFolder()
+    props.downloadManager.addDownload(STABLE_DOWNLOAD, folder + '\\grasscutter.zip', async () => {
+      await unzip(folder + '\\grasscutter.zip', folder + '\\', true)
+      toggleButtons
+    })
+
+    // Also add repo download
+    downloadGrasscutterStableRepo()
+
+    toggleButtons()
+  }
+
+  async function downloadGrasscutterLatest() {
+    const folder = await getGrasscutterFolder()
+    props.downloadManager.addDownload(DEV_DOWNLOAD, folder + '\\grasscutter.zip', async () => {
+      await unzip(folder + '\\grasscutter.zip', folder + '\\', true)
+      toggleButtons()
+    })
+
+    // Also add repo download
+    downloadGrasscutterDevRepo()
+
+    toggleButtons()
+  }
+
+  async function downloadResources() {
+    const folder = await getGrasscutterFolder()
+    props.downloadManager.addDownload(RESOURCES_DOWNLOAD, folder + '\\resources.zip', async () => {
+      // Delete the existing folder if it exists
+      if (
+        await invoke('dir_exists', {
+          path: folder + '\\resources',
+        })
+      ) {
+        await invoke('dir_delete', {
+          path: folder + '\\resources',
+        })
+>>>>>>> aa45f04 (feat: move to solid-js)
       }
     );
 
+<<<<<<< HEAD
     toggleButtons();
   }
 
@@ -201,6 +289,23 @@ export default function Downloads(props: IProps) {
 
   async function toggleButtons() {
     const gc_path = await getConfigOption('grasscutter_path');
+=======
+      await unzip(folder + '\\resources.zip', folder + '\\', true)
+      // Rename folder to resources
+      invoke('rename', {
+        path: folder + '\\Resources',
+        newName: 'resources',
+      })
+
+      toggleButtons()
+    })
+
+    toggleButtons()
+  }
+
+  async function toggleButtons() {
+    const gc_path = await getConfigOption('grasscutter_path')
+>>>>>>> aa45f04 (feat: move to solid-js)
 
     // Set states since we know we are downloading something if this is called
     setState({
@@ -216,11 +321,15 @@ export default function Downloads(props: IProps) {
       <div class="DownloadMenuSection" id="downloadMenuContainerGCStable">
         <div class="DownloadLabel" id="downloadMenuLabelGCStable">
           <Tr
+<<<<<<< HEAD
             text={
               state.grasscutter_set
                 ? 'downloads.grasscutter_stable'
                 : 'downloads.grasscutter_stable_update'
             }
+=======
+            text={state.grasscutter_set ? 'downloads.grasscutter_stable' : 'downloads.grasscutter_stable_update'}
+>>>>>>> aa45f04 (feat: move to solid-js)
           />
           <HelpButton contents="help.gc_stable_jar" />
         </div>
@@ -228,7 +337,12 @@ export default function Downloads(props: IProps) {
           <BigButton
             disabled={state.grasscutter_downloading}
             onClick={downloadGrasscutterStable}
+<<<<<<< HEAD
             id="grasscutterStableBtn">
+=======
+            id="grasscutterStableBtn"
+          >
+>>>>>>> aa45f04 (feat: move to solid-js)
             <Tr text="components.download" />
           </BigButton>
         </div>
@@ -236,11 +350,15 @@ export default function Downloads(props: IProps) {
       <div class="DownloadMenuSection" id="downloadMenuContainerGCDev">
         <div class="DownloadLabel" id="downloadMenuLabelGCDev">
           <Tr
+<<<<<<< HEAD
             text={
               state.grasscutter_set
                 ? 'downloads.grasscutter_latest'
                 : 'downloads.grasscutter_latest_update'
             }
+=======
+            text={state.grasscutter_set ? 'downloads.grasscutter_latest' : 'downloads.grasscutter_latest_update'}
+>>>>>>> aa45f04 (feat: move to solid-js)
           />
           <HelpButton contents="help.gc_dev_jar" />
         </div>
@@ -248,7 +366,12 @@ export default function Downloads(props: IProps) {
           <BigButton
             disabled={state.grasscutter_downloading}
             onClick={downloadGrasscutterLatest}
+<<<<<<< HEAD
             id="grasscutterLatestBtn">
+=======
+            id="grasscutterLatestBtn"
+          >
+>>>>>>> aa45f04 (feat: move to solid-js)
             <Tr text="components.download" />
           </BigButton>
         </div>
@@ -271,7 +394,12 @@ export default function Downloads(props: IProps) {
           <BigButton
             disabled={state.repo_downloading}
             onClick={downloadGrasscutterStableRepo}
+<<<<<<< HEAD
             id="grasscutterStableRepo">
+=======
+            id="grasscutterStableRepo"
+          >
+>>>>>>> aa45f04 (feat: move to solid-js)
             <Tr text="components.download" />
           </BigButton>
         </div>
@@ -291,7 +419,12 @@ export default function Downloads(props: IProps) {
           <BigButton
             disabled={state.repo_downloading}
             onClick={downloadGrasscutterStableRepo}
+<<<<<<< HEAD
             id="grasscutterDevRepo">
+=======
+            id="grasscutterDevRepo"
+          >
+>>>>>>> aa45f04 (feat: move to solid-js)
             <Tr text="components.download" />
           </BigButton>
         </div>
@@ -306,6 +439,7 @@ export default function Downloads(props: IProps) {
         </div>
         <div class="DownloadValue" id="downloadMenuButtonResources">
           <BigButton
+<<<<<<< HEAD
             disabled={
               state.resources_downloading ||
               !state.grasscutter_set ||
@@ -313,10 +447,21 @@ export default function Downloads(props: IProps) {
             }
             onClick={downloadResources}
             id="resourcesBtn">
+=======
+            disabled={state.resources_downloading || !state.grasscutter_set || state.resources_exist}
+            onClick={downloadResources}
+            id="resourcesBtn"
+          >
+>>>>>>> aa45f04 (feat: move to solid-js)
             <Tr text="components.download" />
           </BigButton>
         </div>
       </div>
     </Menu>
+<<<<<<< HEAD
   );
+=======
+  )
+>>>>>>> aa45f04 (feat: move to solid-js)
 }
+

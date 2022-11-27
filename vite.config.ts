@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { defineConfig, splitVendorChunkPlugin } from 'vite';
 import solid from 'vite-plugin-solid';
+=======
+import { defineConfig, splitVendorChunkPlugin } from 'vite'
+import solid from 'vite-plugin-solid'
+>>>>>>> aa45f04 (feat: move to solid-js)
 
 export default defineConfig({
   css: {

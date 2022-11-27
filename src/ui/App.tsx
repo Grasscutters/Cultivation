@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { createSignal, Match, onMount, Switch } from 'solid-js';
 import { convertFileSrc, invoke } from '@tauri-apps/api/tauri';
 
@@ -8,6 +9,17 @@ import { Main } from './Main';
 import { Mods } from './Mods';
 
 import './App.css';
+=======
+import './App.css'
+
+import DownloadHandler from '../utils/download'
+import { getConfigOption } from '../utils/configuration'
+import { getTheme, loadTheme } from '../utils/themes'
+import { convertFileSrc, invoke } from '@tauri-apps/api/tauri'
+import { Main } from './Main'
+import { Mods } from './Mods'
+import { createSignal, Match, onMount, Switch } from "solid-js";
+>>>>>>> aa45f04 (feat: move to solid-js)
 
 const downloadHandler = new DownloadHandler();
 const DEFAULT_BG = 'https://api.grasscutter.io/cultivation/bgfile';
@@ -49,7 +61,11 @@ export default function App() {
     window.addEventListener('changePage', (e) => {
       // @ts-expect-error - TS doesn't like our custom event
       setPage(e.detail);
+<<<<<<< HEAD
     });
+=======
+    })
+>>>>>>> aa45f04 (feat: move to solid-js)
   });
 
   return (
@@ -58,15 +74,27 @@ export default function App() {
       style={
         bgFile()
           ? {
+<<<<<<< HEAD
               background: `url("${bgFile()}") fixed`,
             }
           : {}
       }>
+=======
+            background: `url("${bgFile()}") fixed`,
+          }
+          : {}
+      }
+    >
+>>>>>>> aa45f04 (feat: move to solid-js)
       <Switch fallback={<Main downloadHandler={downloadHandler} />}>
         <Match when={page() === 'modding'} keyed={false}>
           <Mods downloadHandler={downloadHandler} />
         </Match>
       </Switch>
     </div>
+<<<<<<< HEAD
   );
+=======
+  )
+>>>>>>> aa45f04 (feat: move to solid-js)
 }

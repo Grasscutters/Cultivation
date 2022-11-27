@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 import { dataDir } from '@tauri-apps/api/path';
 import { invoke } from '@tauri-apps/api/tauri';
+=======
+import './App.css'
+>>>>>>> aa45f04 (feat: move to solid-js)
 
 import TextInput from './components/common/TextInput';
 import TopBar from './components/TopBar';
@@ -44,15 +48,23 @@ export default function Debug() {
   return (
     <div class="App">
       <TopBar />
+<<<<<<< HEAD
       <TextInput
         readOnly={false}
         initalValue={'change to set proxy address'}
         onChange={setProxyAddress}
       />
+=======
+      <TextInput readOnly={false} initalValue={'change to set proxy address'} onChange={setProxyAddress} />
+>>>>>>> aa45f04 (feat: move to solid-js)
       <button onClick={startProxy}>start proxy</button>
       <button onClick={stopProxy}>stop proxy</button>
       <button onClick={generateCertificates}>generate certificates</button>
       <button onClick={generateInfo}>dump info</button>
     </div>
+<<<<<<< HEAD
   );
+=======
+  )
+>>>>>>> aa45f04 (feat: move to solid-js)
 }

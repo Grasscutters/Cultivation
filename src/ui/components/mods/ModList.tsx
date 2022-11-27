@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { batch, createMemo, createSignal, For, onMount, Show } from 'solid-js';
 
 import { getConfigOption } from '../../../utils/configuration';
@@ -11,6 +12,15 @@ import { LoadingCircle } from './LoadingCircle';
 import { ModTile } from './ModTile';
 
 import './ModList.css';
+=======
+import { getConfigOption } from '../../../utils/configuration'
+import { getInstalledMods, getMods, ModData, PartialModData } from '../../../utils/gamebanana'
+import { LoadingCircle } from './LoadingCircle'
+
+import './ModList.css'
+import { ModTile } from './ModTile'
+import {batch, createMemo, createSignal, For, onMount, Show} from "solid-js";
+>>>>>>> aa45f04 (feat: move to solid-js)
 
 interface IProps {
   mode: string;
@@ -20,6 +30,7 @@ interface IProps {
 export function ModList(props: IProps) {
   const [horny, setHorny] = createSignal(false);
   const [modList, setModList] = createSignal<ModData[] | null>(null);
+<<<<<<< HEAD
   const [installedList, setInstalledList] = createSignal<
     | {
         path: string;
@@ -27,6 +38,12 @@ export function ModList(props: IProps) {
       }[]
     | null
   >(null);
+=======
+  const [installedList, setInstalledList] = createSignal<{
+    path: string
+    info: ModData | PartialModData
+  }[] | null>(null);
+>>>>>>> aa45f04 (feat: move to solid-js)
 
   onMount(async () => {
     if (props.mode === 'installed') {
@@ -53,8 +70,13 @@ export function ModList(props: IProps) {
       return;
     }
 
+<<<<<<< HEAD
     const mods = await getMods(props.mode);
     const horny = await getConfigOption('horny_mode');
+=======
+    const mods = await getMods(props.mode)
+    const horny = await getConfigOption('horny_mode')
+>>>>>>> aa45f04 (feat: move to solid-js)
 
     batch(() => {
       setHorny(horny);
@@ -63,11 +85,16 @@ export function ModList(props: IProps) {
   });
 
   async function downloadMod(mod: ModData) {
+<<<<<<< HEAD
     props.addDownload(mod);
+=======
+    props.addDownload(mod)
+>>>>>>> aa45f04 (feat: move to solid-js)
   }
 
   // Please somebody explain to me what the logic should be here?
   // Seems really over the top tbh.
+<<<<<<< HEAD
   const convolutedCondition = createMemo(
     () =>
       (modList() && props.mode !== 'installed') ||
@@ -96,6 +123,20 @@ export function ModList(props: IProps) {
                 )}
               </For>
             }>
+=======
+  const convolutedCondition = createMemo(() => (modList() && props.mode !== 'installed') ||
+    (installedList() && props.mode === 'installed'));
+
+  return (
+    <div class="ModList">
+      <Show when={convolutedCondition()} keyed={false} fallback={<LoadingCircle />}>
+        <div class="ModListInner">
+          <Show when={props.mode === 'installed'} keyed={false} fallback={(
+            <For each={modList()}>
+              {(mod) => <ModTile horny={horny()} mod={mod} key={mod.id} onClick={downloadMod} />}
+            </For>
+          )}>
+>>>>>>> aa45f04 (feat: move to solid-js)
             <For each={installedList()}>
               {(mod) => (
                 <ModTile
@@ -111,5 +152,9 @@ export function ModList(props: IProps) {
         </div>
       </Show>
     </div>
+<<<<<<< HEAD
   );
+=======
+  )
+>>>>>>> aa45f04 (feat: move to solid-js)
 }

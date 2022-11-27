@@ -1,7 +1,17 @@
+<<<<<<< HEAD
 import { onMount, Show } from 'solid-js';
 import { createStore } from 'solid-js/store';
 import { dataDir } from '@tauri-apps/api/path';
 import { invoke } from '@tauri-apps/api/tauri';
+=======
+import Checkbox from './common/Checkbox'
+import BigButton from './common/BigButton'
+import TextInput from './common/TextInput'
+import HelpButton from './common/HelpButton'
+import { getConfig, saveConfig, setConfigOption } from '../../utils/configuration'
+import { translate } from '../../utils/language'
+import { invoke } from '@tauri-apps/api/tauri'
+>>>>>>> aa45f04 (feat: move to solid-js)
 
 import Plus from '../../resources/icons/plus.svg';
 import Server from '../../resources/icons/server.svg';
@@ -18,7 +28,16 @@ import Checkbox from './common/Checkbox';
 import HelpButton from './common/HelpButton';
 import TextInput from './common/TextInput';
 
+<<<<<<< HEAD
 import './ServerLaunchSection.css';
+=======
+import './ServerLaunchSection.css'
+import { dataDir } from '@tauri-apps/api/path'
+import { getGameExecutable, getGameVersion } from '../../utils/game'
+import { patchGame, unpatchGame } from '../../utils/metadata'
+import {createStore} from "solid-js/store";
+import {onMount, Show} from "solid-js";
+>>>>>>> aa45f04 (feat: move to solid-js)
 
 interface IProps {
   openExtras: (playGame: () => void) => void;
@@ -62,7 +81,11 @@ export default function ServerLaunchSection(props: IProps) {
   });
 
   onMount(async () => {
+<<<<<<< HEAD
     const config = await getConfig();
+=======
+    const config = await getConfig()
+>>>>>>> aa45f04 (feat: move to solid-js)
 
     setState({
       grasscutterEnabled: config.toggle_grasscutter || false,
@@ -78,11 +101,19 @@ export default function ServerLaunchSection(props: IProps) {
       swag: config.swag_mode || false,
       akebiSet: config.akebi_path !== '',
       migotoSet: config.migoto_path !== '',
+<<<<<<< HEAD
     });
   });
 
   async function toggleGrasscutter() {
     const config = await getConfig();
+=======
+    })
+  });
+
+  async function toggleGrasscutter() {
+    const config = await getConfig()
+>>>>>>> aa45f04 (feat: move to solid-js)
 
     config.toggle_grasscutter = !config.toggle_grasscutter;
 
@@ -93,7 +124,11 @@ export default function ServerLaunchSection(props: IProps) {
   }
 
   async function playGame(exe?: string, proc_name?: string) {
+<<<<<<< HEAD
     const config = await getConfig();
+=======
+    const config = await getConfig()
+>>>>>>> aa45f04 (feat: move to solid-js)
 
     if (!(await getGameExecutable())) {
       alert('Game executable not set!');
@@ -142,8 +177,13 @@ export default function ServerLaunchSection(props: IProps) {
 
       // Save last connected server and port
       // TODO[perf]: could be batched
+<<<<<<< HEAD
       await setConfigOption('last_ip', state.ip);
       await setConfigOption('last_port', state.port);
+=======
+      await setConfigOption('last_ip', state.ip)
+      await setConfigOption('last_port', state.port)
+>>>>>>> aa45f04 (feat: move to solid-js)
 
       await invoke('enable_process_watcher', {
         process: proc_name || game_exe,
@@ -152,6 +192,7 @@ export default function ServerLaunchSection(props: IProps) {
       if (config.use_internal_proxy) {
         // Set IP
         await invoke('set_proxy_addr', {
+<<<<<<< HEAD
           addr:
             (state.httpsEnabled ? 'https' : 'http') +
             '://' +
@@ -159,6 +200,10 @@ export default function ServerLaunchSection(props: IProps) {
             ':' +
             state.port,
         });
+=======
+          addr: (state.httpsEnabled ? 'https' : 'http') + '://' + state.ip + ':' + state.port,
+        })
+>>>>>>> aa45f04 (feat: move to solid-js)
         // Connect to proxy
         await invoke('connect', {
           port: 8365,
@@ -215,7 +260,11 @@ export default function ServerLaunchSection(props: IProps) {
   }
 
   async function launchServer() {
+<<<<<<< HEAD
     const config = await getConfig();
+=======
+    const config = await getConfig()
+>>>>>>> aa45f04 (feat: move to solid-js)
 
     if (!config.grasscutter_path)
       return alert('Grasscutter not installed or set!');
@@ -243,6 +292,7 @@ export default function ServerLaunchSection(props: IProps) {
   }
 
   function setIp(text: string) {
+<<<<<<< HEAD
     setState('ip', text);
   }
 
@@ -252,6 +302,17 @@ export default function ServerLaunchSection(props: IProps) {
 
   async function toggleHttps() {
     const config = await getConfig();
+=======
+    setState('ip', text)
+  }
+
+  function setPort(text: string) {
+    setState('port', text)
+  }
+
+  async function toggleHttps() {
+    const config = await getConfig()
+>>>>>>> aa45f04 (feat: move to solid-js)
 
     config.https_enabled = !config.https_enabled;
 
@@ -306,9 +367,13 @@ export default function ServerLaunchSection(props: IProps) {
           {state.buttonLabel}
         </BigButton>
         <Show when={state.swag} keyed={false}>
+<<<<<<< HEAD
           <BigButton
             onClick={() => props.openExtras(playGame)}
             id="ExtrasMenuButton">
+=======
+          <BigButton onClick={() => props.openExtras(playGame)} id="ExtrasMenuButton">
+>>>>>>> aa45f04 (feat: move to solid-js)
             <img class="ExtrasIcon" id="extrasIcon" src={Plus} />
           </BigButton>
         </Show>
@@ -317,5 +382,9 @@ export default function ServerLaunchSection(props: IProps) {
         </BigButton>
       </div>
     </div>
+<<<<<<< HEAD
   );
+=======
+  )
+>>>>>>> aa45f04 (feat: move to solid-js)
 }

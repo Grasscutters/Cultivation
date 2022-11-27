@@ -39,16 +39,23 @@
     ]
   },
   "devDependencies": {
+<<<<<<< HEAD
     "@commitlint/cli": "^17.3.0",
     "@commitlint/config-conventional": "^17.3.0",
     "@tauri-apps/cli": "^1.2.1",
     "@typescript-eslint/eslint-plugin": "^5.44.0",
     "@typescript-eslint/parser": "^5.44.0",
     "commitizen": "^4.2.5",
+=======
+    "@tauri-apps/cli": "^1.2.1",
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
+    "@typescript-eslint/parser": "^5.44.0",
+>>>>>>> aa45f04 (feat: move to solid-js)
     "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
+<<<<<<< HEAD
     "eslint-config-prettier-standard": "^4.0.1",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.26.0",
@@ -59,6 +66,10 @@
     "eslint-plugin-simple-import-sort": "^8.0.0",
     "eslint-plugin-solid": "^0.8.0",
     "lefthook": "^1.2.2",
+=======
+    "eslint-plugin-solid": "^0.8.0",
+    "husky": "^8.0.2",
+>>>>>>> aa45f04 (feat: move to solid-js)
     "lint-staged": "^13.0.4",
     "prettier": "^2.8.0",
     "prettier-config-standard": "^5.0.0",
