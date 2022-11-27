@@ -1,6 +1,8 @@
-use std::fs::{read_dir, File};
-use std::path;
-use std::thread;
+use crate::error::{CultivationResult, UnrarError};
+use std::{
+  fs::{read_dir, File},
+  path, thread,
+};
 use unrar::archive::Archive;
 
 #[tauri::command]
@@ -10,22 +12,15 @@ pub fn unzip(
   destpath: String,
   top_level: Option<bool>,
   folder_if_loose: Option<bool>,
-) {
-  // Read file TODO: replace test file
-  let f = match File::open(&zipfile) {
-    Ok(f) => f,
-    Err(e) => {
-      println!("Failed to open zip file: {}", e);
-      return;
-    }
-  };
+) -> CultivationResult<()> {
+  let f = File::open(&zipfile)?;
 
   let write_path = path::PathBuf::from(&destpath);
 
   // Get a list of all current directories
   let mut dirs = vec![];
-  for entry in read_dir(&write_path).unwrap() {
-    let entry = entry.unwrap();
+  for entry in read_dir(&write_path)? {
+    let entry = entry?;
     let entry_path = entry.path();
     if entry_path.is_dir() {
       dirs.push(entry_path);
@@ -68,12 +63,12 @@ pub fn unzip(
 
     // If file ends in zip, OR is unknown, extract as zip, otherwise extract as rar
     if zipfile.ends_with(".rar") {
-      success = extract_rar(&zipfile, &f, &full_path, top_level.unwrap_or(true));
+      success = extract_rar(&zipfile, &f, &full_path, top_level.unwrap_or(true)).is_ok();
 
       let archive = Archive::new(zipfile.clone());
       name = archive.list().unwrap().next().unwrap().unwrap().filename;
     } else {
-      success = extract_zip(&zipfile, &f, &full_path, top_level.unwrap_or(true));
+      success = extract_zip(&zipfile, &f, &full_path, top_level.unwrap_or(true)).is_ok();
 
       // Get the name of the inenr file in the zip file
       let mut zip = zip::ZipArchive::new(&f).unwrap();
@@ -122,44 +117,33 @@ pub fn unzip(
 
     window.emit("extract_end", &res_hash).unwrap();
   });
+
+  Ok(())
 }
 
-fn extract_rar(rarfile: &str, _f: &File, full_path: &path::Path, _top_level: bool) -> bool {
+fn extract_rar(
+  rarfile: &str,
+  _f: &File,
+  full_path: &path::Path,
+  _top_level: bool,
+) -> CultivationResult<()> {
   let archive = Archive::new(rarfile.to_string());
 
   let mut open_archive = archive
     .extract_to(full_path.to_str().unwrap().to_string())
-    .unwrap();
+    .map_err(UnrarError::from)?;
 
-  match open_archive.process() {
-    Ok(_) => {
-      println!(
-        "Extracted rar file to: {}",
-        full_path.to_str().unwrap_or("Error")
-      );
+  open_archive.process().map_err(UnrarError::from)?;
 
-      true
-    }
-    Err(e) => {
-      println!("Failed to extract rar file: {}", e);
-      false
-    }
-  }
+  Ok(())
 }
 
-fn extract_zip(_zipfile: &str, f: &File, full_path: &path::Path, top_level: bool) -> bool {
-  match zip_extract::extract(f, full_path, top_level) {
-    Ok(_) => {
-      println!(
-        "Extracted zip file to: {}",
-        full_path.to_str().unwrap_or("Error")
-      );
-
-      true
-    }
-    Err(e) => {
-      println!("Failed to extract zip file: {}", e);
-      false
-    }
-  }
+fn extract_zip(
+  _zipfile: &str,
+  f: &File,
+  full_path: &path::Path,
+  top_level: bool,
+) -> CultivationResult<()> {
+  zip_extract::extract(f, full_path, top_level)?;
+  Ok(())
 }
