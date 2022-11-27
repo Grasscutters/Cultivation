@@ -1,19 +1,17 @@
-use crate::file_helpers;
-use crate::web;
-use std::collections::HashMap;
-use std::fs::read_dir;
-use std::io::Read;
+use crate::{error::CultivationResult, file_helpers, web};
+use dashmap::DashMap;
 use std::path::PathBuf;
+use tokio::{fs, io::AsyncReadExt};
 
 static SITE_URL: &str = "https://gamebanana.com";
 
 #[tauri::command]
-pub async fn get_download_links(mod_id: String) -> String {
+pub async fn get_download_links(mod_id: String) -> CultivationResult<String> {
   web::query(format!("{}/apiv9/Mod/{}/DownloadPage", SITE_URL, mod_id).as_str()).await
 }
 
 #[tauri::command]
-pub async fn list_submissions(mode: String, page: String) -> String {
+pub async fn list_submissions(mode: String, page: String) -> CultivationResult<String> {
   web::query(
     format!(
       "{}/apiv9/Util/Game/Submissions?_idGameRow=8552&_nPage={}&_nPerpage=50&_sMode={}",
@@ -25,7 +23,7 @@ pub async fn list_submissions(mode: String, page: String) -> String {
 }
 
 #[tauri::command]
-pub async fn list_mods(path: String) -> HashMap<String, String> {
+pub async fn list_mods(path: String) -> CultivationResult<DashMap<String, String>> {
   let mut path_buf = PathBuf::from(path);
 
   // If the path includes a file, remove it
@@ -37,15 +35,16 @@ pub async fn list_mods(path: String) -> HashMap<String, String> {
   path_buf.push("Mods");
 
   // Check if dir is empty
-  if file_helpers::dir_is_empty(path_buf.to_str().unwrap()) {
-    return HashMap::new();
+  if file_helpers::dir_is_empty(path_buf.to_str().unwrap())? {
+    return Ok(DashMap::new());
   }
 
   let mut mod_info_files = vec![];
-  let mut mod_info_strings = HashMap::new();
+  let mod_info_strings = DashMap::new();
 
-  for entry in read_dir(path_buf).unwrap() {
-    let entry = entry.unwrap();
+  let mut dir_reader = fs::read_dir(path_buf).await?;
+
+  while let Some(entry) = dir_reader.next_entry().await? {
     let path = entry.path();
 
     // Check each dir for a modinfo.json file
@@ -73,12 +72,12 @@ pub async fn list_mods(path: String) -> HashMap<String, String> {
     let mut mod_info_string = String::new();
 
     // It is safe to unwrap here since we *know* that the file exists
-    let mut file = std::fs::File::open(&mod_info_file).unwrap();
-    file.read_to_string(&mut mod_info_string).unwrap();
+    let mut file = fs::File::open(&mod_info_file).await?;
+    file.read_to_string(&mut mod_info_string).await?;
 
     // Push into hashmap using path as key
     mod_info_strings.insert(mod_info_file, mod_info_string);
   }
 
-  mod_info_strings
+  Ok(mod_info_strings)
 }
