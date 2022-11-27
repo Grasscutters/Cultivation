@@ -13,31 +13,23 @@
     "@types/react-dom": "^18.0.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
     "typescript": "^4.9.3",
     "web-vitals": "^3.1.0"
   },
   "scripts": {
-    "start": "cross-env BROWSER=none react-scripts start",
+    "start": "cross-env BROWSER=none vite",
     "postbuild:windows": "xcopy /E /H /C /I /Y \".\\src-tauri\\lang\" \".\\src-tauri\\target\\release\\lang\"",
     "postbuild:linux": "cp -r \"./src-tauri/lang\" \"./lang\"",
-    "build:windows": "yarn tauri build",
-    "build:linux": "yarn tauri build",
-    "build": "react-scripts build && run-script-os",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "build:windows": "pnpm tauri build",
+    "build:linux": "pnpm tauri build",
+    "build": "vite build && run-script-os",
+    "test": "vitest",
     "tauri": "tauri",
     "start:dev": "tauri dev -- -- --no-admin",
     "format": "cargo fmt --manifest-path ./src-tauri/Cargo.toml --all && yarn prettier --write --cache --loglevel warn .",
     "lint": "cargo clippy --manifest-path ./src-tauri/Cargo.toml --no-default-features && yarn tsc --noEmit && yarn eslint src",
     "lint:fix": "cargo clippy --manifest-path ./src-tauri/Cargo.toml --no-default-features --fix --allow-dirty && yarn tsc --noEmit && yarn eslint --fix src",
     "prepare": "husky install"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [
@@ -55,6 +47,7 @@
     "@tauri-apps/cli": "^1.2.0",
     "@typescript-eslint/eslint-plugin": "^5.44.0",
     "@typescript-eslint/parser": "^5.44.0",
+    "@vitejs/plugin-react": "^2.2.0",
     "cross-env": "^7.0.3",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
@@ -62,6 +55,8 @@
     "husky": "^8.0.2",
     "lint-staged": "^13.0.3",
     "prettier": "^2.8.0",
-    "run-script-os": "^1.1.6"
+    "run-script-os": "^1.1.6",
+    "vite": "^3.2.4",
+    "vitest": "^0.25.3"
   }
 }

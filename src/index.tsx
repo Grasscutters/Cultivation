@@ -14,6 +14,7 @@ let isDebug = false
 ;async () => {
   isDebug = await getConfigOption('debug_enabled')
 }
+console.log(isDebug)
 
 root.render(<React.StrictMode>{isDebug ? <Debug /> : <App />}</React.StrictMode>)
 
