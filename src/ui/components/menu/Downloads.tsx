@@ -17,7 +17,7 @@ const STABLE_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archiv
 const DEV_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/development.zip'
 const STABLE_DOWNLOAD = 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/stable/Grasscutter.zip'
 const DEV_DOWNLOAD = 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/development/Grasscutter.zip'
-const RESOURCES_DOWNLOAD = 'https://github.com/tamilpp25/Grasscutter_Resources/archive/refs/heads/3.0.zip'
+const RESOURCES_DOWNLOAD = 'https://git.crepe.moe/grasscutters/Grasscutter_Resources/-/blob/main/Grasscutter_Resources-3.3.zip'
 
 interface IProps {
   closeFn: () => void
