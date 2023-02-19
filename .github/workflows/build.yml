@@ -34,7 +34,7 @@ jobs:
           toolchain: stable
 
       - name: Install deps and build
-        run: yarn && yarn build
+        run: yarn && yarn build --debug
 
       - name: Compress build
         uses: vimtor/action-zip@v1
