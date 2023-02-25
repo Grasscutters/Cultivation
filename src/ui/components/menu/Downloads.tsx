@@ -17,7 +17,7 @@ const STABLE_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archiv
 const DEV_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/development.zip'
 const STABLE_DOWNLOAD = 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/stable/Grasscutter.zip'
 const DEV_DOWNLOAD = 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/development/Grasscutter.zip'
-const RESOURCES_DOWNLOAD = 'https://git.crepe.moe/grasscutters/Grasscutter_Resources/-/blob/main/Grasscutter_Resources-3.3.zip'
+const RESOURCES_DOWNLOAD = 'https://gitlab.com/YuukiPS/GC-Resources/-/archive/3.4/GC-Resources-3.4.zip' // Use Yuuki res as grasscutter crepe res are broken
 
 interface IProps {
   closeFn: () => void

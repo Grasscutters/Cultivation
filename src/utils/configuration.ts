@@ -5,7 +5,7 @@ let configFilePath: string
 let defaultConfig: Configuration
 ;(async () => {
   defaultConfig = {
-    toggle_grasscutter: false,
+    toggle_grasscutter: true,
     game_install_path: 'C:\\Program Files\\Genshin Impact\\Genshin Impact game\\GenshinImpact.exe',
     grasscutter_with_game: false,
     grasscutter_path: '',
@@ -20,7 +20,7 @@ let defaultConfig: Configuration
     theme: 'default',
     https_enabled: false,
     debug_enabled: false,
-    patch_metadata: true,
+    patch_metadata: false,
     use_internal_proxy: true,
     wipe_login: false,
     horny_mode: false,

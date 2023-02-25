@@ -120,7 +120,8 @@ pub fn unzip(
     res_hash.insert("file", zipfile.to_string());
     res_hash.insert("new_folder", new_dir);
 
-    window.emit("extract_end", &res_hash).unwrap();
+    // Testing fix
+    //window.emit("extract_end", &res_hash).unwrap();
   });
 }
 
@@ -150,6 +151,8 @@ fn extract_rar(rarfile: &str, _f: &File, full_path: &path::Path, _top_level: boo
 fn extract_zip(_zipfile: &str, f: &File, full_path: &path::Path, top_level: bool) -> bool {
   match zip_extract::extract(f, full_path, top_level) {
     Ok(_) => {
+      // Notify extract end when extract is actually complete
+      window.emit("extract_end", &res_hash).unwrap();
       println!(
         "Extracted zip file to: {}",
         full_path.to_str().unwrap_or("Error")

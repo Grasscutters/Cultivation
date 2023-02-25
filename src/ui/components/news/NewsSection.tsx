@@ -60,7 +60,10 @@ export default class NewsSection extends React.Component<IProps, IState> {
 
   async showLatestCommits() {
     if (!this.state.commitList) {
-      const response: string = await invoke('req_get', { url: 'https://api.grasscutter.io/cultivation/query' })
+      // Just use official API
+      const response: string = await invoke('req_get', {
+        url: 'https://api.github.com/repos/Grasscutters/Grasscutter/commits',
+      })
       let grasscutterApiResponse: GrasscutterAPIResponse | null = null
 
       try {
@@ -71,7 +74,7 @@ export default class NewsSection extends React.Component<IProps, IState> {
 
       let commits: CommitResponse[]
       if (grasscutterApiResponse?.commits == null) {
-        // If it didn't work, use official API
+        // If it didn't work, try again anyways
         const response: string = await invoke('req_get', {
           url: 'https://api.github.com/repos/Grasscutters/Grasscutter/commits',
         })
