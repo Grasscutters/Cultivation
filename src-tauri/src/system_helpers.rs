@@ -115,7 +115,7 @@ pub fn set_migoto_target(path: String, migoto_path: String) -> bool {
   // Set options
   conf
     .with_section(Some("Loader"))
-    .set("target", pathbuf.file_name().unwrap().to_str().unwrap());
+    .set("target", "GenshinImpact.exe");
 
   // Write file
   match conf.write_to_file(&migoto_pathbuf) {
