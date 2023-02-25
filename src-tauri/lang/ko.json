@@ -1,0 +1,83 @@
+{
+  "lang_name": "한국어",
+  "main": {
+    "title": "윈신 로즈",
+    "launch_button": "게임 시작",
+    "gc_enable": "Grasscutter 연결",
+    "https_enable": "HTTPS 사용",
+    "ip_placeholder": "서버 주소",
+    "port_placeholder": "포트",
+    "files_downloading": "파일 다운로드 중: ",
+    "files_extracting": "파일 추출 중: "
+  },
+  "options": {
+    "enabled": "활성",
+    "disabled": "비활성",
+    "game_path": "게임 설치 경로 설정",
+    "game_command": "게임 시작 명령",
+    "game_executable": "게임 실행 파일 설정",
+    "recover_metadata": "긴급 메타데이터 복구",
+    "grasscutter_jar": "그래스커터 JAR 설정",
+    "toggle_encryption": "암호화 전환",
+    "install_certificate": "프록시 인증서 설치",
+    "java_path": "사용자 지정 Java 경로 설정",
+    "grasscutter_with_game": "게임에서 자동으로 그래스커터 실행",
+    "language": "언어 선택",
+    "background": "사용자 지정 배경 설정(링크 또는 이미지 파일)",
+    "theme": "테마 설정",
+    "patch_metadata": "자동으로 메타데이터 패치 적용",
+    "use_proxy": "내부 프록시 사용",
+    "wipe_login": "로그인 캐시 지우기",
+    "horny_mode": "Horny 모드"
+  },
+  "downloads": {
+    "grasscutter_stable_data": "안정적인 데이터 다운로드",
+    "grasscutter_latest_data": "최신 데이터 다운로드",
+    "grasscutter_stable_data_update": "안정적 데이터 업데이트",
+    "grasscutter_latest_data_update": "최신 데이터 업데이트",
+    "grasscutter_stable": "안정 다운로드",
+    "grasscutter_latest": "최신 다운로드",
+    "grasscutter_stable_update": "안정 업데이트",
+    "grasscutter_latest_update": "최신 업데이트",
+    "resources": "리소스 다운로드",
+    "game": "게임 다운로드"
+  },
+  "download_status": {
+    "downloading": "다운로드 중",
+    "extracting": "추출 중",
+    "error": "오류",
+    "finished": "완료",
+    "stopped": "중지"
+  },
+  "components": {
+    "select_file": "파일 또는 폴더 선택...",
+    "select_folder": "폴더 선택...",
+    "download": "다운로드",
+    "install": "설치"
+  },
+  "news": {
+    "latest_commits": "공지 사항",
+    "latest_version": "최신 버전"
+  },
+  "help": {
+    "port_help_text": "게임 서버 포트가 아닌 패치 서버 포트인지 확인하십시오. (기본 포트: 443)",
+    "game_help_text": "그래스커터를 사용하기 위해 별도의 복사본을 사용할 필요가 없습니다. 이는 2.6으로 다운그레이드 하거나 게임을 설치하지 않은 경우에 적용됩니다.",
+    "gc_stable_jar": "jar 파일과 데이터 파일이 포함된 현재 안정적인 Grasscuter 빌드를 다운로드합니다.",
+    "gc_dev_jar": "jar 파일 및 데이터 파일이 포함된 최신 개발 Grasscuter 빌드를 다운로드하십시오.",
+    "gc_stable_data": "jar 파일과 함께 제공되지 않는 현재 안정적인 Grasscuter 데이터 파일을 다운로드합니다. 이것은 업데이트하는 데 유용합니다.",
+    "gc_dev_data": "jar 파일과 함께 제공되지 않는 최신 개발 Grasscuter 데이터 파일을 다운로드합니다. 이것은 업데이트하는 데 유용합니다.",
+    "encryption": "일반적으로 이 기능을 사용하지 않도록 설정해야 합니다.",
+    "resources": "또한 Grasscutter 서버를 실행하는 데도 필요합니다. 내용이 포함된 기존 리소스 폴더가 있는 경우 이 버튼은 회색으로 표시됩니다",
+    "emergency_metadata": "문제가 발생한 경우 메타데이터를 최신 공식 버전 메타데이터로 복원합니다.",
+    "use_proxy": "Culturation 내부 프록시를 사용합니다. 피들러와 같은 것을 사용하지 않는 한 이 기능을 활성화해야 합니다",
+    "patch_metadata": "게임 메타데이터를 자동으로 패치 및 패치 해제합니다. 이전/비공식 버전으로 재생하거나 메타데이터를 수동으로 패치한 경우를 제외하고는 이 기능을 사용하도록 설정해야 합니다."
+  },
+  "swag": {
+    "akebi_name": "Akebi",
+    "migoto_name": "Migoto",
+    "reshade_name": "Reshade",
+    "akebi": "Akebi 실행 파일 설정",
+    "migoto": "3DMigoto 실행 파일 설정",
+    "reshade": "Reshade 인젝터 설정"
+  }
+}
