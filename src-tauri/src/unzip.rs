@@ -99,29 +99,27 @@ pub fn unzip(
     // Delete zip file
     match std::fs::remove_file(&zipfile) {
       Ok(_) => {
+        // Get any new directory that could have been created
+        let mut new_dir: String = String::new();
+        for entry in read_dir(&write_path).unwrap() {
+          let entry = entry.unwrap();
+          let entry_path = entry.path();
+          if entry_path.is_dir() && !dirs.contains(&entry_path) {
+            new_dir = entry_path.to_str().unwrap().to_string();
+          }
+        }
+
+        let mut res_hash = std::collections::HashMap::new();
+        res_hash.insert("file", zipfile.to_string());
+        res_hash.insert("new_folder", new_dir);
+
+        window.emit("extract_end", &res_hash).unwrap();
         println!("Deleted zip file: {}", zipfile);
       }
       Err(e) => {
         println!("Failed to delete zip file: {}", e);
       }
     };
-
-    // Get any new directory that could have been created
-    let mut new_dir: String = String::new();
-    for entry in read_dir(&write_path).unwrap() {
-      let entry = entry.unwrap();
-      let entry_path = entry.path();
-      if entry_path.is_dir() && !dirs.contains(&entry_path) {
-        new_dir = entry_path.to_str().unwrap().to_string();
-      }
-    }
-
-    let mut res_hash = std::collections::HashMap::new();
-    res_hash.insert("file", zipfile.to_string());
-    res_hash.insert("new_folder", new_dir);
-
-    // Testing fix
-    //window.emit("extract_end", &res_hash).unwrap();
   });
 }
 
@@ -151,8 +149,6 @@ fn extract_rar(rarfile: &str, _f: &File, full_path: &path::Path, _top_level: boo
 fn extract_zip(_zipfile: &str, f: &File, full_path: &path::Path, top_level: bool) -> bool {
   match zip_extract::extract(f, full_path, top_level) {
     Ok(_) => {
-      // Notify extract end when extract is actually complete
-      window.emit("extract_end", &res_hash).unwrap();
       println!(
         "Extracted zip file to: {}",
         full_path.to_str().unwrap_or("Error")

@@ -129,7 +129,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
 
         if (gameVersion?.major == 3 && gameVersion?.minor >= 1) {
           alert(
-            'Game version is too new for metadata patching. Please disable metadata patching in the settings to launch the game.\nNOTE: You will require a UA patch to play the game.'
+            'Game version is too new for metadata patching. TO FIX: Please disable metadata patching in the settings menu to launch the game!! \nNOTE: You will require an RSA patch to play the game.'
           )
           return
         }
