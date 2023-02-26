@@ -130,7 +130,15 @@ pub fn read_file(path: String) -> String {
 
   let mut file = match fs::File::open(path_buf) {
     Ok(file) => file,
-    Err(e) =>  return String.from::(""); // Send back error for handling by the caller
+    Err(e) => {
+      if path.contains("config") {
+        // Server.ts won't print the error so handle the message here for the user
+        println!("Server config not found or invalid. Be sure to run the server at least once to generate it before making edits.");
+      } else {
+        println!("Failed to open file: {}", e);
+      }
+      return String::new(); // Send back error for handling by the caller
+    }
   };
 
   let mut contents = String::new();

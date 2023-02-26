@@ -40,11 +40,5 @@ export async function encryptionEnabled(path: string) {
     return false
   }
 
-  // Also check if null just in case
-  if (serverConf == null) {
-    console.log(`Server config at ${path} not found or invalid. Be sure to run the server at least once to generate it`)
-    return false
-  }
-
   return serverConf.server.http.encryption.useEncryption
 }
