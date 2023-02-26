@@ -172,6 +172,12 @@ export default class Downloads extends React.Component<IProps, IState> {
   async downloadResources() {
     const folder = await this.getGrasscutterFolder()
     this.props.downloadManager.addDownload(RESOURCES_DOWNLOAD, folder + '\\resources.zip', async () => {
+
+      // Tell the user this takes some time
+      alert(
+        'Extracting resources can take time! If your resources appear to be "stuck" extracting for less than 15-20 mins, they likely still are extracting.'
+      )
+
       // Delete the existing folder if it exists
       if (
         await invoke('dir_exists', {
@@ -216,24 +222,24 @@ export default class Downloads extends React.Component<IProps, IState> {
         <Divider />
 
         <div className="HeaderText" id="downloadMenuAIOHeader">
-            <Tr text = "downloads.aio_header" />
+          <Tr text="downloads.aio_header" />
         </div>
         <div className="DownloadMenuSection" id="downloadMenuContainerGCFullBuild">
-            <div className="DownloadLabel" id="downloadMenuLabelGCFullBuild">
-              <Tr
-                text={'downloads.grasscutter_fullbuild'}
-              />
-              <HelpButton contents="help.gc_fullbuild" />
-            </div>
-            <div className="DownloadValue" id="downloadMenuButtonGCFullBuild">
-              <BigButton
-                disabled={this.state.grasscutter_downloading}
-                onClick={this.downloadGrasscutterFullBuild}
-                id="grasscutterFullBuildBtn"
-              >
-                <Tr text="components.download" />
-              </BigButton>
-            </div>
+          <div className="DownloadLabel" id="downloadMenuLabelGCFullBuild">
+            <Tr
+              text={'downloads.grasscutter_fullbuild'}
+            />
+            <HelpButton contents="help.gc_fullbuild" />
+          </div>
+          <div className="DownloadValue" id="downloadMenuButtonGCFullBuild">
+            <BigButton
+              disabled={this.state.grasscutter_downloading}
+              onClick={this.downloadGrasscutterFullBuild}
+              id="grasscutterFullBuildBtn"
+            >
+              <Tr text="components.download" />
+            </BigButton>
+          </div>
         </div>
 
         <Divider />
@@ -256,24 +262,24 @@ export default class Downloads extends React.Component<IProps, IState> {
           </div>
         </div> */}
         <div className="HeaderText" id="downloadMenuIndividualHeader">
-            <Tr text = "downloads.individual_header" />
+          <Tr text="downloads.individual_header" />
         </div>
         <div className="DownloadMenuSection" id="downloadMenuContainerGCDev">
-            <div className="DownloadLabel" id="downloadMenuLabelGCDev">
-              <Tr
-                text={this.state.grasscutter_set ? 'downloads.grasscutter_latest' : 'downloads.grasscutter_latest_update'}
-              />
-              <HelpButton contents="help.gc_dev_jar" />
-            </div>
-            <div className="DownloadValue" id="downloadMenuButtonGCDev">
-              <BigButton
-                disabled={this.state.grasscutter_downloading}
-                onClick={this.downloadGrasscutterLatest}
-                id="grasscutterLatestBtn"
-              >
-                <Tr text="components.download" />
-              </BigButton>
-            </div>
+          <div className="DownloadLabel" id="downloadMenuLabelGCDev">
+            <Tr
+              text={this.state.grasscutter_set ? 'downloads.grasscutter_latest' : 'downloads.grasscutter_latest_update'}
+            />
+            <HelpButton contents="help.gc_dev_jar" />
+          </div>
+          <div className="DownloadValue" id="downloadMenuButtonGCDev">
+            <BigButton
+              disabled={this.state.grasscutter_downloading}
+              onClick={this.downloadGrasscutterLatest}
+              id="grasscutterLatestBtn"
+            >
+              <Tr text="components.download" />
+            </BigButton>
+          </div>
         </div>
 
         {/* <div className="DownloadMenuSection" id="downloadMenuContainerGCStableData">

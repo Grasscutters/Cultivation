@@ -10,13 +10,24 @@
     "files_extracting": "MengExtract File: "
   },
   "options": {
-    "game_executable": "Set Game Executable",
+    "enabled": "Diaktifkan",
+    "disabled": "Dinonaktifkan",
+    "game_path": "Mengatur jalur penginstalan game",
+    "game_command": "Perintah peluncuran game",
+    "game_executable": "Mengatur game yang dapat dieksekusi",
+    "recover_metadata": "Pemulihan metadata darurat",
     "grasscutter_jar": "Path ke Grasscutter JAR",
+    "toggle_encryption": "Alihkan enkripsi",
+    "install_certificate": "Instal sertifikat proxy",
     "java_path": "Atur kustom Java path",
     "grasscutter_with_game": "Otomatis Menjalankan Grasscutter Dengan Game",
     "language": "Pilih Bahasa",
     "background": "Atur Kustom Latar Belakang (link atau gambar file)",
-    "theme": "Atur Tema"
+    "theme": "Atur Tema",
+    "patch_metadata": "Automatically Patch Metadata",
+    "use_proxy": "Gunakan Proxy Internal",
+    "wipe_login": "Menghapus Cache Login",
+    "horny_mode": "Mode Terangsang"
   },
   "downloads": {
     "grasscutter_fullbuild": "Sedang Mendownload Grasscutter Semua Dalam Satu",

@@ -159,6 +159,8 @@ export default class Options extends React.Component<IProps, IState> {
     this.setState({
       encryption: await translate(encEnabled ? 'options.enabled' : 'options.disabled'),
     })
+
+    window.location.reload()
   }
 
   setJavaPath(value: string) {

@@ -25,7 +25,9 @@
     "background": "Aangepaste Achtergrond Instellen (link of afbeeldingsbestand)",
     "theme": "Thema instellen",
     "patch_metadata": "Metadata Automatisch Bijwerken",
-    "use_proxy": "Gebruik Interne Proxy"
+    "use_proxy": "Gebruik Interne Proxy",
+    "wipe_login": "Login cache wissen",
+    "horny_mode": "Geile modus"
   },
   "downloads": {
     "grasscutter_fullbuild": "Grasscutter Alles-in-één Downloaden",

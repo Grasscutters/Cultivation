@@ -14,6 +14,7 @@
     "enabled": "已啟用",
     "disabled": "未啟用",
     "game_path": "選擇遊戲安裝路徑",
+    "game_command": "遊戲啟動命令",
     "game_executable": "選擇遊戲執行檔",
     "recover_metadata": "緊急恢復Metadata",
     "grasscutter_jar": "選擇伺服器JAR檔案",
@@ -25,7 +26,9 @@
     "background": "選擇自定義背景（網址或檔案）",
     "theme": "選擇主題",
     "patch_metadata": "自動修補Metadata",
-    "use_proxy": "使用內建代理伺服器"
+    "use_proxy": "使用內建代理伺服器",
+    "wipe_login": "擦除登錄緩存",
+    "horny_mode": "Horny模式"
   },
   "downloads": {
     "grasscutter_fullbuild": "下載Grasscutter多合一下載",

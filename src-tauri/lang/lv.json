@@ -14,13 +14,19 @@
     "enabled": "Iespējots",
     "disabled": "Atspējots",
     "game_executable": "Iestatīt spēles izpildāmu",
+    "recover_metadata": "Avārijas metadatu atjaunošana",
     "grasscutter_jar": "Iestatiet Grasscutter JAR",
     "toggle_encryption": "Pārslēgt Šifrēšanu",
+    "install_certificate": "Proxy sertifikāta instalēšana",
     "java_path": "Iestatiet pielāgotu Java ceļu",
     "grasscutter_with_game": "Automātiski palaidiet Grasscutter ar spēli",
     "language": "Izvēlēties valodu",
     "background": "Iestatīt pielāgotu fonu (saite vai attēla fails)",
-    "theme": "Iestatīt tēmu"
+    "theme": "Iestatīt tēmu",
+    "patch_metadata": "Automātiski ielāpot metadatus",
+    "use_proxy": "Izmantot iekšējo starpniekserveri",
+    "wipe_login": "Noslaucīt pieteikšanās kešatmiņu",
+    "horny_mode": "Uzbudināts režīms"
   },
   "downloads": {
     "grasscutter_fullbuild": "Lejupielādējiet Grasscutter viss vienā",
