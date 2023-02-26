@@ -215,25 +215,25 @@ export default class Downloads extends React.Component<IProps, IState> {
 
         <Divider />
 
-        <div className="HeaderText" id="downloadMenuAIOHeader">
-          <Tr text = "downloads.aio_header" />
-        </div>
         <div className="DownloadMenuSection" id="downloadMenuContainerGCFullBuild">
-          <div className="DownloadLabel" id="downloadMenuLabelGCFullBuild">
-            <Tr
-              text={'downloads.grasscutter_fullbuild'}
-            />
-            <HelpButton contents="help.gc_fullbuild" />
+          <div className="HeaderText" id="downloadMenuAIOHeader">
+            <Tr text = "downloads.aio_header" />
           </div>
-          <div className="DownloadValue" id="downloadMenuButtonGCFullBuild">
-            <BigButton
-              disabled={this.state.grasscutter_downloading}
-              onClick={this.downloadGrasscutterFullBuild}
-              id="grasscutterFullBuildBtn"
-            >
-              <Tr text="components.download" />
-            </BigButton>
-          </div>
+            <div className="DownloadLabel" id="downloadMenuLabelGCFullBuild">
+              <Tr
+                text={'downloads.grasscutter_fullbuild'}
+              />
+              <HelpButton contents="help.gc_fullbuild" />
+            </div>
+            <div className="DownloadValue" id="downloadMenuButtonGCFullBuild">
+              <BigButton
+                disabled={this.state.grasscutter_downloading}
+                onClick={this.downloadGrasscutterFullBuild}
+                id="grasscutterFullBuildBtn"
+              >
+                <Tr text="components.download" />
+              </BigButton>
+            </div>
         </div>
 
         <Divider />
@@ -255,25 +255,25 @@ export default class Downloads extends React.Component<IProps, IState> {
             </BigButton>
           </div>
         </div> */}
-        <div className="HeaderText" id="downloadMenuIndividualHeader">
-          <HeaderText text = "downloads.individual_header" />
-        </div>
         <div className="DownloadMenuSection" id="downloadMenuContainerGCDev">
-          <div className="DownloadLabel" id="downloadMenuLabelGCDev">
-            <Tr
-              text={this.state.grasscutter_set ? 'downloads.grasscutter_latest' : 'downloads.grasscutter_latest_update'}
-            />
-            <HelpButton contents="help.gc_dev_jar" />
+          <div className="HeaderText" id="downloadMenuIndividualHeader">
+            <HeaderText text = "downloads.individual_header" />
           </div>
-          <div className="DownloadValue" id="downloadMenuButtonGCDev">
-            <BigButton
-              disabled={this.state.grasscutter_downloading}
-              onClick={this.downloadGrasscutterLatest}
-              id="grasscutterLatestBtn"
-            >
-              <Tr text="components.download" />
-            </BigButton>
-          </div>
+            <div className="DownloadLabel" id="downloadMenuLabelGCDev">
+              <Tr
+                text={this.state.grasscutter_set ? 'downloads.grasscutter_latest' : 'downloads.grasscutter_latest_update'}
+              />
+              <HelpButton contents="help.gc_dev_jar" />
+            </div>
+            <div className="DownloadValue" id="downloadMenuButtonGCDev">
+              <BigButton
+                disabled={this.state.grasscutter_downloading}
+                onClick={this.downloadGrasscutterLatest}
+                id="grasscutterLatestBtn"
+              >
+                <Tr text="components.download" />
+              </BigButton>
+            </div>
         </div>
 
         {/* <div className="DownloadMenuSection" id="downloadMenuContainerGCStableData">
