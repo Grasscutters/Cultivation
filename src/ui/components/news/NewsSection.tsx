@@ -40,7 +40,8 @@ export default class NewsSection extends React.Component<IProps, IState> {
     super(props)
 
     this.state = {
-      selected: props.selected || 'commits',
+      // Set to commits since latest doesn't show any real info anyways
+      selected: 'commits',
     }
 
     this.setSelected = this.setSelected.bind(this)
@@ -59,7 +60,6 @@ export default class NewsSection extends React.Component<IProps, IState> {
   }
 
   async showLatestCommits() {
-    if (!this.state.commitList) {
       // Just use official API
       const response: string = await invoke('req_get', {
         url: 'https://api.github.com/repos/Grasscutters/Grasscutter/commits',
@@ -105,7 +105,6 @@ export default class NewsSection extends React.Component<IProps, IState> {
         commitList: commitsListHtml,
         news: <>{commitsListHtml}</>,
       })
-    }
 
     return this.state.commitList
   }
@@ -125,7 +124,7 @@ export default class NewsSection extends React.Component<IProps, IState> {
       case 'latest_version':
         news = (
           <tr>
-            <td>Latest version</td>
+            <td>Latest version: Grasscutter 1.4.6 - Cultivation 1.0.10</td>
           </tr>
         )
         break

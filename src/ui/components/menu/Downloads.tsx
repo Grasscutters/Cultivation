@@ -13,6 +13,7 @@ import { invoke } from '@tauri-apps/api'
 import { listen } from '@tauri-apps/api/event'
 import HelpButton from '../common/HelpButton'
 
+const FULL_BUILD_DOWNLOAD = 'https://download1074.mediafire.com/cpryvy2flqggXpX7N6jastZ9nGMMZZCNnTmIXpHLqT6hEcRNsylllBgRuQG3of04A0LqOwHR4D59G7RtfqQMwMZdVg/qtmkrdicdnr4d37/GrasscutterCulti3.4.zip'
 const STABLE_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/stable.zip'
 const DEV_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/development.zip'
 const STABLE_DOWNLOAD = 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/stable/Grasscutter.zip'
@@ -25,6 +26,7 @@ interface IProps {
 }
 
 interface IState {
+  fullbuild_downloading: boolean
   grasscutter_downloading: boolean
   resources_downloading: boolean
   repo_downloading: boolean
@@ -37,6 +39,7 @@ export default class Downloads extends React.Component<IProps, IState> {
     super(props)
 
     this.state = {
+      fullbuild_downloading: this.props.downloadManager.downloadingFullBuild(),
       grasscutter_downloading: this.props.downloadManager.downloadingJar(),
       resources_downloading: this.props.downloadManager.downloadingResources(),
       repo_downloading: this.props.downloadManager.downloadingRepo(),
@@ -45,6 +48,7 @@ export default class Downloads extends React.Component<IProps, IState> {
     }
 
     this.getGrasscutterFolder = this.getGrasscutterFolder.bind(this)
+    this.downloadGrasscutterFullBuild = this.downloadGrasscutterFullBuild.bind(this)
     this.downloadGrasscutterStableRepo = this.downloadGrasscutterStableRepo.bind(this)
     this.downloadGrasscutterDevRepo = this.downloadGrasscutterDevRepo.bind(this)
     this.downloadGrasscutterStable = this.downloadGrasscutterStable.bind(this)
@@ -107,6 +111,16 @@ export default class Downloads extends React.Component<IProps, IState> {
     }
 
     return folderPath
+  }
+
+  async downloadGrasscutterFullBuild() {
+    const folder = await this.getGrasscutterFolder()
+    this.props.downloadManager.addDownload(FULL_BUILD_DOWNLOAD, folder + '\\GrasscutterCulti3.4.zip', async () => {
+      await unzip(folder + '\\GrasscutterCulti3.4.zip', folder + '\\', true)
+      this.toggleButtons()
+    })
+
+    this.toggleButtons()
   }
 
   async downloadGrasscutterStableRepo() {
@@ -187,6 +201,7 @@ export default class Downloads extends React.Component<IProps, IState> {
 
     // Set states since we know we are downloading something if this is called
     this.setState({
+      fullbuild_downloading: this.props.downloadManager.downloadingFullBuild(),
       grasscutter_downloading: this.props.downloadManager.downloadingJar(),
       resources_downloading: this.props.downloadManager.downloadingResources(),
       repo_downloading: this.props.downloadManager.downloadingRepo(),
@@ -197,6 +212,23 @@ export default class Downloads extends React.Component<IProps, IState> {
   render() {
     return (
       <Menu closeFn={this.props.closeFn} className="Downloads" heading="Downloads">
+        <div className="DownloadMenuSection" id="downloadMenuContainerGCFullBuild">
+          <div className="DownloadLabel" id="downloadMenuLabelGCFullBuild">
+            <Tr
+              text={this.state.grasscutter_set ? 'downloads.grasscutter_full_build' : 'downloads.grasscutter_full_build_update'}
+            />
+            <HelpButton contents="help.gc_full_build" />
+          </div>
+          <div className="DownloadValue" id="downloadMenuButtonGCFullBuild">
+            <BigButton
+              disabled={this.state.grasscutter_downloading}
+              onClick={this.downloadGrasscutterFullBuild}
+              id="grasscutterFullBuildBtn"
+            >
+              <Tr text="components.download" />
+            </BigButton>
+          </div>
+        </div>
         <div className="DownloadMenuSection" id="downloadMenuContainerGCStable">
           <div className="DownloadLabel" id="downloadMenuLabelGCStable">
             <Tr
