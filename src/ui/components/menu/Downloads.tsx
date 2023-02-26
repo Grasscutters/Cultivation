@@ -257,7 +257,7 @@ export default class Downloads extends React.Component<IProps, IState> {
         </div> */}
         <div className="DownloadMenuSection" id="downloadMenuContainerGCDev">
           <div className="HeaderText" id="downloadMenuIndividualHeader">
-            <HeaderText text = "downloads.individual_header" />
+            <Tr text = "downloads.individual_header" />
           </div>
             <div className="DownloadLabel" id="downloadMenuLabelGCDev">
               <Tr
