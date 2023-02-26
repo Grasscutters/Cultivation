@@ -229,7 +229,7 @@ export default class Downloads extends React.Component<IProps, IState> {
             </BigButton>
           </div>
         </div>
-        <div className="DownloadMenuSection" id="downloadMenuContainerGCStable">
+        {/* <div className="DownloadMenuSection" id="downloadMenuContainerGCStable">
           <div className="DownloadLabel" id="downloadMenuLabelGCStable">
             <Tr
               text={this.state.grasscutter_set ? 'downloads.grasscutter_stable' : 'downloads.grasscutter_stable_update'}
@@ -245,7 +245,7 @@ export default class Downloads extends React.Component<IProps, IState> {
               <Tr text="components.download" />
             </BigButton>
           </div>
-        </div>
+        </div> */}
         <div className="DownloadMenuSection" id="downloadMenuContainerGCDev">
           <div className="DownloadLabel" id="downloadMenuLabelGCDev">
             <Tr
@@ -266,7 +266,7 @@ export default class Downloads extends React.Component<IProps, IState> {
 
         <Divider />
 
-        <div className="DownloadMenuSection" id="downloadMenuContainerGCStableData">
+        {/* <div className="DownloadMenuSection" id="downloadMenuContainerGCStableData">
           <div className="DownloadLabel" id="downloadMenuLabelGCStableData">
             <Tr
               text={
@@ -286,7 +286,7 @@ export default class Downloads extends React.Component<IProps, IState> {
               <Tr text="components.download" />
             </BigButton>
           </div>
-        </div>
+        </div> */}
         <div className="DownloadMenuSection" id="downloadMenuContainerGCDevData">
           <div className="DownloadLabel" id="downloadMenuLabelGCDevData">
             <Tr
