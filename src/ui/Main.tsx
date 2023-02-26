@@ -120,6 +120,9 @@ export class Main extends React.Component<IProps, IState> {
         isDownloading: this.props.downloadHandler.getDownloads().filter((d) => d.status !== 'finished')?.length > 0,
       })
     }, 1000)
+
+    // Summon the news when loaded since it will not show until click normally
+    NewsSection.showNews()
   }
 
   async openExtrasMenu(playGame: () => void) {

@@ -1,7 +1,7 @@
 {
   "lang_name": "English",
   "main": {
-    "title": "Cultivation",
+    "title": "Cultivation: Thorny Edition",
     "launch_button": "Launch",
     "gc_enable": "Connect via Grasscutter",
     "https_enable": "Use HTTPS",
@@ -31,6 +31,7 @@
     "horny_mode": "Horny Mode"
   },
   "downloads": {
+    "grasscutter_fullbuild": "Download Grasscutter Full Build",
     "grasscutter_stable_data": "Download Grasscutter Stable Data",
     "grasscutter_latest_data": "Download Grasscutter Latest Data",
     "grasscutter_stable_data_update": "Update Grasscutter Stable Data",
@@ -63,7 +64,7 @@
     "port_help_text": "Ensure this is the Dispatch server port, not the Game server port. This is almost always '443'.",
     "game_help_text": "You do not need to use a separate copy to play with Grasscutter. This is for either downgrading to 2.6 or if you do not have the game installed.",
     "gc_stable_jar": "Download the current stable Grasscutter build, which includes jar file and data files.",
-    "gc_full_build": "Download a full Grasscutter build, including repo, jar, and resources. Is fully set up and does not require any other downloads from this menu.",
+    "gc_fullbuild": "Download a full Grasscutter build, including repo, jar, and resources. Is fully set up and does not require any other downloads from this menu.",
     "gc_dev_jar": "Download the latest development Grasscutter build, which includes jar file and data files.",
     "gc_stable_data": "Download the current stable Grasscutter data files, which does not come with a jar file. This is useful for updating.",
     "gc_dev_data": "Download the latest development Grasscutter data files, which does not come with a jar file. This is useful for updating.",
@@ -77,7 +78,7 @@
     "akebi_name": "Akebi",
     "migoto_name": "Migoto",
     "reshade_name": "Reshade",
-    "akebi": "Set Akebi Executable",
+    "akebi": "Set Akebi/Acrepi Executable",
     "migoto": "Set 3DMigoto Executable",
     "reshade": "Set Reshade Injector"
   }

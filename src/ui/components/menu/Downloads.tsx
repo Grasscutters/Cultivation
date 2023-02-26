@@ -215,9 +215,9 @@ export default class Downloads extends React.Component<IProps, IState> {
         <div className="DownloadMenuSection" id="downloadMenuContainerGCFullBuild">
           <div className="DownloadLabel" id="downloadMenuLabelGCFullBuild">
             <Tr
-              text={this.state.grasscutter_set ? 'downloads.grasscutter_full_build' : 'downloads.grasscutter_full_build_update'}
+              text={this.state.grasscutter_set ? 'downloads.grasscutter_fullbuild' : 'downloads.grasscutter_fullbuild_update'}
             />
-            <HelpButton contents="help.gc_full_build" />
+            <HelpButton contents="help.gc_fullbuild" />
           </div>
           <div className="DownloadValue" id="downloadMenuButtonGCFullBuild">
             <BigButton

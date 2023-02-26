@@ -40,8 +40,7 @@ export default class NewsSection extends React.Component<IProps, IState> {
     super(props)
 
     this.state = {
-      // Set to commits since latest doesn't show any real info anyways
-      selected: 'commits',
+      selected: props.selected || 'commits',
     }
 
     this.setSelected = this.setSelected.bind(this)
