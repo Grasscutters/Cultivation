@@ -3,7 +3,7 @@
   "main": {
     "title": "Cultivation: Thorny Edition",
     "launch_button": "Launch",
-    "gc_enable": "Connect via Grasscutter",
+    "gc_enable": "Connect to Grasscutter",
     "https_enable": "Use HTTPS",
     "ip_placeholder": "Server Address...",
     "port_placeholder": "Port...",
@@ -31,7 +31,7 @@
     "horny_mode": "Horny Mode"
   },
   "downloads": {
-    "grasscutter_fullbuild": "Download Grasscutter Full Build",
+    "grasscutter_fullbuild": "Download Grasscutter Full Build [All-in-One]",
     "grasscutter_stable_data": "Download Grasscutter Stable Data",
     "grasscutter_latest_data": "Download Grasscutter Latest Data",
     "grasscutter_stable_data_update": "Update Grasscutter Stable Data",
@@ -41,7 +41,9 @@
     "grasscutter_stable_update": "Update Grasscutter Stable",
     "grasscutter_latest_update": "Update Grasscutter Latest",
     "resources": "Download Grasscutter Resources",
-    "game": "Download Game"
+    "game": "Download Game",
+    "aioHeader": "All-in-one download: No individual downloads needed.",
+    "individualHeader": "Individual downloads"
   },
   "download_status": {
     "downloading": "Downloading",
@@ -70,9 +72,9 @@
     "gc_dev_data": "Download the latest development Grasscutter data files, which does not come with a jar file. This is useful for updating.",
     "encryption": "This should usually be disabled.",
     "resources": "These are also required to run a Grasscutter server. This button will be grey if you have an existing resources folder with contents inside",
-    "emergency_metadata": "In case something went wrong, restore your metadata to the latest official versions metadata.",
+    "emergency_metadata": "In case something went wrong, restore your metadata to the latest official versions metadata. Only for 2.8/3.0",
     "use_proxy": "Use the Cultivation internal proxy. You should have this enabled unless you use something like Fiddler",
-    "patch_metadata": "Patch and unpatch your game metadata automatically. Unless playing with old/non-official versions, or you have manually patched your metadata, this should be enabled."
+    "patch_metadata": "Patch and unpatch your game metadata automatically. Unless playing with old/non-official versions (2.8/3.0), this should be disabled."
   },
   "swag": {
     "akebi_name": "Akebi",

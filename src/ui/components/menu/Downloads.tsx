@@ -212,6 +212,7 @@ export default class Downloads extends React.Component<IProps, IState> {
   render() {
     return (
       <Menu closeFn={this.props.closeFn} className="Downloads" heading="Downloads">
+        <Tr text = "help.aioHeader" />
         <div className="DownloadMenuSection" id="downloadMenuContainerGCFullBuild">
           <div className="DownloadLabel" id="downloadMenuLabelGCFullBuild">
             <Tr
@@ -229,6 +230,9 @@ export default class Downloads extends React.Component<IProps, IState> {
             </BigButton>
           </div>
         </div>
+
+        <Divider />
+
         {/* <div className="DownloadMenuSection" id="downloadMenuContainerGCStable">
           <div className="DownloadLabel" id="downloadMenuLabelGCStable">
             <Tr
@@ -246,6 +250,7 @@ export default class Downloads extends React.Component<IProps, IState> {
             </BigButton>
           </div>
         </div> */}
+        <Tr text = "help.individualHeader" />
         <div className="DownloadMenuSection" id="downloadMenuContainerGCDev">
           <div className="DownloadLabel" id="downloadMenuLabelGCDev">
             <Tr
@@ -263,8 +268,6 @@ export default class Downloads extends React.Component<IProps, IState> {
             </BigButton>
           </div>
         </div>
-
-        <Divider />
 
         {/* <div className="DownloadMenuSection" id="downloadMenuContainerGCStableData">
           <div className="DownloadLabel" id="downloadMenuLabelGCStableData">
@@ -308,8 +311,6 @@ export default class Downloads extends React.Component<IProps, IState> {
             </BigButton>
           </div>
         </div>
-
-        <Divider />
 
         <div className="DownloadMenuSection" id="downloadMenuContainerResources">
           <div className="DownloadLabel" id="downloadMenuLabelResources">

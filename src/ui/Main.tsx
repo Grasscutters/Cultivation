@@ -18,6 +18,7 @@ import { listen } from '@tauri-apps/api/event'
 import { dataDir } from '@tauri-apps/api/path'
 import { appWindow } from '@tauri-apps/api/window'
 import { unpatchGame } from '../utils/metadata'
+import { showNews } from './components/news/NewsSection'
 import DownloadHandler from '../utils/download'
 
 // Graphics
@@ -122,7 +123,7 @@ export class Main extends React.Component<IProps, IState> {
     }, 1000)
 
     // Summon the news when loaded since it will not show until click normally
-    NewsSection.showNews()
+    showNews()
   }
 
   async openExtrasMenu(playGame: () => void) {
