@@ -130,8 +130,7 @@ pub fn read_file(path: String) -> String {
 
   let mut file = match fs::File::open(path_buf) {
     Ok(file) => file,
-    Err(e) => { return Err(e) // Send back error for handling by the caller
-    }
+    Err(e) =>  return String.from::(""); // Send back error for handling by the caller
   };
 
   let mut contents = String::new();
