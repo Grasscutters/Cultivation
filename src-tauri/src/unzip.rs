@@ -97,9 +97,9 @@ pub fn unzip(
     }
 
     // If downloading full build, emit that the jar was extracted with it
-    if zipfile = "GrasscutterCulti3.4.zip" {
+    if zipfile == "GrasscutterCulti3.4.zip" {
       window
-        .emit("jar_extracted", destpath.to_string() + (destpath.to_string() + "grasscutter.jar"))
+        .emit("jar_extracted", destpath.to_string() + &((destpath.to_string() + "grasscutter.jar")))
         .unwrap();
     }
 

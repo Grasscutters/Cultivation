@@ -132,7 +132,7 @@ pub fn read_file(path: String) -> String {
     Ok(file) => file,
     Err(e) => {
       // Send back error for handling by the caller
-      return e;
+      return null;
     }
   };
 
