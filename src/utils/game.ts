@@ -51,7 +51,7 @@ export async function getGameVersion() {
       })
     )
   } catch (e) {
-      console.log(`Game config at ${path} not found or invalid. Missing game files?`)
+      console.log(`Game config not found or invalid. Missing game files?`)
       return null
   }
 
