@@ -212,11 +212,13 @@ export default class Downloads extends React.Component<IProps, IState> {
   render() {
     return (
       <Menu closeFn={this.props.closeFn} className="Downloads" heading="Downloads">
-        <Tr text = "help.aioHeader" />
+        <div className="DownloadMenuSection" id="downloadMenuAIOHeader">
+          <Tr text = "downloads.aio_header" />
+        </div>
         <div className="DownloadMenuSection" id="downloadMenuContainerGCFullBuild">
           <div className="DownloadLabel" id="downloadMenuLabelGCFullBuild">
             <Tr
-              text={this.state.grasscutter_set ? 'downloads.grasscutter_fullbuild' : 'downloads.grasscutter_fullbuild_update'}
+              text={'downloads.grasscutter_fullbuild'}
             />
             <HelpButton contents="help.gc_fullbuild" />
           </div>
@@ -250,7 +252,9 @@ export default class Downloads extends React.Component<IProps, IState> {
             </BigButton>
           </div>
         </div> */}
-        <Tr text = "help.individualHeader" />
+        <div className="DownloadMenuSection" id="downloadMenuIndividualHeader">
+          <Tr text = "downloads.individual_header" />
+        </div>
         <div className="DownloadMenuSection" id="downloadMenuContainerGCDev">
           <div className="DownloadLabel" id="downloadMenuLabelGCDev">
             <Tr

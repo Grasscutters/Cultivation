@@ -42,8 +42,8 @@
     "grasscutter_latest_update": "Update Grasscutter Latest",
     "resources": "Download Grasscutter Resources",
     "game": "Download Game",
-    "aioHeader": "All-in-one download: No individual downloads needed.",
-    "individualHeader": "Individual downloads"
+    "aio_header": "All-in-one download: No individual downloads needed.",
+    "individual_header": "Individual downloads"
   },
   "download_status": {
     "downloading": "Downloading",
