@@ -26,6 +26,7 @@
     "theme": "Establecer Tema"
   },
   "downloads": {
+    "grasscutter_fullbuild": "Descargar Datos todo en uno de Grasscutter",
     "grasscutter_stable_data": "Descargar Datos Estables de Grasscutter",
     "grasscutter_latest_data": "Descargar Datos más Recientes de Grasscutter",
     "grasscutter_stable_data_update": "Actualizar Datos Estables de Grasscutter",
@@ -35,7 +36,9 @@
     "grasscutter_stable_update": "Actualizar Grasscutter Estable",
     "grasscutter_latest_update": "Actualizar Grasscutter más reciente",
     "resources": "Descargar Recursos de Grasscutter",
-    "game": "Descarga el juego"
+    "game": "Descarga el juego",
+    "aio_header": "Descargas todo en uno:",
+    "individual_header": "Descargas de piezas individuales:"
   },
   "download_status": {
     "downloading": "Descargando",

@@ -23,6 +23,7 @@
     "theme": "Iestatīt tēmu"
   },
   "downloads": {
+    "grasscutter_fullbuild": "Lejupielādējiet Grasscutter viss vienā",
     "grasscutter_stable_data": "Lejupielādējiet Grasscutter stabilos datus",
     "grasscutter_latest_data": "Lejupielādējiet Grasscutter jaunākos datus",
     "grasscutter_stable_data_update": "Atjauniniet Grasscutter stabilos datus",
@@ -31,7 +32,9 @@
     "grasscutter_latest": "Lejupielādēt Grasscutter jaunāko",
     "grasscutter_stable_update": "Atjauniet Grasscutter stabilo",
     "grasscutter_latest_update": "Atjauniet Grasscutter jaunāko",
-    "resources": "Lejupielādējiet Grasscutter resursi"
+    "resources": "Lejupielādējiet Grasscutter resursi",
+    "aio_header": "Lejupielādes viss vienā",
+    "individual_header": "Atsevišķu daļu lejupielādes:"
   },
   "download_status": {
     "downloading": "Notiek lejupielāde",

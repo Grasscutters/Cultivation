@@ -23,6 +23,7 @@
     "theme": "definir un theme"
   },
   "downloads": {
+    "grasscutter_fullbuild": "Telecharger Grasscutter tout-en-un",
     "grasscutter_stable_data": "Telecharger les donnees de Grasscutter (version stable)",
     "grasscutter_latest_data": "Telecharger les donnees de Grasscutter (derniere version)",
     "grasscutter_stable_data_update": "Mettre a jour les donnees de Grasscutter (version stable)",
@@ -31,7 +32,9 @@
     "grasscutter_latest": "Telecharger Grasscutter (derniere version)",
     "grasscutter_stable_update": "Mettre a jour Grasscutter (version stable)",
     "grasscutter_latest_update": "Mettre a jour Grasscutter (derniere version)",
-    "resources": "Telecharger les ressources logicielles de Grasscutter"
+    "resources": "Telecharger les ressources logicielles de Grasscutter",
+    "aio_header": "Telechargements tout-en-un:",
+    "individual_header": "Telechargements de pièces individuelles:"
   },
   "download_status": {
     "downloading": "Telechargement",

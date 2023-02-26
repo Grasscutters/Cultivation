@@ -212,7 +212,10 @@ export default class Downloads extends React.Component<IProps, IState> {
   render() {
     return (
       <Menu closeFn={this.props.closeFn} className="Downloads" heading="Downloads">
-        <div className="DownloadMenuSection" id="downloadMenuAIOHeader">
+
+        <Divider />
+
+        <div className="HeaderText" id="downloadMenuAIOHeader">
           <Tr text = "downloads.aio_header" />
         </div>
         <div className="DownloadMenuSection" id="downloadMenuContainerGCFullBuild">
@@ -252,8 +255,8 @@ export default class Downloads extends React.Component<IProps, IState> {
             </BigButton>
           </div>
         </div> */}
-        <div className="DownloadMenuSection" id="downloadMenuIndividualHeader">
-          <Tr text = "downloads.individual_header" />
+        <div className="HeaderText" id="downloadMenuIndividualHeader">
+          <HeaderText text = "downloads.individual_header" />
         </div>
         <div className="DownloadMenuSection" id="downloadMenuContainerGCDev">
           <div className="DownloadLabel" id="downloadMenuLabelGCDev">

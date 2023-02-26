@@ -131,8 +131,8 @@ pub fn read_file(path: String) -> String {
   let mut file = match fs::File::open(path_buf) {
     Ok(file) => file,
     Err(e) => {
-      println!("Failed to open file: {}", e);
-      return String::new();
+      // Send back error for handling by the caller
+      return e;
     }
   };
 

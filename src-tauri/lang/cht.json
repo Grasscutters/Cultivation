@@ -28,6 +28,7 @@
     "use_proxy": "使用內建代理伺服器"
   },
   "downloads": {
+    "grasscutter_fullbuild": "下載Grasscutter多合一下載",
     "grasscutter_stable_data": "下載Grasscutter穩定版數據（Data）",
     "grasscutter_latest_data": "下載Grasscutter開發板數據（Data）",
     "grasscutter_stable_data_update": "更新Grasscutter穩定版數據（Data）",
@@ -37,7 +38,9 @@
     "grasscutter_stable_update": "更新Grasscutter穩定版",
     "grasscutter_latest_update": "更新Grasscutter開發板",
     "resources": "下載Grasscutter資源（Resources）",
-    "game": "下載遊戲"
+    "game": "下載遊戲",
+    "aio_header": "多合一下載:",
+    "individual_header": "個別部分下載:"
   },
   "download_status": {
     "downloading": "下載中",

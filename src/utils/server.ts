@@ -10,7 +10,7 @@ export async function toggleEncryption(path: string) {
       })
     )
   } catch (e) {
-    console.log(`Server config at ${path} not found or invalid`)
+    console.log(`Server config at ${path} not found or invalid. Be sure to run the server at least once to generate it`)
     return
   }
 
@@ -36,7 +36,7 @@ export async function encryptionEnabled(path: string) {
       })
     )
   } catch (e) {
-    console.log(`Server config at ${path} not found or invalid`)
+    console.log(`Server config at ${path} not found or invalid. Be sure to run the server at least once to generate it`)
     return false
   }
 

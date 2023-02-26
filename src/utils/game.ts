@@ -44,11 +44,16 @@ export async function getGameVersion() {
     return null
   }
 
-  const settings = JSON.parse(
-    await invoke('read_file', {
-      path: GameData + '\\StreamingAssets\\asb_settings.json',
-    })
-  )
+  try {
+    const settings = JSON.parse(
+      await invoke('read_file', {
+        path: GameData + '\\StreamingAssets\\asb_settings.json',
+      })
+    )
+  } catch (e) {
+      console.log(`Game config at ${path} not found or invalid. Missing game files?`)
+      return 0.0
+  }
 
   const versionRaw = settings.variance.split('.')
   const version = {

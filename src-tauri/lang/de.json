@@ -26,6 +26,7 @@
     "patch_metadata": "Metadaten automatisch patchen"
   },
   "downloads": {
+    "grasscutter_fullbuild": "Alles in Einem Grasscutter Daten herunterladen",
     "grasscutter_stable_data": "Stabile Grasscutter Daten herunterladen",
     "grasscutter_latest_data": "Aktuellste Grasscutter Daten herunterladen",
     "grasscutter_stable_data_update": "Stabile Grasscutter Daten aktualisieren",
@@ -35,7 +36,9 @@
     "grasscutter_stable_update": "Stabile Grasscutter Version aktualisieren",
     "grasscutter_latest_update": "Aktuellste Grasscutter Version aktualisieren",
     "resources": "Grasscutter Ressourcen herunterladen",
-    "game": "Spiel herunterladen"
+    "game": "Spiel herunterladen",
+    "aio_header": "Alles in Einem herunterladen",
+    "individual_header": "Einzelne Teile herunterladen:"
   },
   "download_status": {
     "downloading": "Lädt herunter",

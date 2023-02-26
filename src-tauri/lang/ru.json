@@ -28,6 +28,7 @@
     "use_proxy": "Использовать встроенный Прокси"
   },
   "downloads": {
+    "grasscutter_fullbuild": "Скачать все в одном Grasscutter",
     "grasscutter_stable_data": "Скачать стабильные данные Grasscutter",
     "grasscutter_latest_data": "Скачать последние данные Grasscutter",
     "grasscutter_stable_data_update": "Обновить стабильные данные Grasscutter",
@@ -37,7 +38,9 @@
     "grasscutter_stable_update": "Обновить стабильную версию Grasscutter",
     "grasscutter_latest_update": "Обновить последнюю версию Grasscutter",
     "resources": "Скачать ресурсы Grasscutter",
-    "game": "Скачать Игру"
+    "game": "Скачать Игру",
+    "aio_header": "Все в одной загрузке:",
+    "individual_header": "загрузка отдельных частей:"
   },
   "download_status": {
     "downloading": "Скачивание",

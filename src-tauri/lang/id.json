@@ -19,6 +19,7 @@
     "theme": "Atur Tema"
   },
   "downloads": {
+    "grasscutter_fullbuild": "Sedang Mendownload Grasscutter Semua Dalam Satu",
     "grasscutter_stable_data": "Sedang Mendownload Grasscutter Versi Stabil",
     "grasscutter_latest_data": "Sedang Mendownload Grasscutter Data Terbaru",
     "grasscutter_stable_data_update": "Memperbaharui Grasscutter Data Stabil",
@@ -27,7 +28,9 @@
     "grasscutter_latest": "Download Grasscutter Terbaru Version",
     "grasscutter_stable_update": "Sedang MengUpdate Grasscutter Stabil",
     "grasscutter_latest_update": "Sedang MengUpdate Grasscutter Terbaru",
-    "resources": "Mendownload Grasscutter Resources"
+    "resources": "Mendownload Grasscutter Resources",
+    "aio_header": "Unduhan Semua Dalam Satu:",
+    "individual_header": "Unduhan Bagian Individual:"
   },
   "download_status": {
     "downloading": "Sedang Mendownload",

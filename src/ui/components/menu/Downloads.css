@@ -17,6 +17,12 @@
   height: 100%;
 }
 
+.HeaderText {
+  text-decoration: underline;
+  text-decoration: rgb(1, 37, 37);
+  font-size: 24px;
+}
+
 .DownloadValue .BigButton {
   height: 100%;
   min-height: 30px;

@@ -28,6 +28,7 @@
     "use_proxy": "Gebruik Interne Proxy"
   },
   "downloads": {
+    "grasscutter_fullbuild": "Grasscutter Alles-in-één Downloaden",
     "grasscutter_stable_data": "Download Stabiele Gegevens Van Grasscutter",
     "grasscutter_latest_data": "Download De Nieuwste Gegevens Van Grasscutter",
     "grasscutter_stable_data_update": "Stabiele gegevens Van Grasscutter bijwerken",
@@ -37,7 +38,9 @@
     "grasscutter_stable_update": "Update Grasscutter Naar De Stabiele Versie",
     "grasscutter_latest_update": "Update Grasscutter Naar De Nieuwste Versie",
     "resources": "Download Grasscutter bronnen",
-    "game": "Download Spel"
+    "game": "Download Spel",
+    "aio_header": "Alles-in-één Downloads:",
+    "individual_header": "Downloads van afzonderlijke onderdelen:"
   },
   "download_status": {
     "downloading": "Aan Het Downloading",

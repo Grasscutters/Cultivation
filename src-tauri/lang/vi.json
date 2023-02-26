@@ -31,6 +31,7 @@
     "horny_mode": "Chế độ hứng tình"
   },
   "downloads": {
+    "grasscutter_fullbuild": "Tải Grasscutter tất cả trong một",
     "grasscutter_stable_data": "Tải dữ liệu Grasscutter bản ổn định",
     "grasscutter_latest_data": "Tải dữ liệu Grasscutter bản mới nhất",
     "grasscutter_stable_data_update": "Cập nhật dữ liệu Grasscutter bản ổn định",
@@ -40,7 +41,9 @@
     "grasscutter_stable_update": "Cập nhật Grasscutter bản ổn định",
     "grasscutter_latest_update": "Cập nhật Grasscutter bản mới nhất",
     "resources": "Tải tài nguyên Grasscutter",
-    "game": "Tải game"
+    "game": "Tải game",
+    "aio_header": "Tải xuống tất cả trong một:",
+    "individual_header": "Tải xuống từng phần:"
   },
   "download_status": {
     "downloading": "Đang tải",
