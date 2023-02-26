@@ -50,6 +50,7 @@ export default class NewsSection extends React.Component<IProps, IState> {
   componentDidMount() {
     // Call showNews off the bat
     this.showNews()
+    this.setSelected('commits')
   }
 
   setSelected(item: string) {
