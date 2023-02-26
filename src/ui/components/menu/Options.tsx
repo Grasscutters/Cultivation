@@ -143,14 +143,17 @@ export default class Options extends React.Component<IProps, IState> {
     })
   }
 
-  setGrasscutterJar(value: string) {
+  async setGrasscutterJar(value: string) {
     setConfigOption('grasscutter_path', value)
-
-    const encEnabled = await server.encryptionEnabled(folderPath + '/config.json')
 
     this.setState({
       grasscutter_path: value,
     })
+
+    const config = await getConfig()
+    const path = config.grasscutter_path.replace(/\\/g, '/')
+    const folderPath = path.substring(0, path.lastIndexOf('/'))
+    const encEnabled = await server.encryptionEnabled(folderPath + '/config.json')
 
     // Update encryption button when setting new jar
     this.setState({
