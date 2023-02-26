@@ -52,7 +52,7 @@ export async function getGameVersion() {
     )
   } catch (e) {
       console.log(`Game config at ${path} not found or invalid. Missing game files?`)
-      return 0.0
+      return null
   }
 
   const versionRaw = settings.variance.split('.')
