@@ -215,10 +215,10 @@ export default class Downloads extends React.Component<IProps, IState> {
 
         <Divider />
 
-        <div className="DownloadMenuSection" id="downloadMenuContainerGCFullBuild">
-          <div className="HeaderText" id="downloadMenuAIOHeader">
+        <div className="HeaderText" id="downloadMenuAIOHeader">
             <Tr text = "downloads.aio_header" />
-          </div>
+        </div>
+        <div className="DownloadMenuSection" id="downloadMenuContainerGCFullBuild">
             <div className="DownloadLabel" id="downloadMenuLabelGCFullBuild">
               <Tr
                 text={'downloads.grasscutter_fullbuild'}
@@ -255,10 +255,10 @@ export default class Downloads extends React.Component<IProps, IState> {
             </BigButton>
           </div>
         </div> */}
-        <div className="DownloadMenuSection" id="downloadMenuContainerGCDev">
-          <div className="HeaderText" id="downloadMenuIndividualHeader">
+        <div className="HeaderText" id="downloadMenuIndividualHeader">
             <Tr text = "downloads.individual_header" />
-          </div>
+        </div>
+        <div className="DownloadMenuSection" id="downloadMenuContainerGCDev">
             <div className="DownloadLabel" id="downloadMenuLabelGCDev">
               <Tr
                 text={this.state.grasscutter_set ? 'downloads.grasscutter_latest' : 'downloads.grasscutter_latest_update'}

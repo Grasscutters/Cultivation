@@ -1,7 +1,7 @@
 {
   "lang_name": "Nederlands",
   "main": {
-    "title": "Cultivation",
+    "title": "Cultivation: Thorny Edition",
     "launch_button": "Start",
     "gc_enable": "Verbind Met Grasscutter",
     "https_enable": "Gebruik HTTPS",
@@ -63,6 +63,7 @@
     "port_help_text": "Zorg ervoor dat dit de Dispatch server poort is, niet de Game server poort. Dit is bijna altijd '443'.",
     "game_help_text": "U hoeft geen aparte kopie te gebruiken om met Grasscutter te spelen. Dit is voor downgraden naar 2.6 of als u het spel niet geinstalleerd heeft.",
     "gc_stable_jar": "Download de huidige stabiele Grasscutter build, die jar file en data bestanden bevat.",
+    "gc_fullbuild": "Download een volledige Grasscutter build, inclusief repo, jar en resources. Is volledig ingesteld en vereist geen andere downloads uit dit menu.",
     "gc_dev_jar": "Download de laatste ontwikkeling Grasscutter build, die jar file en data  bestanden bevat.",
     "gc_stable_data": "Download de huidige stabiele versie van de Grasscutter data bestanden, die niet met een jar file komen. Dit is handig voor het bijwerken.",
     "gc_dev_data": "Download de nieuwste versie van de Grasscutter data bestanden, die niet met een jar file komen. Dit is handig voor het bijwerken.",

@@ -1,7 +1,7 @@
 {
   "lang_name": "Francais",
   "main": {
-    "title": "Cultivation",
+    "title": "Cultivation: Thorny Edition",
     "launch_button": "Lancer",
     "gc_enable": "Se connecter avec Grasscutter",
     "https_enable": "Utiliser HTTPS",
@@ -56,6 +56,7 @@
     "port_help_text": "Assurez-vous que c'est le port serveur Dispatch, et non le port du serveur de jeu. C'est presque toujours '433'.",
     "game_help_text": "Vous n'avez pas besoin d'une copie differente du jeu pour jouer avec Grasscutter. Cela est ou pour retrograder en 2.6 ou si vous n'avez pas le jeu d'installe",
     "gc_stable_jar": "Telecharger le dernier build stable de Grasscutter, ce qui inclut le fichier jar et les fichiers de donnees",
+    "gc_fullbuild": "Téléchargez un build complet de Grasscutter, incluant le repo, le jar et les ressources. Il est entièrement configuré et ne nécessite aucun autre téléchargement à partir de ce menu.",
     "gc_dev_jar": "Telecharger le dernier build en development de Grasscutter, ce qui inclut le fichier jar et les fichiers de donnees",
     "gc_stable_data": "Telecharger le dernier build stable de Grasscutter, ce qui n'inclut pasle fichier jar. Cela est utile pour mettre a jour",
     "gc_dev_data": "Telecharger le dernier build en development de Grasscutter, ce qui n'inclut pasle fichier jar. Cela est utile pour mettre a jour",

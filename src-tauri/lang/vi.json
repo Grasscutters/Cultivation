@@ -1,7 +1,7 @@
 {
   "lang_name": "Tiếng Việt",
   "main": {
-    "title": "Cultivation",
+    "title": "Cultivation: Thorny Edition",
     "launch_button": "Khởi Chạy",
     "gc_enable": "Kết nối qua Grasscutter",
     "https_enable": "Dùng HTTPS",
@@ -66,6 +66,7 @@
     "port_help_text": "Hãy đảm bảo đây là cổng của máy chủ Dispatch, không phải cổng của máy chủ game. Thường sẽ là '443'.",
     "game_help_text": "Bạn không cần phải sử dụng một bản sao riêng để chơi với Grasscutter. Việc này chỉ xảy ra nếu bạn hạ phiên bản xuống 2.6 hoặc chưa cài game.",
     "gc_stable_jar": "Tải xuống phiên bản ổn định của Grasscutter, bao gồm tập tin jar và các tệp dữ liệu.",
+    "gc_fullbuild": "Tải xuống bản dựng Grasscutter đầy đủ, bao gồm repo, jar và tài nguyên. Được thiết lập đầy đủ và không yêu cầu bất kỳ tải xuống nào khác từ menu này",
     "gc_dev_jar": "Tải xuống phiên bản phát triển mới nhất của Grasscutter, bao gồm tập tin jar và các tệp dữ liệu.",
     "gc_stable_data": "Tải xuống tệp dữ liệu phiên bản ổn định hiện hành của Grasscutter. Bản này không đi kèm với tập tin jar, hữu dụng khi muốn cập nhật.",
     "gc_dev_data": "Tải xuống tệp dữ liệu phiên bản mới nhất của Grasscutter.      Bản này không đi kèm với tập tin jar, hữu dụng khi muốn cập nhật.",

@@ -1,7 +1,7 @@
 {
   "lang_name": "Latviešu",
   "main": {
-    "title": "Cultivation",
+    "title": "Cultivation: Thorny Edition",
     "launch_button": "Palaist",
     "gc_enable": "Savienot ar Grasscutter",
     "https_enable": "Izm. HTTPS",
@@ -56,6 +56,7 @@
     "port_help_text": "Pārliecinieties, vai tas ir Dispatch-servera ports, nevis spēļu servera ports. Tas gandrīz vienmēr ir '443'.",
     "game_help_text": "Lai spēlētu ar Grasscutter, jums nav jāizmanto atsevišķa kopija. Tas ir izveidots, lai pazeminātu versiju uz 2.6 vai ja jums nav instalēta spēle.",
     "gc_stable_jar": "Lejupielādējiet pašreizējo stabilo Grasscutter versiju, kuram ir jar failu un datu failus.",
+    "gc_fullbuild": "Lejupielādējiet pilnu Grasscutter versiju, tostarp repozitorijus, krātuves un resursus. Viss ir gatavs, un no šīs izvēlnes nav nepieciešama nekāda cita lejupielāde.",
     "gc_dev_jar": "Lejupielādējiet jaunāko izstrāde Grasscutter versiju, kuram ir jar failu un datu failus.",
     "gc_stable_data": "Lejupielādējiet pašreizējos stabilos Grasscutter datu failus, kuriem nav jar fails. Tas ir noderīgi atjaunināšanai.",
     "gc_dev_data": "Lejupielādējiet jaunāko izstrāde Grasscutter datu failus, kuriem nav pievienots jar fails. Tas ir noderīgi atjaunināšanai.",

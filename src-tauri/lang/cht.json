@@ -1,7 +1,7 @@
 {
   "lang_name": "繁體中文",
   "main": {
-    "title": "Cultivation",
+    "title": "Cultivation: Thorny Edition",
     "launch_button": "啟動",
     "gc_enable": "以Grasscutter模式連接",
     "https_enable": "使用 HTTPS",
@@ -63,6 +63,7 @@
     "port_help_text": "確保這是Dispatch伺服器端口，不是遊戲伺服器端口。 大部分伺服器的端口都是443。",
     "game_help_text": "您不需要另外一個遊戲備份來使用Grasscutter。這是給想要降級到2.6或者還沒安裝遊戲的人使用的。",
     "gc_stable_jar": "下載當前的Grasscutter穩定版本，包括JAR答案還有資料文件。",
+    "gc_fullbuild": "下載完整的 Grasscutter 構建版本，包括存儲庫、jar 和資源。 已完全設置，不需要從此菜單下載任何其他內容",
     "gc_dev_jar": "下載當前的Grasscutter穩定版本資料文件，其中不會附帶JAR文件。這個選項在更新時很有用。",
     "gc_stable_data": "下載當前最新的Grasscutter開發版本資料文件，其中不會附帶JAR文件。這個選項在更新時很有用。",
     "gc_dev_data": "下載當前最新的Grasscutter開發版本的資料文件，其中不會附帶JAR文件。這個選項在更新時很有用。",

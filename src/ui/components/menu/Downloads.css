@@ -18,9 +18,13 @@
 }
 
 .HeaderText {
-  text-decoration: underline;
-  text-decoration: rgb(1, 37, 37);
-  font-size: 24px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  margin-bottom: 10px;
+  text-decoration-line: underline;
 }
 
 .DownloadValue .BigButton {

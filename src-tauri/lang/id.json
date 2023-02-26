@@ -1,7 +1,7 @@
 {
   "lang_name": "Indonesia",
   "main": {
-    "title": "Cultivation",
+    "title": "Cultivation: Thorny Edition",
     "launch_button": "Luncurkan",
     "gc_enable": "Terhubung Melalui GrassCutter",
     "ip_placeholder": "Alamat Server...",
@@ -52,6 +52,7 @@
     "port_help_text": "Pastikan ini adalah port server port, bukan port server Game. ini Hampir Selalu '443'.",
     "game_help_text": "Anda tidak perlu menggunakan salinan Genshin Impact untuk bermain dengan Grasscutter. Ini untuk menurunkan versi ke 2.6 atau jika Anda belum menginstal game..",
     "gc_stable_jar": "Unduh Build Stabil Grasscutter Saat ini, Dimana Ada Jar File Dan Data File.",
+    "gc_fullbuild": "Unduh versi lengkap Grasscutter, termasuk repo, jar, dan sumber daya. Sudah diatur sepenuhnya dan tidak memerlukan unduhan lain dari menu ini.",
     "gc_dev_jar": "Unduh Build Development Grasscutter saat ini, Dimana Ada Jar File Dan Data File.",
     "gc_stable_data": "Unduh file data Grasscutter stabil saat ini, dimana Tidak Ada JAR file. Ini Berguna Untuk memperbarui.",
     "gc_dev_data": "Unduh file data Grasscutter Development saat ini, dimana Tidak Ada JAR file. Ini Berguna Untuk memperbarui.",

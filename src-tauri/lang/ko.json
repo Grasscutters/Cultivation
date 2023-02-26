@@ -1,7 +1,7 @@
 {
   "lang_name": "한국어",
   "main": {
-    "title": "윈신 로즈",
+    "title": "Cultivation: Thorny Edition",
     "launch_button": "게임 시작",
     "gc_enable": "Grasscutter 연결",
     "https_enable": "HTTPS 사용",
@@ -66,6 +66,7 @@
     "port_help_text": "게임 서버 포트가 아닌 패치 서버 포트인지 확인하십시오. (기본 포트: 443)",
     "game_help_text": "그래스커터를 사용하기 위해 별도의 복사본을 사용할 필요가 없습니다. 이는 2.6으로 다운그레이드 하거나 게임을 설치하지 않은 경우에 적용됩니다.",
     "gc_stable_jar": "jar 파일과 데이터 파일이 포함된 현재 안정적인 Grasscuter 빌드를 다운로드합니다.",
+    "gc_fullbuild": "저장소, 저장소, 리소스를 포함한 Grasscutter 정식 버전을 다운로드하세요. 모든 준비가 완료되었으며 이 메뉴에서 다른 다운로드는 필요하지 않습니다.",
     "gc_dev_jar": "jar 파일 및 데이터 파일이 포함된 최신 개발 Grasscuter 빌드를 다운로드하십시오.",
     "gc_stable_data": "jar 파일과 함께 제공되지 않는 현재 안정적인 Grasscuter 데이터 파일을 다운로드합니다. 이것은 업데이트하는 데 유용합니다.",
     "gc_dev_data": "jar 파일과 함께 제공되지 않는 최신 개발 Grasscuter 데이터 파일을 다운로드합니다. 이것은 업데이트하는 데 유용합니다.",

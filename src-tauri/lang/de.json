@@ -1,7 +1,7 @@
 {
   "lang_name": "Deutsch",
   "main": {
-    "title": "Cultivation",
+    "title": "Cultivation: Thorny Edition",
     "launch_button": "Starten",
     "gc_enable": "Über Grasscutter verbinden",
     "https_enable": "HTTPS nutzen",
@@ -18,12 +18,16 @@
     "recover_metadata": "Notfall Wiederherstellung der Metadaten",
     "grasscutter_jar": "Grasscuter JAR auswählen",
     "toggle_encryption": "Verschlüsselung umschalten",
+    "install_certificate": "Installeer proxy certificaat",
     "java_path": "Benutzerdefinierten Java Pfad setzen",
     "grasscutter_with_game": "Grasscutter automatisch mit dem Spiel starten",
     "language": "Sprache auswählen",
     "background": "Benutzerdefinierten Hintergrund festlegen (link oder bild)",
     "theme": "Theme auswählen",
-    "patch_metadata": "Metadaten automatisch patchen"
+    "patch_metadata": "Metadaten automatisch patchen",
+    "use_proxy": "Gebruik interne proxy",
+    "wipe_login": "Wis de inlogcache",
+    "horny_mode": "Geile modus"
   },
   "downloads": {
     "grasscutter_fullbuild": "Alles in Einem Grasscutter Daten herunterladen",
@@ -61,6 +65,7 @@
     "port_help_text": "Vergewissern Sie sich, dass es sich um den Port des Dispatch-Servers handelt, nicht um den Port des Spiel-Servers. Dieser ist fast immer '443'.",
     "game_help_text": "Sie müssen keine separate Kopie verwenden, um mit Grasscutter zu spielen. Dies ist entweder für ein Downgrade auf die Version 2.6 oder wenn Sie das Spiel nicht installiert haben.",
     "gc_stable_jar": "Laden Sie den aktuellen stabilen Grasscutter-Build herunter, der eine Jar-Datei und Datendateien enthält.",
+    "gc_fullbuild": "Download een volledige Grasscutter-build, inclusief repo, jar en bronnen. Is volledig ingesteld en vereist geen andere downloads uit dit menu",
     "gc_dev_jar": "Laden Sie die neueste Grasscutter-Entwicklungsversion herunter, welche eine Jar-Datei und Datendateien enthält.",
     "gc_stable_data": "Laden Sie die stabilen Grasscutter Daten herunter, welche keine Jar-Datei enthalten. Dies ist nützlich zum Aktualisieren.",
     "gc_dev_data": "Laden Sie die neuesten Grasscutter-Entwicklungsdateien herunter, welche keine Jar-Datei enthält. Dies ist nützlich zum Aktualisieren.",

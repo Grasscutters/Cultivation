@@ -1,7 +1,7 @@
 {
   "lang_name": "Español",
   "main": {
-    "title": "Cultivation",
+    "title": "Cultivation: Thorny Edition",
     "launch_button": "Launch",
     "gc_enable": "Conectar Via Grasscutter",
     "https_enable": "Usar HTTPS",
@@ -23,7 +23,11 @@
     "grasscutter_with_game": "Iniciar automáticamente Grasscutter con el juego",
     "language": "Seleccionar Idioma",
     "background": "Establecer Fondo Personalizado (link o archivo de imagen)",
-    "theme": "Establecer Tema"
+    "patch_metadata": "Automatically Patch Metadata",
+    "theme": "Establecer Tema",
+    "use_proxy": "Use Internal Proxy",
+    "wipe_login": "Wipe Login Cache",
+    "horny_mode": "Horny Mode"
   },
   "downloads": {
     "grasscutter_fullbuild": "Descargar Datos todo en uno de Grasscutter",
@@ -61,6 +65,7 @@
     "port_help_text": "Asegúrese de que este sea el Dispatch server port, no el Game server port. Este es casi siempre '443'.",
     "game_help_text": "No necesitas usar una copia separada para jugar con Grasscutter. Esto es para cambiar a 2.6 o si no tienes el juego instalado.",
     "gc_stable_jar": "Descargue la versión Estable actual de Grasscutter, que incluye el archivo jar y los archivos de datos.",
+    "gc_fullbuild": "Descarga una compilación completa de Grasscutter, incluyendo repo, jar y recursos. Está totalmente configurado y no requiere ninguna otra descarga desde este menú.",
     "gc_dev_jar": "Descargue la última versión de Desarrollo de Grasscutter, que incluye archivos jar y archivos de datos.",
     "gc_stable_data": "Descargue los archivos de Datos Estables actuales de Grasscutter, que no vienen con un archivo jar. Esto es útil para actualizar.",
     "gc_dev_data": "Descargue los últimos archivos de Datos de Desarrollo de Grasscutter, que no vienen con un archivo jar. Esto es útil para actualizar.",
