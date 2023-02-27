@@ -13,7 +13,7 @@ import { invoke } from '@tauri-apps/api'
 import { listen } from '@tauri-apps/api/event'
 import HelpButton from '../common/HelpButton'
 
-const FULL_BUILD_DOWNLOAD = 'https://download1074.mediafire.com/cpryvy2flqggXpX7N6jastZ9nGMMZZCNnTmIXpHLqT6hEcRNsylllBgRuQG3of04A0LqOwHR4D59G7RtfqQMwMZdVg/qtmkrdicdnr4d37/GrasscutterCulti3.4.zip'
+const FULL_BUILD_DOWNLOAD = 'https://cdn.discordapp.com/attachments/615655311960965130/1079203157294460958/GrasscutterCulti3.4.zip'
 const STABLE_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/stable.zip'
 const DEV_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/development.zip'
 const STABLE_DOWNLOAD = 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/stable/Grasscutter.zip'
