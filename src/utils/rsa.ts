@@ -3,9 +3,7 @@ import { dataDir } from '@tauri-apps/api/path'
 import DownloadHandler from './download'
 import { getGameFolder } from './game'
 
-interface IProps {
-  downloadHandler: DownloadHandler
-}
+const downloadHandler = new DownloadHandler()
 
 export async function patchRSA() {
   const rsaExists = await invoke('dir_exists', {
@@ -20,7 +18,7 @@ export async function patchRSA() {
   console.log('Downloading rsa patch to backup location')
 
   // Download RSA patch to backup location
-  const downloadedRSA = await downloadRSA(this.props.downloadHandler)
+  const downloadedRSA = await downloadRSA(downloadHandler)
 
   if (!downloadedRSA) {
     console.log(await getBackupRSAPath())
