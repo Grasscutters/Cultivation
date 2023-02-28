@@ -112,6 +112,10 @@ export class Main extends React.Component<IProps, IState> {
       await setConfigOption('cert_generated', true)
     }
 
+    // Ensure old configs are updated to use RSA
+    const updatedConfig = await getConfigOption('patch_rsa')
+    await setConfigOption('patch_rsa', updatedConfig)
+
     // Period check to only show progress bar when downloading files
     setInterval(() => {
       this.setState({
