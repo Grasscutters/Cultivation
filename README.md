@@ -6,6 +6,7 @@ A game launcher designed to easily proxy traffic from anime game to private serv
 
 ### Thorny Edition Changes:
  
+ - Automatically applies and undoes the RSA patch
  - Fixed 3dmigoto paths being broken
  - Fixed "stuck on extracting" issue
  - Better default settings
