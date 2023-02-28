@@ -58,9 +58,10 @@ export async function patchGame() {
   }
 
   // Copy the patch to game files
-  const replaced = await invoke('copy_file', {
+  const replaced = await invoke('copy_file_with_new_name', {
     path: (await getBackupRSAPath()) + '\\version.dll',
     newPath: await getGameRSAPath(),
+    newName: 'version.dll',
   })
 
   if (!replaced) {
@@ -86,7 +87,7 @@ export async function getGameRSAPath() {
     return null
   }
 
-  return gameData
+  return (gameData + '\\').replace(/\\/g, '/')
 }
 
 export async function getBackupRSAPath() {

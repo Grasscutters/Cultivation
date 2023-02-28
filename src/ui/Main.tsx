@@ -72,10 +72,8 @@ export class Main extends React.Component<IProps, IState> {
       if (wasPatched) {
         const unpatched = await unpatchGame()
 
-        if (!unpatched) {
-          alert(
-            `Could not unpatch game! (Delete version.dll in your game folder)`
-          )
+        if (unpatched) {
+          alert(`Could not unpatch game! (Delete version.dll in your game folder)`)
         }
       }
     })

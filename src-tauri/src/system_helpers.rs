@@ -94,7 +94,7 @@ pub fn install_location() -> String {
 }
 
 #[tauri::command]
-pub fn set_migoto_target(path: String, migoto_path: String) -> bool {
+pub fn set_migoto_target(_path: String, migoto_path: String) -> bool {
   let mut migoto_pathbuf = PathBuf::from(migoto_path);
 
   migoto_pathbuf.pop();
