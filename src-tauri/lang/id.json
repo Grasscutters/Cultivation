@@ -15,7 +15,7 @@
     "game_path": "Mengatur jalur penginstalan game",
     "game_command": "Perintah peluncuran game",
     "game_executable": "Mengatur game yang dapat dieksekusi",
-    "recover_metadata": "Pemulihan metadata darurat",
+    "recover_rsa": "Pemulihan RSA darurat",
     "grasscutter_jar": "Path ke Grasscutter JAR",
     "toggle_encryption": "Alihkan enkripsi",
     "install_certificate": "Instal sertifikat proxy",
@@ -24,7 +24,7 @@
     "language": "Pilih Bahasa",
     "background": "Atur Kustom Latar Belakang (link atau gambar file)",
     "theme": "Atur Tema",
-    "patch_metadata": "Automatically Patch Metadata",
+    "patch_rsa": "Automatically Patch RSA",
     "use_proxy": "Gunakan Proxy Internal",
     "wipe_login": "Menghapus Cache Login",
     "horny_mode": "Mode Terangsang"

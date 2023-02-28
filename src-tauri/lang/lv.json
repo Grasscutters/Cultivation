@@ -14,7 +14,7 @@
     "enabled": "Iespējots",
     "disabled": "Atspējots",
     "game_executable": "Iestatīt spēles izpildāmu",
-    "recover_metadata": "Avārijas metadatu atjaunošana",
+    "recover_rsa": "Avārijas RSA atjaunošana",
     "grasscutter_jar": "Iestatiet Grasscutter JAR",
     "toggle_encryption": "Pārslēgt Šifrēšanu",
     "install_certificate": "Proxy sertifikāta instalēšana",
@@ -23,7 +23,7 @@
     "language": "Izvēlēties valodu",
     "background": "Iestatīt pielāgotu fonu (saite vai attēla fails)",
     "theme": "Iestatīt tēmu",
-    "patch_metadata": "Automātiski ielāpot metadatus",
+    "patch_rsa": "Automātiski ielāpot RSA",
     "use_proxy": "Izmantot iekšējo starpniekserveri",
     "wipe_login": "Noslaucīt pieteikšanās kešatmiņu",
     "horny_mode": "Uzbudināts režīms"

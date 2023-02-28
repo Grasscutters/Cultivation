@@ -13,7 +13,7 @@ import Plus from '../../resources/icons/plus.svg'
 import './ServerLaunchSection.css'
 import { dataDir } from '@tauri-apps/api/path'
 import { getGameExecutable, getGameVersion } from '../../utils/game'
-import { patchGame, unpatchGame } from '../../utils/metadata'
+import { patchGame, unpatchGame } from '../../utils/rsa'
 
 interface IProps {
   openExtras: (playGame: () => void) => void
@@ -109,7 +109,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
 
     // Connect to proxy
     if (config.toggle_grasscutter) {
-      if (config.patch_metadata) {
+      if (config.patch_rsa) {
         const gameVersion = await getGameVersion()
         console.log(gameVersion)
 
@@ -120,16 +120,16 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
           return
         }
 
-        if (gameVersion?.major == 2 && gameVersion?.minor < 8) {
+        if (gameVersion?.major == 2 && gameVersion?.minor < 9) {
           alert(
-            'Game version is too old for metadata patching. Please disable metadata patching in the settings and try again.'
+            'Game version is too old for RSA patching. Please disable RSA patching in the settings and try again.'
           )
           return
         }
 
-        if (gameVersion?.major == 3 && gameVersion?.minor >= 1) {
+        if (gameVersion?.major == 3 && gameVersion?.minor < 1) {
           alert(
-            'Game version is too new for metadata patching. TO FIX: Please disable metadata patching in the settings menu to launch the game!! \nNOTE: You will require an RSA patch to play the game.'
+            'Game version is too old for RSA patching. Please disable RSA patching in the settings and try again.'
           )
           return
         }
@@ -179,7 +179,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
 
       if (!unpatched) {
         alert(
-          `Could not unpatch game, aborting launch! (You can find your metadata backup in ${await dataDir()}\\cultivation\\)`
+          `Could not unpatch game, aborting launch! (You can unpatch in your game install folder, either remove version.dll or repair mhypbase.dll in launcher)`
         )
         return
       }

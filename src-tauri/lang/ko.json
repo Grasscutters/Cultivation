@@ -16,7 +16,7 @@
     "game_path": "게임 설치 경로 설정",
     "game_command": "게임 시작 명령",
     "game_executable": "게임 실행 파일 설정",
-    "recover_metadata": "긴급 메타데이터 복구",
+    "recover_rsa": "긴급 RSA 복원",
     "grasscutter_jar": "그래스커터 JAR 설정",
     "toggle_encryption": "암호화 전환",
     "install_certificate": "프록시 인증서 설치",
@@ -25,7 +25,7 @@
     "language": "언어 선택",
     "background": "사용자 지정 배경 설정(링크 또는 이미지 파일)",
     "theme": "테마 설정",
-    "patch_metadata": "자동으로 메타데이터 패치 적용",
+    "patch_rsa": "RSA 패치 자동 적용",
     "use_proxy": "내부 프록시 사용",
     "wipe_login": "로그인 캐시 지우기",
     "horny_mode": "Horny 모드"
@@ -72,9 +72,9 @@
     "gc_dev_data": "jar 파일과 함께 제공되지 않는 최신 개발 Grasscuter 데이터 파일을 다운로드합니다. 이것은 업데이트하는 데 유용합니다.",
     "encryption": "일반적으로 이 기능을 사용하지 않도록 설정해야 합니다.",
     "resources": "또한 Grasscutter 서버를 실행하는 데도 필요합니다. 내용이 포함된 기존 리소스 폴더가 있는 경우 이 버튼은 회색으로 표시됩니다",
-    "emergency_metadata": "문제가 발생한 경우 메타데이터를 최신 공식 버전 메타데이터로 복원합니다.",
+    "emergency_rsa": "문제가 있는 경우 RSA 패치를 제거하십시오.",
     "use_proxy": "Culturation 내부 프록시를 사용합니다. 피들러와 같은 것을 사용하지 않는 한 이 기능을 활성화해야 합니다",
-    "patch_metadata": "게임 메타데이터를 자동으로 패치 및 패치 해제합니다. 이전/비공식 버전으로 재생하거나 메타데이터를 수동으로 패치한 경우를 제외하고는 이 기능을 사용하도록 설정해야 합니다."
+    "patch_rsa": "게임 RSA를 자동으로 패치 및 패치 해제합니다. 이전/비공식 버전을 사용하거나 RSA를 수동으로 패치하지 않은 경우 이 기능을 활성화해야 합니다."
   },
   "swag": {
     "akebi_name": "Akebi",

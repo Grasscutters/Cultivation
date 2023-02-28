@@ -16,7 +16,7 @@
     "game_path": "Set Game Install Path",
     "game_command": "Game Launch Command",
     "game_executable": "Set Game Executable",
-    "recover_metadata": "Emergency Metadata Recovery",
+    "recover_rsa": "Emergency Delete RSA",
     "grasscutter_jar": "Set Grasscutter JAR",
     "toggle_encryption": "Toggle Encryption",
     "install_certificate": "Install Proxy Certificate",
@@ -25,7 +25,7 @@
     "language": "Select Language",
     "background": "Set Custom Background (link or image file)",
     "theme": "Set Theme",
-    "patch_metadata": "Automatically Patch Metadata",
+    "patch_rsa": "Automatically Patch RSA",
     "use_proxy": "Use Internal Proxy",
     "wipe_login": "Wipe Login Cache",
     "horny_mode": "Horny Mode"
@@ -72,9 +72,9 @@
     "gc_dev_data": "Download the latest development Grasscutter data files, which does not come with a jar file. This is useful for updating.",
     "encryption": "This should usually be disabled.",
     "resources": "These are also required to run a Grasscutter server. This button will be grey if you have an existing resources folder with contents inside",
-    "emergency_metadata": "In case something went wrong, restore your metadata to the latest official versions metadata. Only for 2.8/3.0",
+    "emergency_rsa": "In case something went wrong, force delete RSA patch.",
     "use_proxy": "Use the Cultivation internal proxy. You should have this enabled unless you use something like Fiddler",
-    "patch_metadata": "Patch and unpatch your game metadata automatically. Unless playing with old/non-official versions (2.8/3.0), this should be disabled."
+    "patch_rsa": "Patch and unpatch your game RSA automatically. Unless playing with old/non-official versions (3.0 and older), this should be enabled."
   },
   "swag": {
     "akebi_name": "Akebi",

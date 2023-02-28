@@ -16,7 +16,7 @@
     "game_path": "Définir le chemin d'installation du jeu",
     "game_command": "Commande de lancement du jeu",
     "game_executable": "definir l'executable du jeu",
-    "recover_metadata": "Récupération d'urgence des métadonnées",
+    "recover_rsa": "Récupération d'urgence des RSA",
     "grasscutter_jar": "definir le Jar Grasscutter",
     "toggle_encryption": "activer l'encryption",
     "install_certificate": "Installer le certificat du proxy",
@@ -25,7 +25,7 @@
     "language": "Choisir la langue",
     "background": "definir un arriere plan personnalise (lien ou fichier image)",
     "theme": "definir un theme",
-    "patch_metadata": "Corriger automatiquement les métadonnées",
+    "patch_rsa": "Corriger automatiquement les RSA",
     "use_proxy": "Utiliser un proxy interne",
     "wipe_login": "Effacer le cache de connexion",
     "horny_mode": "Mode excitation"

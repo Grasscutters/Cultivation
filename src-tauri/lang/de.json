@@ -15,7 +15,7 @@
     "disabled": "Deaktiviert",
     "game_path": "Spielpfad",
     "game_executable": "Spiel Datei auswählen",
-    "recover_metadata": "Notfall Wiederherstellung der Metadaten",
+    "recover_rsa": "Notfall Wiederherstellung der RSA",
     "grasscutter_jar": "Grasscuter JAR auswählen",
     "toggle_encryption": "Verschlüsselung umschalten",
     "install_certificate": "Installeer proxy certificaat",
@@ -24,7 +24,7 @@
     "language": "Sprache auswählen",
     "background": "Benutzerdefinierten Hintergrund festlegen (link oder bild)",
     "theme": "Theme auswählen",
-    "patch_metadata": "Metadaten automatisch patchen",
+    "patch_rsa": "RSA automatisch patchen",
     "use_proxy": "Gebruik interne proxy",
     "wipe_login": "Wis de inlogcache",
     "horny_mode": "Geile modus"
@@ -70,9 +70,9 @@
     "gc_stable_data": "Laden Sie die stabilen Grasscutter Daten herunter, welche keine Jar-Datei enthalten. Dies ist nützlich zum Aktualisieren.",
     "gc_dev_data": "Laden Sie die neuesten Grasscutter-Entwicklungsdateien herunter, welche keine Jar-Datei enthält. Dies ist nützlich zum Aktualisieren.",
     "resources": "Diese werden auch benötigt, um einen Grasscutter-Server auszuführen. Diese Schaltfläche ist grau, wenn Sie einen bestehenden Ressourcenordner mit Inhalten haben",
-    "emergency_metadata": "Im Fall, dass etwas schief laufen sollte, kannst du deine Metadaten auf die letzte offizielle Version zurücksetzen",
+    "emergency_rsa": "Im Fall, dass etwas schief laufen sollte, kannst du deine RSA auf die letzte offizielle Version zurücksetzen",
     "use_proxy": "Nutze den internen Proxy von Cultivation. Du solltest dies aktivieren, es sei denn du nutzt Programme wie Fiddler",
-    "patch_metadata": "Patche und aktualisiere deine Metadaten automatisch. Solange du nicht mit einer alten/nicht offiziellen Version spielst oder deine Metadaten manuell gepatcht hast, sollte dies aktiviert sein."
+    "patch_rsa": "Patche und aktualisiere deine RSA automatisch. Solange du nicht mit einer alten/nicht offiziellen Version spielst oder deine RSA manuell gepatcht hast, sollte dies aktiviert sein."
   },
   "swag": {
     "akebi_name": "Akebi",

@@ -17,7 +17,7 @@ import { invoke } from '@tauri-apps/api'
 import { listen } from '@tauri-apps/api/event'
 import { dataDir } from '@tauri-apps/api/path'
 import { appWindow } from '@tauri-apps/api/window'
-import { unpatchGame } from '../utils/metadata'
+import { unpatchGame } from '../utils/rsa'
 import DownloadHandler from '../utils/download'
 
 // Graphics
@@ -65,16 +65,16 @@ export class Main extends React.Component<IProps, IState> {
       setConfigOption('grasscutter_path', payload)
     })
 
-    // Emitted for metadata replacing-purposes
+    // Emitted for rsa replacing-purposes
     listen('game_closed', async () => {
-      const wasPatched = await getConfigOption('patch_metadata')
+      const wasPatched = await getConfigOption('patch_rsa')
 
       if (wasPatched) {
         const unpatched = await unpatchGame()
 
         if (!unpatched) {
           alert(
-            `Could not unpatch game! (You should be able to find your metadata backup in ${await dataDir()}\\cultivation\\)`
+            `Could not unpatch game! (Delete version.dll in your game folder)`
           )
         }
       }
