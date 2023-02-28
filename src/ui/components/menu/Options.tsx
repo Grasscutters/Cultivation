@@ -316,7 +316,7 @@ export default class Options extends React.Component<IProps, IState> {
           </div>
           <div className="OptionValue" id="menuOptionsButtonmetaDownload">
             <BigButton onClick={this.removeRSA} id="metaDownload">
-              <Tr text="components.download" />
+              <Tr text="components.delete" />
             </BigButton>
           </div>
         </div>
@@ -326,11 +326,7 @@ export default class Options extends React.Component<IProps, IState> {
             <HelpButton contents="help.patch_rsa" />
           </div>
           <div className="OptionValue" id="menuOptionsCheckboxPatchMeta">
-            <Checkbox
-              onChange={() => this.toggleOption('patch_rsa')}
-              checked={this.state?.patch_rsa}
-              id="patchMeta"
-            />
+            <Checkbox onChange={() => this.toggleOption('patch_rsa')} checked={this.state?.patch_rsa} id="patchMeta" />
           </div>
         </div>
         <div className="OptionSection" id="menuOptionsContainerUseProxy">

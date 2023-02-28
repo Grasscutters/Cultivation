@@ -55,6 +55,7 @@
     "select_file": "Select file or folder...",
     "select_folder": "Select folder...",
     "download": "Download",
+    "delete": "Verwijder",
     "install": "Install"
   },
   "news": {

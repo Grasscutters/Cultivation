@@ -55,6 +55,7 @@
     "select_file": "Datei oder Ordner auswählen...",
     "select_folder": "Ordner auswählen...",
     "download": "Herunterladen",
+    "delete": "Löschen",
     "install": "Installieren"
   },
   "news": {

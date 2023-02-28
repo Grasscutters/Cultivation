@@ -56,6 +56,7 @@
     "select_file": "파일 또는 폴더 선택...",
     "select_folder": "폴더 선택...",
     "download": "다운로드",
+    "delete": "삭제",
     "install": "설치"
   },
   "news": {

@@ -53,7 +53,8 @@
   "components": {
     "select_file": "Pilih File Atau Folder...",
     "select_folder": "Pilih Folder...",
-    "download": "download"
+    "download": "download",
+    "delete": "Menghapus"
   },
   "news": {
     "latest_commits": "Commit Terbaru",

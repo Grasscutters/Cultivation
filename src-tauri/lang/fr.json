@@ -54,7 +54,9 @@
   "components": {
     "select_file": "choisir fichier ou dossier...",
     "select_folder": "choisir dossier...",
-    "download": "Telecharger"
+    "download": "Telecharger",
+    "delete": "Supprimer",
+    "install": "Installer"
   },
   "news": {
     "latest_commits": "Recents Commits",

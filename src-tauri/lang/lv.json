@@ -52,7 +52,8 @@
   "components": {
     "select_file": "Izvēlēties failu vai mapu...",
     "select_folder": "Izvēlēties mapu...",
-    "download": "Lejupielādēt"
+    "download": "Lejupielādēt",
+    "delete": "Dzēst"
   },
   "news": {
     "latest_commits": "Nesen kommitus",
