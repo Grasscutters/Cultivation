@@ -63,9 +63,8 @@ Download and open the MSI, and once installed, run Cultivation as administrator.
   - If joining a public one, you're done. Just click "Connect with Grasscutter" and input the address and port. You do not have to continue these instructions.
     - If you are getting System Error, or 4214, ask the [Discord support channels](https://discord.gg/grasscutter)
 - Open the "Downloads" menu (top right)
-  - Download "latest grasscutter" (second from the top)
-  - Download "resources" (very bottom)
-- Once all of that is done, click the icon next to "Launch"
+  - Download "Grasscutter All-in-One" (top of the list)
+- Once that is done, click the icon next to "Launch"
 - To play on your new server:
   - Click "Connect with Grasscutter"
   - Input `localhost` as the address, and `443` as the port
