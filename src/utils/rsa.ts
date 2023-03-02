@@ -1,34 +1,10 @@
 import { invoke } from '@tauri-apps/api'
 import { dataDir } from '@tauri-apps/api/path'
+import { listen } from '@tauri-apps/api/event'
 import DownloadHandler from './download'
 import { getGameFolder } from './game'
 
 const downloadHandler = new DownloadHandler()
-
-export async function patchRSA() {
-  const rsaExists = await invoke('dir_exists', {
-    path: (await getBackupRSAPath()) + '\\version.dll',
-  })
-
-  if (rsaExists) {
-    // Already patched
-    return true
-  }
-
-  console.log('Downloading rsa patch to backup location')
-
-  // Download RSA patch to backup location
-  const downloadedRSA = await downloadRSA(downloadHandler)
-
-  if (!downloadedRSA) {
-    console.log(await getBackupRSAPath())
-    return false
-  }
-
-  console.log('RSA download successful!')
-
-  return true
-}
 
 export async function patchGame() {
   // Do we have a patch already?
@@ -38,7 +14,7 @@ export async function patchGame() {
 
   if (!patchedExists) {
     // No patch found? Patching creates one
-    const patched = await patchRSA()
+    const patched = await downloadRSA()
 
     if (!patched) {
       return false
@@ -94,7 +70,7 @@ export async function getBackupRSAPath() {
   return (await dataDir()) + 'cultivation\\rsa'
 }
 
-export async function downloadRSA(manager: DownloadHandler) {
+export async function downloadRSA() {
   const rsaLink = 'https://github.com/34736384/RSAPatch/releases/download/v1.1.0/RSAPatch.dll'
 
   // Should make sure rsa path exists
@@ -103,9 +79,37 @@ export async function downloadRSA(manager: DownloadHandler) {
   })
 
   // Download the file
-  manager.addDownload(rsaLink, (await getBackupRSAPath()) + '\\version.dll', () => {
+  downloadHandler.addDownload(rsaLink, (await getBackupRSAPath()) + '\\version.dll', () => {
     null
   })
+  let errored = false
 
+  listen('download_error', ({ payload }) => {
+    // @ts-expect-error shut up typescript
+    const errorData: {
+      path: string
+      error: string
+    } = payload
+
+    errored = true
+  })
+
+  // There is 100% a better way to do this but I don't use ts enough to know
+  let downloadComplete = false
+  while (!downloadComplete) {
+    // Waits until download completes before continuing
+    if (
+      (await invoke('dir_exists', {
+        path: (await getBackupRSAPath()) + '\\version.dll',
+      })) ||
+      errored
+    ) {
+      downloadComplete = true
+    }
+  }
+
+  if (errored) {
+    return false
+  }
   return true
 }

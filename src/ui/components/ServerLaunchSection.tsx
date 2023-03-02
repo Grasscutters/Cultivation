@@ -121,23 +121,19 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
         }
 
         if (gameVersion?.major == 2 && gameVersion?.minor < 9) {
-          alert(
-            'Game version is too old for RSA patching. Please disable RSA patching in the settings and try again.'
-          )
+          alert('Game version is too old for RSA patching. Please disable RSA patching in the settings and try again.')
           return
         }
 
         if (gameVersion?.major == 3 && gameVersion?.minor < 1) {
-          alert(
-            'Game version is too old for RSA patching. Please disable RSA patching in the settings and try again.'
-          )
+          alert('Game version is too old for RSA patching. Please disable RSA patching in the settings and try again.')
           return
         }
 
         const patched = await patchGame()
 
         if (!patched) {
-          alert('Could not patch game!')
+          alert('Could not patch! Try launching again, or patching manually.')
           return
         }
       }
