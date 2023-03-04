@@ -17,7 +17,7 @@ A game launcher designed to easily proxy traffic from anime game to private serv
  - Added Korean translation thanks to [@koreako12](https://github.com/koreako12)
  - Some other translation additions (machine translation, let me know if things are wrong)
  
- Since there is no issues page, problems with this edition can be directed to me on discord: Thoronium#7770
+ Added issues page so you can direct problems there, or to me on discord: Thoronium#7770
   - You will need to join the [Grasscutters discord](https://discord.gg/grasscutter) before being able to send a message request :) or you can ping me in #support
  
 # Table Of Contents
