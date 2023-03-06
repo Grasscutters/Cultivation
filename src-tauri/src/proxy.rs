@@ -12,7 +12,7 @@ use std::{path::PathBuf, str::FromStr, sync::Mutex};
 use hudsucker::{
   async_trait::async_trait,
   certificate_authority::RcgenAuthority,
-  hyper::{Body, Request, Response},
+  hyper::{Body, Request, Response, StatusCode},
   *,
 };
 use rcgen::*;
@@ -48,22 +48,33 @@ pub fn set_proxy_addr(addr: String) {
 impl HttpHandler for ProxyHandler {
   async fn handle_request(
     &mut self,
-    _context: &HttpContext,
-    mut request: Request<Body>,
+    _ctx: &HttpContext,
+    mut req: Request<Body>,
   ) -> RequestOrResponse {
-    let uri = request.uri().to_string();
-    let uri_path_and_query = request.uri().path_and_query().unwrap().as_str();
+    let uri = req.uri().to_string();
 
     if uri.contains("hoyoverse.com") || uri.contains("mihoyo.com") || uri.contains("yuanshen.com") {
-      // Create new URI.
-      let new_uri =
-        Uri::from_str(format!("{}{}", SERVER.lock().unwrap(), uri_path_and_query).as_str())
-          .unwrap();
-      // Set request URI to the new one.
-      *request.uri_mut() = new_uri;
+      // Handle CONNECTs
+      if req.method().as_str() == "CONNECT" {
+        let builder = Response::builder()
+          .header("DecryptEndpoint", "Created")
+          .status(StatusCode::OK);
+        let res = builder.body(()).unwrap();
+
+        // Respond to CONNECT
+        *res.body()
+      } else {
+        let uri_path_and_query = req.uri().path_and_query().unwrap().as_str();
+        // Create new URI.
+        let new_uri =
+          Uri::from_str(format!("{}{}", SERVER.lock().unwrap(), uri_path_and_query).as_str())
+            .unwrap();
+        // Set request URI to the new one.
+        *req.uri_mut() = new_uri;
+      }
     }
 
-    RequestOrResponse::Request(request)
+    req.into()
   }
 
   async fn handle_response(
@@ -72,6 +83,10 @@ impl HttpHandler for ProxyHandler {
     response: Response<Body>,
   ) -> Response<Body> {
     response
+  }
+
+  async fn should_intercept(&mut self, _ctx: &HttpContext, _req: &Request<Body>) -> bool {
+    true
   }
 }
 

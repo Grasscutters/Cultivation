@@ -71,45 +71,19 @@ export async function getBackupRSAPath() {
 }
 
 export async function downloadRSA() {
-  const rsaLink = 'https://github.com/34736384/RSAPatch/releases/download/v1.1.0/RSAPatch.dll'
+  // Patch file from: https://github.com/34736384/RSAPatch/
 
   // Should make sure rsa path exists
   await invoke('dir_create', {
     path: await getBackupRSAPath(),
   })
 
-  // Download the file
-  downloadHandler.addDownload(rsaLink, (await getBackupRSAPath()) + '\\version.dll', () => {
-    null
-  })
-  let errored = false
-
-  listen('download_error', ({ payload }) => {
-    // @ts-expect-error shut up typescript
-    const errorData: {
-      path: string
-      error: string
-    } = payload
-
-    errored = true
+  // Copy patch from local for offline compatibility
+  await invoke('copy_file_with_new_name', {
+    path: (await invoke('install_location')) + '\\patch\\version.dll',
+    newPath: await getBackupRSAPath(),
+    newName: 'version.dll',
   })
 
-  // There is 100% a better way to do this but I don't use ts enough to know
-  let downloadComplete = false
-  while (!downloadComplete) {
-    // Waits until download completes before continuing
-    if (
-      (await invoke('dir_exists', {
-        path: (await getBackupRSAPath()) + '\\version.dll',
-      })) ||
-      errored
-    ) {
-      downloadComplete = true
-    }
-  }
-
-  if (errored) {
-    return false
-  }
   return true
 }
