@@ -301,7 +301,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
             </BigButton>
           )}
           <BigButton onClick={this.launchServer} id="serverLaunch">
-            <img className="ServerIcon" id="serverLaunchIcon" src={Server} />
+            Start server
           </BigButton>
         </div>
       </div>
