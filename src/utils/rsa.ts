@@ -1,10 +1,6 @@
 import { invoke } from '@tauri-apps/api'
 import { dataDir } from '@tauri-apps/api/path'
-import { listen } from '@tauri-apps/api/event'
-import DownloadHandler from './download'
 import { getGameFolder } from './game'
-
-const downloadHandler = new DownloadHandler()
 
 export async function patchGame() {
   // Do we have a patch already?

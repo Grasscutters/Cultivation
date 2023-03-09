@@ -264,6 +264,8 @@ export default class Options extends React.Component<IProps, IState> {
         (await server.encryptionEnabled(folderPath + '/config.json')) ? 'options.enabled' : 'options.disabled'
       ),
     })
+
+    alert('Restart Grasscutter to apply encryption settings! If it is already closed, just start as normal.')
   }
 
   async removeRSA() {
