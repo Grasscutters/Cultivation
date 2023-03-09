@@ -295,14 +295,14 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
           <BigButton onClick={this.playGame} id="officialPlay">
             {this.state.buttonLabel}
           </BigButton>
+          <BigButton onClick={this.launchServer} id="serverLaunch">
+            Start server
+          </BigButton>
           {this.state.swag && (
             <BigButton onClick={() => this.props.openExtras(this.playGame)} id="ExtrasMenuButton">
               <img className="ExtrasIcon" id="extrasIcon" src={Plus} />
             </BigButton>
           )}
-          <BigButton onClick={this.launchServer} id="serverLaunch">
-            <img className="ServerIcon" id="serverLaunchIcon" src={Server} />
-          </BigButton>
         </div>
       </div>
     )

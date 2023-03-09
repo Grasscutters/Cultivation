@@ -73,13 +73,13 @@
 }
 
 #officialPlay {
-  max-width: 60%;
+  width: 50%;
   flex-grow: 1;
 }
 
 #akebiLaunch,
 #serverLaunch {
-  width: 5%;
+  width: 50%;
 }
 
 #ExtrasMenuButton {
