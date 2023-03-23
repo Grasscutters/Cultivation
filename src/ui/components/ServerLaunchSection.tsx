@@ -171,14 +171,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
         })
       }
     } else {
-      const unpatched = await unpatchGame()
-
-      if (!unpatched) {
-        alert(
-          `Could not unpatch game, aborting launch! (You can unpatch in your game install folder, either remove version.dll or repair mhypbase.dll in launcher)`
-        )
-        return
-      }
+      await unpatchGame()
     }
 
     if (config.wipe_login) {
