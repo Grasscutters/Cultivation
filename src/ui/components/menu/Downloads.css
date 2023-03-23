@@ -17,6 +17,16 @@
   height: 100%;
 }
 
+.HeaderText {
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  margin-bottom: 10px;
+  text-decoration-line: underline;
+}
+
 .DownloadValue .BigButton {
   height: 100%;
   min-height: 30px;

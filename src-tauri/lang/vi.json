@@ -16,7 +16,7 @@
     "game_path": "Đường dẫn cài game",
     "game_command": "Lệnh khởi chạy game",
     "game_executable": "Tập tin thực thi game",
-    "recover_metadata": "Khôi phục metadata khẩn cấp",
+    "recover_rsa": "Khôi phục RSA khẩn cấp",
     "grasscutter_jar": "Tập tin JAR Grasscutter",
     "toggle_encryption": "Bật/tắt mã hóa",
     "install_certificate": "Cài chứng chỉ proxy",
@@ -25,12 +25,13 @@
     "language": "Ngôn ngữ",
     "background": "Hình nền tùy chỉnh (liên kết hoặc tập tin hình ảnh)",
     "theme": "Giao diện",
-    "patch_metadata": "Tự động vá metadata",
+    "patch_rsa": "Tự động vá RSA",
     "use_proxy": "Sử dụng proxy nội bộ",
     "wipe_login": "Tẩy sạch cache đăng nhập",
     "horny_mode": "Chế độ hứng tình"
   },
   "downloads": {
+    "grasscutter_fullbuild": "Tải Grasscutter tất cả trong một",
     "grasscutter_stable_data": "Tải dữ liệu Grasscutter bản ổn định",
     "grasscutter_latest_data": "Tải dữ liệu Grasscutter bản mới nhất",
     "grasscutter_stable_data_update": "Cập nhật dữ liệu Grasscutter bản ổn định",
@@ -40,7 +41,9 @@
     "grasscutter_stable_update": "Cập nhật Grasscutter bản ổn định",
     "grasscutter_latest_update": "Cập nhật Grasscutter bản mới nhất",
     "resources": "Tải tài nguyên Grasscutter",
-    "game": "Tải game"
+    "game": "Tải game",
+    "aio_header": "Tải xuống tất cả trong một:",
+    "individual_header": "Tải xuống từng phần:"
   },
   "download_status": {
     "downloading": "Đang tải",
@@ -53,6 +56,7 @@
     "select_file": "Chọn tập tin hoặc thư mục...",
     "select_folder": "Chọn thư mục...",
     "download": "Tải",
+    "delete": "Xóa bỏ",
     "install": "Cài"
   },
   "news": {
@@ -63,14 +67,15 @@
     "port_help_text": "Hãy đảm bảo đây là cổng của máy chủ Dispatch, không phải cổng của máy chủ game. Thường sẽ là '443'.",
     "game_help_text": "Bạn không cần phải sử dụng một bản sao riêng để chơi với Grasscutter. Việc này chỉ xảy ra nếu bạn hạ phiên bản xuống 2.6 hoặc chưa cài game.",
     "gc_stable_jar": "Tải xuống phiên bản ổn định của Grasscutter, bao gồm tập tin jar và các tệp dữ liệu.",
+    "gc_fullbuild": "Tải xuống bản dựng Grasscutter đầy đủ, bao gồm repo, jar và tài nguyên. Được thiết lập đầy đủ và không yêu cầu bất kỳ tải xuống nào khác từ menu này",
     "gc_dev_jar": "Tải xuống phiên bản phát triển mới nhất của Grasscutter, bao gồm tập tin jar và các tệp dữ liệu.",
     "gc_stable_data": "Tải xuống tệp dữ liệu phiên bản ổn định hiện hành của Grasscutter. Bản này không đi kèm với tập tin jar, hữu dụng khi muốn cập nhật.",
     "gc_dev_data": "Tải xuống tệp dữ liệu phiên bản mới nhất của Grasscutter.      Bản này không đi kèm với tập tin jar, hữu dụng khi muốn cập nhật.",
     "encryption": "Mục này nên được tắt.",
     "resources": "Tài nguyên được yêu cầu để chạy máy chủ Grasscutter. Nút     này sẽ có màu xám nếu bạn đã có sẵn một thư mục tài nguyên (resources) có nội dung bên trong",
-	  "emergency_metadata": "Trong trường hợp gặp vấn đề, khôi phục lại metadata về     phiên bản chính thức mới nhất.",
-  	"use_proxy": "Sử dụng proxy nội bộ của Cultivation. Nên bật tùy chọn này   trừ khi bạn đang sử dụng một ứng dụng khác, như Fiddler",
-  	"patch_metadata": "Tự động vá và sửa lại metadata của game. Tùy chọn này nên  được bật trừ khi bạn đang sử dụng phiên bản cũ, phiên bản không chính thức hoặc bạn đã tự vá metadata rồi."
+    "emergency_rsa": "Trong trường hợp gặp vấn đề, khôi phục lại RSA về phiên bản chính thức mới nhất.",
+    "use_proxy": "Sử dụng proxy nội bộ của Cultivation. Nên bật tùy chọn này   trừ khi bạn đang sử dụng một ứng dụng khác, như Fiddler",
+    "patch_rsa": "Tự động vá và sửa lại RSA của game. Tùy chọn này nên  được bật trừ khi bạn đang sử dụng phiên bản cũ, phiên bản không chính thức hoặc bạn đã tự vá rsa rồi."
   },
   "swag": {
     "akebi_name": "Akebi",

@@ -104,6 +104,11 @@ export default class DownloadHandler {
     return this.downloads.some((d) => d.path.includes('grasscutter.zip'))
   }
 
+  downloadingFullBuild() {
+    // Kinda hacky but it works
+    return this.downloads.some((d) => d.path.includes('GrasscutterCulti3.4.zip'))
+  }
+
   downloadingResources() {
     // Kinda hacky but it works
     return this.downloads.some((d) => d.path.includes('resources'))

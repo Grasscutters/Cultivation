@@ -3,7 +3,7 @@
   "main": {
     "title": "Cultivation",
     "launch_button": "Launch",
-    "gc_enable": "Connect via Grasscutter",
+    "gc_enable": "Connect to Grasscutter",
     "https_enable": "Use HTTPS",
     "ip_placeholder": "Server Address...",
     "port_placeholder": "Port...",
@@ -16,7 +16,7 @@
     "game_path": "Set Game Install Path",
     "game_command": "Game Launch Command",
     "game_executable": "Set Game Executable",
-    "recover_metadata": "Emergency Metadata Recovery",
+    "recover_rsa": "Emergency Delete RSA",
     "grasscutter_jar": "Set Grasscutter JAR",
     "toggle_encryption": "Toggle Encryption",
     "install_certificate": "Install Proxy Certificate",
@@ -25,12 +25,13 @@
     "language": "Select Language",
     "background": "Set Custom Background (link or image file)",
     "theme": "Set Theme",
-    "patch_metadata": "Automatically Patch Metadata",
+    "patch_rsa": "Automatically Patch RSA",
     "use_proxy": "Use Internal Proxy",
     "wipe_login": "Wipe Login Cache",
     "horny_mode": "Horny Mode"
   },
   "downloads": {
+    "grasscutter_fullbuild": "Download Grasscutter All-in-One",
     "grasscutter_stable_data": "Download Grasscutter Stable Data",
     "grasscutter_latest_data": "Download Grasscutter Latest Data",
     "grasscutter_stable_data_update": "Update Grasscutter Stable Data",
@@ -40,7 +41,9 @@
     "grasscutter_stable_update": "Update Grasscutter Stable",
     "grasscutter_latest_update": "Update Grasscutter Latest",
     "resources": "Download Grasscutter Resources",
-    "game": "Download Game"
+    "game": "Download Game",
+    "aio_header": "All-in-One Downloads:",
+    "individual_header": "Individual downloads:"
   },
   "download_status": {
     "downloading": "Downloading",
@@ -53,6 +56,7 @@
     "select_file": "Select file or folder...",
     "select_folder": "Select folder...",
     "download": "Download",
+    "delete": "Delete",
     "install": "Install"
   },
   "news": {
@@ -63,20 +67,21 @@
     "port_help_text": "Ensure this is the Dispatch server port, not the Game server port. This is almost always '443'.",
     "game_help_text": "You do not need to use a separate copy to play with Grasscutter. This is for either downgrading to 2.6 or if you do not have the game installed.",
     "gc_stable_jar": "Download the current stable Grasscutter build, which includes jar file and data files.",
+    "gc_fullbuild": "Download a full Grasscutter build, including repo, jar, and resources. Is fully set up and does not require any other downloads from this menu.",
     "gc_dev_jar": "Download the latest development Grasscutter build, which includes jar file and data files.",
     "gc_stable_data": "Download the current stable Grasscutter data files, which does not come with a jar file. This is useful for updating.",
     "gc_dev_data": "Download the latest development Grasscutter data files, which does not come with a jar file. This is useful for updating.",
     "encryption": "This should usually be disabled.",
     "resources": "These are also required to run a Grasscutter server. This button will be grey if you have an existing resources folder with contents inside",
-    "emergency_metadata": "In case something went wrong, restore your metadata to the latest official versions metadata.",
+    "emergency_rsa": "In case something went wrong, force delete RSA patch.",
     "use_proxy": "Use the Cultivation internal proxy. You should have this enabled unless you use something like Fiddler",
-    "patch_metadata": "Patch and unpatch your game metadata automatically. Unless playing with old/non-official versions, or you have manually patched your metadata, this should be enabled."
+    "patch_rsa": "Patch and unpatch your game RSA automatically. Unless playing with old/non-official versions (3.0 and older), this should be enabled."
   },
   "swag": {
     "akebi_name": "Akebi",
     "migoto_name": "Migoto",
     "reshade_name": "Reshade",
-    "akebi": "Set Akebi Executable",
+    "akebi": "Set Akebi/Acrepi Executable",
     "migoto": "Set 3DMigoto Executable",
     "reshade": "Set Reshade Injector"
   }

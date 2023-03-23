@@ -96,31 +96,37 @@ pub fn unzip(
         .unwrap();
     }
 
+    // If downloading full build, emit that the jar was extracted with it
+    if zipfile.ends_with("Culti3.4.zip") {
+      window
+        .emit("jar_extracted", destpath.to_string() + "grasscutter.jar")
+        .unwrap();
+    }
+
     // Delete zip file
     match std::fs::remove_file(&zipfile) {
       Ok(_) => {
+        // Get any new directory that could have been created
+        let mut new_dir: String = String::new();
+        for entry in read_dir(&write_path).unwrap() {
+          let entry = entry.unwrap();
+          let entry_path = entry.path();
+          if entry_path.is_dir() && !dirs.contains(&entry_path) {
+            new_dir = entry_path.to_str().unwrap().to_string();
+          }
+        }
+
+        let mut res_hash = std::collections::HashMap::new();
+        res_hash.insert("file", zipfile.to_string());
+        res_hash.insert("new_folder", new_dir);
+
+        window.emit("extract_end", &res_hash).unwrap();
         println!("Deleted zip file: {}", zipfile);
       }
       Err(e) => {
         println!("Failed to delete zip file: {}", e);
       }
     };
-
-    // Get any new directory that could have been created
-    let mut new_dir: String = String::new();
-    for entry in read_dir(&write_path).unwrap() {
-      let entry = entry.unwrap();
-      let entry_path = entry.path();
-      if entry_path.is_dir() && !dirs.contains(&entry_path) {
-        new_dir = entry_path.to_str().unwrap().to_string();
-      }
-    }
-
-    let mut res_hash = std::collections::HashMap::new();
-    res_hash.insert("file", zipfile.to_string());
-    res_hash.insert("new_folder", new_dir);
-
-    window.emit("extract_end", &res_hash).unwrap();
   });
 }
 

@@ -9,8 +9,13 @@ pub(crate) async fn query(site: &str) -> String {
     .header(CONTENT_TYPE, "application/json")
     .send()
     .await
-    .unwrap();
-  response.text().await.unwrap()
+    .ok();
+
+  if response.is_some() {
+    return response.unwrap().text().await.unwrap();
+  } else {
+    false.to_string()
+  }
 }
 
 #[tauri::command]
@@ -23,9 +28,13 @@ pub(crate) async fn valid_url(url: String) -> bool {
     .header(USER_AGENT, "cultivation")
     .send()
     .await
-    .unwrap();
+    .ok();
 
-  response.status().as_str() == "200"
+  if response.is_some() {
+    return response.unwrap().status().as_str() == "200";
+  } else {
+    false
+  }
 }
 
 #[tauri::command]

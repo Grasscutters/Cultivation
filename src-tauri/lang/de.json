@@ -15,17 +15,22 @@
     "disabled": "Deaktiviert",
     "game_path": "Spielpfad",
     "game_executable": "Spiel Datei auswählen",
-    "recover_metadata": "Notfall Wiederherstellung der Metadaten",
+    "recover_rsa": "Notfall Wiederherstellung der RSA",
     "grasscutter_jar": "Grasscuter JAR auswählen",
     "toggle_encryption": "Verschlüsselung umschalten",
+    "install_certificate": "Installeer proxy certificaat",
     "java_path": "Benutzerdefinierten Java Pfad setzen",
     "grasscutter_with_game": "Grasscutter automatisch mit dem Spiel starten",
     "language": "Sprache auswählen",
     "background": "Benutzerdefinierten Hintergrund festlegen (link oder bild)",
     "theme": "Theme auswählen",
-    "patch_metadata": "Metadaten automatisch patchen"
+    "patch_rsa": "RSA automatisch patchen",
+    "use_proxy": "Gebruik interne proxy",
+    "wipe_login": "Wis de inlogcache",
+    "horny_mode": "Geile modus"
   },
   "downloads": {
+    "grasscutter_fullbuild": "Alles in Einem Grasscutter Daten herunterladen",
     "grasscutter_stable_data": "Stabile Grasscutter Daten herunterladen",
     "grasscutter_latest_data": "Aktuellste Grasscutter Daten herunterladen",
     "grasscutter_stable_data_update": "Stabile Grasscutter Daten aktualisieren",
@@ -35,7 +40,9 @@
     "grasscutter_stable_update": "Stabile Grasscutter Version aktualisieren",
     "grasscutter_latest_update": "Aktuellste Grasscutter Version aktualisieren",
     "resources": "Grasscutter Ressourcen herunterladen",
-    "game": "Spiel herunterladen"
+    "game": "Spiel herunterladen",
+    "aio_header": "Alles in Einem herunterladen",
+    "individual_header": "Einzelne Teile herunterladen:"
   },
   "download_status": {
     "downloading": "Lädt herunter",
@@ -48,6 +55,7 @@
     "select_file": "Datei oder Ordner auswählen...",
     "select_folder": "Ordner auswählen...",
     "download": "Herunterladen",
+    "delete": "Löschen",
     "install": "Installieren"
   },
   "news": {
@@ -58,13 +66,14 @@
     "port_help_text": "Vergewissern Sie sich, dass es sich um den Port des Dispatch-Servers handelt, nicht um den Port des Spiel-Servers. Dieser ist fast immer '443'.",
     "game_help_text": "Sie müssen keine separate Kopie verwenden, um mit Grasscutter zu spielen. Dies ist entweder für ein Downgrade auf die Version 2.6 oder wenn Sie das Spiel nicht installiert haben.",
     "gc_stable_jar": "Laden Sie den aktuellen stabilen Grasscutter-Build herunter, der eine Jar-Datei und Datendateien enthält.",
+    "gc_fullbuild": "Download een volledige Grasscutter-build, inclusief repo, jar en bronnen. Is volledig ingesteld en vereist geen andere downloads uit dit menu",
     "gc_dev_jar": "Laden Sie die neueste Grasscutter-Entwicklungsversion herunter, welche eine Jar-Datei und Datendateien enthält.",
     "gc_stable_data": "Laden Sie die stabilen Grasscutter Daten herunter, welche keine Jar-Datei enthalten. Dies ist nützlich zum Aktualisieren.",
     "gc_dev_data": "Laden Sie die neuesten Grasscutter-Entwicklungsdateien herunter, welche keine Jar-Datei enthält. Dies ist nützlich zum Aktualisieren.",
     "resources": "Diese werden auch benötigt, um einen Grasscutter-Server auszuführen. Diese Schaltfläche ist grau, wenn Sie einen bestehenden Ressourcenordner mit Inhalten haben",
-    "emergency_metadata": "Im Fall, dass etwas schief laufen sollte, kannst du deine Metadaten auf die letzte offizielle Version zurücksetzen",
+    "emergency_rsa": "Im Fall, dass etwas schief laufen sollte, kannst du deine RSA auf die letzte offizielle Version zurücksetzen",
     "use_proxy": "Nutze den internen Proxy von Cultivation. Du solltest dies aktivieren, es sei denn du nutzt Programme wie Fiddler",
-    "patch_metadata": "Patche und aktualisiere deine Metadaten automatisch. Solange du nicht mit einer alten/nicht offiziellen Version spielst oder deine Metadaten manuell gepatcht hast, sollte dies aktiviert sein."
+    "patch_rsa": "Patche und aktualisiere deine RSA automatisch. Solange du nicht mit einer alten/nicht offiziellen Version spielst oder deine RSA manuell gepatcht hast, sollte dies aktiviert sein."
   },
   "swag": {
     "akebi_name": "Akebi",

@@ -1,9 +1,5 @@
 [EN](README.md) | 简中 | [繁中](README_zh-TW.md)
 
-# 客户端修补通知
-
-对于游戏版本为 2.8 及以上时，使用 Grasscutter 启动时，Cultivation 会自动为您的游戏客户端制作一个小补丁，并在关闭游戏时恢复它。 从理论上讲，你应该是完全安全的，但是不明确**如果您使用它连接到官方服务器，修改游戏客户端可能会导致封号**，但可能性是非常小的，并且从未接到发生过此类情况的问题，但存在这种可能性！
-
 # Cultivation
 
 一个游戏启动器，旨在轻松将某动漫游戏的流量代理到私人服务器。
@@ -22,6 +18,10 @@
 - [启动器主题](#启动器主题)
 - [画面](#画面)
 - [成员](#成员)
+
+# 客户端修补通知
+
+对于游戏版本为 3.1 及以上时，使用 Grasscutter 启动时，Cultivation 会自动为您的游戏客户端制作一个小补丁，并在关闭游戏时恢复它。 从理论上讲，你应该是完全安全的，但是不明确**如果您使用它连接到官方服务器，修改游戏客户端可能会导致封号**，但可能性是非常小的，并且从未接到发生过此类情况的问题，但存在这种可能性！
 
 # 下载
 
@@ -73,11 +73,10 @@
 
 # 画面
 
-![image](https://user-images.githubusercontent.com/25207995/173211603-e5e85df7-7fd3-430b-9246-749ebbc1e483.png)
-![image](https://user-images.githubusercontent.com/25207995/173211543-b7e88943-cfd2-418b-ac48-7f856868129b.png)
-![image](https://user-images.githubusercontent.com/25207995/173211561-a1778fdc-5cfe-4687-9a00-44500d29e470.png)
-![image](https://user-images.githubusercontent.com/25207995/173211573-8cedfa9a-51c9-4670-a4f7-a334a2fabec5.png)
-![image](https://user-images.githubusercontent.com/25207995/173211590-6a2242b5-1e8f-4db9-a5c7-06284688b131.png)
+![image](https://user-images.githubusercontent.com/107363768/221495236-ca1e2f2e-0f85-4765-a5f3-8bdcea299612.png)
+![image](https://user-images.githubusercontent.com/107363768/221495246-ea309640-f866-4f50-bda8-f9d916380f92.png)
+![image](https://user-images.githubusercontent.com/107363768/221495249-5a1aac39-9e8a-4244-9642-72c2e7be8a69.png)
+![image](https://user-images.githubusercontent.com/107363768/221495254-ffbfc24e-ef5d-4e72-9068-a02132381dcc.png)
 
 ## 成员
 

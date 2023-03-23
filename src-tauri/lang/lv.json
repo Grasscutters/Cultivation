@@ -14,15 +14,22 @@
     "enabled": "Iespējots",
     "disabled": "Atspējots",
     "game_executable": "Iestatīt spēles izpildāmu",
+    "recover_rsa": "Avārijas RSA atjaunošana",
     "grasscutter_jar": "Iestatiet Grasscutter JAR",
     "toggle_encryption": "Pārslēgt Šifrēšanu",
+    "install_certificate": "Proxy sertifikāta instalēšana",
     "java_path": "Iestatiet pielāgotu Java ceļu",
     "grasscutter_with_game": "Automātiski palaidiet Grasscutter ar spēli",
     "language": "Izvēlēties valodu",
     "background": "Iestatīt pielāgotu fonu (saite vai attēla fails)",
-    "theme": "Iestatīt tēmu"
+    "theme": "Iestatīt tēmu",
+    "patch_rsa": "Automātiski ielāpot RSA",
+    "use_proxy": "Izmantot iekšējo starpniekserveri",
+    "wipe_login": "Noslaucīt pieteikšanās kešatmiņu",
+    "horny_mode": "Uzbudināts režīms"
   },
   "downloads": {
+    "grasscutter_fullbuild": "Lejupielādējiet Grasscutter viss vienā",
     "grasscutter_stable_data": "Lejupielādējiet Grasscutter stabilos datus",
     "grasscutter_latest_data": "Lejupielādējiet Grasscutter jaunākos datus",
     "grasscutter_stable_data_update": "Atjauniniet Grasscutter stabilos datus",
@@ -31,7 +38,9 @@
     "grasscutter_latest": "Lejupielādēt Grasscutter jaunāko",
     "grasscutter_stable_update": "Atjauniet Grasscutter stabilo",
     "grasscutter_latest_update": "Atjauniet Grasscutter jaunāko",
-    "resources": "Lejupielādējiet Grasscutter resursi"
+    "resources": "Lejupielādējiet Grasscutter resursi",
+    "aio_header": "Lejupielādes viss vienā",
+    "individual_header": "Atsevišķu daļu lejupielādes:"
   },
   "download_status": {
     "downloading": "Notiek lejupielāde",
@@ -43,7 +52,8 @@
   "components": {
     "select_file": "Izvēlēties failu vai mapu...",
     "select_folder": "Izvēlēties mapu...",
-    "download": "Lejupielādēt"
+    "download": "Lejupielādēt",
+    "delete": "Dzēst"
   },
   "news": {
     "latest_commits": "Nesen kommitus",
@@ -53,6 +63,7 @@
     "port_help_text": "Pārliecinieties, vai tas ir Dispatch-servera ports, nevis spēļu servera ports. Tas gandrīz vienmēr ir '443'.",
     "game_help_text": "Lai spēlētu ar Grasscutter, jums nav jāizmanto atsevišķa kopija. Tas ir izveidots, lai pazeminātu versiju uz 2.6 vai ja jums nav instalēta spēle.",
     "gc_stable_jar": "Lejupielādējiet pašreizējo stabilo Grasscutter versiju, kuram ir jar failu un datu failus.",
+    "gc_fullbuild": "Lejupielādējiet pilnu Grasscutter versiju, tostarp repozitorijus, krātuves un resursus. Viss ir gatavs, un no šīs izvēlnes nav nepieciešama nekāda cita lejupielāde.",
     "gc_dev_jar": "Lejupielādējiet jaunāko izstrāde Grasscutter versiju, kuram ir jar failu un datu failus.",
     "gc_stable_data": "Lejupielādējiet pašreizējos stabilos Grasscutter datu failus, kuriem nav jar fails. Tas ir noderīgi atjaunināšanai.",
     "gc_dev_data": "Lejupielādējiet jaunāko izstrāde Grasscutter datu failus, kuriem nav pievienots jar fails. Tas ir noderīgi atjaunināšanai.",

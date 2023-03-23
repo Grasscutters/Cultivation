@@ -13,7 +13,7 @@ import * as server from '../../../utils/server'
 import './Options.css'
 import BigButton from '../common/BigButton'
 import DownloadHandler from '../../../utils/download'
-import * as meta from '../../../utils/metadata'
+import * as meta from '../../../utils/rsa'
 import HelpButton from '../common/HelpButton'
 import TextInput from '../common/TextInput'
 
@@ -33,7 +33,7 @@ interface IState {
   themes: string[]
   theme: string
   encryption: boolean
-  patch_metadata: boolean
+  patch_rsa: boolean
   use_internal_proxy: boolean
   wipe_login: boolean
   horny_mode: boolean
@@ -61,7 +61,7 @@ export default class Options extends React.Component<IProps, IState> {
       themes: ['default'],
       theme: '',
       encryption: false,
-      patch_metadata: false,
+      patch_rsa: false,
       use_internal_proxy: false,
       wipe_login: false,
       horny_mode: false,
@@ -82,7 +82,7 @@ export default class Options extends React.Component<IProps, IState> {
     this.toggleGrasscutterWithGame = this.toggleGrasscutterWithGame.bind(this)
     this.setCustomBackground = this.setCustomBackground.bind(this)
     this.toggleEncryption = this.toggleEncryption.bind(this)
-    this.restoreMetadata = this.restoreMetadata.bind(this)
+    this.removeRSA = this.removeRSA.bind(this)
   }
 
   async componentDidMount() {
@@ -108,7 +108,7 @@ export default class Options extends React.Component<IProps, IState> {
       themes: (await getThemeList()).map((t) => t.name),
       theme: config.theme || 'default',
       encryption: await translate(encEnabled ? 'options.enabled' : 'options.disabled'),
-      patch_metadata: config.patch_metadata || false,
+      patch_rsa: config.patch_rsa || false,
       use_internal_proxy: config.use_internal_proxy || false,
       wipe_login: config.wipe_login || false,
       horny_mode: config.horny_mode || false,
@@ -143,12 +143,24 @@ export default class Options extends React.Component<IProps, IState> {
     })
   }
 
-  setGrasscutterJar(value: string) {
+  async setGrasscutterJar(value: string) {
     setConfigOption('grasscutter_path', value)
 
     this.setState({
       grasscutter_path: value,
     })
+
+    const config = await getConfig()
+    const path = config.grasscutter_path.replace(/\\/g, '/')
+    const folderPath = path.substring(0, path.lastIndexOf('/'))
+    const encEnabled = await server.encryptionEnabled(folderPath + '/config.json')
+
+    // Update encryption button when setting new jar
+    this.setState({
+      encryption: await translate(encEnabled ? 'options.enabled' : 'options.disabled'),
+    })
+
+    window.location.reload()
   }
 
   setJavaPath(value: string) {
@@ -252,10 +264,12 @@ export default class Options extends React.Component<IProps, IState> {
         (await server.encryptionEnabled(folderPath + '/config.json')) ? 'options.enabled' : 'options.disabled'
       ),
     })
+
+    alert('Restart Grasscutter to apply encryption settings! If it is already closed, just start as normal.')
   }
 
-  async restoreMetadata() {
-    await meta.restoreMetadata(this.props.downloadManager)
+  async removeRSA() {
+    await meta.unpatchGame()
   }
 
   async installCert() {
@@ -299,26 +313,22 @@ export default class Options extends React.Component<IProps, IState> {
         )}
         <div className="OptionSection" id="menuOptionsContainermetaDownload">
           <div className="OptionLabel" id="menuOptionsLabelmetaDownload">
-            <Tr text="options.recover_metadata" />
-            <HelpButton contents="help.emergency_metadata" />
+            <Tr text="options.recover_rsa" />
+            <HelpButton contents="help.emergency_rsa" />
           </div>
           <div className="OptionValue" id="menuOptionsButtonmetaDownload">
-            <BigButton onClick={this.restoreMetadata} id="metaDownload">
-              <Tr text="components.download" />
+            <BigButton onClick={this.removeRSA} id="metaDownload">
+              <Tr text="components.delete" />
             </BigButton>
           </div>
         </div>
         <div className="OptionSection" id="menuOptionsContainerPatchMeta">
           <div className="OptionLabel" id="menuOptionsLabelPatchMeta">
-            <Tr text="options.patch_metadata" />
-            <HelpButton contents="help.patch_metadata" />
+            <Tr text="options.patch_rsa" />
+            <HelpButton contents="help.patch_rsa" />
           </div>
           <div className="OptionValue" id="menuOptionsCheckboxPatchMeta">
-            <Checkbox
-              onChange={() => this.toggleOption('patch_metadata')}
-              checked={this.state?.patch_metadata}
-              id="patchMeta"
-            />
+            <Checkbox onChange={() => this.toggleOption('patch_rsa')} checked={this.state?.patch_rsa} id="patchMeta" />
           </div>
         </div>
         <div className="OptionSection" id="menuOptionsContainerUseProxy">

@@ -13,16 +13,25 @@
   "options": {
     "enabled": "active",
     "disabled": "desactiver",
+    "game_path": "Définir le chemin d'installation du jeu",
+    "game_command": "Commande de lancement du jeu",
     "game_executable": "definir l'executable du jeu",
+    "recover_rsa": "Récupération d'urgence des RSA",
     "grasscutter_jar": "definir le Jar Grasscutter",
     "toggle_encryption": "activer l'encryption",
+    "install_certificate": "Installer le certificat du proxy",
     "java_path": "definir un chemin java personnalise",
     "grasscutter_with_game": "Lancer Grasscutter automatiquement avec le jeu",
     "language": "Choisir la langue",
     "background": "definir un arriere plan personnalise (lien ou fichier image)",
-    "theme": "definir un theme"
+    "theme": "definir un theme",
+    "patch_rsa": "Corriger automatiquement les RSA",
+    "use_proxy": "Utiliser un proxy interne",
+    "wipe_login": "Effacer le cache de connexion",
+    "horny_mode": "Mode excitation"
   },
   "downloads": {
+    "grasscutter_fullbuild": "Telecharger Grasscutter tout-en-un",
     "grasscutter_stable_data": "Telecharger les donnees de Grasscutter (version stable)",
     "grasscutter_latest_data": "Telecharger les donnees de Grasscutter (derniere version)",
     "grasscutter_stable_data_update": "Mettre a jour les donnees de Grasscutter (version stable)",
@@ -31,7 +40,9 @@
     "grasscutter_latest": "Telecharger Grasscutter (derniere version)",
     "grasscutter_stable_update": "Mettre a jour Grasscutter (version stable)",
     "grasscutter_latest_update": "Mettre a jour Grasscutter (derniere version)",
-    "resources": "Telecharger les ressources logicielles de Grasscutter"
+    "resources": "Telecharger les ressources logicielles de Grasscutter",
+    "aio_header": "Telechargements tout-en-un:",
+    "individual_header": "Telechargements de pièces individuelles:"
   },
   "download_status": {
     "downloading": "Telechargement",
@@ -43,7 +54,9 @@
   "components": {
     "select_file": "choisir fichier ou dossier...",
     "select_folder": "choisir dossier...",
-    "download": "Telecharger"
+    "download": "Telecharger",
+    "delete": "Supprimer",
+    "install": "Installer"
   },
   "news": {
     "latest_commits": "Recents Commits",
@@ -53,6 +66,7 @@
     "port_help_text": "Assurez-vous que c'est le port serveur Dispatch, et non le port du serveur de jeu. C'est presque toujours '433'.",
     "game_help_text": "Vous n'avez pas besoin d'une copie differente du jeu pour jouer avec Grasscutter. Cela est ou pour retrograder en 2.6 ou si vous n'avez pas le jeu d'installe",
     "gc_stable_jar": "Telecharger le dernier build stable de Grasscutter, ce qui inclut le fichier jar et les fichiers de donnees",
+    "gc_fullbuild": "Téléchargez un build complet de Grasscutter, incluant le repo, le jar et les ressources. Il est entièrement configuré et ne nécessite aucun autre téléchargement à partir de ce menu.",
     "gc_dev_jar": "Telecharger le dernier build en development de Grasscutter, ce qui inclut le fichier jar et les fichiers de donnees",
     "gc_stable_data": "Telecharger le dernier build stable de Grasscutter, ce qui n'inclut pasle fichier jar. Cela est utile pour mettre a jour",
     "gc_dev_data": "Telecharger le dernier build en development de Grasscutter, ce qui n'inclut pasle fichier jar. Cela est utile pour mettre a jour",

@@ -15,7 +15,7 @@
     "disabled": "Uitgeschakeld",
     "game_path": "Spel Installatie Pad Instellen",
     "game_executable": "Stel De Exe Van Het Spel In",
-    "recover_metadata": "Noodherstel Van De Metadata",
+    "recover_rsa": "Noodherstel Van De RSA",
     "grasscutter_jar": "Stel De Grasscutter JAR In",
     "toggle_encryption": "Versleuteling Inschakelen",
     "install_certificate": "Proxy-certificaat installeren",
@@ -24,10 +24,13 @@
     "language": "Selecteer Taal",
     "background": "Aangepaste Achtergrond Instellen (link of afbeeldingsbestand)",
     "theme": "Thema instellen",
-    "patch_metadata": "Metadata Automatisch Bijwerken",
-    "use_proxy": "Gebruik Interne Proxy"
+    "patch_rsa": "RSA Automatisch Bijwerken",
+    "use_proxy": "Gebruik Interne Proxy",
+    "wipe_login": "Login cache wissen",
+    "horny_mode": "Geile modus"
   },
   "downloads": {
+    "grasscutter_fullbuild": "Grasscutter Alles-in-één Downloaden",
     "grasscutter_stable_data": "Download Stabiele Gegevens Van Grasscutter",
     "grasscutter_latest_data": "Download De Nieuwste Gegevens Van Grasscutter",
     "grasscutter_stable_data_update": "Stabiele gegevens Van Grasscutter bijwerken",
@@ -37,7 +40,9 @@
     "grasscutter_stable_update": "Update Grasscutter Naar De Stabiele Versie",
     "grasscutter_latest_update": "Update Grasscutter Naar De Nieuwste Versie",
     "resources": "Download Grasscutter bronnen",
-    "game": "Download Spel"
+    "game": "Download Spel",
+    "aio_header": "Alles-in-één Downloads:",
+    "individual_header": "Downloads van afzonderlijke onderdelen:"
   },
   "download_status": {
     "downloading": "Aan Het Downloading",
@@ -50,6 +55,7 @@
     "select_file": "Select file or folder...",
     "select_folder": "Select folder...",
     "download": "Download",
+    "delete": "Verwijder",
     "install": "Install"
   },
   "news": {
@@ -60,14 +66,15 @@
     "port_help_text": "Zorg ervoor dat dit de Dispatch server poort is, niet de Game server poort. Dit is bijna altijd '443'.",
     "game_help_text": "U hoeft geen aparte kopie te gebruiken om met Grasscutter te spelen. Dit is voor downgraden naar 2.6 of als u het spel niet geinstalleerd heeft.",
     "gc_stable_jar": "Download de huidige stabiele Grasscutter build, die jar file en data bestanden bevat.",
+    "gc_fullbuild": "Download een volledige Grasscutter build, inclusief repo, jar en resources. Is volledig ingesteld en vereist geen andere downloads uit dit menu.",
     "gc_dev_jar": "Download de laatste ontwikkeling Grasscutter build, die jar file en data  bestanden bevat.",
     "gc_stable_data": "Download de huidige stabiele versie van de Grasscutter data bestanden, die niet met een jar file komen. Dit is handig voor het bijwerken.",
     "gc_dev_data": "Download de nieuwste versie van de Grasscutter data bestanden, die niet met een jar file komen. Dit is handig voor het bijwerken.",
     "encryption": "Dit wordt meestal uitgeschakeld.",
     "resources": "Deze zijn ook nodig om een Grasscutter server te draaien. Deze knop zal grijs zijn als u een bestaande resources map heeft met inhoud erin",
-    "emergency_metadata": "Voor het geval er iets fout is gegaan, herstel uw metadata naar de laatste offici�le versies metadata.",
+    "emergency_rsa": "Voor het geval er iets fout is gegaan, herstel uw rsa naar de laatste offici�le versies rsa.",
     "use_proxy": "Gebruik de Cultivation interne proxy. U zou dit ingeschakeld moeten hebben, tenzij u iets als Fiddler gebruikt",
-    "patch_metadata": "Patch en unpatch je spel metadata automatisch. Tenzij je met oude/niet-offici�le versies speelt, of je hebt je metadata handmatig gepatcht, zou dit ingeschakeld moeten zijn."
+    "patch_rsa": "Patch en unpatch je spel rsa automatisch. Tenzij je met oude/niet-offici�le versies speelt, of je hebt je rsa handmatig gepatcht, zou dit ingeschakeld moeten zijn."
   },
   "swag": {
     "akebi_name": "Akebi",

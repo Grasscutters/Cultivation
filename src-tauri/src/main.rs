@@ -22,7 +22,6 @@ mod downloader;
 mod file_helpers;
 mod gamebanana;
 mod lang;
-mod metadata_patcher;
 mod proxy;
 mod system_helpers;
 mod unzip;
@@ -119,8 +118,7 @@ fn main() {
         web::web_get,
         gamebanana::get_download_links,
         gamebanana::list_submissions,
-        gamebanana::list_mods,
-        metadata_patcher::patch_metadata
+        gamebanana::list_mods
       ])
       .run(tauri::generate_context!())
       .expect("error while running tauri application");
@@ -159,7 +157,8 @@ fn enable_process_watcher(window: tauri::Window, process: String) {
     let mut system = System::new_all();
 
     loop {
-      thread::sleep(std::time::Duration::from_secs(5));
+      // Shorten loop timer to avoid user closing Cultivation before unpatching/proxy disconnecting
+      thread::sleep(std::time::Duration::from_secs(2));
 
       // Refresh system info
       system.refresh_all();

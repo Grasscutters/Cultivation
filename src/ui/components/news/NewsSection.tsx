@@ -50,6 +50,7 @@ export default class NewsSection extends React.Component<IProps, IState> {
   componentDidMount() {
     // Call showNews off the bat
     this.showNews()
+    this.setSelected('commits')
   }
 
   setSelected(item: string) {
@@ -59,8 +60,10 @@ export default class NewsSection extends React.Component<IProps, IState> {
   }
 
   async showLatestCommits() {
-    if (!this.state.commitList) {
-      const response: string = await invoke('req_get', { url: 'https://api.grasscutter.io/cultivation/query' })
+      // Just use official API
+      const response: string = await invoke('req_get', {
+        url: 'https://api.github.com/repos/Grasscutters/Grasscutter/commits',
+      })
       let grasscutterApiResponse: GrasscutterAPIResponse | null = null
 
       try {
@@ -71,7 +74,7 @@ export default class NewsSection extends React.Component<IProps, IState> {
 
       let commits: CommitResponse[]
       if (grasscutterApiResponse?.commits == null) {
-        // If it didn't work, use official API
+        // If it didn't work, try again anyways
         const response: string = await invoke('req_get', {
           url: 'https://api.github.com/repos/Grasscutters/Grasscutter/commits',
         })
@@ -102,7 +105,6 @@ export default class NewsSection extends React.Component<IProps, IState> {
         commitList: commitsListHtml,
         news: <>{commitsListHtml}</>,
       })
-    }
 
     return this.state.commitList
   }
@@ -122,7 +124,7 @@ export default class NewsSection extends React.Component<IProps, IState> {
       case 'latest_version':
         news = (
           <tr>
-            <td>Latest version</td>
+            <td>Latest version: Grasscutter 1.4.6 - Cultivation 1.0.10</td>
           </tr>
         )
         break

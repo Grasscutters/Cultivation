@@ -40,7 +40,7 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": ["lang/*.json", "keys/*"],
+      "resources": ["lang/*.json", "keys/*", "patch/*"],
       "targets": "all",
       "windows": {
         "allowDowngrades": false,
