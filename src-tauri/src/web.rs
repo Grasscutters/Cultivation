@@ -12,7 +12,7 @@ pub(crate) async fn query(site: &str) -> String {
     .ok();
 
   if response.is_some() {
-    return response.unwrap().text().await.unwrap();
+    response.unwrap().text().await.unwrap()
   } else {
     false.to_string()
   }

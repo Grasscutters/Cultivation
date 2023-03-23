@@ -17,9 +17,9 @@ pub fn rename(path: String, new_name: String) {
     new_path = path.replace('\\', "/");
   }
 
-  let path_replaced = &path.replace(&new_path.split('/').last().unwrap(), &new_name);
+  let path_replaced = &path.replace(new_path.split('/').last().unwrap(), &new_name);
 
-  match fs::rename(&path, &path_replaced) {
+  match fs::rename(&path, path_replaced) {
     Ok(_) => {
       println!("Renamed {} to {}", &path, path_replaced);
     }
@@ -68,7 +68,7 @@ pub fn copy_file(path: String, new_path: String) -> bool {
   }
 
   // Copy old to new
-  match std::fs::copy(&path_buf, format!("{}/{}", new_path, filename)) {
+  match std::fs::copy(path_buf, format!("{}/{}", new_path, filename)) {
     Ok(_) => true,
     Err(e) => {
       println!("Failed to copy file: {}", e);
@@ -98,7 +98,7 @@ pub fn copy_file_with_new_name(path: String, new_path: String, new_name: String)
   new_path_buf.push(new_name);
 
   // Copy old to new
-  match std::fs::copy(&path_buf, &new_path_buf) {
+  match std::fs::copy(path_buf, &new_path_buf) {
     Ok(_) => true,
     Err(e) => {
       println!("Failed to copy file: {}", e);
@@ -152,7 +152,7 @@ pub fn write_file(path: String, contents: String) {
   let path_buf = PathBuf::from(&path);
 
   // Create file if it exists, otherwise just open and rewrite
-  let mut file = match fs::File::create(&path_buf) {
+  let mut file = match fs::File::create(path_buf) {
     Ok(file) => file,
     Err(e) => {
       println!("Failed to open file: {}", e);

@@ -353,7 +353,7 @@ pub fn install_ca_files(cert_path: &Path) {
   // Create dir if it doesn't exist
   fs::create_dir_all(&usr_certs).expect("Unable to create local certificate directory");
 
-  fs::copy(cert_path, &usr_cert_path).expect("Unable to copy cert to local certificate directory");
+  fs::copy(cert_path, usr_cert_path).expect("Unable to copy cert to local certificate directory");
   run_command("update-ca-certificates", vec![], None);
 
   println!("Installed certificate.");
