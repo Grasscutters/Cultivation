@@ -1,25 +1,9 @@
 EN | [简中](README_zh-CN.md) | [繁中](README_zh-TW.md) |
 
-# Cultivation : Thorny Edition
+# Cultivation
 
 A game launcher designed to easily proxy traffic from anime game to private servers.
 
-### Thorny Edition Changes:
- 
- - Automatically applies and undoes the RSA patch
- - Fixed 3dmigoto paths being broken
- - Fixed "stuck on extracting" issue
- - Better default settings
- - Replace useless stable download with all-in-one download
- - Encryption button actually applies to edited configs
- - Recent commits box shows immediately instead of needing to be clicked on
- - Various QoL improvements
- - Added Korean translation thanks to [@koreako12](https://github.com/koreako12)
- - Some other translation additions (machine translation, let me know if things are wrong)
- 
- Added issues page so you can direct problems there, or to me on discord: Thoronium#7770
-  - You will need to join the [Grasscutters discord](https://discord.gg/grasscutter) before being able to send a message request :) or you can ping me in #support
- 
 # Table Of Contents
 
 - [Client Patching Notice](#client-patching-notice)

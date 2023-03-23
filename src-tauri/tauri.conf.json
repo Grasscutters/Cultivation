@@ -7,7 +7,7 @@
   },
   "package": {
     "productName": "Cultivation",
-    "version": "1.0.22"
+    "version": "1.0.10"
   },
   "tauri": {
     "allowlist": {
@@ -69,7 +69,7 @@
         "fullscreen": false,
         "height": 730,
         "resizable": true,
-        "title": "Cultivation: Thorny Edition",
+        "title": "Cultivation",
         "width": 1280,
         "decorations": false
       }

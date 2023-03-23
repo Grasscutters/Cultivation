@@ -1,26 +1,11 @@
 [EN](README.md) | 简中 | [繁中](README_zh-TW.md)
 
-# Cultivation: Thorny 版本
+# Cultivation
 
 一个游戏启动器，旨在轻松将某动漫游戏的流量代理到私人服务器。
 
 虽然此存储库是**开放的**。 但这**并不**意味着它已经发布。
 请不要**安装、下载或使用在其他地方找到的预编译版本的 Cultivation**。 仅使用此 GitHub 存储库中的版本。
-
-### Thorny的版本变化：
- 
-  - 修复了 3dmigoto 路径被破坏的问题
-  - 修正了“卡在提取”问题
-  - 更好的默认设置
-  - 用多合一下载替换无用的稳定下载
-  - 加密按钮实际上适用于编辑的配置
-  - 最近的提交框立即显示而不需要点击
-  - 各种生活质量改善
-  - 多亏了 [@koreako12](https://github.com/koreako12) 添加了韩语翻译
-  - 一些其他翻译补充（机器翻译，如果有问题请告诉我）
- 
-  由于没有问题页面，这个版本的问题可以在 discord 上直接找我：Thoronium#7770
-   - 您需要先加入 [Grasscutters discord](https://discord.gg/grasscutter)，然后才能发送消息请求 :) 或者您可以在#support 中 ping 我
 
 # 目录
 
