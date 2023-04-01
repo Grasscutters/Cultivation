@@ -27,7 +27,8 @@
     "patch_rsa": "Automatically Patch RSA",
     "use_proxy": "Gunakan Proxy Internal",
     "wipe_login": "Menghapus Cache Login",
-    "horny_mode": "Mode Terangsang"
+    "horny_mode": "Mode Terangsang",
+    "auto_mongodb": "Automatically Start MongoDB"
   },
   "downloads": {
     "grasscutter_fullbuild": "Sedang Mendownload Grasscutter Semua Dalam Satu",

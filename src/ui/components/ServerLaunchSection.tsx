@@ -159,16 +159,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
 
       // Open server as well if the options are set
       if (config.grasscutter_with_game) {
-        const jarFolderArr = config.grasscutter_path.replace(/\\/g, '/').split('/')
-        jarFolderArr.pop()
-
-        const jarFolder = jarFolderArr.join('/')
-
-        await invoke('run_jar', {
-          path: config.grasscutter_path,
-          executeIn: jarFolder,
-          javaPath: config.java_path || '',
-        })
+        this.launchServer()
       }
     } else {
       await unpatchGame()
@@ -195,6 +186,11 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     const config = await getConfig()
 
     if (!config.grasscutter_path) return alert('Grasscutter not installed or set!')
+
+    if (config.auto_mongodb) {
+      // Check if MongoDB is running and start it if not
+      await invoke('service_status', { service: 'MongoDB' })
+    }
 
     let jarFolder = config.grasscutter_path
 

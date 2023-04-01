@@ -37,6 +37,7 @@ interface IState {
   use_internal_proxy: boolean
   wipe_login: boolean
   horny_mode: boolean
+  auto_mongodb: boolean
   swag: boolean
   platform: string
 
@@ -66,6 +67,7 @@ export default class Options extends React.Component<IProps, IState> {
       wipe_login: false,
       horny_mode: false,
       swag: false,
+      auto_mongodb: false,
       platform: '',
 
       // Swag stuff
@@ -113,6 +115,7 @@ export default class Options extends React.Component<IProps, IState> {
       wipe_login: config.wipe_login || false,
       horny_mode: config.horny_mode || false,
       swag: config.swag_mode || false,
+      auto_mongodb: config.auto_mongodb || false,
       platform,
 
       // Swag stuff
@@ -353,6 +356,18 @@ export default class Options extends React.Component<IProps, IState> {
               onChange={() => this.toggleOption('wipe_login')}
               checked={this.state?.wipe_login}
               id="wipeLogin"
+            />
+          </div>
+        </div>
+        <div className="OptionSection" id="menuOptionsContainerAutoMongodb">
+          <div className="OptionLabel" id="menuOptionsLabelAutoMongodb">
+            <Tr text="options.auto_mongodb" />
+          </div>
+          <div className="OptionValue" id="menuOptionsCheckboxAutoMongodb">
+            <Checkbox
+              onChange={() => this.toggleOption('auto_mongodb')}
+              checked={this.state?.auto_mongodb}
+              id="autoMongodb"
             />
           </div>
         </div>

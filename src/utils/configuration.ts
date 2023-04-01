@@ -24,6 +24,7 @@ let defaultConfig: Configuration
     use_internal_proxy: true,
     wipe_login: false,
     horny_mode: false,
+    auto_mongodb: false,
   }
 })()
 
@@ -51,6 +52,7 @@ export interface Configuration {
   wipe_login: boolean
   horny_mode: boolean
   swag_mode?: boolean
+  auto_mongodb: boolean
 
   // Swag stuff
   akebi_path?: string

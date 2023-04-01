@@ -27,7 +27,8 @@
     "patch_rsa": "RSA automatisch patchen",
     "use_proxy": "Gebruik interne proxy",
     "wipe_login": "Wis de inlogcache",
-    "horny_mode": "Geile modus"
+    "horny_mode": "Geile modus",
+    "auto_mongodb": "Automatically Start MongoDB"
   },
   "downloads": {
     "grasscutter_fullbuild": "Alles in Einem Grasscutter Daten herunterladen",

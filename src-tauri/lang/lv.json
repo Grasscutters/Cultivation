@@ -26,7 +26,8 @@
     "patch_rsa": "Automātiski ielāpot RSA",
     "use_proxy": "Izmantot iekšējo starpniekserveri",
     "wipe_login": "Noslaucīt pieteikšanās kešatmiņu",
-    "horny_mode": "Uzbudināts režīms"
+    "horny_mode": "Uzbudināts režīms",
+    "auto_mongodb": "Automatically Start MongoDB"
   },
   "downloads": {
     "grasscutter_fullbuild": "Lejupielādējiet Grasscutter viss vienā",
