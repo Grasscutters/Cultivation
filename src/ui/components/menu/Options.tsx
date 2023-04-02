@@ -191,7 +191,6 @@ export default class Options extends React.Component<IProps, IState> {
 
     // Set game exe in Migoto ini
     invoke('set_migoto_target', {
-      path: this.state.game_install_path,
       migotoPath: value,
     })
   }
