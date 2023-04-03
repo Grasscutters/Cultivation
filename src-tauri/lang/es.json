@@ -26,9 +26,10 @@
     "background": "Establecer Fondo Personalizado (link o archivo de imagen)",
     "patch_rsa": "Parchear RSA automáticamente",
     "theme": "Establecer Tema",
-    "use_proxy": "Use Internal Proxy",
-    "wipe_login": "Wipe Login Cache",
-    "horny_mode": "Horny Mode"
+    "use_proxy": "Usar proxy interno",
+    "wipe_login": "Borrar caché de inicio de sesión",
+    "horny_mode": "Modo cachondo",
+    "auto_mongodb": "Iniciar automáticamente MongoDB"
   },
   "downloads": {
     "grasscutter_fullbuild": "Descargar Datos todo en uno de Grasscutter",

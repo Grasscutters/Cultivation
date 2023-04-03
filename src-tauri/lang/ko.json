@@ -28,7 +28,8 @@
     "patch_rsa": "RSA 패치 자동 적용",
     "use_proxy": "내부 프록시 사용",
     "wipe_login": "로그인 캐시 지우기",
-    "horny_mode": "Horny 모드"
+    "horny_mode": "Horny 모드",
+    "auto_mongodb": "MongoDB 자동 시작"
   },
   "downloads": {
     "grasscutter_fullbuild": "올인원 Grasscutter 다운로드",

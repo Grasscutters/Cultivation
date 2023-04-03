@@ -13,12 +13,12 @@ import { invoke } from '@tauri-apps/api'
 import { listen } from '@tauri-apps/api/event'
 import HelpButton from '../common/HelpButton'
 
-const FULL_BUILD_DOWNLOAD = 'https://cdn.discordapp.com/attachments/615655311960965130/1079203157294460958/GrasscutterCulti3.4.zip'
+const FULL_BUILD_DOWNLOAD = 'https://github.com/NotThorny/Grasscutter/releases/download/culti-aio/GrasscutterCulti.zip' // Change to link that can be updated without modifying here
 const STABLE_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/stable.zip'
 const DEV_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/development.zip'
 const STABLE_DOWNLOAD = 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/stable/Grasscutter.zip'
 const DEV_DOWNLOAD = 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/development/Grasscutter.zip'
-const RESOURCES_DOWNLOAD = 'https://gitlab.com/YuukiPS/GC-Resources/-/archive/3.4/GC-Resources-3.4.zip' // Use Yuuki res as grasscutter crepe res are broken
+const RESOURCES_DOWNLOAD = 'https://gitlab.com/YuukiPS/GC-Resources/-/archive/3.5/GC-Resources-3.5.zip' // Use Yuuki res as grasscutter crepe res are broken
 
 interface IProps {
   closeFn: () => void
@@ -115,8 +115,8 @@ export default class Downloads extends React.Component<IProps, IState> {
 
   async downloadGrasscutterFullBuild() {
     const folder = await this.getGrasscutterFolder()
-    this.props.downloadManager.addDownload(FULL_BUILD_DOWNLOAD, folder + '\\GrasscutterCulti3.4.zip', async () => {
-      await unzip(folder + '\\GrasscutterCulti3.4.zip', folder + '\\', true)
+    this.props.downloadManager.addDownload(FULL_BUILD_DOWNLOAD, folder + '\\GrasscutterCulti.zip', async () => {
+      await unzip(folder + '\\GrasscutterCulti.zip', folder + '\\', true)
       this.toggleButtons()
     })
 
@@ -172,7 +172,6 @@ export default class Downloads extends React.Component<IProps, IState> {
   async downloadResources() {
     const folder = await this.getGrasscutterFolder()
     this.props.downloadManager.addDownload(RESOURCES_DOWNLOAD, folder + '\\resources.zip', async () => {
-
       // Tell the user this takes some time
       alert(
         'Extracting resources can take time! If your resources appear to be "stuck" extracting for less than 15-20 mins, they likely still are extracting.'
@@ -218,7 +217,6 @@ export default class Downloads extends React.Component<IProps, IState> {
   render() {
     return (
       <Menu closeFn={this.props.closeFn} className="Downloads" heading="Downloads">
-
         <Divider />
 
         <div className="HeaderText" id="downloadMenuAIOHeader">
@@ -226,9 +224,7 @@ export default class Downloads extends React.Component<IProps, IState> {
         </div>
         <div className="DownloadMenuSection" id="downloadMenuContainerGCFullBuild">
           <div className="DownloadLabel" id="downloadMenuLabelGCFullBuild">
-            <Tr
-              text={'downloads.grasscutter_fullbuild'}
-            />
+            <Tr text={'downloads.grasscutter_fullbuild'} />
             <HelpButton contents="help.gc_fullbuild" />
           </div>
           <div className="DownloadValue" id="downloadMenuButtonGCFullBuild">

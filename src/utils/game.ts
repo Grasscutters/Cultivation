@@ -12,6 +12,17 @@ export async function getGameExecutable() {
   return pathArr[pathArr.length - 1]
 }
 
+export async function getGrasscutterJar() {
+  const config = await getConfig()
+
+  if (!config.grasscutter_path) {
+    return null
+  }
+
+  const pathArr = config.grasscutter_path.replace(/\\/g, '/').split('/')
+  return pathArr[pathArr.length - 1]
+}
+
 export async function getGameFolder() {
   const config = await getConfig()
 

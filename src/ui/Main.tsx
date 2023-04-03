@@ -78,6 +78,15 @@ export class Main extends React.Component<IProps, IState> {
       }
     })
 
+    // Emitted for automatic processes
+    listen('grasscutter_closed', async () => {
+      const autoService = await getConfigOption('auto_mongodb')
+
+      if (autoService) {
+        await invoke('stop_service', { service: 'MongoDB' })
+      }
+    })
+
     let min = false
 
     // periodically check if we need to min/max based on whether the game is open

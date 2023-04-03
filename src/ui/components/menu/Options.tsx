@@ -37,6 +37,7 @@ interface IState {
   use_internal_proxy: boolean
   wipe_login: boolean
   horny_mode: boolean
+  auto_mongodb: boolean
   swag: boolean
   platform: string
 
@@ -66,6 +67,7 @@ export default class Options extends React.Component<IProps, IState> {
       wipe_login: false,
       horny_mode: false,
       swag: false,
+      auto_mongodb: false,
       platform: '',
 
       // Swag stuff
@@ -113,6 +115,7 @@ export default class Options extends React.Component<IProps, IState> {
       wipe_login: config.wipe_login || false,
       horny_mode: config.horny_mode || false,
       swag: config.swag_mode || false,
+      auto_mongodb: config.auto_mongodb || false,
       platform,
 
       // Swag stuff
@@ -188,7 +191,6 @@ export default class Options extends React.Component<IProps, IState> {
 
     // Set game exe in Migoto ini
     invoke('set_migoto_target', {
-      path: this.state.game_install_path,
       migotoPath: value,
     })
   }
@@ -265,7 +267,11 @@ export default class Options extends React.Component<IProps, IState> {
       ),
     })
 
-    alert('Restart Grasscutter to apply encryption settings! If it is already closed, just start as normal.')
+    // Check if Grasscutter is running, and restart if so to apply changes
+    if (await invoke('is_grasscutter_running')) {
+      alert('Automatically restarting Grasscutter to apply encryption changes!')
+      await invoke('restart_grasscutter')
+    }
   }
 
   async removeRSA() {
@@ -353,6 +359,18 @@ export default class Options extends React.Component<IProps, IState> {
               onChange={() => this.toggleOption('wipe_login')}
               checked={this.state?.wipe_login}
               id="wipeLogin"
+            />
+          </div>
+        </div>
+        <div className="OptionSection" id="menuOptionsContainerAutoMongodb">
+          <div className="OptionLabel" id="menuOptionsLabelAutoMongodb">
+            <Tr text="options.auto_mongodb" />
+          </div>
+          <div className="OptionValue" id="menuOptionsCheckboxAutoMongodb">
+            <Checkbox
+              onChange={() => this.toggleOption('auto_mongodb')}
+              checked={this.state?.auto_mongodb}
+              id="autoMongodb"
             />
           </div>
         </div>

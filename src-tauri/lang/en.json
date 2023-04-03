@@ -28,7 +28,8 @@
     "patch_rsa": "Automatically Patch RSA",
     "use_proxy": "Use Internal Proxy",
     "wipe_login": "Wipe Login Cache",
-    "horny_mode": "Horny Mode"
+    "horny_mode": "Horny Mode",
+    "auto_mongodb": "Automatically Start MongoDB"
   },
   "downloads": {
     "grasscutter_fullbuild": "Download Grasscutter All-in-One",

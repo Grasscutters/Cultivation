@@ -13,7 +13,7 @@ use tauri::api::path::data_dir;
 use tauri::async_runtime::block_on;
 
 use std::thread;
-use sysinfo::{System, SystemExt};
+use sysinfo::{Pid, ProcessExt, System, SystemExt};
 
 use crate::admin::reopen_as_admin;
 
@@ -28,6 +28,8 @@ mod unzip;
 mod web;
 
 static WATCH_GAME_PROCESS: Lazy<Mutex<String>> = Lazy::new(|| Mutex::new(String::new()));
+static WATCH_GRASSCUTTER_PROCESS: Lazy<Mutex<String>> = Lazy::new(|| Mutex::new(String::new()));
+static GC_PID: std::sync::Mutex<usize> = Mutex::new(696969);
 
 fn try_flush() {
   std::io::stdout().flush().unwrap_or(())
@@ -81,14 +83,20 @@ fn main() {
     tauri::Builder::default()
       .invoke_handler(tauri::generate_handler![
         enable_process_watcher,
+        enable_grasscutter_watcher,
         connect,
         disconnect,
         req_get,
         is_game_running,
+        is_grasscutter_running,
+        restart_grasscutter,
         get_theme_list,
         system_helpers::run_command,
         system_helpers::run_program,
         system_helpers::run_program_relative,
+        system_helpers::start_service,
+        system_helpers::service_status,
+        system_helpers::stop_service,
         system_helpers::run_jar,
         system_helpers::open_in_browser,
         system_helpers::install_location,
@@ -178,6 +186,104 @@ fn enable_process_watcher(window: tauri::Window, process: String) {
           disconnect();
 
           window.emit("game_closed", &()).unwrap();
+          break;
+        }
+      }
+    }
+  });
+}
+
+#[tauri::command]
+fn is_grasscutter_running() -> bool {
+  // Grab the grasscutter process name
+  let proc = WATCH_GRASSCUTTER_PROCESS.lock().unwrap().to_string();
+
+  !proc.is_empty()
+}
+
+#[tauri::command]
+fn restart_grasscutter(window: tauri::Window) -> bool {
+  let pid: usize = *GC_PID.lock().unwrap();
+  let system = System::new_all();
+  // Get the process
+  if let Some(process) = system.process(Pid::from(pid)) {
+    // Kill it
+    if process.kill() {
+      // Also kill the cmd it was open in
+      if let Some(parent) = system.process(Pid::from(process.parent().unwrap())) {
+        parent.kill();
+      }
+      for process_gc in system.processes_by_name("java") {
+        if process_gc.cmd().last().unwrap().contains(&"grasscutter") {
+          process_gc.kill();
+        }
+      }
+      window.emit("disable_grasscutter_watcher", &()).unwrap();
+      thread::sleep(std::time::Duration::from_secs(2));
+      // Start again
+      window.emit("start_grasscutter", &()).unwrap();
+      true
+    } else {
+      false
+    }
+  } else {
+    false
+  }
+}
+
+#[tauri::command]
+fn enable_grasscutter_watcher(window: tauri::Window, process: String) {
+  let grasscutter_name = process.clone();
+  let mut gc_pid = Pid::from(696969);
+
+  *WATCH_GRASSCUTTER_PROCESS.lock().unwrap() = process;
+
+  window.listen("disable_grasscutter_watcher", |_e| {
+    *WATCH_GRASSCUTTER_PROCESS.lock().unwrap() = "".to_string();
+  });
+
+  println!("Starting grasscutter watcher...");
+
+  thread::spawn(move || {
+    // Initial sleep for 1 second while Grasscutter opens
+    std::thread::sleep(std::time::Duration::from_secs(3));
+
+    let mut system = System::new_all();
+
+    for process_gc in system.processes_by_name("java") {
+      if process_gc.cmd().last().unwrap().contains(&grasscutter_name) {
+        gc_pid = process_gc.pid();
+        *GC_PID.lock().unwrap() = gc_pid.into();
+        window
+          .emit("grasscutter_started", gc_pid.to_string())
+          .unwrap();
+      }
+    }
+
+    loop {
+      // Shorten loop timer to avoid user closing Cultivation before automatic stuff
+      thread::sleep(std::time::Duration::from_secs(2));
+
+      // Refresh system info
+      system.refresh_all();
+
+      // Grab the grasscutter process name
+      let proc = WATCH_GRASSCUTTER_PROCESS.lock().unwrap().to_string();
+
+      if !proc.is_empty() {
+        let mut exists = true;
+
+        if system.process(gc_pid).is_none() {
+          exists = false;
+        }
+
+        // If the grasscutter process closes.
+        if !exists {
+          println!("Grasscutter closed");
+
+          *WATCH_GRASSCUTTER_PROCESS.lock().unwrap() = "".to_string();
+
+          window.emit("grasscutter_closed", &()).unwrap();
           break;
         }
       }

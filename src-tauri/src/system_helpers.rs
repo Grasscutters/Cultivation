@@ -1,6 +1,9 @@
 use duct::cmd;
 use ini::Ini;
+use std::ffi::OsStr;
 use std::path::PathBuf;
+use windows_service::service::{ServiceAccess, ServiceState::Stopped};
+use windows_service::service_manager::{ServiceManager, ServiceManagerAccess};
 
 #[cfg(windows)]
 use registry::{Data, Hive, Security};
@@ -94,7 +97,7 @@ pub fn install_location() -> String {
 }
 
 #[tauri::command]
-pub fn set_migoto_target(_path: String, migoto_path: String) -> bool {
+pub fn set_migoto_target(migoto_path: String) -> bool {
   let mut migoto_pathbuf = PathBuf::from(migoto_path);
 
   migoto_pathbuf.pop();
@@ -150,6 +153,72 @@ pub fn wipe_registry(exec_name: String) {
     Ok(_) => (),
     Err(e) => println!("Error wiping registry: {}", e),
   }
+}
+
+#[cfg(windows)]
+#[tauri::command]
+pub fn service_status(service: String) -> bool {
+  let manager = match ServiceManager::local_computer(None::<&str>, ServiceManagerAccess::CONNECT) {
+    Ok(manager) => manager,
+    Err(_e) => return false,
+  };
+  let my_service = match manager.open_service(service.clone(), ServiceAccess::QUERY_STATUS) {
+    Ok(my_service) => my_service,
+    Err(_e) => {
+      println!("{} service not found! Not installed?", service);
+      return false;
+    }
+  };
+  let status_result = my_service.query_status();
+  if status_result.is_ok() {
+    let status = status_result.unwrap();
+    println!("{} service status: {:?}", service, status.current_state);
+    if status.current_state == Stopped {
+      // Start the service if it is stopped
+      start_service(service);
+    }
+    true
+  } else {
+    false
+  }
+}
+
+#[cfg(windows)]
+#[tauri::command]
+pub fn start_service(service: String) -> bool {
+  println!("Starting service: {}", service);
+  let manager = match ServiceManager::local_computer(None::<&str>, ServiceManagerAccess::CONNECT) {
+    Ok(manager) => manager,
+    Err(_e) => return false,
+  };
+  let my_service = match manager.open_service(service, ServiceAccess::START) {
+    Ok(my_service) => my_service,
+    Err(_e) => return false,
+  };
+  match my_service.start(&[OsStr::new("Started service!")]) {
+    Ok(_s) => true,
+    Err(_e) => return false,
+  };
+  true
+}
+
+#[cfg(windows)]
+#[tauri::command]
+pub fn stop_service(service: String) -> bool {
+  println!("Stopping service: {}", service);
+  let manager = match ServiceManager::local_computer(None::<&str>, ServiceManagerAccess::CONNECT) {
+    Ok(manager) => manager,
+    Err(_e) => return false,
+  };
+  let my_service = match manager.open_service(service, ServiceAccess::STOP) {
+    Ok(my_service) => my_service,
+    Err(_e) => return false,
+  };
+  match my_service.stop() {
+    Ok(_s) => true,
+    Err(_e) => return false,
+  };
+  true
 }
 
 #[cfg(unix)]

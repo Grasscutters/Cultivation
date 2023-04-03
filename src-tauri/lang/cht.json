@@ -28,7 +28,8 @@
     "patch_rsa": "自動修補RSA",
     "use_proxy": "使用內建代理伺服器",
     "wipe_login": "擦除登錄緩存",
-    "horny_mode": "Horny模式"
+    "horny_mode": "Horny模式",
+    "auto_mongodb": "自動啟動 MongoDB"
   },
   "downloads": {
     "grasscutter_fullbuild": "下載Grasscutter多合一下載",
