@@ -115,8 +115,8 @@ export default class Downloads extends React.Component<IProps, IState> {
 
   async downloadGrasscutterFullBuild() {
     const folder = await this.getGrasscutterFolder()
-    this.props.downloadManager.addDownload(FULL_BUILD_DOWNLOAD, folder + '\\GrasscutterCulti3.5.zip', async () => {
-      await unzip(folder + '\\GrasscutterCulti3.5.zip', folder + '\\', true)
+    this.props.downloadManager.addDownload(FULL_BUILD_DOWNLOAD, folder + '\\GrasscutterCulti.zip', async () => {
+      await unzip(folder + '\\GrasscutterCulti.zip', folder + '\\', true)
       this.toggleButtons()
     })
 
