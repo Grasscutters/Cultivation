@@ -29,7 +29,7 @@
     "use_proxy": "使用内置代理",
     "wipe_login": "清除登录缓存",
     "horny_mode": "Horny 模式",
-    "auto_mongodb": "Automatically Start MongoDB"
+    "auto_mongodb": "自动启动 MongoDB"
   },
   "downloads": {
     "grasscutter_fullbuild": "下载 Grasscutter 一体化",

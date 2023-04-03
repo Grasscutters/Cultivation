@@ -28,7 +28,7 @@
     "use_proxy": "Gebruik Interne Proxy",
     "wipe_login": "Login cache wissen",
     "horny_mode": "Geile modus",
-    "auto_mongodb": "Automatically Start MongoDB"
+    "auto_mongodb": "Start automatisch MongoDB"
   },
   "downloads": {
     "grasscutter_fullbuild": "Grasscutter Alles-in-één Downloaden",

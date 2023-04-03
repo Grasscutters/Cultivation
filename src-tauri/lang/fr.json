@@ -29,7 +29,7 @@
     "use_proxy": "Utiliser un proxy interne",
     "wipe_login": "Effacer le cache de connexion",
     "horny_mode": "Mode excitation",
-    "auto_mongodb": "Automatically Start MongoDB"
+    "auto_mongodb": "Démarrer automatiquement MongoDB"
   },
   "downloads": {
     "grasscutter_fullbuild": "Telecharger Grasscutter tout-en-un",

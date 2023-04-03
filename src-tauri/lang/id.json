@@ -28,7 +28,7 @@
     "use_proxy": "Gunakan Proxy Internal",
     "wipe_login": "Menghapus Cache Login",
     "horny_mode": "Mode Terangsang",
-    "auto_mongodb": "Automatically Start MongoDB"
+    "auto_mongodb": "Mulai MongoDB secara otomatis"
   },
   "downloads": {
     "grasscutter_fullbuild": "Sedang Mendownload Grasscutter Semua Dalam Satu",
