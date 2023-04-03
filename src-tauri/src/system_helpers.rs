@@ -164,7 +164,10 @@ pub fn service_status(service: String) -> bool {
   };
   let my_service = match manager.open_service(service.clone(), ServiceAccess::QUERY_STATUS) {
     Ok(my_service) => my_service,
-    Err(_e) => return false,
+    Err(_e) => {
+      println!("{} service not found! Not installed?", service);
+      return false;
+    }
   };
   let status_result = my_service.query_status();
   if status_result.is_ok() {
