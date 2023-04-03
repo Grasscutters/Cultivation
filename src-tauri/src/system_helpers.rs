@@ -155,6 +155,7 @@ pub fn wipe_registry(exec_name: String) {
   }
 }
 
+#[cfg(windows)]
 #[tauri::command]
 pub fn service_status(service: String) -> bool {
   let manager = match ServiceManager::local_computer(None::<&str>, ServiceManagerAccess::CONNECT) {
@@ -179,6 +180,7 @@ pub fn service_status(service: String) -> bool {
   }
 }
 
+#[cfg(windows)]
 #[tauri::command]
 pub fn start_service(service: String) -> bool {
   println!("Starting service: {}", service);
@@ -197,6 +199,7 @@ pub fn start_service(service: String) -> bool {
   true
 }
 
+#[cfg(windows)]
 #[tauri::command]
 pub fn stop_service(service: String) -> bool {
   println!("Stopping service: {}", service);

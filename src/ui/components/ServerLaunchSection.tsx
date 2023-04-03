@@ -12,8 +12,9 @@ import Plus from '../../resources/icons/plus.svg'
 
 import './ServerLaunchSection.css'
 import { dataDir } from '@tauri-apps/api/path'
-import { getGameExecutable, getGameVersion } from '../../utils/game'
+import { getGameExecutable, getGameVersion, getGrasscutterJar } from '../../utils/game'
 import { patchGame, unpatchGame } from '../../utils/rsa'
+import { listen } from '@tauri-apps/api/event'
 
 interface IProps {
   openExtras: (playGame: () => void) => void
@@ -25,6 +26,7 @@ interface IState {
   checkboxLabel: string
   ip: string
   port: string
+  launchServer: (proc_name?: string) => void
 
   ipPlaceholder: string
   portPlaceholder: string
@@ -54,6 +56,9 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       portHelpText: '',
       httpsLabel: '',
       httpsEnabled: false,
+      launchServer: () => {
+        alert('Error launching grasscutter')
+      },
       swag: false,
       akebiSet: false,
       migotoSet: false,
@@ -64,6 +69,11 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     this.setIp = this.setIp.bind(this)
     this.setPort = this.setPort.bind(this)
     this.toggleHttps = this.toggleHttps.bind(this)
+    this.launchServer = this.launchServer.bind(this)
+
+    listen('start_grasscutter', async () => {
+      this.launchServer()
+    })
   }
 
   async componentDidMount() {
@@ -182,12 +192,20 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     else alert('Game not found! At: ' + (exe || config.game_install_path))
   }
 
-  async launchServer() {
+  async launchServer(proc_name?: string) {
+    if (await invoke('is_grasscutter_running')) {
+      alert('Grasscutter already running!')
+      return
+    }
     const config = await getConfig()
 
     if (!config.grasscutter_path) return alert('Grasscutter not installed or set!')
 
     if (config.auto_mongodb) {
+      const grasscutter_jar = await getGrasscutterJar()
+      await invoke('enable_grasscutter_watcher', {
+        process: proc_name || grasscutter_jar,
+      })
       // Check if MongoDB is running and start it if not
       await invoke('service_status', { service: 'MongoDB' })
     }

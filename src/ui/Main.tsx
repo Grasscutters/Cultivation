@@ -68,7 +68,6 @@ export class Main extends React.Component<IProps, IState> {
     // Emitted for rsa replacing-purposes
     listen('game_closed', async () => {
       const wasPatched = await getConfigOption('patch_rsa')
-      const autoService = await getConfigOption('auto_mongodb')
 
       if (wasPatched) {
         const unpatched = await unpatchGame()
@@ -77,6 +76,11 @@ export class Main extends React.Component<IProps, IState> {
           alert(`Could not unpatch game! (Delete version.dll in your game folder)`)
         }
       }
+    })
+
+    // Emitted for automatic processes
+    listen('grasscutter_closed', async () => {
+      const autoService = await getConfigOption('auto_mongodb')
 
       if (autoService) {
         await invoke('stop_service', { service: 'MongoDB' })

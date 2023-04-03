@@ -267,7 +267,11 @@ export default class Options extends React.Component<IProps, IState> {
       ),
     })
 
-    alert('Restart Grasscutter to apply encryption settings! If it is already closed, just start as normal.')
+    // Check if Grasscutter is running, and restart if so to apply changes
+    if (await invoke('is_grasscutter_running')) {
+      alert('Automatically restarting Grasscutter to apply encryption changes!')
+      await invoke('restart_grasscutter')
+    }
   }
 
   async removeRSA() {
