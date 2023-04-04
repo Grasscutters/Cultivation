@@ -6,8 +6,9 @@ pub async fn get_lang(window: tauri::Window, lang: String) -> String {
   let lang = lang.to_lowercase();
 
   // Send contents of language file back
-  let lang_path = install_location().join("lang").join(format!("{}.json", lang));
-
+  let lang_path: PathBuf = [&install_location(), "lang", &format!("{}.json", lang)]
+    .iter()
+    .collect();
   match std::fs::read_to_string(lang_path) {
     Ok(x) => x,
     Err(e) => {
