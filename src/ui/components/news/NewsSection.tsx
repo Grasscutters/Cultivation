@@ -60,51 +60,51 @@ export default class NewsSection extends React.Component<IProps, IState> {
   }
 
   async showLatestCommits() {
-      // Just use official API
+    // Just use official API
+    const response: string = await invoke('req_get', {
+      url: 'https://api.github.com/repos/Grasscutters/Grasscutter/commits',
+    })
+    let grasscutterApiResponse: GrasscutterAPIResponse | null = null
+
+    try {
+      grasscutterApiResponse = JSON.parse(response)
+    } catch (e) {
+      grasscutterApiResponse = null
+    }
+
+    let commits: CommitResponse[]
+    if (grasscutterApiResponse?.commits == null) {
+      // If it didn't work, try again anyways
       const response: string = await invoke('req_get', {
         url: 'https://api.github.com/repos/Grasscutters/Grasscutter/commits',
       })
-      let grasscutterApiResponse: GrasscutterAPIResponse | null = null
+      commits = JSON.parse(response)
+    } else {
+      commits = grasscutterApiResponse.commits.gc_stable
+    }
 
-      try {
-        grasscutterApiResponse = JSON.parse(response)
-      } catch (e) {
-        grasscutterApiResponse = null
-      }
+    // Probably rate-limited
+    if (!Array.isArray(commits)) return
 
-      let commits: CommitResponse[]
-      if (grasscutterApiResponse?.commits == null) {
-        // If it didn't work, try again anyways
-        const response: string = await invoke('req_get', {
-          url: 'https://api.github.com/repos/Grasscutters/Grasscutter/commits',
-        })
-        commits = JSON.parse(response)
-      } else {
-        commits = grasscutterApiResponse.commits.gc_stable
-      }
+    // Get only first 5
+    const commitsList = commits.slice(0, 10)
+    const commitsListHtml = commitsList.map((commitResponse: CommitResponse) => {
+      return (
+        <tr className="Commit" id="newsCommitsTable" key={commitResponse.sha}>
+          <td className="CommitAuthor">
+            <span>{commitResponse.commit.author.name}</span>
+          </td>
+          <td className="CommitMessage">
+            <span>{commitResponse.commit.message}</span>
+          </td>
+        </tr>
+      )
+    })
 
-      // Probably rate-limited
-      if (!Array.isArray(commits)) return
-
-      // Get only first 5
-      const commitsList = commits.slice(0, 10)
-      const commitsListHtml = commitsList.map((commitResponse: CommitResponse) => {
-        return (
-          <tr className="Commit" id="newsCommitsTable" key={commitResponse.sha}>
-            <td className="CommitAuthor">
-              <span>{commitResponse.commit.author.name}</span>
-            </td>
-            <td className="CommitMessage">
-              <span>{commitResponse.commit.message}</span>
-            </td>
-          </tr>
-        )
-      })
-
-      this.setState({
-        commitList: commitsListHtml,
-        news: <>{commitsListHtml}</>,
-      })
+    this.setState({
+      commitList: commitsListHtml,
+      news: <>{commitsListHtml}</>,
+    })
 
     return this.state.commitList
   }
