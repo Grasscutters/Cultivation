@@ -78,6 +78,14 @@ export class Main extends React.Component<IProps, IState> {
       }
     })
 
+    listen('migoto_set', async () => {
+      this.setState({
+        migotoSet: !!(await getConfigOption('migoto_path')),
+      })
+
+      window.location.reload()
+    })
+
     // Emitted for automatic processes
     listen('grasscutter_closed', async () => {
       const autoService = await getConfigOption('auto_mongodb')
