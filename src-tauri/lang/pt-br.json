@@ -1,0 +1,89 @@
+{
+  "lang_name": "Português Brasileiro",
+  "main": {
+    "title": "Cultivation: Edição Thorny",
+    "launch_button": "Iniciar",
+    "gc_enable": "Conectar ao Grasscutter",
+    "https_enable": "Usar HTTPS",
+    "ip_placeholder": "Endereço do Servidor...",
+    "port_placeholder": "Porta...",
+    "files_downloading": "Baixando Arquivos: ",
+    "files_extracting": "Extraindo Arquivos: "
+  },
+  "options": {
+    "enabled": "Habilitado",
+    "disabled": "Desabilitado",
+    "game_path": "Definir o Local de Instalação do Jogo",
+    "game_command": "Comando de Iniciação do Jogo",
+    "game_executable": "Definir o Executavel do Jogo",
+    "recover_rsa": "Exclusão de Emergencia de RSA",
+    "grasscutter_jar": "Definir o arquivo JAR do Grasscutter",
+    "toggle_encryption": "Ativar/Desativar Criptografia",
+    "install_certificate": "Instalar o Certificado de Proxy",
+    "java_path": "Definir um Local Customizado do Java",
+    "grasscutter_with_game": "Iniciar automaticamente o Grasscutter com o Jogo",
+    "language": "Selecionar Idioma",
+    "background": "Definir Fundo Customizado (link ou arquivo de imagem)",
+    "theme": "Definir Tema",
+    "patch_rsa": "Automaticamente Corrigir RSA",
+    "use_proxy": "Usar Proxy Interno",
+    "wipe_login": "Limpar Cache de Login",
+    "horny_mode": "Modo com tesão",
+    "auto_mongodb": "Iniciar MongoDB Automaticamente"
+  },
+  "downloads": {
+    "grasscutter_fullbuild": "Baixar o Grasscutter Tudo-em-Um",
+    "grasscutter_stable_data": "Baixar os Dados do Grasscutter Estável",
+    "grasscutter_latest_data": "Baixar os Dados do Grasscutter Mais Recente",
+    "grasscutter_stable_data_update": "Atualizar os Dados do Grasscutter Estável",
+    "grasscutter_latest_data_update": "Atualizar os Dados do Grasscutter Mais Recente",
+    "grasscutter_stable": "Baixar o Grasscutter Estável",
+    "grasscutter_latest": "Baixar o Grasscutter Mais Recente",
+    "grasscutter_stable_update": "Atualizar o Grasscutter Estável",
+    "grasscutter_latest_update": "Atualizar o Grasscutter Mais Recente",
+    "resources": "Baixar os Recursos do Grasscutter ",
+    "game": "Baixar o Jogo",
+    "aio_header": "Downloads Tudo-em-Um:",
+    "individual_header": "Downloads Individuais:"
+  },
+  "download_status": {
+    "downloading": "Baixando",
+    "extracting": "Extraindo",
+    "error": "Erro",
+    "finished": "Finalizado",
+    "stopped": "Parado"
+  },
+  "components": {
+    "select_file": "Selecione o arquivo ou pasta...",
+    "select_folder": "Selecione a pasta...",
+    "download": "Baixar",
+    "delete": "Deletar",
+    "install": "Instalar"
+  },
+  "news": {
+    "latest_commits": "Commits Recentes",
+    "latest_version": "Versão mais Recente"
+  },
+  "help": {
+    "port_help_text": "Certifique-se de que esta é a porta do servidor dispatch, não a porta do jogo. Ela é quase sempre '443'.",
+    "game_help_text": "Você não precisa de uma cópia do jogo separada para jogar com o Grasscutter. Isso é para, ou desatualizar para a 2.6, ou se você não tiver o jogo instalado.",
+    "gc_stable_jar": "Baixar a versão atual do Grasscutter estável, que inclui o arquivo jar e os arquivos de dados.",
+    "gc_fullbuild": "Baixar uma versão completa do Grasscutter, incluindo a repo, jar e recursos. Ela está totalmente configurada e não requer nenhum outro download deste menu.",
+    "gc_dev_jar": "Baixar a versão de desenvolvimento mais recente do Grasscutter, que inclui o arquivo jar e os arquivos de dados.",
+    "gc_stable_data": "Baixar os arquivos de dados da versão atual do Grasscutter estável, que não inclui o arquivo jar. Isso é útil para atualizações.",
+    "gc_dev_data": "Baixar os arquivos de dados da versão de desenvolvimento mais recente do Grasscutter, que não vem com um arquivo jar. Isso é útil para atualizações.",
+    "encryption": "Isso normalmente deve estar desativado.",
+    "resources": "Esses também são necessários para usar o Grasscutter. Esse botão ficará cinza caso você já tenha uma pasta resources com coisas dentro.",
+    "emergency_rsa": "Caso algo dê errado, força a exclusão da correção RSA.",
+    "use_proxy": "Usa o proxy interno do Cultivation. Isso deveria estar habilitado a não ser que você utilize algo como o Fiddler.",
+    "patch_rsa": "Corrigir e 'descorrigir' o RSA do seu jogo automaticamente. Isso deve estar habilitado a não ser que você esteja jogando com versões antigas (3.0 ou mais antigas) ou não oficiais."
+  },
+  "swag": {
+    "akebi_name": "Akebi",
+    "migoto_name": "Migoto",
+    "reshade_name": "Reshade",
+    "akebi": "Definir o Executavel do Akebi/Acrepi",
+    "migoto": "Definir o Executavel do 3DMigoto",
+    "reshade": "Definir o Executavel do Reshade Injector"
+  }
+}
