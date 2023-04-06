@@ -171,7 +171,8 @@ pub fn connect_to_proxy(proxy_port: u16) {
   let settings = Hive::CurrentUser
     .open(
       r"Software\Microsoft\Windows\CurrentVersion\Internet Settings",
-      Security::Write,
+      // Only write should be needed but too many cases of Culti not being able to read/write proxy settings
+      Security::AllAccess,
     )
     .unwrap();
 
@@ -218,7 +219,7 @@ pub fn disconnect_from_proxy() {
   let settings = Hive::CurrentUser
     .open(
       r"Software\Microsoft\Windows\CurrentVersion\Internet Settings",
-      Security::Write,
+      Security::AllAccess,
     )
     .unwrap();
 
