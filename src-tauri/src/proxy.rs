@@ -86,7 +86,13 @@ impl HttpHandler for ProxyHandler {
   }
 
   async fn should_intercept(&mut self, _ctx: &HttpContext, _req: &Request<Body>) -> bool {
-    true
+    let uri = _req.uri().to_string();
+
+    if uri.contains("hoyoverse.com") || uri.contains("mihoyo.com") || uri.contains("yuanshen.com") {
+      true
+    } else {
+      false
+    }
   }
 }
 
