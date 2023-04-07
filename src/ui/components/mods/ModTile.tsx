@@ -53,7 +53,7 @@ export class ModTile extends React.Component<IProps, IState> {
       // Partial mod
       this.setState({
         modEnabled: await modIsEnabled(this.props.mod.name),
-        horny
+        horny,
       })
 
       return
@@ -61,7 +61,7 @@ export class ModTile extends React.Component<IProps, IState> {
 
     this.setState({
       modEnabled: await modIsEnabled(String(this.props.mod.id)),
-      horny
+      horny,
     })
   }
 
@@ -73,7 +73,7 @@ export class ModTile extends React.Component<IProps, IState> {
     this.setState(
       {
         modEnabled: !this.state.modEnabled,
-        horny: !this.state.horny
+        horny: !this.state.horny,
       },
       () => {
         if (this.state.modEnabled) {

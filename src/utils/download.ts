@@ -117,7 +117,7 @@ export default class DownloadHandler {
   downloadingRepo() {
     return this.downloads.some((d) => d.path.includes('grasscutter_repo.zip'))
   }
-  
+
   downloadingMigoto() {
     return this.downloads.some((d) => d.path.includes('3dmigoto'))
   }

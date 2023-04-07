@@ -264,9 +264,7 @@ export default class Options extends React.Component<IProps, IState> {
     await server.toggleEncryption(folderPath + '/config.json')
 
     this.setState({
-      encryption: (
-        (await server.encryptionEnabled(folderPath + '/config.json'))
-      ),
+      encryption: await server.encryptionEnabled(folderPath + '/config.json'),
     })
 
     // Check if Grasscutter is running, and restart if so to apply changes
@@ -399,11 +397,7 @@ export default class Options extends React.Component<IProps, IState> {
             <HelpButton contents="help.encryption" />
           </div>
           <div className="OptionValue" id="menuOptionsButtonToggleEnc">
-            <Checkbox 
-              onChange={() => this.toggleEncryption()}
-              checked={this.state.encryption}
-              id="toggleEnc"
-            />
+            <Checkbox onChange={() => this.toggleEncryption()} checked={this.state.encryption} id="toggleEnc" />
           </div>
         </div>
         <div className="OptionSection" id="menuOptionsContainerInstallCert">
@@ -432,8 +426,7 @@ export default class Options extends React.Component<IProps, IState> {
                 <Tr text="swag.migoto" />
               </div>
               <div className="OptionValue" id="menuOptionsDirMigoto">
-                <SmallButton onClick={this.addMigotoDelay} id="migotoDelay" contents='help.add_delay'>
-                </SmallButton>
+                <SmallButton onClick={this.addMigotoDelay} id="migotoDelay" contents="help.add_delay"></SmallButton>
                 <DirInput onChange={this.setMigoto} value={this.state?.migoto_path} extensions={['exe']} />
               </div>
             </div>

@@ -19,7 +19,8 @@ const DEV_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/r
 const STABLE_DOWNLOAD = 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/stable/Grasscutter.zip'
 const DEV_DOWNLOAD = 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/development/Grasscutter.zip'
 const RESOURCES_DOWNLOAD = 'https://gitlab.com/YuukiPS/GC-Resources/-/archive/3.5/GC-Resources-3.5.zip' // Use Yuuki res as grasscutter crepe res are broken
-const MIGOTO_DOWNLOAD = 'https://github.com/SilentNightSound/GI-Model-Importer/releases/download/V6.0/3dmigoto-GIMI-for-playing-mods.zip'
+const MIGOTO_DOWNLOAD =
+  'https://github.com/SilentNightSound/GI-Model-Importer/releases/download/V6.0/3dmigoto-GIMI-for-playing-mods.zip'
 
 interface IProps {
   closeFn: () => void
@@ -125,8 +126,7 @@ export default class Downloads extends React.Component<IProps, IState> {
   }
 
   async getCultivationFolder() {
-
-    const folderPath = await dataDir() + 'cultivation'
+    const folderPath = (await dataDir()) + 'cultivation'
 
     return folderPath
   }
@@ -220,9 +220,9 @@ export default class Downloads extends React.Component<IProps, IState> {
   }
 
   async downloadMigoto() {
-    const folder = await this.getCultivationFolder() + '\\3dmigoto'
+    const folder = (await this.getCultivationFolder()) + '\\3dmigoto'
     await invoke('dir_create', {
-      path: folder
+      path: folder,
     })
 
     this.props.downloadManager.addDownload(MIGOTO_DOWNLOAD, folder + '\\GIMI-3dmigoto.zip', async () => {
@@ -382,11 +382,7 @@ export default class Downloads extends React.Component<IProps, IState> {
                 <HelpButton contents="help.migoto" />
               </div>
               <div className="DownloadValue" id="downloadMenuButtonMigoto">
-                <BigButton
-                  disabled={this.state.migoto_downloading}
-                  onClick={this.downloadMigoto}
-                  id="migotoBtn"
-                >
+                <BigButton disabled={this.state.migoto_downloading} onClick={this.downloadMigoto} id="migotoBtn">
                   <Tr text="components.download" />
                 </BigButton>
               </div>
