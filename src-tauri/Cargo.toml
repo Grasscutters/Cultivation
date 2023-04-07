@@ -33,6 +33,7 @@ sysinfo = "0.24.6"
 zip-extract = "0.1.1"
 unrar = "0.4.4"
 zip = "0.6.2"
+sevenz-rust = "0.2.9"
 
 # For creating a "global" downloads list.
 once_cell = "1.13.0"
