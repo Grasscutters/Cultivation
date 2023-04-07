@@ -111,7 +111,7 @@ export default class Options extends React.Component<IProps, IState> {
       bg_url_or_path: config.customBackground || '',
       themes: (await getThemeList()).map((t) => t.name),
       theme: config.theme || 'default',
-      encryption: await translate(encEnabled ? 'options.enabled' : 'options.disabled'),
+      encryption: encEnabled || false,
       patch_rsa: config.patch_rsa || false,
       use_internal_proxy: config.use_internal_proxy || false,
       wipe_login: config.wipe_login || false,
@@ -162,7 +162,7 @@ export default class Options extends React.Component<IProps, IState> {
 
     // Update encryption button when setting new jar
     this.setState({
-      encryption: await translate(encEnabled ? 'options.enabled' : 'options.disabled'),
+      encryption: encEnabled,
     })
 
     window.location.reload()
@@ -264,8 +264,8 @@ export default class Options extends React.Component<IProps, IState> {
     await server.toggleEncryption(folderPath + '/config.json')
 
     this.setState({
-      encryption: await translate(
-        (await server.encryptionEnabled(folderPath + '/config.json')) ? 'options.enabled' : 'options.disabled'
+      encryption: (
+        (await server.encryptionEnabled(folderPath + '/config.json'))
       ),
     })
 
@@ -399,9 +399,11 @@ export default class Options extends React.Component<IProps, IState> {
             <HelpButton contents="help.encryption" />
           </div>
           <div className="OptionValue" id="menuOptionsButtonToggleEnc">
-            <BigButton onClick={this.toggleEncryption} id="toggleEnc">
-              {this.state.encryption}
-            </BigButton>
+            <Checkbox 
+              onChange={() => this.toggleEncryption()}
+              checked={this.state.encryption}
+              id="toggleEnc"
+            />
           </div>
         </div>
         <div className="OptionSection" id="menuOptionsContainerInstallCert">
