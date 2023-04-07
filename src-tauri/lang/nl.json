@@ -78,7 +78,8 @@
     "emergency_rsa": "Voor het geval er iets fout is gegaan, herstel uw rsa naar de laatste offici�le versies rsa.",
     "use_proxy": "Gebruik de Cultivation interne proxy. U zou dit ingeschakeld moeten hebben, tenzij u iets als Fiddler gebruikt",
     "patch_rsa": "Patch en unpatch je spel rsa automatisch. Tenzij je met oude/niet-offici�le versies speelt, of je hebt je rsa handmatig gepatcht, zou dit ingeschakeld moeten zijn.",
-    "add_delay": "Vertraging instellen in 3dmigoto loader! \nDit zou laadproblemen moeten oplossen, maar zal een kleine vertraging toevoegen aan het laden van 3dmigoto bij het opstarten van het spel. \nJe kunt nu weer starten met 3dmigoto."
+    "add_delay": "Vertraging instellen in 3dmigoto loader! \nDit zou laadproblemen moeten oplossen, maar zal een kleine vertraging toevoegen aan het laden van 3dmigoto bij het opstarten van het spel. \nJe kunt nu weer starten met 3dmigoto.",
+    "migoto": "Voor het importeren van modellen uit GameBanana"
   },
   "swag": {
     "akebi_name": "Akebi",

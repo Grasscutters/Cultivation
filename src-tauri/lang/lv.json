@@ -71,6 +71,7 @@
     "gc_stable_data": "Lejupielādējiet pašreizējos stabilos Grasscutter datu failus, kuriem nav jar fails. Tas ir noderīgi atjaunināšanai.",
     "gc_dev_data": "Lejupielādējiet jaunāko izstrāde Grasscutter datu failus, kuriem nav pievienots jar fails. Tas ir noderīgi atjaunināšanai.",
     "resources": "Tie ir nepieciešami arī Grasscutter servera darbināšanai. Šī poga būs pelēka, ja jums ir resursu mape ar saturu.",
-    "add_delay": "Iestatiet kavēšanos 3dmigoto iekrāvē! \nTam vajadzētu novērst ielādes problēmas, bet tas nedaudz aizkavēs 3dmigoto ielādēšanu, uzsākot spēli. \nTagad atkal varat sākt ar 3dmigoto."
+    "add_delay": "Iestatiet kavēšanos 3dmigoto iekrāvē! \nTam vajadzētu novērst ielādes problēmas, bet tas nedaudz aizkavēs 3dmigoto ielādēšanu, uzsākot spēli. \nTagad atkal varat sākt ar 3dmigoto.",
+    "migoto": "Modeļu importēšanai no GameBanana"
   }
 }

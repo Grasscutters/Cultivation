@@ -79,7 +79,8 @@
     "emergency_rsa": "Caso algo dê errado, força a exclusão da correção RSA.",
     "use_proxy": "Usa o proxy interno do Cultivation. Isso deveria estar habilitado a não ser que você utilize algo como o Fiddler.",
     "patch_rsa": "Corrigir e 'descorrigir' o RSA do seu jogo automaticamente. Isso deve estar habilitado a não ser que você esteja jogando com versões antigas (3.0 ou mais antigas) ou não oficiais.",
-    "add_delay": "Atraso definido na carregadeira 3dmigoto! \nIsto deve resolver os problemas de carregamento, mas acrescentará um pequeno atraso quando o 3dmigoto for carregado no lançamento do jogo. \nAgora você pode lançar novamente com o 3dmigoto."
+    "add_delay": "Atraso definido na carregadeira 3dmigoto! \nIsto deve resolver os problemas de carregamento, mas acrescentará um pequeno atraso quando o 3dmigoto for carregado no lançamento do jogo. \nAgora você pode lançar novamente com o 3dmigoto.",
+    "migoto": "Para importação de modelos da GameBanana"
   },
   "swag": {
     "akebi_name": "Akebi",

@@ -79,7 +79,8 @@
     "emergency_rsa": "Trong trường hợp gặp vấn đề, khôi phục lại RSA về phiên bản chính thức mới nhất.",
     "use_proxy": "Sử dụng proxy nội bộ của Cultivation. Nên bật tùy chọn này   trừ khi bạn đang sử dụng một ứng dụng khác, như Fiddler",
     "patch_rsa": "Tự động vá và sửa lại RSA của game. Tùy chọn này nên  được bật trừ khi bạn đang sử dụng phiên bản cũ, phiên bản không chính thức hoặc bạn đã tự vá rsa rồi.",
-    "add_delay": "Đặt độ trễ trong trình tải 3dmigoto! \nĐiều này sẽ khắc phục sự cố tải, nhưng sẽ thêm một độ trễ nhỏ khi 3dmigoto được tải khi khởi chạy trò chơi. \nBây giờ bạn có thể khởi chạy lại với 3dmigoto."
+    "add_delay": "Đặt độ trễ trong trình tải 3dmigoto! \nĐiều này sẽ khắc phục sự cố tải, nhưng sẽ thêm một độ trễ nhỏ khi 3dmigoto được tải khi khởi chạy trò chơi. \nBây giờ bạn có thể khởi chạy lại với 3dmigoto.",
+    "migoto": "Để nhập mô hình từ GameBanana"
   },
   "swag": {
     "akebi_name": "Akebi",

@@ -72,6 +72,7 @@
     "gc_stable_data": "Unduh file data Grasscutter stabil saat ini, dimana Tidak Ada JAR file. Ini Berguna Untuk memperbarui.",
     "gc_dev_data": "Unduh file data Grasscutter Development saat ini, dimana Tidak Ada JAR file. Ini Berguna Untuk memperbarui.",
     "resources": "Ini juga diperlukan untuk menjalankan server Grasscutter. Tombol ini akan berwarna abu-abu jika Anda memiliki folder Resource yang ada dengan File di dalamnya",
-    "add_delay": "Atur penundaan di pemuat 3dmigoto! \nIni akan memperbaiki masalah pemuatan, tetapi akan menambah sedikit penundaan ketika 3dmigoto dimuat saat meluncurkan game. \nAnda sekarang dapat meluncurkan dengan 3dmigoto lagi."
+    "add_delay": "Atur penundaan di pemuat 3dmigoto! \nIni akan memperbaiki masalah pemuatan, tetapi akan menambah sedikit penundaan ketika 3dmigoto dimuat saat meluncurkan game. \nAnda sekarang dapat meluncurkan dengan 3dmigoto lagi.",
+    "migoto": "Untuk mengimpor model dari GameBanana"
   }
 }
