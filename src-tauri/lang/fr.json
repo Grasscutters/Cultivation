@@ -71,6 +71,7 @@
     "gc_dev_jar": "Telecharger le dernier build en development de Grasscutter, ce qui inclut le fichier jar et les fichiers de donnees",
     "gc_stable_data": "Telecharger le dernier build stable de Grasscutter, ce qui n'inclut pasle fichier jar. Cela est utile pour mettre a jour",
     "gc_dev_data": "Telecharger le dernier build en development de Grasscutter, ce qui n'inclut pasle fichier jar. Cela est utile pour mettre a jour",
-    "resources": "Les ressources sont aussi necessaires pour lancer un serveur Grasscutter. Ce bouton deviendra gris si vous avez deja un fichier ressources avec les donnees dedans."
+    "resources": "Les ressources sont aussi necessaires pour lancer un serveur Grasscutter. Ce bouton deviendra gris si vous avez deja un fichier ressources avec les donnees dedans.",
+    "add_delay": "Définir un délai dans le chargeur de 3dmigoto ! \nCela devrait résoudre les problèmes de chargement, mais ajoutera un petit délai au chargement de 3dmigoto lors du lancement du jeu. \nVous pouvez maintenant lancer le jeu avec 3dmigoto."
   }
 }

@@ -16,6 +16,7 @@ import DownloadHandler from '../../../utils/download'
 import * as meta from '../../../utils/rsa'
 import HelpButton from '../common/HelpButton'
 import TextInput from '../common/TextInput'
+import SmallButton from '../common/SmallButton'
 
 interface IProps {
   closeFn: () => void
@@ -85,6 +86,7 @@ export default class Options extends React.Component<IProps, IState> {
     this.setCustomBackground = this.setCustomBackground.bind(this)
     this.toggleEncryption = this.toggleEncryption.bind(this)
     this.removeRSA = this.removeRSA.bind(this)
+    this.addMigotoDelay = this.addMigotoDelay.bind(this)
   }
 
   async componentDidMount() {
@@ -278,6 +280,12 @@ export default class Options extends React.Component<IProps, IState> {
     await meta.unpatchGame()
   }
 
+  async addMigotoDelay() {
+    invoke('set_migoto_delay', {
+      migotoPath: this.state.migoto_path,
+    })
+  }
+
   async installCert() {
     await invoke('generate_ca_files', {
       path: (await dataDir()) + 'cultivation',
@@ -422,6 +430,8 @@ export default class Options extends React.Component<IProps, IState> {
                 <Tr text="swag.migoto" />
               </div>
               <div className="OptionValue" id="menuOptionsDirMigoto">
+                <SmallButton onClick={this.addMigotoDelay} id="migotoDelay" contents='help.add_delay'>
+                </SmallButton>
                 <DirInput onChange={this.setMigoto} value={this.state?.migoto_path} extensions={['exe']} />
               </div>
             </div>

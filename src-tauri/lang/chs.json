@@ -76,7 +76,8 @@
     "resources": "资源文件在运行 Grasscutter 服务器时是必要的。此选项在已经存在资源文件时不可选。",
     "emergency_rsa": "在出现意外情况时自动将 RSA 恢复到原始版本",
     "use_proxy": "使用 Cultivation 的内置代理。除非你使用 Fiddler 等软件，否则应启用此项。",
-    "patch_rsa": "自动修改和恢复 RSA 补丁。 除非您玩的是旧版/非官方版本，或者您手动修改了 RSA，否则应该启用此功能。"
+    "patch_rsa": "自动修改和恢复 RSA 补丁。 除非您玩的是旧版/非官方版本，或者您手动修改了 RSA，否则应该启用此功能。",
+    "add_delay": "在 3dmigoto 加载程序中设置延迟！ \n这应该可以解决加载问题，但会在启动游戏时加载 3dmigoto 时增加一点延迟。 \n您现在可以再次使用 3dmigoto 启动。"
   },
   "swag": {
     "akebi_name": "Akebi",

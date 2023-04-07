@@ -74,7 +74,8 @@
     "resources": "Diese werden auch benötigt, um einen Grasscutter-Server auszuführen. Diese Schaltfläche ist grau, wenn Sie einen bestehenden Ressourcenordner mit Inhalten haben",
     "emergency_rsa": "Im Fall, dass etwas schief laufen sollte, kannst du deine RSA auf die letzte offizielle Version zurücksetzen",
     "use_proxy": "Nutze den internen Proxy von Cultivation. Du solltest dies aktivieren, es sei denn du nutzt Programme wie Fiddler",
-    "patch_rsa": "Patche und aktualisiere deine RSA automatisch. Solange du nicht mit einer alten/nicht offiziellen Version spielst oder deine RSA manuell gepatcht hast, sollte dies aktiviert sein."
+    "patch_rsa": "Patche und aktualisiere deine RSA automatisch. Solange du nicht mit einer alten/nicht offiziellen Version spielst oder deine RSA manuell gepatcht hast, sollte dies aktiviert sein.",
+    "add_delay": "Verzögerung im 3dmigoto-Lader einstellen! \nDies sollte die Ladeprobleme beheben, führt aber zu einer kleinen Verzögerung, wenn 3dmigoto beim Start des Spiels geladen wird. \nSie können nun wieder mit 3dmigoto starten."
   },
   "swag": {
     "akebi_name": "Akebi",

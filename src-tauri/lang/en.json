@@ -76,7 +76,8 @@
     "resources": "These are also required to run a Grasscutter server. This button will be grey if you have an existing resources folder with contents inside",
     "emergency_rsa": "In case something went wrong, force delete RSA patch.",
     "use_proxy": "Use the Cultivation internal proxy. You should have this enabled unless you use something like Fiddler",
-    "patch_rsa": "Patch and unpatch your game RSA automatically. Unless playing with old/non-official versions (3.0 and older), this should be enabled."
+    "patch_rsa": "Patch and unpatch your game RSA automatically. Unless playing with old/non-official versions (3.0 and older), this should be enabled.",
+    "add_delay": "Set delay in 3dmigoto loader! \nThis should fix loading issues, but will add a small delay to when 3dmigoto is loaded upon launching the game. \nYou can now launch with 3dmigoto again."
   },
   "swag": {
     "akebi_name": "Akebi",

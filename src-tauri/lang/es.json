@@ -72,7 +72,8 @@
     "gc_dev_jar": "Descargue la última versión de Desarrollo de Grasscutter, que incluye archivos jar y archivos de datos.",
     "gc_stable_data": "Descargue los archivos de Datos Estables actuales de Grasscutter, que no vienen con un archivo jar. Esto es útil para actualizar.",
     "gc_dev_data": "Descargue los últimos archivos de Datos de Desarrollo de Grasscutter, que no vienen con un archivo jar. Esto es útil para actualizar.",
-    "resources": "Estos también son necesarios para ejecutar un servidor Grasscutter. Este botón estará gris si tiene una carpeta de recursos existente con contenido dentro."
+    "resources": "Estos también son necesarios para ejecutar un servidor Grasscutter. Este botón estará gris si tiene una carpeta de recursos existente con contenido dentro.",
+    "add_delay": "¡Retraso en el cargador de 3dmigoto! \nEsto debería solucionar los problemas de carga, pero añadirá un pequeño retraso cuando 3dmigoto se cargue al iniciar el juego. \nAhora puede iniciar con 3dmigoto de nuevo."
   },
   "swag": {
     "akebi": "Establecer el ejecutable de Akebi"

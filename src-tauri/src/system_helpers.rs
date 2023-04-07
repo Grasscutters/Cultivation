@@ -134,6 +134,42 @@ pub fn set_migoto_target(window: tauri::Window, migoto_path: String) -> bool {
   }
 }
 
+#[tauri::command]
+pub fn set_migoto_delay(migoto_path: String) -> bool {
+  let mut migoto_pathbuf = PathBuf::from(migoto_path);
+
+  migoto_pathbuf.pop();
+  migoto_pathbuf.push("d3dx.ini");
+
+  let mut conf = match Ini::load_from_file(&migoto_pathbuf) {
+    Ok(c) => {
+      println!("Loaded migoto ini");
+      c
+    }
+    Err(e) => {
+      println!("Error loading migoto config: {}", e);
+      return false;
+    }
+  };
+
+  // Set options
+  conf
+    .with_section(Some("Loader"))
+    .set("delay", "20");
+
+  // Write file
+  match conf.write_to_file(&migoto_pathbuf) {
+    Ok(_) => {
+      println!("Wrote delay!");
+      true
+    }
+    Err(e) => {
+      println!("Error writing delay: {}", e);
+      false
+    }
+  }
+}
+
 #[cfg(windows)]
 #[tauri::command]
 pub fn wipe_registry(exec_name: String) {

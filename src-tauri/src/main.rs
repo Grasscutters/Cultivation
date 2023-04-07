@@ -102,6 +102,7 @@ fn main() {
         system_helpers::install_location,
         system_helpers::is_elevated,
         system_helpers::set_migoto_target,
+        system_helpers::set_migoto_delay,
         system_helpers::wipe_registry,
         system_helpers::get_platform,
         proxy::set_proxy_addr,
