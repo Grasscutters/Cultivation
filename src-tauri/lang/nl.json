@@ -43,7 +43,9 @@
     "resources": "Download Grasscutter bronnen",
     "game": "Download Spel",
     "aio_header": "Alles-in-één Downloads:",
-    "individual_header": "Downloads van afzonderlijke onderdelen:"
+    "individual_header": "Downloads van afzonderlijke onderdelen:",
+    "mods_header": "Mods:",
+    "migoto": "Download GIMI 3dmigoto"
   },
   "download_status": {
     "downloading": "Aan Het Downloading",

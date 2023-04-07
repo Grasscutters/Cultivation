@@ -19,6 +19,7 @@ const DEV_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/r
 const STABLE_DOWNLOAD = 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/stable/Grasscutter.zip'
 const DEV_DOWNLOAD = 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/development/Grasscutter.zip'
 const RESOURCES_DOWNLOAD = 'https://gitlab.com/YuukiPS/GC-Resources/-/archive/3.5/GC-Resources-3.5.zip' // Use Yuuki res as grasscutter crepe res are broken
+const MIGOTO_DOWNLOAD = 'https://github.com/SilentNightSound/GI-Model-Importer/releases/download/V6.0/3dmigoto-GIMI-for-playing-mods.zip'
 
 interface IProps {
   closeFn: () => void
@@ -30,8 +31,10 @@ interface IState {
   grasscutter_downloading: boolean
   resources_downloading: boolean
   repo_downloading: boolean
+  migoto_downloading: boolean
   grasscutter_set: boolean
   resources_exist: boolean
+  swag: boolean
 }
 
 export default class Downloads extends React.Component<IProps, IState> {
@@ -43,8 +46,10 @@ export default class Downloads extends React.Component<IProps, IState> {
       grasscutter_downloading: this.props.downloadManager.downloadingJar(),
       resources_downloading: this.props.downloadManager.downloadingResources(),
       repo_downloading: this.props.downloadManager.downloadingRepo(),
+      migoto_downloading: this.props.downloadManager.downloadingMigoto(),
       grasscutter_set: false,
       resources_exist: false,
+      swag: false,
     }
 
     this.getGrasscutterFolder = this.getGrasscutterFolder.bind(this)
@@ -54,11 +59,17 @@ export default class Downloads extends React.Component<IProps, IState> {
     this.downloadGrasscutterStable = this.downloadGrasscutterStable.bind(this)
     this.downloadGrasscutterLatest = this.downloadGrasscutterLatest.bind(this)
     this.downloadResources = this.downloadResources.bind(this)
+    this.downloadMigoto = this.downloadMigoto.bind(this)
     this.toggleButtons = this.toggleButtons.bind(this)
   }
 
   async componentDidMount() {
     const gc_path = await getConfigOption('grasscutter_path')
+    const swag = await getConfigOption('swag_mode')
+
+    this.setState({
+      swag: swag || false,
+    })
 
     listen('jar_extracted', () => {
       this.setState({ grasscutter_set: true }, this.forceUpdate)
@@ -109,6 +120,13 @@ export default class Downloads extends React.Component<IProps, IState> {
     } else {
       folderPath = path.substring(0, path.lastIndexOf('\\'))
     }
+
+    return folderPath
+  }
+
+  async getCultivationFolder() {
+
+    const folderPath = await dataDir() + 'cultivation'
 
     return folderPath
   }
@@ -201,6 +219,20 @@ export default class Downloads extends React.Component<IProps, IState> {
     this.toggleButtons()
   }
 
+  async downloadMigoto() {
+    const folder = await this.getCultivationFolder() + '\\3dmigoto'
+    await invoke('dir_create', {
+      path: folder
+    })
+
+    this.props.downloadManager.addDownload(MIGOTO_DOWNLOAD, folder + '\\GIMI-3dmigoto.zip', async () => {
+      await unzip(folder + '\\GIMI-3dmigoto.zip', folder + '\\', true)
+      this.toggleButtons()
+    })
+
+    this.toggleButtons()
+  }
+
   async toggleButtons() {
     const gc_path = await getConfigOption('grasscutter_path')
 
@@ -210,6 +242,7 @@ export default class Downloads extends React.Component<IProps, IState> {
       grasscutter_downloading: this.props.downloadManager.downloadingJar(),
       resources_downloading: this.props.downloadManager.downloadingResources(),
       repo_downloading: this.props.downloadManager.downloadingRepo(),
+      migoto_downloading: this.props.downloadManager.downloadingMigoto(),
       grasscutter_set: gc_path !== '',
     })
   }
@@ -336,6 +369,30 @@ export default class Downloads extends React.Component<IProps, IState> {
             </BigButton>
           </div>
         </div>
+
+        {this.state.swag && (
+          <>
+            <Divider />
+            <div className="HeaderText" id="downloadMenuModsHeader">
+              <Tr text="downloads.mods_header" />
+            </div>
+            <div className="DownloadMenuSection" id="downloadMenuContainerMigoto">
+              <div className="DownloadLabel" id="downloadMenuLabelMigoto">
+                <Tr text={'downloads.migoto'} />
+                <HelpButton contents="help.migoto" />
+              </div>
+              <div className="DownloadValue" id="downloadMenuButtonMigoto">
+                <BigButton
+                  disabled={this.state.migoto_downloading}
+                  onClick={this.downloadMigoto}
+                  id="migotoBtn"
+                >
+                  <Tr text="components.download" />
+                </BigButton>
+              </div>
+            </div>
+          </>
+        )}
       </Menu>
     )
   }

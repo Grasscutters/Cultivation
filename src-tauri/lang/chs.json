@@ -44,7 +44,9 @@
     "resources": "下载 Grasscutter 资源",
     "game": "下载游戏",
     "aio_header": "多合一下载:",
-    "individual_header": "个别部分下载:"
+    "individual_header": "个别部分下载:",
+    "mods_header": "Mods:",
+    "migoto": "下载 GIMI 3dmigoto"
   },
   "download_status": {
     "downloading": "下载中",

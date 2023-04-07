@@ -41,7 +41,9 @@
     "grasscutter_latest_update": "Atjauniet Grasscutter jaunāko",
     "resources": "Lejupielādējiet Grasscutter resursi",
     "aio_header": "Lejupielādes viss vienā",
-    "individual_header": "Atsevišķu daļu lejupielādes:"
+    "individual_header": "Atsevišķu daļu lejupielādes:",
+    "mods_header": "Mods:",
+    "migoto": "Lejupielādēt GIMI 3dmigoto"
   },
   "download_status": {
     "downloading": "Notiek lejupielāde",

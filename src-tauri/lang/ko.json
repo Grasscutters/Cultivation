@@ -44,7 +44,9 @@
     "resources": "리소스 다운로드",
     "game": "게임 다운로드",
     "aio_header": "올인원 다운로드",
-    "individual_header": "개별 부품 다운로드:"
+    "individual_header": "개별 부품 다운로드:",
+    "mods_header": "Mods:",
+    "migoto": "GIMI 3dmigoto 다운로드"
   },
   "download_status": {
     "downloading": "다운로드 중",

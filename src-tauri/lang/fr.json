@@ -43,7 +43,9 @@
     "grasscutter_latest_update": "Mettre a jour Grasscutter (derniere version)",
     "resources": "Telecharger les ressources logicielles de Grasscutter",
     "aio_header": "Telechargements tout-en-un:",
-    "individual_header": "Telechargements de pièces individuelles:"
+    "individual_header": "Telechargements de pièces individuelles:",
+    "mods_header": "Mods:",
+    "migoto": "Telecharger GIMI 3dmigoto"
   },
   "download_status": {
     "downloading": "Telechargement",

@@ -44,7 +44,9 @@
     "resources": "Descargar Recursos de Grasscutter",
     "game": "Descarga el juego",
     "aio_header": "Descargas todo en uno:",
-    "individual_header": "Descargas de piezas individuales:"
+    "individual_header": "Descargas de piezas individuales:",
+    "mods_header": "Mods:",
+    "migoto": "Descargar GIMI 3dmigoto"
   },
   "download_status": {
     "downloading": "Descargando",

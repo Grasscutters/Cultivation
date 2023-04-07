@@ -44,7 +44,9 @@
     "resources": "Tải tài nguyên Grasscutter",
     "game": "Tải game",
     "aio_header": "Tải xuống tất cả trong một:",
-    "individual_header": "Tải xuống từng phần:"
+    "individual_header": "Tải xuống từng phần:",
+    "mods_header": "Mods:",
+    "migoto": "Tải GIMI 3dmigoto"
   },
   "download_status": {
     "downloading": "Đang tải",

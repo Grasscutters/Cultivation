@@ -43,7 +43,9 @@
     "resources": "Скачать ресурсы Grasscutter",
     "game": "Скачать Игру",
     "aio_header": "Все в одной загрузке:",
-    "individual_header": "загрузка отдельных частей:"
+    "individual_header": "загрузка отдельных частей:",
+    "mods_header": "Mods:",
+    "migoto": "Скачать GIMI 3dmigoto"
   },
   "download_status": {
     "downloading": "Скачивание",

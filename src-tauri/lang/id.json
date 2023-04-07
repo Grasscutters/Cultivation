@@ -42,7 +42,9 @@
     "grasscutter_latest_update": "Sedang MengUpdate Grasscutter Terbaru",
     "resources": "Mendownload Grasscutter Resources",
     "aio_header": "Unduhan Semua Dalam Satu:",
-    "individual_header": "Unduhan Bagian Individual:"
+    "individual_header": "Unduhan Bagian Individual:",
+    "mods_header": "Mods:",
+    "migoto": "Sedang Mendownload GIMI 3dmigoto"
   },
   "download_status": {
     "downloading": "Sedang Mendownload",
