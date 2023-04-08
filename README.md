@@ -9,6 +9,7 @@ A game launcher designed to easily proxy traffic from anime game to private serv
 - [Client Patching Notice](#client-patching-notice)
 - [Download](#download)
 - [Setup](#setup)
+- [Troubleshooting](#troubleshooting)
 - [Developer Quick-start](#developer-quickstart)
   - [Setup](#setup)
   - [Building](#building)
@@ -56,6 +57,19 @@ Download and open the MSI, and once installed, run Cultivation as administrator.
 - Any generic "I am getting XYZ error!" should go in the [Discord support channels](https://discord.gg/grasscutter)
 - Any specific Cultivation issues should go in [the issues section](/issues)
 - Any Grasscutter server related issues should go in [the Grasscutter issues section](https://github.com/Grasscutters/Grasscutter)
+
+# Troubleshooting
+
+### White screen, insta-crash or something similar
+
+* First try [running in Windows 8 compatibility mode](https://www.lifewire.com/run-older-programs-with-windows-10-compatibility-mode-4587064).
+* If that doesn't work, fully uninstall and reinstall [WebView2](https://developer.microsoft.com/en-us/microsoft-edge/webview2/#download-section).
+  * If you are having trouble uninstalling it, try deleting this registry folder and trying again `Computer\HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}`
+  * You can also try [uninstalling from the Command Prompt](https://superuser.com/a/1743626)
+
+### Internet not working after use
+
+Please allow the Cultivation window to pop back up once you have quit out of the game. This tells you that it knows you closed the game, and that it has reverted your proxy settings. If you have closed Cultivation before this happens, or have had some other issue with your internet, go to your [proxy settings in Windows](https://techviral.net/check-proxy-server-settings-in-windows/) and disable the "Manual proxy setup".
 
 # Developer Quickstart
 
