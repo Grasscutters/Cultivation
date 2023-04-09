@@ -38,7 +38,7 @@ Download and open the MSI, and once installed, run Cultivation as administrator.
 - Download Cultivation
   - If you are on Windows 10 or 11, use the MSI
   - If you are on Windows 7, or the MSI doesn't work, use the zip and download [WebView](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)
-  - If you are on Linux or MacOS, [help us port Windows-specific system calls to Linux/MacOS!](https://github.com/Grasscutters/Cultivation/issues/7)
+  - If you are on GNU/Linux or MacOS, [help us port Windows-specific system calls to GNU/Linux and MacOS!](https://github.com/Grasscutters/Cultivation/issues/7)
 - Install or extract Cultivation
 - Open Cultivation **_as administrator_**
 - Before clicking randomly on stuff, in options (top right cog icon), set your Game Install Path.
