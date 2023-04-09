@@ -44,7 +44,9 @@
     "resources": "下載Grasscutter資源（Resources）",
     "game": "下載遊戲",
     "aio_header": "多合一下載:",
-    "individual_header": "個別部分下載:"
+    "individual_header": "個別部分下載:",
+    "mods_header": "Mods:",
+    "migoto": "下載GIMI 3dmigoto"
   },
   "download_status": {
     "downloading": "下載中",
@@ -76,7 +78,9 @@
     "resources": "資源文件在架設一個Grasscutter伺服器時是必要的。 這個選項會在您已經有裡面有檔案的資源資料夾時不可選。",
     "emergency_rsa": "一旦有東西出了問題，此選項可以把您的rsa恢復成官方版本。",
     "use_proxy": "使用Cultivation內建的代理伺服器。此選項應該被啟用，除非你使用其他的代理伺服器。",
-    "patch_rsa": "自動修補和恢復RSA。除非您的遊戲版本是舊的或者是非官方的，此選項應該被啟用。"
+    "patch_rsa": "自動修補和恢復RSA。除非您的遊戲版本是舊的或者是非官方的，此選項應該被啟用。",
+    "add_delay": "在 3dmigoto 加載程序中設置延遲！ \n這應該可以解決加載問題，但會在啟動遊戲時加載 3dmigoto 時增加一點延遲。 \n您現在可以再次使用 3dmigoto 啟動。",
+    "migoto": "用於從 GameBanana 導入模型"
   },
   "swag": {
     "akebi_name": "Akebi",

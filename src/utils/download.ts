@@ -118,6 +118,10 @@ export default class DownloadHandler {
     return this.downloads.some((d) => d.path.includes('grasscutter_repo.zip'))
   }
 
+  downloadingMigoto() {
+    return this.downloads.some((d) => d.path.includes('3dmigoto'))
+  }
+
   addDownload(url: string, path: string, onFinish?: () => void) {
     // Begin download from rust backend, don't add if the download addition fails
     invoke('download_file', { url, path })

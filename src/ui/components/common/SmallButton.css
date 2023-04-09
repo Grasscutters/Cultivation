@@ -1,0 +1,32 @@
+.SmallButtonSection {
+  display: inline-block;
+  margin-left: 20px;
+  vertical-align: middle;
+}
+
+.SmallButtonButton {
+  height: 20px;
+  filter: drop-shadow(0px 0px 5px rgb(0 0 0 / 20%));
+}
+
+.SmallButtonButton:hover {
+  cursor: pointer;
+}
+
+.SmallButtonButton img {
+  height: 100%;
+}
+
+.SmallButtonContents {
+  text-align: center;
+  position: relative;
+}
+
+.SmallButtonContents .MiniDialog {
+  position: absolute;
+
+  bottom: 40px;
+  right: -450%;
+  width: 200px;
+  height: 120px;
+}

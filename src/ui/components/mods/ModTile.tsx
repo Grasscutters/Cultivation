@@ -1,5 +1,6 @@
 import React from 'react'
 import { ModData, PartialModData } from '../../../utils/gamebanana'
+import { getConfigOption } from '../../../utils/configuration'
 
 import './ModTile.css'
 import Like from '../../../resources/icons/like.svg'
@@ -18,6 +19,7 @@ interface IProps {
 }
 
 interface IState {
+  horny: boolean
   hover: boolean
   modEnabled: boolean
 }
@@ -27,6 +29,7 @@ export class ModTile extends React.Component<IProps, IState> {
     super(props)
 
     this.state = {
+      horny: false,
       hover: false,
       modEnabled: false,
     }
@@ -44,10 +47,13 @@ export class ModTile extends React.Component<IProps, IState> {
   }
 
   async componentDidMount() {
+    const horny = await getConfigOption('horny_mode')
+
     if (!('id' in this.props.mod)) {
       // Partial mod
       this.setState({
         modEnabled: await modIsEnabled(this.props.mod.name),
+        horny,
       })
 
       return
@@ -55,6 +61,7 @@ export class ModTile extends React.Component<IProps, IState> {
 
     this.setState({
       modEnabled: await modIsEnabled(String(this.props.mod.id)),
+      horny,
     })
   }
 
@@ -66,6 +73,7 @@ export class ModTile extends React.Component<IProps, IState> {
     this.setState(
       {
         modEnabled: !this.state.modEnabled,
+        horny: !this.state.horny,
       },
       () => {
         if (this.state.modEnabled) {
@@ -108,7 +116,7 @@ export class ModTile extends React.Component<IProps, IState> {
             ))}
           <img
             src={mod.images[0]}
-            className={`ModImageInner ${'id' in mod && !this.props.horny && mod.nsfw ? 'nsfw' : ''} ${
+            className={`ModImageInner ${'id' in mod && !this.state.horny && mod.nsfw ? 'nsfw' : ''} ${
               this.state.hover ? 'blur' : ''
             }`}
           />

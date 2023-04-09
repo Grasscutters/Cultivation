@@ -43,7 +43,9 @@
     "resources": "Download Grasscutter bronnen",
     "game": "Download Spel",
     "aio_header": "Alles-in-één Downloads:",
-    "individual_header": "Downloads van afzonderlijke onderdelen:"
+    "individual_header": "Downloads van afzonderlijke onderdelen:",
+    "mods_header": "Mods:",
+    "migoto": "Download GIMI 3dmigoto"
   },
   "download_status": {
     "downloading": "Aan Het Downloading",
@@ -75,7 +77,9 @@
     "resources": "Deze zijn ook nodig om een Grasscutter server te draaien. Deze knop zal grijs zijn als u een bestaande resources map heeft met inhoud erin",
     "emergency_rsa": "Voor het geval er iets fout is gegaan, herstel uw rsa naar de laatste offici�le versies rsa.",
     "use_proxy": "Gebruik de Cultivation interne proxy. U zou dit ingeschakeld moeten hebben, tenzij u iets als Fiddler gebruikt",
-    "patch_rsa": "Patch en unpatch je spel rsa automatisch. Tenzij je met oude/niet-offici�le versies speelt, of je hebt je rsa handmatig gepatcht, zou dit ingeschakeld moeten zijn."
+    "patch_rsa": "Patch en unpatch je spel rsa automatisch. Tenzij je met oude/niet-offici�le versies speelt, of je hebt je rsa handmatig gepatcht, zou dit ingeschakeld moeten zijn.",
+    "add_delay": "Vertraging instellen in 3dmigoto loader! \nDit zou laadproblemen moeten oplossen, maar zal een kleine vertraging toevoegen aan het laden van 3dmigoto bij het opstarten van het spel. \nJe kunt nu weer starten met 3dmigoto.",
+    "migoto": "Voor het importeren van modellen uit GameBanana"
   },
   "swag": {
     "akebi_name": "Akebi",

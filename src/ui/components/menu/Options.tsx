@@ -3,7 +3,7 @@ import { invoke } from '@tauri-apps/api'
 import { dataDir } from '@tauri-apps/api/path'
 import DirInput from '../common/DirInput'
 import Menu from './Menu'
-import Tr, { getLanguages, translate } from '../../../utils/language'
+import Tr, { getLanguages } from '../../../utils/language'
 import { setConfigOption, getConfig, getConfigOption, Configuration } from '../../../utils/configuration'
 import Checkbox from '../common/Checkbox'
 import Divider from './Divider'
@@ -16,6 +16,7 @@ import DownloadHandler from '../../../utils/download'
 import * as meta from '../../../utils/rsa'
 import HelpButton from '../common/HelpButton'
 import TextInput from '../common/TextInput'
+import SmallButton from '../common/SmallButton'
 
 interface IProps {
   closeFn: () => void
@@ -85,6 +86,7 @@ export default class Options extends React.Component<IProps, IState> {
     this.setCustomBackground = this.setCustomBackground.bind(this)
     this.toggleEncryption = this.toggleEncryption.bind(this)
     this.removeRSA = this.removeRSA.bind(this)
+    this.addMigotoDelay = this.addMigotoDelay.bind(this)
   }
 
   async componentDidMount() {
@@ -109,7 +111,7 @@ export default class Options extends React.Component<IProps, IState> {
       bg_url_or_path: config.customBackground || '',
       themes: (await getThemeList()).map((t) => t.name),
       theme: config.theme || 'default',
-      encryption: await translate(encEnabled ? 'options.enabled' : 'options.disabled'),
+      encryption: encEnabled || false,
       patch_rsa: config.patch_rsa || false,
       use_internal_proxy: config.use_internal_proxy || false,
       wipe_login: config.wipe_login || false,
@@ -160,7 +162,7 @@ export default class Options extends React.Component<IProps, IState> {
 
     // Update encryption button when setting new jar
     this.setState({
-      encryption: await translate(encEnabled ? 'options.enabled' : 'options.disabled'),
+      encryption: encEnabled,
     })
 
     window.location.reload()
@@ -262,9 +264,7 @@ export default class Options extends React.Component<IProps, IState> {
     await server.toggleEncryption(folderPath + '/config.json')
 
     this.setState({
-      encryption: await translate(
-        (await server.encryptionEnabled(folderPath + '/config.json')) ? 'options.enabled' : 'options.disabled'
-      ),
+      encryption: await server.encryptionEnabled(folderPath + '/config.json'),
     })
 
     // Check if Grasscutter is running, and restart if so to apply changes
@@ -276,6 +276,12 @@ export default class Options extends React.Component<IProps, IState> {
 
   async removeRSA() {
     await meta.unpatchGame()
+  }
+
+  async addMigotoDelay() {
+    invoke('set_migoto_delay', {
+      migotoPath: this.state.migoto_path,
+    })
   }
 
   async installCert() {
@@ -391,9 +397,7 @@ export default class Options extends React.Component<IProps, IState> {
             <HelpButton contents="help.encryption" />
           </div>
           <div className="OptionValue" id="menuOptionsButtonToggleEnc">
-            <BigButton onClick={this.toggleEncryption} id="toggleEnc">
-              {this.state.encryption}
-            </BigButton>
+            <Checkbox onChange={() => this.toggleEncryption()} checked={this.state.encryption} id="toggleEnc" />
           </div>
         </div>
         <div className="OptionSection" id="menuOptionsContainerInstallCert">
@@ -422,6 +426,7 @@ export default class Options extends React.Component<IProps, IState> {
                 <Tr text="swag.migoto" />
               </div>
               <div className="OptionValue" id="menuOptionsDirMigoto">
+                <SmallButton onClick={this.addMigotoDelay} id="migotoDelay" contents="help.add_delay"></SmallButton>
                 <DirInput onChange={this.setMigoto} value={this.state?.migoto_path} extensions={['exe']} />
               </div>
             </div>

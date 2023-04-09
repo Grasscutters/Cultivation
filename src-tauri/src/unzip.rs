@@ -72,6 +72,10 @@ pub fn unzip(
 
       let archive = Archive::new(zipfile.clone());
       name = archive.list().unwrap().next().unwrap().unwrap().filename;
+    } else if zipfile.ends_with(".7z") {
+      success = extract_7z(&zipfile, &f, &full_path, top_level.unwrap_or(true));
+
+      name = String::from("banana");
     } else {
       success = extract_zip(&zipfile, &f, &full_path, top_level.unwrap_or(true));
 
@@ -100,6 +104,12 @@ pub fn unzip(
     if zipfile.contains("GrasscutterCulti") {
       window
         .emit("jar_extracted", destpath.to_string() + "grasscutter.jar")
+        .unwrap();
+    }
+
+    if zipfile.contains("GIMI") {
+      window
+        .emit("migoto_extracted", destpath.to_string() + "3DMigoto Loader.exe")
         .unwrap();
     }
 
@@ -165,6 +175,23 @@ fn extract_zip(_zipfile: &str, f: &File, full_path: &path::Path, top_level: bool
     }
     Err(e) => {
       println!("Failed to extract zip file: {}", e);
+      false
+    }
+  }
+}
+
+fn extract_7z(sevenzfile: &str, _f: &File, full_path: &path::Path, _top_level: bool) -> bool {
+  match sevenz_rust::decompress_file(sevenzfile, full_path) {
+    Ok(_) => {
+      println!(
+        "Extracted 7zip file to: {}",
+        full_path.to_str().unwrap_or("Error")
+      );
+
+      true
+    }
+    Err(e) => {
+      println!("Failed to extract 7zip file: {}", e);
       false
     }
   }

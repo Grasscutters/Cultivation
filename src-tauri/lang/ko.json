@@ -44,7 +44,9 @@
     "resources": "리소스 다운로드",
     "game": "게임 다운로드",
     "aio_header": "올인원 다운로드",
-    "individual_header": "개별 부품 다운로드:"
+    "individual_header": "개별 부품 다운로드:",
+    "mods_header": "Mods:",
+    "migoto": "GIMI 3dmigoto 다운로드"
   },
   "download_status": {
     "downloading": "다운로드 중",
@@ -76,7 +78,9 @@
     "resources": "또한 Grasscutter 서버를 실행하는 데도 필요합니다. 내용이 포함된 기존 리소스 폴더가 있는 경우 이 버튼은 회색으로 표시됩니다",
     "emergency_rsa": "문제가 있는 경우 RSA 패치를 제거하십시오.",
     "use_proxy": "Culturation 내부 프록시를 사용합니다. 피들러와 같은 것을 사용하지 않는 한 이 기능을 활성화해야 합니다",
-    "patch_rsa": "게임 RSA를 자동으로 패치 및 패치 해제합니다. 이전/비공식 버전을 사용하거나 RSA를 수동으로 패치하지 않은 경우 이 기능을 활성화해야 합니다."
+    "patch_rsa": "게임 RSA를 자동으로 패치 및 패치 해제합니다. 이전/비공식 버전을 사용하거나 RSA를 수동으로 패치하지 않은 경우 이 기능을 활성화해야 합니다.",
+    "add_delay": "3dmigoto 로더에서 지연을 설정하세요! \n이렇게하면 로딩 문제가 해결되지만 게임을 시작할 때 3dmigoto가로드되는시기에 약간의 지연이 추가됩니다. \n이제 3dmigoto로 다시 시작할 수 있습니다.",
+    "migoto": "GameBanana에서 모델 가져오기"
   },
   "swag": {
     "akebi_name": "Akebi",
