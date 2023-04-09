@@ -90,7 +90,7 @@ export default class DownloadHandler {
       } = payload
 
       // Find the download that is not extracting and set it's status as such
-      const index = this.downloads.findIndex((download) => download.path === obj.file || obj.new_folder)
+      const index = this.downloads.findIndex((download) => download.path === obj.file)
       this.downloads[index].status = 'finished'
     })
   }
