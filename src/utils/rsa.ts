@@ -1,25 +1,12 @@
 import { invoke } from '@tauri-apps/api'
-import { dataDir } from '@tauri-apps/api/path'
 import { getGameFolder } from './game'
+// Patch file from: https://github.com/34736384/RSAPatch/
 
 export async function patchGame() {
-  // Do we have a patch already?
-  const patchedExists = await invoke('dir_exists', {
-    path: (await getBackupRSAPath()) + '\\version.dll',
-  })
-
-  if (!patchedExists) {
-    // No patch found? Patching creates one
-    const patched = await downloadRSA()
-
-    if (!patched) {
-      return false
-    }
-  }
-
+  const patchPath = (await invoke('install_location')) + '\\patch\\version.dll'
   // Are we already patched with mhypbase? If so, that's fine, just continue as normal
   const gameIsPatched = await invoke('are_files_identical', {
-    path1: (await getBackupRSAPath()) + '\\version.dll',
+    path1: patchPath,
     path2: (await getGameRSAPath()) + '\\mhypbase.dll',
   })
 
@@ -31,7 +18,7 @@ export async function patchGame() {
 
   // Copy the patch to game files
   const replaced = await invoke('copy_file_with_new_name', {
-    path: (await getBackupRSAPath()) + '\\version.dll',
+    path: patchPath,
     newPath: await getGameRSAPath(),
     newName: 'version.dll',
   })
@@ -60,26 +47,4 @@ export async function getGameRSAPath() {
   }
 
   return (gameData + '\\').replace(/\\/g, '/')
-}
-
-export async function getBackupRSAPath() {
-  return (await dataDir()) + 'cultivation\\rsa'
-}
-
-export async function downloadRSA() {
-  // Patch file from: https://github.com/34736384/RSAPatch/
-
-  // Should make sure rsa path exists
-  await invoke('dir_create', {
-    path: await getBackupRSAPath(),
-  })
-
-  // Copy patch from local for offline compatibility
-  await invoke('copy_file_with_new_name', {
-    path: (await invoke('install_location')) + '\\patch\\version.dll',
-    newPath: await getBackupRSAPath(),
-    newName: 'version.dll',
-  })
-
-  return true
 }
