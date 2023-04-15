@@ -39,6 +39,8 @@ interface IState {
   swag: boolean
   akebiSet: boolean
   migotoSet: boolean
+
+  unElevated: boolean
 }
 
 export default class ServerLaunchSection extends React.Component<IProps, IState> {
@@ -62,6 +64,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       swag: false,
       akebiSet: false,
       migotoSet: false,
+      unElevated: false,
     }
 
     this.toggleGrasscutter = this.toggleGrasscutter.bind(this)
@@ -93,6 +96,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       swag: config.swag_mode || false,
       akebiSet: config.akebi_path !== '',
       migotoSet: config.migoto_path !== '',
+      unElevated: config.un_elevated || false,
     })
   }
 
@@ -188,7 +192,14 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       path: exe || config.game_install_path,
     })
 
-    if (gameExists) await invoke('run_program_relative', { path: exe || config.game_install_path })
+    if (gameExists)
+      if (config.un_elevated) {
+        await invoke('run_un_elevated', {
+          path: config.game_install_path,
+        })
+      } else {
+        await invoke('run_program_relative', { path: exe || config.game_install_path })
+      }
     else alert('Game not found! At: ' + (exe || config.game_install_path))
   }
 

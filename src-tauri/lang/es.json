@@ -29,7 +29,8 @@
     "use_proxy": "Usar proxy interno",
     "wipe_login": "Borrar caché de inicio de sesión",
     "horny_mode": "Modo cachondo",
-    "auto_mongodb": "Iniciar automáticamente MongoDB"
+    "auto_mongodb": "Iniciar automáticamente MongoDB",
+    "un_elevated": "Ejecutar el juego no elevado (no admin)"
   },
   "downloads": {
     "grasscutter_fullbuild": "Descargar Datos todo en uno de Grasscutter",

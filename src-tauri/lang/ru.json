@@ -28,7 +28,8 @@
     "use_proxy": "Использовать встроенный Прокси",
     "wipe_login": "Очистить кэш входа в систему",
     "horny_mode": "роговой режим",
-    "auto_mongodb": "Автоматически запускать MongoDB"
+    "auto_mongodb": "Автоматически запускать MongoDB",
+    "un_elevated": "Запустите игру в неэлегантном режиме (без администратора)"
   },
   "downloads": {
     "grasscutter_fullbuild": "Скачать все в одном Grasscutter",

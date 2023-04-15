@@ -90,7 +90,7 @@ export default class DownloadHandler {
       } = payload
 
       // Find the download that is not extracting and set it's status as such
-      const index = this.downloads.findIndex((download) => download.path === obj.file || obj.new_folder)
+      const index = this.downloads.findIndex((download) => download.path === obj.file)
       this.downloads[index].status = 'finished'
     })
   }
@@ -101,25 +101,25 @@ export default class DownloadHandler {
 
   downloadingJar() {
     // Kinda hacky but it works
-    return this.downloads.some((d) => d.path.includes('grasscutter.zip'))
+    return this.downloads.some((d) => d.path.includes('grasscutter.zip') && d.status != ('finished' || 'error'))
   }
 
   downloadingFullBuild() {
     // Kinda hacky but it works
-    return this.downloads.some((d) => d.path.includes('GrasscutterCulti'))
+    return this.downloads.some((d) => d.path.includes('GrasscutterCulti') && d.status != ('finished' || 'error'))
   }
 
   downloadingResources() {
     // Kinda hacky but it works
-    return this.downloads.some((d) => d.path.includes('resources'))
+    return this.downloads.some((d) => d.path.includes('resources') && d.status != ('finished' || 'error'))
   }
 
   downloadingRepo() {
-    return this.downloads.some((d) => d.path.includes('grasscutter_repo.zip'))
+    return this.downloads.some((d) => d.path.includes('grasscutter_repo.zip') && d.status != ('finished' || 'error'))
   }
 
   downloadingMigoto() {
-    return this.downloads.some((d) => d.path.includes('3dmigoto'))
+    return this.downloads.some((d) => d.path.includes('3dmigoto') && d.status != ('finished' || 'error'))
   }
 
   addDownload(url: string, path: string, onFinish?: () => void) {

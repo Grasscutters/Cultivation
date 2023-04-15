@@ -105,6 +105,7 @@ fn main() {
         system_helpers::set_migoto_delay,
         system_helpers::wipe_registry,
         system_helpers::get_platform,
+        system_helpers::run_un_elevated,
         proxy::set_proxy_addr,
         proxy::generate_ca_files,
         unzip::unzip,

@@ -41,7 +41,13 @@ struct ProxyHandler;
 
 #[tauri::command]
 pub fn set_proxy_addr(addr: String) {
-  *SERVER.lock().unwrap() = addr;
+  if addr.contains(" ") {
+    let addr2 = addr.replace(" ", "");
+    *SERVER.lock().unwrap() = addr2;
+  } else {
+    *SERVER.lock().unwrap() = addr;
+  }
+  
 }
 
 #[async_trait]

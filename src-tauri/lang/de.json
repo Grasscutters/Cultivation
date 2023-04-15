@@ -28,7 +28,8 @@
     "use_proxy": "Gebruik interne proxy",
     "wipe_login": "Wis de inlogcache",
     "horny_mode": "Geile modus",
-    "auto_mongodb": "Start automatisch MongoDB"
+    "auto_mongodb": "Start automatisch MongoDB",
+    "un_elevated": "Führen Sie das Spiel nicht erhöht aus (kein Admin)"
   },
   "downloads": {
     "grasscutter_fullbuild": "Alles in Einem Grasscutter Daten herunterladen",

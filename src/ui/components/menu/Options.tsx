@@ -41,6 +41,7 @@ interface IState {
   auto_mongodb: boolean
   swag: boolean
   platform: string
+  un_elevated: boolean
 
   // Swag stuff
   akebi_path: string
@@ -70,6 +71,7 @@ export default class Options extends React.Component<IProps, IState> {
       swag: false,
       auto_mongodb: false,
       platform: '',
+      un_elevated: false,
 
       // Swag stuff
       akebi_path: '',
@@ -87,6 +89,7 @@ export default class Options extends React.Component<IProps, IState> {
     this.toggleEncryption = this.toggleEncryption.bind(this)
     this.removeRSA = this.removeRSA.bind(this)
     this.addMigotoDelay = this.addMigotoDelay.bind(this)
+    this.toggleUnElevatedGame = this.toggleUnElevatedGame.bind(this)
   }
 
   async componentDidMount() {
@@ -119,6 +122,7 @@ export default class Options extends React.Component<IProps, IState> {
       swag: config.swag_mode || false,
       auto_mongodb: config.auto_mongodb || false,
       platform,
+      un_elevated: config.un_elevated || false,
 
       // Swag stuff
       akebi_path: config.akebi_path || '',
@@ -272,6 +276,15 @@ export default class Options extends React.Component<IProps, IState> {
       alert('Automatically restarting Grasscutter to apply encryption changes!')
       await invoke('restart_grasscutter')
     }
+  }
+
+  async toggleUnElevatedGame() {
+    const changedVal = !(await getConfigOption('un_elevated'))
+    setConfigOption('un_elevated', changedVal)
+
+    this.setState({
+      un_elevated: changedVal,
+    })
   }
 
   async removeRSA() {
@@ -452,6 +465,18 @@ export default class Options extends React.Component<IProps, IState> {
               onChange={() => this.toggleOption('grasscutter_with_game')}
               checked={this.state?.grasscutter_with_game}
               id="gcWithGame"
+            />
+          </div>
+        </div>
+        <div className="OptionSection" id="menuOptionsContainerUEGame">
+          <div className="OptionLabel" id="menuOptionsLabelUEGame">
+            <Tr text="options.un_elevated" />
+          </div>
+          <div className="OptionValue" id="menuOptionsCheckboxUEGame">
+            <Checkbox
+              onChange={() => this.toggleOption('un_elevated')}
+              checked={this.state?.un_elevated}
+              id="unElevatedGame"
             />
           </div>
         </div>
