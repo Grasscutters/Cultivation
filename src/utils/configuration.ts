@@ -25,6 +25,7 @@ let defaultConfig: Configuration
     wipe_login: false,
     horny_mode: false,
     auto_mongodb: false,
+    un_elevated: false,
   }
 })()
 
@@ -53,6 +54,7 @@ export interface Configuration {
   horny_mode: boolean
   swag_mode?: boolean
   auto_mongodb: boolean
+  un_elevated: boolean
 
   // Swag stuff
   akebi_path?: string

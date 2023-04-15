@@ -78,6 +78,18 @@ pub fn run_jar(path: String, execute_in: String, java_path: String) {
 }
 
 #[tauri::command]
+pub fn run_un_elevated(path: String) {
+  // Open the program non-elevated.
+  match open::with(
+    format!("cmd /min /C \"set __COMPAT_LAYER=RUNASINVOKER && start \"\" \"{}\"\"", path),
+    "C:\\Windows\\System32\\cmd.exe",
+  ) {
+    Ok(_) => (),
+    Err(e) => println!("Failed to open program ({}): {}", &path, e),
+  };
+}
+
+#[tauri::command]
 pub fn open_in_browser(url: String) {
   // Open the URL in the default browser.
   match open::that(url) {
