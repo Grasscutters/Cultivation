@@ -193,13 +193,13 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     })
 
     if (gameExists)
-    if (config.un_elevated) {
-      await invoke('run_un_elevated', {
-        path: config.game_install_path,
-      })
-    } else {
-      await invoke('run_program_relative', { path: exe || config.game_install_path })
-    }
+      if (config.un_elevated) {
+        await invoke('run_un_elevated', {
+          path: config.game_install_path,
+        })
+      } else {
+        await invoke('run_program_relative', { path: exe || config.game_install_path })
+      }
     else alert('Game not found! At: ' + (exe || config.game_install_path))
   }
 
