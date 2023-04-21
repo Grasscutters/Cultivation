@@ -1,5 +1,5 @@
 use crate::system_helpers::*;
-use std::path::{ Path, PathBuf };
+use std::path::{Path, PathBuf};
 
 #[tauri::command]
 pub async fn get_lang(window: tauri::Window, lang: String) -> String {

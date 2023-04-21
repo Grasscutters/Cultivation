@@ -81,7 +81,10 @@ pub fn run_jar(path: String, execute_in: String, java_path: String) {
 pub fn run_un_elevated(path: String) {
   // Open the program non-elevated.
   match open::with(
-    format!("cmd /min /C \"set __COMPAT_LAYER=RUNASINVOKER && start \"\" \"{}\"\"", path),
+    format!(
+      "cmd /min /C \"set __COMPAT_LAYER=RUNASINVOKER && start \"\" \"{}\"\"",
+      path
+    ),
     "C:\\Windows\\System32\\cmd.exe",
   ) {
     Ok(_) => (),
@@ -165,9 +168,7 @@ pub fn set_migoto_delay(migoto_path: String) -> bool {
   };
 
   // Set options
-  conf
-    .with_section(Some("Loader"))
-    .set("delay", "20");
+  conf.with_section(Some("Loader")).set("delay", "20");
 
   // Write file
   match conf.write_to_file(&migoto_pathbuf) {

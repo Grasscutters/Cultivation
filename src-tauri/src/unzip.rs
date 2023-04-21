@@ -109,7 +109,10 @@ pub fn unzip(
 
     if zipfile.contains("GIMI") {
       window
-        .emit("migoto_extracted", destpath.to_string() + "3DMigoto Loader.exe")
+        .emit(
+          "migoto_extracted",
+          destpath.to_string() + "3DMigoto Loader.exe",
+        )
         .unwrap();
     }
 
