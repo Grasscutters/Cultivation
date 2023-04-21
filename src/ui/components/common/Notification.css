@@ -1,0 +1,24 @@
+.Notification {
+  position: absolute;
+
+  /* Default styles, changed when showing notif */
+  top: -100%;
+  right: 10%;
+
+  padding: 20px;
+  border-radius: 4px;
+  border: 1px solid #ffc61e;
+
+  background-color: #fff;
+  color: #000;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: all 0.2s ease;
+}
+
+.NotifShow {
+  top: 10%;
+}

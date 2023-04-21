@@ -11,9 +11,12 @@ import Downloads from './components/menu/Downloads'
 import NewsSection from './components/news/NewsSection'
 import Game from './components/menu/Game'
 import RightBar from './components/RightBar'
+import { ExtrasMenu } from './components/menu/ExtrasMenu'
+import Notification from './components/common/Notification'
 
 import { getConfigOption, setConfigOption } from '../utils/configuration'
 import { invoke } from '@tauri-apps/api'
+import { getVersion } from '@tauri-apps/api/app'
 import { listen } from '@tauri-apps/api/event'
 import { dataDir } from '@tauri-apps/api/path'
 import { appWindow } from '@tauri-apps/api/window'
@@ -24,7 +27,6 @@ import DownloadHandler from '../utils/download'
 import cogBtn from '../resources/icons/cog.svg'
 import downBtn from '../resources/icons/download.svg'
 import wrenchBtn from '../resources/icons/wrench.svg'
-import { ExtrasMenu } from './components/menu/ExtrasMenu'
 
 interface IProps {
   downloadHandler: DownloadHandler
@@ -39,6 +41,7 @@ interface IState {
   extrasOpen: boolean
   migotoSet: boolean
   playGame: (exe?: string, proc_name?: string) => void
+  notification: React.ReactElement | null
 }
 
 export class Main extends React.Component<IProps, IState> {
@@ -55,6 +58,7 @@ export class Main extends React.Component<IProps, IState> {
       playGame: () => {
         alert('Error launching game')
       },
+      notification: null,
     }
 
     listen('lang_error', (payload) => {
@@ -141,6 +145,35 @@ export class Main extends React.Component<IProps, IState> {
     const updatedConfig = await getConfigOption('patch_rsa')
     await setConfigOption('patch_rsa', updatedConfig)
 
+    // Get latest version and compare to this version
+    const latestVersion: {
+      tag_name: string
+      link: string
+    } = await invoke('get_latest_release')
+    const tagName = latestVersion?.tag_name.replace(/[^\d.]/g, '')
+
+    // Check if tagName is different than current version
+    if (tagName && tagName !== (await getVersion())) {
+      // Display notification of new release
+      this.setState({
+        notification: (
+          <>
+            Cultivation{' '}
+            <a href="#" onClick={() => invoke('open_in_browser', { url: latestVersion.link })}>
+              {latestVersion?.tag_name}
+            </a>{' '}
+            is now available!
+          </>
+        ),
+      })
+
+      setTimeout(() => {
+        this.setState({
+          notification: null,
+        })
+      }, 6000)
+    }
+
     // Period check to only show progress bar when downloading files
     setInterval(() => {
       this.setState({
@@ -191,6 +224,8 @@ export class Main extends React.Component<IProps, IState> {
             <img src={gameBtn} alt="game" />
           </div> */}
         </TopBar>
+
+        <Notification show={!!this.state.notification}>{this.state.notification}</Notification>
 
         <RightBar />
 

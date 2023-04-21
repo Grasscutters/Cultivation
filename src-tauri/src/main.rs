@@ -23,6 +23,7 @@ mod file_helpers;
 mod gamebanana;
 mod lang;
 mod proxy;
+mod release;
 mod system_helpers;
 mod unzip;
 mod web;
@@ -57,7 +58,7 @@ fn main() {
     println!("You running as a non-elevated user. Some stuff will almost definitely not work.");
     println!("===============================================================================");
 
-    reopen_as_admin();
+    //reopen_as_admin();
   }
 
   // Setup datadir/cultivation just in case something went funky and it wasn't made
@@ -108,6 +109,7 @@ fn main() {
         system_helpers::run_un_elevated,
         proxy::set_proxy_addr,
         proxy::generate_ca_files,
+        release::get_latest_release,
         unzip::unzip,
         file_helpers::rename,
         file_helpers::dir_create,
