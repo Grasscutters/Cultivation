@@ -18,6 +18,7 @@ use sysinfo::{Pid, ProcessExt, System, SystemExt};
 use crate::admin::reopen_as_admin;
 
 mod admin;
+mod config;
 mod downloader;
 mod file_helpers;
 mod gamebanana;
@@ -41,12 +42,18 @@ fn has_arg(args: &[String], arg: &str) -> bool {
 }
 
 async fn arg_handler(args: &[String]) {
+  let config = config::get_config();
+
   if has_arg(args, "--proxy") {
     let mut pathbuf = tauri::api::path::data_dir().unwrap();
     pathbuf.push("cultivation");
     pathbuf.push("ca");
 
     connect(8035, pathbuf.to_str().unwrap().to_string()).await;
+  }
+
+  if has_arg(args, "--launch-game") {
+    let game_exe = config.game_install_path.clone();
   }
 }
 
@@ -58,7 +65,7 @@ fn main() {
     println!("You running as a non-elevated user. Some stuff will almost definitely not work.");
     println!("===============================================================================");
 
-    reopen_as_admin();
+    //reopen_as_admin();
   }
 
   // Setup datadir/cultivation just in case something went funky and it wasn't made
