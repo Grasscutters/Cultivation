@@ -214,11 +214,11 @@ fn restart_grasscutter(window: tauri::Window) -> bool {
     // Kill it
     if process.kill() {
       // Also kill the cmd it was open in
-      if let Some(parent) = system.process(Pid::from(process.parent().unwrap())) {
+      if let Some(parent) = system.process(process.parent().unwrap()) {
         parent.kill();
       }
       for process_gc in system.processes_by_name("java") {
-        if process_gc.cmd().last().unwrap().contains(&"grasscutter") {
+        if process_gc.cmd().last().unwrap().contains("grasscutter") {
           process_gc.kill();
         }
       }

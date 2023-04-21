@@ -41,8 +41,8 @@ struct ProxyHandler;
 
 #[tauri::command]
 pub fn set_proxy_addr(addr: String) {
-  if addr.contains(" ") {
-    let addr2 = addr.replace(" ", "");
+  if addr.contains(' ') {
+    let addr2 = addr.replace(' ', "");
     *SERVER.lock().unwrap() = addr2;
   } else {
     *SERVER.lock().unwrap() = addr;
@@ -93,11 +93,7 @@ impl HttpHandler for ProxyHandler {
   async fn should_intercept(&mut self, _ctx: &HttpContext, _req: &Request<Body>) -> bool {
     let uri = _req.uri().to_string();
 
-    if uri.contains("hoyoverse.com") || uri.contains("mihoyo.com") || uri.contains("yuanshen.com") {
-      true
-    } else {
-      false
-    }
+    uri.contains("hoyoverse.com") || uri.contains("mihoyo.com") || uri.contains("yuanshen.com")
   }
 }
 
