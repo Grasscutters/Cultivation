@@ -3,6 +3,7 @@
   windows_subsystem = "windows"
 )]
 
+use args::{Args, ArgsError};
 use file_helpers::dir_exists;
 use once_cell::sync::Lazy;
 use std::fs;
@@ -37,14 +38,34 @@ fn try_flush() {
   std::io::stdout().flush().unwrap_or(())
 }
 
-fn has_arg(args: &[String], arg: &str) -> bool {
-  args.contains(&arg.to_string())
-}
+async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
+  let mut args = Args::new(
+    "Cultivation",
+    "Private server helper program for an Anime Game",
+  );
+  args.flag("h", "help", "Print various CLI args");
+  args.flag("p", "proxy", "Start the proxy server");
+  args.flag("g", "launch-game", "Launch the game");
+  args.flag(
+    "na",
+    "no-admin",
+    "Launch without requiring admin permissions",
+  );
+  args.flag("ng", "no-gui", "Run in CLI mode");
 
-async fn arg_handler(args: &[String]) {
+  args.parse(inp);
+
   let config = config::get_config();
 
-  if has_arg(args, "--proxy") {
+  if args.value_of("help")? {
+    println!("{}", args.full_usage());
+    std::process::exit(0);
+  }
+
+  if args.value_of("launch-game")? {}
+
+  if args.value_of("proxy")? {
+    println!("Starting proxy server...");
     let mut pathbuf = tauri::api::path::data_dir().unwrap();
     pathbuf.push("cultivation");
     pathbuf.push("ca");
@@ -52,15 +73,14 @@ async fn arg_handler(args: &[String]) {
     connect(8035, pathbuf.to_str().unwrap().to_string()).await;
   }
 
-  if has_arg(args, "--launch-game") {
-    let game_exe = config.game_install_path.clone();
-  }
+  Ok(args)
 }
 
-fn main() {
+fn main() -> Result<(), ArgsError> {
   let args: Vec<String> = std::env::args().collect();
+  let parsed_args = block_on(parse_args(&args)).unwrap();
 
-  if !is_elevated() && !has_arg(&args, "--no-admin") {
+  if !is_elevated() && parsed_args.value_of("no-admin")? {
     println!("===============================================================================");
     println!("You running as a non-elevated user. Some stuff will almost definitely not work.");
     println!("===============================================================================");
@@ -78,8 +98,6 @@ fn main() {
   exe_path.pop();
   std::env::set_current_dir(&exe_path).unwrap();
 
-  block_on(arg_handler(&args));
-
   // For disabled GUI
   ctrlc::set_handler(|| {
     disconnect();
@@ -87,7 +105,7 @@ fn main() {
   })
   .unwrap_or(());
 
-  if !has_arg(&args, "--no-gui") {
+  if !parsed_args.value_of("no-gui")? {
     tauri::Builder::default()
       .invoke_handler(tauri::generate_handler![
         enable_process_watcher,
@@ -149,6 +167,8 @@ fn main() {
 
   // Always disconnect upon closing the program
   disconnect();
+
+  Ok(())
 }
 
 #[tauri::command]
