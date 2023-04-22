@@ -12,10 +12,7 @@ use registry::{Data, Hive, Security};
 pub fn run_program(path: String, args: Option<String>) {
   // Without unwrap_or, this can crash when UAC prompt is denied
   match open::with(
-    format!(
-      "{} {}",
-      path, args.unwrap_or_else(|| "".into())
-    ),
+    format!("{} {}", path, args.unwrap_or_else(|| "".into())),
     path.clone(),
   ) {
     Ok(_) => (),
@@ -94,7 +91,8 @@ pub fn run_un_elevated(path: String, args: Option<String>) {
   match open::with(
     format!(
       "cmd /min /C \"set __COMPAT_LAYER=RUNASINVOKER && start \"\" \"{}\"\" {}",
-      path, args.unwrap_or_else(|| "".into())
+      path,
+      args.unwrap_or_else(|| "".into())
     ),
     "C:\\Windows\\System32\\cmd.exe",
   ) {
