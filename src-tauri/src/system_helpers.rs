@@ -11,7 +11,16 @@ use registry::{Data, Hive, Security};
 #[tauri::command]
 pub fn run_program(path: String, args: Option<String>) {
   // Without unwrap_or, this can crash when UAC prompt is denied
-  open::that(format!("{} {}", &path, &args.unwrap_or_else(|| "".into()))).unwrap_or(());
+  match open::with(
+    format!(
+      "{} {}",
+      path, args.unwrap_or_else(|| "".into())
+    ),
+    path.clone(),
+  ) {
+    Ok(_) => (),
+    Err(e) => println!("Failed to open program ({}): {}", &path, e),
+  };
 }
 
 #[tauri::command]
@@ -80,12 +89,12 @@ pub fn run_jar(path: String, execute_in: String, java_path: String) {
 }
 
 #[tauri::command]
-pub fn run_un_elevated(path: String) {
+pub fn run_un_elevated(path: String, args: Option<String>) {
   // Open the program non-elevated.
   match open::with(
     format!(
-      "cmd /min /C \"set __COMPAT_LAYER=RUNASINVOKER && start \"\" \"{}\"\"",
-      path
+      "cmd /min /C \"set __COMPAT_LAYER=RUNASINVOKER && start \"\" \"{}\"\" {}",
+      path, args.unwrap_or_else(|| "".into())
     ),
     "C:\\Windows\\System32\\cmd.exe",
   ) {

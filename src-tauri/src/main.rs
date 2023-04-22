@@ -54,12 +54,17 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
     "no-admin",
     "Launch without requiring admin permissions",
   );
-  args.flag("g", "no-gui", "Run in CLI mode");
+  args.flag("g", "no-gui", "Run in CLI mode. Requires -A to be passed as well.");
   args.flag("s", "server", "Launch the configured GC server");
   args.flag(
     "P",
     "patch",
     "Patch your game before launching, with whatever your game version needs",
+  );
+  args.flag(
+    "N",
+    "non-elevated-game",
+    "Launch the game without admin permissions"
   );
   args.option(
     "H",
@@ -96,17 +101,20 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
       patch::patch_game().await;
     }
 
-    system_helpers::run_program(game_path.to_string(), Some(game_args))
+    if args.value_of("non-elevated-game")? {
+      system_helpers::run_un_elevated(game_path.to_string(), Some(game_args))
+    } else {
+      system_helpers::run_program(game_path.to_string(), Some(game_args))
+    }
   }
 
   if args.value_of("server")? {
     let server_jar = config.grasscutter_path;
-    let mut server_path = server_jar.clone();
+    // Assumes grasscutter jar is named appropriately
+    let server_path = server_jar.trim_end_matches("grasscutter.jar");
     let java_path = config.java_path;
 
-    server_path.pop();
-
-    system_helpers::run_jar(server_jar, server_path.to_string(), java_path);
+    system_helpers::run_jar(server_jar.clone(), server_path.to_string(), java_path);
   }
 
   if args.value_of::<String>("host").is_ok() && !args.value_of::<String>("host")?.is_empty() {
