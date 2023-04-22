@@ -27,6 +27,7 @@ mod downloader;
 mod file_helpers;
 mod gamebanana;
 mod lang;
+mod patch;
 mod proxy;
 mod release;
 mod system_helpers;
@@ -56,6 +57,11 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
   );
   args.flag("g", "no-gui", "Run in CLI mode");
   args.flag("s", "server", "Launch the configured GC server");
+  args.flag(
+    "P",
+    "path",
+    "Patch your game before launching, with whatever your game version needs",
+  );
   args.option(
     "H",
     "host",
@@ -85,6 +91,12 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
   if args.value_of("launch-game")? {
     let game_path = config.game_install_path;
     let game_args: String = args.value_of("game-args")?;
+
+    // Patch if needed
+    if args.value_of("patch")? {
+      patch::patch_game().await;
+    }
+
     system_helpers::run_program(game_path.to_string(), Some(game_args))
   }
 
@@ -210,6 +222,9 @@ fn main() -> Result<(), ArgsError> {
 
   // Always disconnect upon closing the program
   disconnect();
+
+  // Always unpatch game upon closing the program
+  patch::unpatch_game();
 
   Ok(())
 }
