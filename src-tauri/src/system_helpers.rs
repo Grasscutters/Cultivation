@@ -67,6 +67,8 @@ pub fn run_jar(path: String, execute_in: String, java_path: String) {
     format!("\"{}\" -jar \"{}\"", java_path, path)
   };
 
+  println!("Launching .jar with command: {}", &command);
+
   // Open the program from the specified path.
   match open::with(
     format!("/k cd /D \"{}\" & {}", &execute_in, &command),

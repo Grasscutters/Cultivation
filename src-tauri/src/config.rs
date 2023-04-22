@@ -12,7 +12,7 @@ pub struct Configuration {
   pub close_action: u64,
   pub startup_launch: bool,
   pub last_ip: String,
-  pub last_port: u64,
+  pub last_port: String,
   pub language: String,
   pub customBackground: String,
   pub cert_generated: bool,

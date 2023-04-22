@@ -45,15 +45,16 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
   );
   args.flag("h", "help", "Print various CLI args");
   args.flag("p", "proxy", "Start the proxy server");
-  args.flag("g", "launch-game", "Launch the game");
+  args.flag("G", "launch-game", "Launch the game");
   args.flag(
-    "na",
+    "A",
     "no-admin",
     "Launch without requiring admin permissions",
   );
-  args.flag("ng", "no-gui", "Run in CLI mode");
+  args.flag("g", "no-gui", "Run in CLI mode");
+  args.flag("s", "server", "Launch the configured GC server");
 
-  args.parse(inp);
+  args.parse(inp).unwrap();
 
   let config = config::get_config();
 
@@ -62,7 +63,24 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
     std::process::exit(0);
   }
 
-  if args.value_of("launch-game")? {}
+  if args.value_of("launch-game")? {
+    let game_path = config.game_install_path;
+    system_helpers::run_program(game_path.to_string(), None)
+  }
+
+  if args.value_of("server")? {
+    let server_jar = config.grasscutter_path;
+    let mut server_path = server_jar.clone();
+    let java_path = config.java_path;
+
+    server_path.pop();
+
+    system_helpers::run_jar(
+      server_jar.to_string(),
+      server_path.to_string(),
+      java_path.to_string(),
+    );
+  }
 
   if args.value_of("proxy")? {
     println!("Starting proxy server...");
@@ -80,12 +98,12 @@ fn main() -> Result<(), ArgsError> {
   let args: Vec<String> = std::env::args().collect();
   let parsed_args = block_on(parse_args(&args)).unwrap();
 
-  if !is_elevated() && parsed_args.value_of("no-admin")? {
+  if !is_elevated() && !parsed_args.value_of("no-admin")? {
     println!("===============================================================================");
     println!("You running as a non-elevated user. Some stuff will almost definitely not work.");
     println!("===============================================================================");
 
-    //reopen_as_admin();
+    reopen_as_admin();
   }
 
   // Setup datadir/cultivation just in case something went funky and it wasn't made
