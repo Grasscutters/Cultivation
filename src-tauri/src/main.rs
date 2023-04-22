@@ -3,9 +3,12 @@
   windows_subsystem = "windows"
 )]
 
+use args::validations::{Order, OrderValidation};
 use args::{Args, ArgsError};
 use file_helpers::dir_exists;
+use getopts;
 use once_cell::sync::Lazy;
+use proxy::set_proxy_addr;
 use std::fs;
 use std::io::Write;
 use std::{collections::HashMap, sync::Mutex};
@@ -53,6 +56,14 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
   );
   args.flag("g", "no-gui", "Run in CLI mode");
   args.flag("s", "server", "Launch the configured GC server");
+  args.option(
+    "H",
+    "host",
+    "Host to connect to (eg. 'localhost:443' or 'my.awesomeserver.com:6969)",
+    "SERVER_HOST",
+    getopts::Occur::Optional,
+    None,
+  );
 
   args.parse(inp).unwrap();
 
@@ -80,6 +91,11 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
       server_path.to_string(),
       java_path.to_string(),
     );
+  }
+
+  if !args.value_of::<String>("host")?.is_empty() {
+    let host = args.value_of::<String>("host")?;
+    set_proxy_addr(host);
   }
 
   if args.value_of("proxy")? {

@@ -796,6 +796,7 @@ dependencies = [
  "duct",
  "file_diff",
  "futures-util",
+ "getopts",
  "http",
  "hudsucker",
  "is_elevated",

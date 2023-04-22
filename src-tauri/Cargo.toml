@@ -28,6 +28,7 @@ tauri = { version = "1.0.7", features = ["api-all"] }
 
 # Arg parsing
 args = "2.0"
+getopts = "0.2"
 
 # Access system process info.
 sysinfo = "0.24.6"

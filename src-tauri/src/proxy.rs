@@ -47,6 +47,8 @@ pub fn set_proxy_addr(addr: String) {
   } else {
     *SERVER.lock().unwrap() = addr;
   }
+
+  println!("Set server to {}", SERVER.lock().unwrap());
 }
 
 #[async_trait]
