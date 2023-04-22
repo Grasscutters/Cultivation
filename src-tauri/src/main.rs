@@ -54,7 +54,11 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
     "no-admin",
     "Launch without requiring admin permissions",
   );
-  args.flag("g", "no-gui", "Run in CLI mode. Requires -A to be passed as well.");
+  args.flag(
+    "g",
+    "no-gui",
+    "Run in CLI mode. Requires -A to be passed as well.",
+  );
   args.flag("s", "server", "Launch the configured GC server");
   args.flag(
     "P",
@@ -64,7 +68,7 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
   args.flag(
     "N",
     "non-elevated-game",
-    "Launch the game without admin permissions"
+    "Launch the game without admin permissions",
   );
   args.option(
     "H",
