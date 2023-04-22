@@ -110,11 +110,19 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
 
   if args.value_of("server")? {
     let server_jar = config.grasscutter_path;
+    let mut server_path = server_jar.clone();
     // Assumes grasscutter jar is named appropriately
-    let server_path = server_jar.trim_end_matches("grasscutter.jar");
+    if server_path.contains('/') {
+      // Can never panic because of if
+      let len = server_jar.rfind('/').unwrap();
+      server_path.truncate(len);
+    } else if server_path.contains('\\') {
+      let len = server_jar.rfind('\\').unwrap();
+      server_path.truncate(len);
+    }
     let java_path = config.java_path;
 
-    system_helpers::run_jar(server_jar.clone(), server_path.to_string(), java_path);
+    system_helpers::run_jar(server_jar, server_path.to_string(), java_path);
   }
 
   if args.value_of::<String>("host").is_ok() && !args.value_of::<String>("host")?.is_empty() {
