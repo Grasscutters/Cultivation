@@ -3,10 +3,9 @@
   windows_subsystem = "windows"
 )]
 
-use args::validations::{Order, OrderValidation};
 use args::{Args, ArgsError};
 use file_helpers::dir_exists;
-use getopts;
+
 use once_cell::sync::Lazy;
 use proxy::set_proxy_addr;
 use std::fs;
@@ -107,11 +106,7 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
 
     server_path.pop();
 
-    system_helpers::run_jar(
-      server_jar.to_string(),
-      server_path.to_string(),
-      java_path.to_string(),
-    );
+    system_helpers::run_jar(server_jar, server_path.to_string(), java_path);
   }
 
   if args.value_of::<String>("host").is_ok() && !args.value_of::<String>("host")?.is_empty() {

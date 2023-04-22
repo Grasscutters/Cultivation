@@ -55,5 +55,5 @@ pub async fn get_game_rsa_path() -> Option<String> {
   let mut game_folder = PathBuf::from(config.game_install_path);
   game_folder.pop();
 
-  Some(format!("{}/", game_folder.to_str().unwrap()).replace("\\", "/"))
+  Some(format!("{}/", game_folder.to_str().unwrap()).replace('\\', "/"))
 }
