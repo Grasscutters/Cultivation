@@ -59,8 +59,16 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
   args.option(
     "H",
     "host",
-    "Host to connect to (eg. 'localhost:443' or 'my.awesomeserver.com:6969)",
+    "Set host to connect to (eg. 'localhost:443' or 'my.awesomeserver.com:6969)",
     "SERVER_HOST",
+    getopts::Occur::Optional,
+    None,
+  );
+  args.option(
+    "a",
+    "game-args",
+    "Arguments to pass to the game process, if launching it",
+    r#""-opt-one -opt-two"#,
     getopts::Occur::Optional,
     None,
   );
@@ -76,7 +84,8 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
 
   if args.value_of("launch-game")? {
     let game_path = config.game_install_path;
-    system_helpers::run_program(game_path.to_string(), None)
+    let game_args: String = args.value_of("game-args")?;
+    system_helpers::run_program(game_path.to_string(), Some(game_args))
   }
 
   if args.value_of("server")? {
