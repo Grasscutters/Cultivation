@@ -73,7 +73,7 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
     "a",
     "game-args",
     "Arguments to pass to the game process, if launching it",
-    r#""-opt-one -opt-two"#,
+    r#""-opt-one -opt-two""#,
     getopts::Occur::Optional,
     None,
   );
