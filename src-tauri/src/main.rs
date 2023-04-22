@@ -58,7 +58,7 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
   args.flag("s", "server", "Launch the configured GC server");
   args.flag(
     "P",
-    "path",
+    "patch",
     "Patch your game before launching, with whatever your game version needs",
   );
   args.option(
