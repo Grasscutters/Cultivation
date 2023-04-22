@@ -115,7 +115,7 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
   if args.value_of("server")? {
     let server_jar = config.grasscutter_path;
     let mut server_path = server_jar.clone();
-    // Assumes grasscutter jar is named appropriately
+    // Strip jar name from path
     if server_path.contains('/') {
       // Can never panic because of if
       let len = server_jar.rfind('/').unwrap();
