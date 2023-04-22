@@ -3,8 +3,11 @@
   windows_subsystem = "windows"
 )]
 
+use args::{Args, ArgsError};
 use file_helpers::dir_exists;
+
 use once_cell::sync::Lazy;
+use proxy::set_proxy_addr;
 use std::fs;
 use std::io::Write;
 use std::{collections::HashMap, sync::Mutex};
@@ -18,10 +21,12 @@ use sysinfo::{Pid, ProcessExt, System, SystemExt};
 use crate::admin::reopen_as_admin;
 
 mod admin;
+mod config;
 mod downloader;
 mod file_helpers;
 mod gamebanana;
 mod lang;
+mod patch;
 mod proxy;
 mod release;
 mod system_helpers;
@@ -36,24 +41,116 @@ fn try_flush() {
   std::io::stdout().flush().unwrap_or(())
 }
 
-fn has_arg(args: &[String], arg: &str) -> bool {
-  args.contains(&arg.to_string())
-}
+async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
+  let mut args = Args::new(
+    "Cultivation",
+    "Private server helper program for an Anime Game",
+  );
+  args.flag("h", "help", "Print various CLI args");
+  args.flag("p", "proxy", "Start the proxy server");
+  args.flag("G", "launch-game", "Launch the game");
+  args.flag(
+    "A",
+    "no-admin",
+    "Launch without requiring admin permissions",
+  );
+  args.flag(
+    "g",
+    "no-gui",
+    "Run in CLI mode. Requires -A to be passed as well.",
+  );
+  args.flag("s", "server", "Launch the configured GC server");
+  args.flag(
+    "P",
+    "patch",
+    "Patch your game before launching, with whatever your game version needs",
+  );
+  args.flag(
+    "N",
+    "non-elevated-game",
+    "Launch the game without admin permissions",
+  );
+  args.option(
+    "H",
+    "host",
+    "Set host to connect to (eg. 'localhost:443' or 'my.awesomeserver.com:6969)",
+    "SERVER_HOST",
+    getopts::Occur::Optional,
+    None,
+  );
+  args.option(
+    "a",
+    "game-args",
+    "Arguments to pass to the game process, if launching it",
+    r#""-opt-one -opt-two""#,
+    getopts::Occur::Optional,
+    None,
+  );
 
-async fn arg_handler(args: &[String]) {
-  if has_arg(args, "--proxy") {
+  args.parse(inp).unwrap();
+
+  let config = config::get_config();
+
+  if args.value_of("help")? {
+    println!("{}", args.full_usage());
+    std::process::exit(0);
+  }
+
+  if args.value_of("launch-game")? {
+    let game_path = config.game_install_path;
+    let game_args: String = args.value_of("game-args").unwrap_or(String::new());
+
+    // Patch if needed
+    if args.value_of("patch")? {
+      patch::patch_game().await;
+    }
+
+    if args.value_of("non-elevated-game")? {
+      system_helpers::run_un_elevated(game_path.to_string(), Some(game_args))
+    } else {
+      system_helpers::run_program(game_path.to_string(), Some(game_args))
+    }
+  }
+
+  if args.value_of("server")? {
+    let server_jar = config.grasscutter_path;
+    let mut server_path = server_jar.clone();
+    // Strip jar name from path
+    if server_path.contains('/') {
+      // Can never panic because of if
+      let len = server_jar.rfind('/').unwrap();
+      server_path.truncate(len);
+    } else if server_path.contains('\\') {
+      let len = server_jar.rfind('\\').unwrap();
+      server_path.truncate(len);
+    }
+    let java_path = config.java_path;
+
+    system_helpers::run_jar(server_jar, server_path.to_string(), java_path);
+  }
+
+  if args.value_of::<String>("host").is_ok() && !args.value_of::<String>("host")?.is_empty() {
+    let host = args.value_of::<String>("host")?;
+    set_proxy_addr(host);
+  }
+
+  if args.value_of("proxy")? {
+    println!("Starting proxy server...");
     let mut pathbuf = tauri::api::path::data_dir().unwrap();
     pathbuf.push("cultivation");
     pathbuf.push("ca");
 
     connect(8035, pathbuf.to_str().unwrap().to_string()).await;
   }
+
+  Ok(args)
 }
 
-fn main() {
+fn main() -> Result<(), ArgsError> {
   let args: Vec<String> = std::env::args().collect();
+  let parsed_args = block_on(parse_args(&args)).unwrap();
 
-  if !is_elevated() && !has_arg(&args, "--no-admin") {
+  if !is_elevated() && !parsed_args.value_of("no-admin")? {
     println!("===============================================================================");
     println!("You running as a non-elevated user. Some stuff will almost definitely not work.");
     println!("===============================================================================");
@@ -71,16 +168,15 @@ fn main() {
   exe_path.pop();
   std::env::set_current_dir(&exe_path).unwrap();
 
-  block_on(arg_handler(&args));
-
   // For disabled GUI
   ctrlc::set_handler(|| {
     disconnect();
+    block_on(patch::unpatch_game());
     std::process::exit(0);
   })
   .unwrap_or(());
 
-  if !has_arg(&args, "--no-gui") {
+  if !parsed_args.value_of("no-gui")? {
     tauri::Builder::default()
       .invoke_handler(tauri::generate_handler![
         enable_process_watcher,
@@ -142,6 +238,11 @@ fn main() {
 
   // Always disconnect upon closing the program
   disconnect();
+
+  // Always unpatch game upon closing the program
+  block_on(patch::unpatch_game());
+
+  Ok(())
 }
 
 #[tauri::command]
