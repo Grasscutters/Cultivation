@@ -171,6 +171,7 @@ fn main() -> Result<(), ArgsError> {
   // For disabled GUI
   ctrlc::set_handler(|| {
     disconnect();
+    block_on(patch::unpatch_game());
     std::process::exit(0);
   })
   .unwrap_or(());
