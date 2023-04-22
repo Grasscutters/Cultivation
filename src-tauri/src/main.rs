@@ -114,7 +114,7 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
     );
   }
 
-  if !args.value_of::<String>("host")?.is_empty() {
+  if args.value_of::<String>("host").is_ok() && !args.value_of::<String>("host")?.is_empty() {
     let host = args.value_of::<String>("host")?;
     set_proxy_addr(host);
   }
@@ -224,7 +224,7 @@ fn main() -> Result<(), ArgsError> {
   disconnect();
 
   // Always unpatch game upon closing the program
-  patch::unpatch_game();
+  block_on(patch::unpatch_game());
 
   Ok(())
 }
