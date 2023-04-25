@@ -8,6 +8,7 @@ import { ModTile } from './ModTile'
 
 interface IProps {
   mode: string
+  page: number
   addDownload: (mod: ModData) => void
 }
 
@@ -62,7 +63,7 @@ export class ModList extends React.Component<IProps, IState> {
       return
     }
 
-    const mods = await getMods(this.props.mode)
+    const mods = await getMods(this.props.mode, this.props.page)
     const horny = await getConfigOption('horny_mode')
 
     this.setState({

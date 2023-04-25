@@ -1,21 +1,25 @@
+use http::header;
+use once_cell::sync::Lazy;
 use reqwest::header::{CONTENT_TYPE, USER_AGENT};
+static CLIENT: Lazy<reqwest::Client> = Lazy::new(|| {
+  let mut headers = header::HeaderMap::new();
+  headers.insert(USER_AGENT, header::HeaderValue::from_static("cultivation"));
+  headers.insert(CONTENT_TYPE, header::HeaderValue::from_static("application/json"));
+
+  let client = reqwest::Client::builder()
+  .default_headers(headers);
+  client.build().unwrap()
+});
 
 pub(crate) async fn query(site: &str) -> String {
-  let client = reqwest::Client::new();
-
-  let response = client
+  CLIENT
     .get(site)
-    .header(USER_AGENT, "cultivation")
-    .header(CONTENT_TYPE, "application/json")
     .send()
     .await
-    .ok();
-
-  if response.is_some() {
-    response.unwrap().text().await.unwrap()
-  } else {
-    false.to_string()
-  }
+    .expect("Failed to get web response")
+    .text()
+    .await
+    .unwrap()
 }
 
 #[tauri::command]

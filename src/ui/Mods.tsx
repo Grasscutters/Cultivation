@@ -14,6 +14,7 @@ import Back from '../resources/icons/back.svg'
 import Menu from './components/menu/Menu'
 import BigButton from './components/common/BigButton'
 import Tr from '../utils/language'
+import { ModPages } from './components/mods/ModPages'
 
 interface IProps {
   downloadHandler: DownloadHandler
@@ -23,7 +24,19 @@ interface IState {
   isDownloading: boolean
   category: string
   downloadList: { name: string; url: string; mod: ModData }[] | null
+  page: number
 }
+
+const pages = [
+  {
+    name: -1,
+    title: '<',
+  },
+  {
+    name: 1,
+    title: '>',
+  }
+]
 
 const headers = [
   {
@@ -53,10 +66,12 @@ export class Mods extends React.Component<IProps, IState> {
       isDownloading: false,
       category: '',
       downloadList: null,
+      page: 1,
     }
 
     this.setCategory = this.setCategory.bind(this)
     this.addDownload = this.addDownload.bind(this)
+    this.setPage = this.setPage.bind(this)
   }
 
   async addDownload(mod: ModData) {
@@ -106,6 +121,17 @@ export class Mods extends React.Component<IProps, IState> {
     this.setState(
       {
         category: value,
+      },
+      this.forceUpdate
+    )
+  }
+
+  async setPage(value: number) {
+    const current = this.state.page;
+    if (current + value == 0) return;
+    this.setState(
+      {
+        page: current + value,
       },
       this.forceUpdate
     )
@@ -162,7 +188,9 @@ export class Mods extends React.Component<IProps, IState> {
 
         <ModHeader onChange={this.setCategory} headers={headers} defaultHeader={'ripe'} />
 
-        <ModList key={this.state.category} mode={this.state.category} addDownload={this.addDownload} />
+        <ModPages onClick={this.setPage} headers={pages} defaultHeader={1} />
+
+        <ModList key={`${this.state.category}_${this.state.page}`} mode={this.state.category} addDownload={this.addDownload} page={this.state.page} />
       </div>
     )
   }

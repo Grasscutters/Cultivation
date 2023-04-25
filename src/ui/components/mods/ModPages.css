@@ -1,0 +1,30 @@
+.ModPages {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+
+  padding: 10px;
+
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  background: rgba(77, 77, 77, 0.6);
+}
+
+.ModPagesTitle {
+  display: flex;
+  justify-content: center;
+
+  width: 100%;
+  max-width: 20%;
+}
+
+.ModPagesTitle:hover {
+  cursor: pointer;
+}
+
+.ModPagesTitle.selected {
+  border-bottom: 0px solid #fff;
+}
