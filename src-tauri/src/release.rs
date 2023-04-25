@@ -17,7 +17,7 @@ pub async fn get_latest_release() -> Release {
     .unwrap();
   let text = response.text().await.unwrap();
 
-  println!("Response: {}", text);
+  //println!("Response: {}", text);
 
   // Parse "tag_name" from JSON
   let json: serde_json::Value = serde_json::from_str(&text).unwrap();

@@ -188,7 +188,12 @@ export class Mods extends React.Component<IProps, IState> {
 
         <ModHeader onChange={this.setCategory} headers={headers} defaultHeader={'ripe'} />
 
-        <ModPages onClick={this.setPage} headers={pages} defaultHeader={1} />
+        {this.state.category != 'installed' && (
+          <>
+            <p className="ModPagesPage">{this.state.page} </p>
+            <ModPages onClick={this.setPage} headers={pages} defaultHeader={this.state.page} />
+          </>
+        )}
 
         <ModList
           key={`${this.state.category}_${this.state.page}`}

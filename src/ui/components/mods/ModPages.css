@@ -4,8 +4,10 @@
   align-items: center;
   justify-content: space-around;
   width: 100%;
+  z-index: 2;
+  position: relative;
 
-  padding: 10px;
+  padding: 5px;
 
   font-size: 20px;
   font-weight: bold;
@@ -16,6 +18,7 @@
 .ModPagesTitle {
   display: flex;
   justify-content: center;
+  z-index: 3;
 
   width: 100%;
   max-width: 20%;
@@ -27,4 +30,20 @@
 
 .ModPagesTitle.selected {
   border-bottom: 0px solid #fff;
+}
+
+.ModPagesPage {
+  position: absolute;
+  justify-self: center;
+  left: 50%;
+  margin-top: 10px;
+  transform: translateX(-50%);
+  text-align: center;
+
+  padding: -5px;
+  z-index: 3;
+
+  font-size: 15px;
+  font-weight: bold;
+  color: #fff;
 }
