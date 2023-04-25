@@ -6,7 +6,8 @@ pub struct Release {
 
 #[tauri::command]
 pub async fn get_latest_release() -> Release {
-  let url = "https://api.github.com/repos/Grasscutters/Cultivation/releases/latest";
+  // NotThorny edition requests to repo so as to avoid update spam from official repo -alpha version diff.
+  let url = "https://api.github.com/repos/NotThorny/Cultivation/releases/latest";
   let client = reqwest::Client::new();
   let response = client
     .get(url)

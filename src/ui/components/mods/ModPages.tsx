@@ -25,8 +25,8 @@ export class ModPages extends React.Component<IProps, IState> {
   }
 
   setSelected(value: number) {
-    const current = this.state.selected;
-    if (current + value == 0) return;
+    const current = this.state.selected
+    if (current + value == 0) return
     this.setState({
       selected: current + value,
     })

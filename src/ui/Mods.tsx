@@ -35,7 +35,7 @@ const pages = [
   {
     name: 1,
     title: '>',
-  }
+  },
 ]
 
 const headers = [
@@ -127,8 +127,8 @@ export class Mods extends React.Component<IProps, IState> {
   }
 
   async setPage(value: number) {
-    const current = this.state.page;
-    if (current + value == 0) return;
+    const current = this.state.page
+    if (current + value == 0) return
     this.setState(
       {
         page: current + value,
@@ -190,7 +190,12 @@ export class Mods extends React.Component<IProps, IState> {
 
         <ModPages onClick={this.setPage} headers={pages} defaultHeader={1} />
 
-        <ModList key={`${this.state.category}_${this.state.page}`} mode={this.state.category} addDownload={this.addDownload} page={this.state.page} />
+        <ModList
+          key={`${this.state.category}_${this.state.page}`}
+          mode={this.state.category}
+          addDownload={this.addDownload}
+          page={this.state.page}
+        />
       </div>
     )
   }
