@@ -52,7 +52,12 @@ pub async fn unpatch_game() -> bool {
 
 pub async fn get_game_rsa_path() -> Option<String> {
   let config = config::get_config();
-  let mut game_folder = PathBuf::from(config.game_install_path);
+
+  if config.game_install_path.is_none() {
+    return None;
+  }
+
+  let mut game_folder = PathBuf::from(config.game_install_path.unwrap());
   game_folder.pop();
 
   Some(format!("{}/", game_folder.to_str().unwrap()).replace('\\', "/"))

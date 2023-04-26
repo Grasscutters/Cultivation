@@ -105,15 +105,17 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
       patch::patch_game().await;
     }
 
-    if args.value_of("non-elevated-game")? {
-      system_helpers::run_un_elevated(game_path.to_string(), Some(game_args))
-    } else {
-      system_helpers::run_program(game_path.to_string(), Some(game_args))
+    if game_path.is_some() {
+      if args.value_of("non-elevated-game")? {
+        system_helpers::run_un_elevated(game_path.unwrap().to_string(), Some(game_args))
+      } else {
+        system_helpers::run_program(game_path.unwrap().to_string(), Some(game_args))
+      }
     }
   }
 
-  if args.value_of("server")? {
-    let server_jar = config.grasscutter_path;
+  if args.value_of("server")? && config.grasscutter_path.is_some() && config.java_path.is_some() {
+    let server_jar = config.grasscutter_path.unwrap();
     let mut server_path = server_jar.clone();
     // Strip jar name from path
     if server_path.contains('/') {
@@ -124,7 +126,7 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
       let len = server_jar.rfind('\\').unwrap();
       server_path.truncate(len);
     }
-    let java_path = config.java_path;
+    let java_path = config.java_path.unwrap();
 
     system_helpers::run_jar(server_jar, server_path.to_string(), java_path);
   }
@@ -155,7 +157,7 @@ fn main() -> Result<(), ArgsError> {
     println!("You running as a non-elevated user. Some stuff will almost definitely not work.");
     println!("===============================================================================");
 
-    reopen_as_admin();
+    //reopen_as_admin();
   }
 
   // Setup datadir/cultivation just in case something went funky and it wasn't made
