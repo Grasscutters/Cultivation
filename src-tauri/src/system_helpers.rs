@@ -1,7 +1,7 @@
 use duct::cmd;
 use ini::Ini;
-use std::path::PathBuf;
 use std::ffi::OsStr;
+use std::path::PathBuf;
 
 #[cfg(windows)]
 use {
@@ -244,6 +244,10 @@ pub fn service_status(service: String) -> bool {
     false
   }
 }
+
+#[cfg(unix)]
+#[tauri::command]
+pub fn service_status(service: String) {}
 
 #[cfg(windows)]
 #[tauri::command]
