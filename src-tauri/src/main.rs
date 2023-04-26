@@ -308,6 +308,7 @@ fn is_grasscutter_running() -> bool {
   !proc.is_empty()
 }
 
+#[cfg(windows)]
 #[tauri::command]
 fn restart_grasscutter(window: tauri::Window) -> bool {
   let pid: usize = *GC_PID.lock().unwrap();
@@ -338,6 +339,7 @@ fn restart_grasscutter(window: tauri::Window) -> bool {
   }
 }
 
+#[cfg(windows)]
 #[tauri::command]
 fn enable_grasscutter_watcher(window: tauri::Window, process: String) {
   let grasscutter_name = process.clone();
