@@ -6,8 +6,8 @@ static CLIENT: Lazy<reqwest::Client> = Lazy::new(|| {
   headers.insert(USER_AGENT, header::HeaderValue::from_static("cultivation"));
   headers.insert(
     CONTENT_TYPE,
-     header::HeaderValue::from_static("application/json"),
-    );
+    header::HeaderValue::from_static("application/json"),
+  );
 
   let client = reqwest::Client::builder().default_headers(headers);
   client.build().unwrap()
