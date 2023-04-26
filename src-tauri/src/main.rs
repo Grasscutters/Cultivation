@@ -107,9 +107,9 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
 
     if game_path.is_some() {
       if args.value_of("non-elevated-game")? {
-        system_helpers::run_un_elevated(game_path.unwrap().to_string(), Some(game_args))
+        system_helpers::run_un_elevated(game_path.unwrap(), Some(game_args))
       } else {
-        system_helpers::run_program(game_path.unwrap().to_string(), Some(game_args))
+        system_helpers::run_program(game_path.unwrap(), Some(game_args))
       }
     }
   }

@@ -143,12 +143,13 @@ export class Mods extends React.Component<IProps, IState> {
   }
 
   async setSearch(text: string) {
-    if(this.timeout) clearTimeout(this.timeout);
+    if (this.timeout) clearTimeout(this.timeout)
     this.timeout = window.setTimeout(() => {
-      this.setState({
-        search: text,
-      },
-      this.forceUpdate
+      this.setState(
+        {
+          search: text,
+        },
+        this.forceUpdate
       )
     }, 300)
   }
@@ -207,13 +208,15 @@ export class Mods extends React.Component<IProps, IState> {
         {this.state.category != 'installed' && (
           <>
             <div className="ModPagesPage">
-            <TextInput
+              <TextInput
                 id="search"
                 key="search"
                 placeholder={this.state.page.toString()}
-                onChange={(text: string) => {this.setSearch(text)}}
+                onChange={(text: string) => {
+                  this.setSearch(text)
+                }}
                 initalValue={''}
-            />
+              />
             </div>
             <ModPages onClick={this.setPage} headers={pages} defaultHeader={this.state.page} />
           </>
