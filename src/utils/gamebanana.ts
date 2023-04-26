@@ -132,6 +132,28 @@ export async function getMods(mode: string, page: number) {
   return formatGamebananaData(modList)
 }
 
+export async function getAllMods(mode: string) {
+  let modList: GamebananaResponse[] = []
+  let hadMods = true
+  let page = 1
+
+  while (hadMods) {
+    const resp = JSON.parse(
+      await invoke('list_submissions', {
+        mode,
+        page: '' + page,
+      })
+    )
+
+    if (resp.length === 0) hadMods = false
+
+    modList = [...modList, ...resp]
+    page++
+  }
+
+  return formatGamebananaData(modList)
+}
+
 export async function formatGamebananaData(obj: GamebananaResponse[]) {
   if (!obj) return []
 

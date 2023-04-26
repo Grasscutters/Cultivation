@@ -15,6 +15,7 @@ import Menu from './components/menu/Menu'
 import BigButton from './components/common/BigButton'
 import Tr from '../utils/language'
 import { ModPages } from './components/mods/ModPages'
+import TextInput from './components/common/TextInput'
 
 interface IProps {
   downloadHandler: DownloadHandler
@@ -25,6 +26,7 @@ interface IState {
   category: string
   downloadList: { name: string; url: string; mod: ModData }[] | null
   page: number
+  search: string
 }
 
 const pages = [
@@ -59,14 +61,17 @@ const headers = [
  * @TODO Categorizaiton/sorting (by likes, views, etc)
  */
 export class Mods extends React.Component<IProps, IState> {
+  timeout: number
   constructor(props: IProps) {
     super(props)
+    this.timeout = 0
 
     this.state = {
       isDownloading: false,
       category: '',
       downloadList: null,
       page: 1,
+      search: '',
     }
 
     this.setCategory = this.setCategory.bind(this)
@@ -137,6 +142,17 @@ export class Mods extends React.Component<IProps, IState> {
     )
   }
 
+  async setSearch(text: string) {
+    if(this.timeout) clearTimeout(this.timeout);
+    this.timeout = window.setTimeout(() => {
+      this.setState({
+        search: text,
+      },
+      this.forceUpdate
+      )
+    }, 300)
+  }
+
   render() {
     return (
       <div className="Mods">
@@ -190,16 +206,25 @@ export class Mods extends React.Component<IProps, IState> {
 
         {this.state.category != 'installed' && (
           <>
-            <p className="ModPagesPage">{this.state.page} </p>
+            <div className="ModPagesPage">
+            <TextInput
+                id="search"
+                key="search"
+                placeholder={this.state.page.toString()}
+                onChange={(text: string) => {this.setSearch(text)}}
+                initalValue={''}
+            />
+            </div>
             <ModPages onClick={this.setPage} headers={pages} defaultHeader={this.state.page} />
           </>
         )}
 
         <ModList
-          key={`${this.state.category}_${this.state.page}`}
+          key={`${this.state.category}_${this.state.page}_${this.state.search}`}
           mode={this.state.category}
           addDownload={this.addDownload}
           page={this.state.page}
+          search={this.state.search}
         />
       </div>
     )

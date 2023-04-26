@@ -47,3 +47,20 @@
   font-weight: bold;
   color: #fff;
 }
+
+.ModPagesPage input {
+  text-align: center;
+  padding: 3px;
+  border-radius: 3px;
+  height: 18px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  background: rgba(77, 77, 77, 0.6);
+}
+
+.ModPagesPage .TextInputWrapper {
+  background: rgba(77, 77, 77, 0.6);
+  z-index: -1;
+  display: inline-block;
+}
