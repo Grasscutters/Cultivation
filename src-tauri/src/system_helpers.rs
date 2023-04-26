@@ -1,12 +1,14 @@
 use duct::cmd;
 use ini::Ini;
-use std::ffi::OsStr;
 use std::path::PathBuf;
-use windows_service::service::{ServiceAccess, ServiceState::Stopped};
-use windows_service::service_manager::{ServiceManager, ServiceManagerAccess};
+use std::ffi::OsStr;
 
 #[cfg(windows)]
-use registry::{Data, Hive, Security};
+use {
+  registry::{Data, Hive, Security},
+  windows_service::service::{ServiceAccess, ServiceState::Stopped},
+  windows_service::service_manager::{ServiceManager, ServiceManagerAccess},
+};
 
 #[tauri::command]
 pub fn run_program(path: String, args: Option<String>) {
@@ -230,7 +232,7 @@ pub fn service_status(service: String) -> bool {
     }
   };
   let status_result = my_service.query_status();
-  if status_result.is_ok() {
+  if let Ok(..) = status_result {
     let status = status_result.unwrap();
     println!("{} service status: {:?}", service, status.current_state);
     if status.current_state == Stopped {
@@ -262,6 +264,12 @@ pub fn start_service(service: String) -> bool {
   true
 }
 
+#[cfg(unix)]
+#[tauri::command]
+pub fn start_service(service: String) {
+  let started = OsStr::new("Started service!");
+}
+
 #[cfg(windows)]
 #[tauri::command]
 pub fn stop_service(service: String) -> bool {
@@ -280,6 +288,10 @@ pub fn stop_service(service: String) -> bool {
   };
   true
 }
+
+#[cfg(unix)]
+#[tauri::command]
+pub fn stop_service(service: String) {}
 
 #[cfg(unix)]
 #[tauri::command]

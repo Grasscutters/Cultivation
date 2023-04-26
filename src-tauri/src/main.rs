@@ -107,9 +107,9 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
 
     if game_path.is_some() {
       if args.value_of("non-elevated-game")? {
-        system_helpers::run_un_elevated(game_path.unwrap().to_string(), Some(game_args))
+        system_helpers::run_un_elevated(game_path.unwrap(), Some(game_args))
       } else {
-        system_helpers::run_program(game_path.unwrap().to_string(), Some(game_args))
+        system_helpers::run_program(game_path.unwrap(), Some(game_args))
       }
     }
   }
@@ -308,6 +308,7 @@ fn is_grasscutter_running() -> bool {
   !proc.is_empty()
 }
 
+#[cfg(windows)]
 #[tauri::command]
 fn restart_grasscutter(window: tauri::Window) -> bool {
   let pid: usize = *GC_PID.lock().unwrap();
@@ -338,6 +339,11 @@ fn restart_grasscutter(window: tauri::Window) -> bool {
   }
 }
 
+#[cfg(unix)]
+#[tauri::command]
+fn restart_grasscutter(window: tauri::Window) {}
+
+#[cfg(windows)]
 #[tauri::command]
 fn enable_grasscutter_watcher(window: tauri::Window, process: String) {
   let grasscutter_name = process.clone();
@@ -396,6 +402,12 @@ fn enable_grasscutter_watcher(window: tauri::Window, process: String) {
       }
     }
   });
+}
+
+#[cfg(unix)]
+#[tauri::command]
+fn enable_grasscutter_watcher(window: tauri::Window, process: String) {
+  let gc_pid = Pid::from(696969);
 }
 
 #[tauri::command]

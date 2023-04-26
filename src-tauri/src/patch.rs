@@ -53,9 +53,7 @@ pub async fn unpatch_game() -> bool {
 pub async fn get_game_rsa_path() -> Option<String> {
   let config = config::get_config();
 
-  if config.game_install_path.is_none() {
-    return None;
-  }
+  config.game_install_path.as_ref()?;
 
   let mut game_folder = PathBuf::from(config.game_install_path.unwrap());
   game_folder.pop();

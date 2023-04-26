@@ -1,6 +1,6 @@
 import React from 'react'
 import { getConfigOption } from '../../../utils/configuration'
-import { getInstalledMods, getMods, ModData, PartialModData } from '../../../utils/gamebanana'
+import { getAllMods, getInstalledMods, getMods, ModData, PartialModData } from '../../../utils/gamebanana'
 import { LoadingCircle } from './LoadingCircle'
 
 import './ModList.css'
@@ -8,6 +8,8 @@ import { ModTile } from './ModTile'
 
 interface IProps {
   mode: string
+  page: number
+  search: string
   addDownload: (mod: ModData) => void
 }
 
@@ -62,7 +64,17 @@ export class ModList extends React.Component<IProps, IState> {
       return
     }
 
-    const mods = await getMods(this.props.mode)
+    let mods: ModData[]
+
+    if (!(this.props.search == '')) {
+      // idk the api so just filter all mods to search
+      mods = (await getAllMods(this.props.mode)).filter((mod) =>
+        mod.name.toLowerCase().includes(this.props.search.toLowerCase())
+      )
+    } else {
+      mods = await getMods(this.props.mode, this.props.page)
+    }
+
     const horny = await getConfigOption('horny_mode')
 
     this.setState({

@@ -16,7 +16,8 @@ pub async fn get_latest_release() -> Release {
     .unwrap();
   let text = response.text().await.unwrap();
 
-  println!("Response: {}", text);
+  // This includes ip when github rate limits you, so avoid it for now to avoid leaks through screenshots
+  //println!("Response: {}", text);
 
   // Parse "tag_name" from JSON
   let json: serde_json::Value = serde_json::from_str(&text).unwrap();

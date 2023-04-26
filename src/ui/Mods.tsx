@@ -14,6 +14,8 @@ import Back from '../resources/icons/back.svg'
 import Menu from './components/menu/Menu'
 import BigButton from './components/common/BigButton'
 import Tr from '../utils/language'
+import { ModPages } from './components/mods/ModPages'
+import TextInput from './components/common/TextInput'
 
 interface IProps {
   downloadHandler: DownloadHandler
@@ -23,7 +25,20 @@ interface IState {
   isDownloading: boolean
   category: string
   downloadList: { name: string; url: string; mod: ModData }[] | null
+  page: number
+  search: string
 }
+
+const pages = [
+  {
+    name: -1,
+    title: '<',
+  },
+  {
+    name: 1,
+    title: '>',
+  },
+]
 
 const headers = [
   {
@@ -46,17 +61,22 @@ const headers = [
  * @TODO Categorizaiton/sorting (by likes, views, etc)
  */
 export class Mods extends React.Component<IProps, IState> {
+  timeout: number
   constructor(props: IProps) {
     super(props)
+    this.timeout = 0
 
     this.state = {
       isDownloading: false,
       category: '',
       downloadList: null,
+      page: 1,
+      search: '',
     }
 
     this.setCategory = this.setCategory.bind(this)
     this.addDownload = this.addDownload.bind(this)
+    this.setPage = this.setPage.bind(this)
   }
 
   async addDownload(mod: ModData) {
@@ -111,6 +131,29 @@ export class Mods extends React.Component<IProps, IState> {
     )
   }
 
+  async setPage(value: number) {
+    const current = this.state.page
+    if (current + value == 0) return
+    this.setState(
+      {
+        page: current + value,
+      },
+      this.forceUpdate
+    )
+  }
+
+  async setSearch(text: string) {
+    if (this.timeout) clearTimeout(this.timeout)
+    this.timeout = window.setTimeout(() => {
+      this.setState(
+        {
+          search: text,
+        },
+        this.forceUpdate
+      )
+    }, 500)
+  }
+
   render() {
     return (
       <div className="Mods">
@@ -162,7 +205,30 @@ export class Mods extends React.Component<IProps, IState> {
 
         <ModHeader onChange={this.setCategory} headers={headers} defaultHeader={'ripe'} />
 
-        <ModList key={this.state.category} mode={this.state.category} addDownload={this.addDownload} />
+        {this.state.category != 'installed' && (
+          <>
+            <div className="ModPagesPage">
+              <TextInput
+                id="search"
+                key="search"
+                placeholder={this.state.page.toString()}
+                onChange={(text: string) => {
+                  this.setSearch(text)
+                }}
+                initalValue={''}
+              />
+            </div>
+            <ModPages onClick={this.setPage} headers={pages} defaultHeader={this.state.page} />
+          </>
+        )}
+
+        <ModList
+          key={`${this.state.category}_${this.state.page}_${this.state.search}`}
+          mode={this.state.category}
+          addDownload={this.addDownload}
+          page={this.state.page}
+          search={this.state.search}
+        />
       </div>
     )
   }
