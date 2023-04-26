@@ -4,10 +4,12 @@ use reqwest::header::{CONTENT_TYPE, USER_AGENT};
 static CLIENT: Lazy<reqwest::Client> = Lazy::new(|| {
   let mut headers = header::HeaderMap::new();
   headers.insert(USER_AGENT, header::HeaderValue::from_static("cultivation"));
-  headers.insert(CONTENT_TYPE, header::HeaderValue::from_static("application/json"));
+  headers.insert(
+    CONTENT_TYPE,
+     header::HeaderValue::from_static("application/json"),
+    );
 
-  let client = reqwest::Client::builder()
-  .default_headers(headers);
+  let client = reqwest::Client::builder().default_headers(headers);
   client.build().unwrap()
 });
 
