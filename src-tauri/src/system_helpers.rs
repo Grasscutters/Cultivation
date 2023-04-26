@@ -1,12 +1,14 @@
 use duct::cmd;
 use ini::Ini;
 use std::path::PathBuf;
+use std::ffi::OsStr;
 
 #[cfg(windows)]
-use std::ffi::OsStr;
-use registry::{Data, Hive, Security};
-use windows_service::service::{ServiceAccess, ServiceState::Stopped};
-use windows_service::service_manager::{ServiceManager, ServiceManagerAccess};
+use {
+  registry::{Data, Hive, Security},
+  windows_service::service::{ServiceAccess, ServiceState::Stopped},
+  windows_service::service_manager::{ServiceManager, ServiceManagerAccess},
+};
 
 #[tauri::command]
 pub fn run_program(path: String, args: Option<String>) {
@@ -264,7 +266,9 @@ pub fn start_service(service: String) -> bool {
 
 #[cfg(unix)]
 #[tauri::command]
-pub fn start_service(service: String) -> bool {}
+pub fn start_service(service: String) {
+  let started = OsStr::new("Started service!");
+}
 
 #[cfg(windows)]
 #[tauri::command]
@@ -287,7 +291,7 @@ pub fn stop_service(service: String) -> bool {
 
 #[cfg(unix)]
 #[tauri::command]
-pub fn stop_service(service: String) -> bool {}
+pub fn stop_service(service: String) {}
 
 #[cfg(unix)]
 #[tauri::command]

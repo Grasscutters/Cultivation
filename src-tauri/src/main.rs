@@ -339,6 +339,10 @@ fn restart_grasscutter(window: tauri::Window) -> bool {
   }
 }
 
+#[cfg(unix)]
+#[tauri::command]
+fn restart_grasscutter(window: tauri::Window) {}
+
 #[cfg(windows)]
 #[tauri::command]
 fn enable_grasscutter_watcher(window: tauri::Window, process: String) {
@@ -398,6 +402,12 @@ fn enable_grasscutter_watcher(window: tauri::Window, process: String) {
       }
     }
   });
+}
+
+#[cfg(unix)]
+#[tauri::command]
+fn enable_grasscutter_watcher(window: tauri::Window, process: String) {
+  let gc_pid = Pid::from(696969);
 }
 
 #[tauri::command]
