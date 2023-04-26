@@ -151,7 +151,7 @@ export class Mods extends React.Component<IProps, IState> {
         },
         this.forceUpdate
       )
-    }, 300)
+    }, 500)
   }
 
   render() {
