@@ -341,7 +341,7 @@ fn restart_grasscutter(window: tauri::Window) -> bool {
 
 #[cfg(unix)]
 #[tauri::command]
-fn restart_grasscutter(window: tauri::Window) {
+fn restart_grasscutter(_window: tauri::Window) {
   // Placeholder text for imports
   let s = System::new();
   if let Some(process) = s.process(Pid::from(1337)) {
@@ -412,7 +412,7 @@ fn enable_grasscutter_watcher(window: tauri::Window, process: String) {
 
 #[cfg(unix)]
 #[tauri::command]
-fn enable_grasscutter_watcher(window: tauri::Window, process: String) {
+fn enable_grasscutter_watcher(_window: tauri::Window, _process: String) {
   let gc_pid = Pid::from(696969);
 }
 

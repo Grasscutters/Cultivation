@@ -111,7 +111,7 @@ export default class Options extends React.Component<IProps, IState> {
       grasscutter_with_game: config.grasscutter_with_game || false,
       language_options: languages,
       current_language: config.language || 'en',
-      bg_url_or_path: config.customBackground || '',
+      bg_url_or_path: config.custom_background || '',
       themes: (await getThemeList()).map((t) => t.name),
       theme: config.theme || 'default',
       encryption: encEnabled || false,
@@ -231,13 +231,13 @@ export default class Options extends React.Component<IProps, IState> {
   async setCustomBackground(value: string) {
     const isUrl = /^(?:http(s)?:\/\/)/gm.test(value)
 
-    if (!value) return await setConfigOption('customBackground', '')
+    if (!value) return await setConfigOption('custom_background', '')
 
     if (!isUrl) {
       const filename = value.replace(/\\/g, '/').split('/').pop()
       const localBgPath = ((await dataDir()) as string).replace(/\\/g, '/')
 
-      await setConfigOption('customBackground', `${localBgPath}/cultivation/bg/${filename}`)
+      await setConfigOption('custom_background', `${localBgPath}/cultivation/bg/${filename}`)
 
       // Copy the file over to the local directory
       await invoke('copy_file', {
@@ -247,7 +247,7 @@ export default class Options extends React.Component<IProps, IState> {
 
       window.location.reload()
     } else {
-      await setConfigOption('customBackground', value)
+      await setConfigOption('custom_background', value)
       window.location.reload()
     }
   }
@@ -541,7 +541,7 @@ export default class Options extends React.Component<IProps, IState> {
               readonly={false}
               clearable={true}
               customClearBehaviour={async () => {
-                await setConfigOption('customBackground', '')
+                await setConfigOption('custom_background', '')
                 window.location.reload()
               }}
             />

@@ -15,7 +15,7 @@ pub struct Configuration {
   pub last_ip: Option<String>,
   pub last_port: Option<String>,
   pub language: Option<String>,
-  pub customBackground: Option<String>,
+  pub custom_background: Option<String>,
   pub cert_generated: Option<bool>,
   pub theme: Option<String>,
   pub https_enabled: Option<bool>,
