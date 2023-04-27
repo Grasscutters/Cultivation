@@ -1,6 +1,6 @@
 import React from 'react'
 import { getConfigOption } from '../../../utils/configuration'
-import { getAllMods, getInstalledMods, getMods, ModData, PartialModData } from '../../../utils/gamebanana'
+import { getInstalledMods, getMods, ModData, PartialModData } from '../../../utils/gamebanana'
 import { LoadingCircle } from './LoadingCircle'
 
 import './ModList.css'
@@ -17,11 +17,11 @@ interface IState {
   horny: boolean
   modList: ModData[] | null
   installedList:
-    | {
-        path: string
-        info: ModData | PartialModData
-      }[]
-    | null
+  | {
+    path: string
+    info: ModData | PartialModData
+  }[]
+  | null
 }
 
 export class ModList extends React.Component<IProps, IState> {
@@ -64,16 +64,7 @@ export class ModList extends React.Component<IProps, IState> {
       return
     }
 
-    let mods: ModData[]
-
-    if (!(this.props.search == '')) {
-      // idk the api so just filter all mods to search
-      mods = (await getAllMods(this.props.mode)).filter((mod) =>
-        mod.name.toLowerCase().includes(this.props.search.toLowerCase())
-      )
-    } else {
-      mods = await getMods(this.props.mode, this.props.page)
-    }
+    const mods = await getMods(this.props.mode, this.props.page, this.props.search)
 
     const horny = await getConfigOption('horny_mode')
 
@@ -91,21 +82,21 @@ export class ModList extends React.Component<IProps, IState> {
     return (
       <div className="ModList">
         {(this.state.modList && this.props.mode !== 'installed') ||
-        (this.state.installedList && this.props.mode === 'installed') ? (
+          (this.state.installedList && this.props.mode === 'installed') ? (
           <div className="ModListInner">
             {this.props.mode === 'installed'
               ? this.state.installedList?.map((mod) => (
-                  <ModTile
-                    horny={this.state.horny}
-                    path={mod.path}
-                    mod={mod.info}
-                    key={mod.info.name}
-                    onClick={this.downloadMod}
-                  />
-                ))
+                <ModTile
+                  horny={this.state.horny}
+                  path={mod.path}
+                  mod={mod.info}
+                  key={mod.info.name}
+                  onClick={this.downloadMod}
+                />
+              ))
               : this.state.modList?.map((mod: ModData) => (
-                  <ModTile horny={this.state.horny} mod={mod} key={mod.id} onClick={this.downloadMod} />
-                ))}
+                <ModTile horny={this.state.horny} mod={mod} key={mod.id} onClick={this.downloadMod} />
+              ))}
           </div>
         ) : (
           <LoadingCircle />
