@@ -341,7 +341,13 @@ fn restart_grasscutter(window: tauri::Window) -> bool {
 
 #[cfg(unix)]
 #[tauri::command]
-fn restart_grasscutter(window: tauri::Window) {}
+fn restart_grasscutter(window: tauri::Window) {
+  // Placeholder text for imports
+  let s = System::new();
+  if let Some(process) = s.process(Pid::from(1337)) {
+    println!("{}", process.name());
+  }
+}
 
 #[cfg(windows)]
 #[tauri::command]

@@ -13,15 +13,26 @@ pub async fn get_download_links(mod_id: String) -> String {
 }
 
 #[tauri::command]
-pub async fn list_submissions(mode: String, page: String) -> String {
-  web::query(
-    format!(
-      "{}/apiv9/Util/Game/Submissions?_idGameRow=8552&_nPage={}&_nPerpage=50&_sMode={}",
-      SITE_URL, page, mode
+pub async fn list_submissions(mode: String, page: String, search: String) -> String {
+  if search.is_empty() {
+    web::query(
+      format!(
+        "{}/apiv9/Util/Game/Submissions?_idGameRow=8552&_nPage={}&_nPerpage=50&_sMode={}",
+        SITE_URL, page, mode
+      )
+      .as_str(),
     )
-    .as_str(),
-  )
-  .await
+    .await
+  } else {
+    web::query(
+      format!(
+        "{}/apiv11/Util/Search/Results?_nPage={}&_sOrder=best_match&_idGameRow=8552&_sSearchString={}&_csvFields=name,description,article,attribs,studio,owner,credits",
+        SITE_URL, page, search
+      )
+      .as_str()
+    )
+    .await
+  }
 }
 
 #[tauri::command]
