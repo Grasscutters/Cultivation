@@ -31,7 +31,7 @@ args = "2.0"
 getopts = "0.2"
 
 # Access system process info.
-sysinfo = "0.24.6"
+sysinfo = "0.28.4"
 
 # ZIP-archive library.
 zip-extract = "0.1.1"
