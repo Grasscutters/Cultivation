@@ -129,18 +129,18 @@ export async function getMods(mode: string, page: number, search: string) {
         await invoke('list_submissions', {
           mode,
           page: '' + page,
-          search: search
+          search: search,
         })
       )
 
       const total = resp._aMetadata._nRecordCount
 
-      if (page > (total / 15)) hadMods = false
+      if (page > total / 15) hadMods = false
 
       modList = [...modList, ...resp._aRecords]
       page++
     }
-    
+
     return formatGamebananaData(modList)
   }
 
@@ -169,8 +169,8 @@ export async function formatGamebananaData(obj: GamebananaResponse[]) {
         name: itm._sName,
         images: img
           ? img.map((i) => {
-            return i._sBaseUrl + '/' + i._sFile220
-          })
+              return i._sBaseUrl + '/' + i._sFile220
+            })
           : [],
         dateadded: itm._tsDateAdded,
         submitter: {
