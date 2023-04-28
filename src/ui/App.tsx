@@ -38,7 +38,7 @@ class App extends React.Component<Readonly<unknown>, IState> {
     }
 
     // Get custom bg AFTER theme is loaded !! important !!
-    const custom_bg = await getConfigOption('customBackground')
+    const custom_bg = await getConfigOption('custom_background')
 
     if (custom_bg) {
       const isUrl = /^http(s)?:\/\//gm.test(custom_bg)

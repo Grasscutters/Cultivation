@@ -247,7 +247,7 @@ pub fn service_status(service: String) -> bool {
 
 #[cfg(unix)]
 #[tauri::command]
-pub fn service_status(service: String) {}
+pub fn service_status(_service: String) {}
 
 #[cfg(windows)]
 #[tauri::command]
@@ -270,8 +270,8 @@ pub fn start_service(service: String) -> bool {
 
 #[cfg(unix)]
 #[tauri::command]
-pub fn start_service(service: String) {
-  let started = OsStr::new("Started service!");
+pub fn start_service(_service: String) {
+  let _started = OsStr::new("Started service!");
 }
 
 #[cfg(windows)]
@@ -295,7 +295,7 @@ pub fn stop_service(service: String) -> bool {
 
 #[cfg(unix)]
 #[tauri::command]
-pub fn stop_service(service: String) {}
+pub fn stop_service(_service: String) {}
 
 #[cfg(unix)]
 #[tauri::command]

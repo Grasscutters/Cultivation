@@ -112,8 +112,8 @@ export async function loadTheme(theme: ThemeList, document: Document) {
   // Set custom background
   if (theme.customBackgroundURL) {
     // If the custom bg is already set don't overwrite
-    if (config.customBackground === '') {
-      config.customBackground = theme.customBackgroundURL
+    if (config.custom_background === '') {
+      config.custom_background = theme.customBackgroundURL
     }
   }
 
@@ -130,13 +130,13 @@ export async function loadTheme(theme: ThemeList, document: Document) {
 
     // Set the background
     // If the custom bg is already set don't overwrite
-    if (config.customBackground === '') {
-      config.customBackground = bgPath + imageName
+    if (config.custom_background === '') {
+      config.custom_background = bgPath + imageName
     }
   }
 
   // Write config
-  await setConfigOption('customBackground', config.customBackground)
+  await setConfigOption('custom_background', config.custom_background)
 
   return
 }
