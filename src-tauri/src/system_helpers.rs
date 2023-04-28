@@ -271,7 +271,7 @@ pub fn start_service(service: String) -> bool {
 #[cfg(unix)]
 #[tauri::command]
 pub fn start_service(_service: String) {
-  let started = OsStr::new("Started service!");
+  let _started = OsStr::new("Started service!");
 }
 
 #[cfg(windows)]
