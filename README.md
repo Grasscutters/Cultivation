@@ -79,7 +79,7 @@ Please allow the Cultivation window to pop back up once you have quit out of the
 - Install [yarn](https://classic.yarnpkg.com/lang/en/docs/install) (cry about it `npm` lovers)
 - Install [Rust](https://www.rust-lang.org/tools/install)
 - `yarn install`
-- `yarn start:dev`
+- `yarn tauri dev`
 
 ### Building
 
