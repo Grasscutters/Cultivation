@@ -7,7 +7,7 @@
   padding: 0 30px;
   border-radius: 5px;
   border: none;
-  background: linear-gradient(#ffd326, #ffc61e);
+  background: linear-gradient(#ffcf0d, #fec004);
   color: #704a1d;
   font-weight: bold;
 
@@ -16,7 +16,7 @@
 
 .BigButton:hover {
   cursor: pointer;
-  background: linear-gradient(#ffc61e, #ffd326);
+  background: linear-gradient(#fdd841, #ffc517);
 }
 
 .BigButton.disabled {
