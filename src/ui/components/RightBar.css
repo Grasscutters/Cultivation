@@ -57,5 +57,6 @@
 }
 
 .BarImg:hover img {
+  transition: 0.2s;
   filter: invert(72%) sepia(68%) saturate(777%) hue-rotate(341deg) brightness(113%) contrast(101%);
 }
