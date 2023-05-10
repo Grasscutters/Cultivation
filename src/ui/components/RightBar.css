@@ -11,10 +11,7 @@
   width: 80px;
   right: 0%;
 
-  z-index: 99;
-
   background-color: rgba(77, 77, 77, 0.6);
-  z-index: 999;
 }
 
 .BarImg:hover {
