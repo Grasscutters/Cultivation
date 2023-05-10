@@ -294,7 +294,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
                 onChange={this.setPort}
                 initalValue={this.state.port}
               />
-              <HelpButton contents={this.state.portHelpText} />
+              <HelpButton contents={"help.port_help_text"} />
               <Checkbox
                 id="httpsEnable"
                 label={this.state.httpsLabel}
