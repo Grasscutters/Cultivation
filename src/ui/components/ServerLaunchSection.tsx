@@ -277,34 +277,30 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
         {this.state.grasscutterEnabled && (
           <div>
             <div className="ServerConfig" id="serverConfigContainer">
-              <div id="ServerConfigCheckbox">
-                <Checkbox
-                  id="httpsEnable"
-                  label={this.state.httpsLabel}
-                  onChange={this.toggleHttps}
-                  checked={this.state.httpsEnabled}
-                />
-              </div>
-              <div className="ServerConfigGrid">
-                <TextInput
-                  id="ip"
-                  key="ip"
-                  placeholder={this.state.ipPlaceholder}
-                  onChange={this.setIp}
-                  initalValue={this.state.ip}
-                />
-                <TextInput
-                  style={{
-                    width: '10%',
-                  }}
-                  id="port"
-                  key="port"
-                  placeholder={this.state.portPlaceholder}
-                  onChange={this.setPort}
-                  initalValue={this.state.port}
-                />
-                <HelpButton contents={this.state.portHelpText} />
-              </div>
+              <TextInput
+                id="ip"
+                key="ip"
+                placeholder={this.state.ipPlaceholder}
+                onChange={this.setIp}
+                initalValue={this.state.ip}
+              />
+              <TextInput
+                style={{
+                  width: '10%',
+                }}
+                id="port"
+                key="port"
+                placeholder={this.state.portPlaceholder}
+                onChange={this.setPort}
+                initalValue={this.state.port}
+              />
+              <HelpButton contents={this.state.portHelpText} />
+              <Checkbox
+                id="httpsEnable"
+                label={this.state.httpsLabel}
+                onChange={this.toggleHttps}
+                checked={this.state.httpsEnabled}
+              />
             </div>
           </div>
         )}
@@ -318,7 +314,6 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
               <img className="ExtrasIcon" id="extrasIcon" src={Plus} />
             </BigButton>
           )}
-
           <BigButton onClick={this.launchServer} id="serverLaunch">
             <img className="ServerIcon" id="serverLaunchIcon" src={Server} />
           </BigButton>

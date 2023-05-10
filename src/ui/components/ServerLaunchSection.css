@@ -8,28 +8,28 @@
   right: 10%;
   top: 50%;
 
-  width: 20%;
-  height: 120%;
+  width: 32%;
+  height: 80%;
   min-width: 357px;
-  padding: 0 0 100px 0;
 }
 
-
+#playButton > div {
+  margin-bottom: 6px;
+}
 
 #playButton .BigButton {
   height: 100%;
   box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.2);
   font-size: 24px;
   font-weight: 400;
+  width: 20%;
 }
 
 #serverControls {
   color: white;
+
   text-shadow: 1px 1px 8px black;
-  align-self: flex-end;
-  margin-top: 10px;
-  margin-bottom: -10px;
-} 
+}
 
 .BottomSection .CheckboxDisplay {
   border-color: #c5c5c5;
@@ -57,8 +57,8 @@
 
 .ServerConfig .Checkbox {
   display: inline-grid;
-  margin-top: 10px;
-  
+  vertical-align: middle;
+  margin-left: 8px;
 }
 
 .ServerLaunchButtons {
@@ -104,24 +104,8 @@
   box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.2);
 }
 
-.ServerConfig {
-  display: grid;
-  height: 100px;
-  grid-template-columns: 1;
-  grid-template-rows: repeat(2, 1fr);
-  justify-content: flex-end;
-}
-
-.ServerConfigGrid {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-#ServerConfigCheckbox {
-  margin-bottom: -10px;
-  margin-top: 10px;
-
+.ServerConfig .TextInputWrapper {
+  display: inline-block;
 }
 
 #ip {

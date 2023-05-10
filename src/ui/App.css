@@ -108,11 +108,8 @@ select:focus {
   height: 160px;
 
   margin: 0;
-  text-align: right;
+  padding: 0;
 
-  /* Gradient shadow */
-  -webkit-box-shadow: inset 0px -150px 96px -85px rgba(0,0,0,0.43);
-  -moz-box-shadow: inset 0px -150px 96px -85px rgba(0,0,0,0.43);
   box-shadow: inset 0px -150px 96px -85px rgba(0,0,0,0.43);
 }
 
