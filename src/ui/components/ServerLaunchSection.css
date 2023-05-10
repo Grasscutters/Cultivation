@@ -8,9 +8,10 @@
   right: 10%;
   top: 50%;
 
-  width: 32%;
-  height: 80%;
+  width: 20%;
+  height: 120%;
   min-width: 357px;
+  padding: 0 0 140px 0;
 }
 
 #playButton > div {
@@ -20,13 +21,15 @@
 #playButton .BigButton {
   height: 100%;
   box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.2);
+  font-size: 24px;
+  font-weight: 400;
 }
 
 #serverControls {
   color: white;
 
   text-shadow: 1px 1px 8px black;
-}
+} 
 
 .BottomSection .CheckboxDisplay {
   border-color: #c5c5c5;
