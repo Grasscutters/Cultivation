@@ -29,7 +29,7 @@ select:focus {
 
 .App {
   background-size: cover !important;
-  background-position: bottom !important;
+  background-position: center !important;
 }
 
 .TopButton {

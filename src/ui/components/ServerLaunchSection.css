@@ -11,12 +11,10 @@
   width: 20%;
   height: 120%;
   min-width: 357px;
-  padding: 0 0 140px 0;
+  padding: 0 0 100px 0;
 }
 
-#playButton > div {
-  margin-bottom: 6px;
-}
+
 
 #playButton .BigButton {
   height: 100%;

@@ -99,17 +99,3 @@
 .BarImg:hover img {
   filter: invert(72%) sepia(68%) saturate(777%) hue-rotate(341deg) brightness(113%) contrast(101%);
 }
-
-.WelcomeMessage {
-  color: white;
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-  text-transform: uppercase;
-  font-weight: 600;
-  padding: 10px 0 10px 0;
-}
-
-.WelcomeDiv {
-  background-color: rgba(0, 0, 0, 0.585);
-  text-align: center;
-}
