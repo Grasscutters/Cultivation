@@ -31,8 +31,6 @@ interface IState {
   ipPlaceholder: string
   portPlaceholder: string
 
-  portHelpText: string
-
   httpsLabel: string
   httpsEnabled: boolean
 
@@ -55,7 +53,6 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       port: '',
       ipPlaceholder: '',
       portPlaceholder: '',
-      portHelpText: '',
       httpsLabel: '',
       httpsEnabled: false,
       launchServer: () => {
@@ -90,7 +87,6 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       port: config.last_port || '',
       ipPlaceholder: await translate('main.ip_placeholder'),
       portPlaceholder: await translate('help.port_placeholder'),
-      portHelpText: await translate('help.port_help_text'),
       httpsLabel: await translate('main.https_enable'),
       httpsEnabled: config.https_enabled || false,
       swag: config.swag_mode || false,
@@ -294,7 +290,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
                 onChange={this.setPort}
                 initalValue={this.state.port}
               />
-              <HelpButton contents={this.state.portHelpText} />
+              <HelpButton contents={'help.port_help_text'} />
               <Checkbox
                 id="httpsEnable"
                 label={this.state.httpsLabel}
