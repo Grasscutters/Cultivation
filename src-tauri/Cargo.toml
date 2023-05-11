@@ -24,7 +24,7 @@ sudo = "0.6.0"
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.0.8", features = ["api-all"] }
+tauri = { version = "1.0.9", features = ["api-all"] }
 
 # Arg parsing
 args = "2.0"
