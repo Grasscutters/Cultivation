@@ -109,9 +109,9 @@ select:focus {
 
   margin: 0;
   padding: 0;
-  
+
   backdrop-filter: blur(10px);
-  box-shadow: inset 0px -150px 96px -85px rgba(0,0,0,0.43);
+  box-shadow: inset 0px 5px 12px -3px rgb(0,0,0,0.43);
 }
 
 @media (max-height: 580px) {
