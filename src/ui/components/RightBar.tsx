@@ -24,7 +24,6 @@ export default class RightBar extends React.Component {
           <div className="BarGithub BarImg" id="rightBarButtonGithub" onClick={() => this.openInBrowser(GITHUB)}>
             <img src={Github} />
           </div>
-
         </div>
       </div>
     )
