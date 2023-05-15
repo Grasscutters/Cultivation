@@ -194,11 +194,6 @@ export default class Options extends React.Component<IProps, IState> {
     this.setState({
       migoto_path: value,
     })
-
-    // Set game exe in Migoto ini
-    invoke('set_migoto_target', {
-      migotoPath: value,
-    })
   }
 
   setReshade(value: string) {
