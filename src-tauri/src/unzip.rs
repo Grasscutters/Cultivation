@@ -107,12 +107,9 @@ pub fn unzip(
         .unwrap();
     }
 
-    if zipfile.contains("GIMI") {
+    if zipfile.contains("GrasscutterQuests") {
       window
-        .emit(
-          "migoto_extracted",
-          destpath.to_string() + "3DMigoto Loader.exe",
-        )
+        .emit("jar_extracted", destpath.to_string() + "grasscutter.jar")
         .unwrap();
     }
 
