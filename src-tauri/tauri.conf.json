@@ -12,12 +12,12 @@
   "tauri": {
     "allowlist": {
       "fs": {
-        "scope": ["$DATA", "$DATA/cultivation", "$DATA/cultivation/*"]
+        "scope": ["$DATA", "$DATA/cultivation", "$DATA/cultivation/**"]
       },
       "protocol": {
         "all": true,
         "asset": true,
-        "assetScope": ["$DATA", "$DATA/cultivation", "$DATA/cultivation/*"]
+        "assetScope": ["$DATA", "$DATA/cultivation", "$DATA/cultivation/**"]
       },
       "all": true
     },
@@ -53,7 +53,7 @@
       }
     },
     "security": {
-      "csp": "default-src 'self' https://asset.localhost; img-src 'self'; img-src https://* asset: https://asset.localhost"
+      "csp": "default-src 'self'; img-src 'self'; img-src https://* asset: https://asset.localhost; media-src https://* asset: https://asset.localhost"
     },
     "updater": {
       "active": false,
