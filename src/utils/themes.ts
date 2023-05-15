@@ -88,26 +88,32 @@ export async function loadTheme(theme: ThemeList, document: Document) {
   const cssIncludes = theme.includes.css
   const jsIncludes = theme.includes.js
 
+  console.log(theme.includes)
+
   // Load CSS files
-  cssIncludes.forEach((css) => {
-    if (!css) return
+  if (cssIncludes) {
+    cssIncludes?.forEach((css) => {
+      if (!css) return
 
-    const link = document.createElement('link')
+      const link = document.createElement('link')
 
-    link.rel = 'stylesheet'
-    link.href = convertFileSrc(theme.path + '/' + css)
-    head.appendChild(link)
-  })
+      link.rel = 'stylesheet'
+      link.href = convertFileSrc(theme.path + '/' + css)
+      head.appendChild(link)
+    })
+  }
 
   // Load JS files
-  jsIncludes.forEach((js) => {
-    if (!js) return
+  if (jsIncludes) {
+    jsIncludes.forEach((js) => {
+      if (!js) return
 
-    const script = document.createElement('script')
+      const script = document.createElement('script')
 
-    script.src = convertFileSrc(theme.path + '/' + js)
-    head.appendChild(script)
-  })
+      script.src = convertFileSrc(theme.path + '/' + js)
+      head.appendChild(script)
+    })
+  }
 
   // Set custom background
   if (theme.customBackgroundURL) {
