@@ -88,8 +88,6 @@ export async function loadTheme(theme: ThemeList, document: Document) {
   const cssIncludes = theme.includes.css
   const jsIncludes = theme.includes.js
 
-  console.log(theme.includes)
-
   // Load CSS files
   if (cssIncludes) {
     cssIncludes?.forEach((css) => {
