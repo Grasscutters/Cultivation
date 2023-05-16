@@ -113,6 +113,15 @@ pub fn unzip(
         .unwrap();
     }
 
+    if zipfile.contains("GIMI") {
+        window
+          .emit(
+            "migoto_extracted",
+            destpath.to_string() + "3DMigoto Loader.exe",
+          )
+          .unwrap();
+      }
+
     // Delete zip file
     match std::fs::remove_file(&zipfile) {
       Ok(_) => {
