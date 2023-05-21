@@ -255,6 +255,7 @@ export class Main extends React.Component<IProps, IState> {
             </ExtrasMenu>
           )
         }
+        {this.state.isGamePathSet ? (<></>) : (<GamePathNotify />)}
 
         {
           // Mini downloads section

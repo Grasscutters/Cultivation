@@ -231,7 +231,7 @@ fn main() -> Result<(), ArgsError> {
         gamebanana::list_mods
       ])
       .on_window_event(|event| match event.event() {
-        tauri::WindowEvent::CloseRequested { api, .. } => {
+        tauri::WindowEvent::CloseRequested { .. } => {
           // Ensure all proxy stuff is handled
           disconnect();
         }
