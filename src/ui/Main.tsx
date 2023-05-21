@@ -13,8 +13,9 @@ import Game from './components/menu/Game'
 import RightBar from './components/RightBar'
 import { ExtrasMenu } from './components/menu/ExtrasMenu'
 import Notification from './components/common/Notification'
+import GamePathNotify from './components/menu/GamePathNotify'
 
-import { getConfigOption, setConfigOption } from '../utils/configuration'
+import { getConfigOption, setConfigOption, getConfig } from '../utils/configuration'
 import { invoke } from '@tauri-apps/api'
 import { getVersion } from '@tauri-apps/api/app'
 import { listen } from '@tauri-apps/api/event'
@@ -42,6 +43,8 @@ interface IState {
   migotoSet: boolean
   playGame: (exe?: string, proc_name?: string) => void
   notification: React.ReactElement | null
+  isGamePathSet: boolean
+  game_install_path: string
 }
 
 export class Main extends React.Component<IProps, IState> {
@@ -59,7 +62,11 @@ export class Main extends React.Component<IProps, IState> {
         alert('Error launching game')
       },
       notification: null,
+      isGamePathSet: false,
+      game_install_path: '',
     }
+
+    
 
     listen('lang_error', (payload) => {
       console.log(payload)
@@ -119,14 +126,24 @@ export class Main extends React.Component<IProps, IState> {
     }, 1000)
 
     this.openExtrasMenu = this.openExtrasMenu.bind(this)
+
+    
   }
 
   async componentDidMount() {
     const cert_generated = await getConfigOption('cert_generated')
 
-    this.setState({
-      migotoSet: !!(await getConfigOption('migoto_path')),
-    })
+    getConfig().then((config) => {
+      if (config.game_install_path === '') {
+        this.setState({
+          isGamePathSet: false,
+        });
+      } else {
+        this.setState({
+          isGamePathSet: true,
+        });
+      }
+    });
 
     if (!cert_generated) {
       // Generate the certificate
@@ -186,6 +203,8 @@ export class Main extends React.Component<IProps, IState> {
   }
 
   render() {
+    const { isGamePathSet } = this.state;
+
     return (
       <>
         <TopBar>
@@ -222,6 +241,7 @@ export class Main extends React.Component<IProps, IState> {
         </TopBar>
 
         <Notification show={!!this.state.notification}>{this.state.notification}</Notification>
+
 
         <RightBar />
 
