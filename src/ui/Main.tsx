@@ -127,7 +127,12 @@ export class Main extends React.Component<IProps, IState> {
   }
 
   async componentDidMount() {
+    const game_path = await getConfigOption('game_install_path')
     const cert_generated = await getConfigOption('cert_generated')
+
+    this.setState({
+      game_install_path: game_path,
+    })
 
     if (!cert_generated) {
       // Generate the certificate
@@ -185,17 +190,32 @@ export class Main extends React.Component<IProps, IState> {
     })
   }
 
-  async componentDidUpdate() {
+
+
+  async componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>) {
     const game_path = await getConfigOption('game_install_path')
 
-    // if(game_path === '') {
-    //   this.setState({
-    //     isGamePathSet: false,
-    //   })
-    //   console.log(`${this.state.isGamePathSet}, ${game_path}`)
-    // } 
-    // infinite loop here, fix this.
+    //if previous state is not equal the current one - update the game_install_path to be the current game path
+    if(prevState.game_install_path != game_path) {
+      this.setState({
+        game_install_path: game_path
+      })
+
+      //
+      if(this.state.game_install_path === '') {
+        this.setState({
+          isGamePathSet: false,
+        })
+      } else {
+        this.setState({
+          isGamePathSet: true,
+        })
+      }
+    }
+
+
   }
+
   render() {
     return (
       <>
@@ -232,7 +252,7 @@ export class Main extends React.Component<IProps, IState> {
           </div> */}
         </TopBar>
         <Notification show={!!this.state.notification}>{this.state.notification}</Notification>
-        <GamePathNotify isGamePathSet={this.state.isGamePathSet} />
+        {this.state.isGamePathSet ? <></> : <GamePathNotify />}
 
         <RightBar />
         <NewsSection />
