@@ -66,8 +66,6 @@ export class Main extends React.Component<IProps, IState> {
       game_install_path: '',
     }
 
-    
-
     listen('lang_error', (payload) => {
       console.log(payload)
     })
@@ -126,24 +124,10 @@ export class Main extends React.Component<IProps, IState> {
     }, 1000)
 
     this.openExtrasMenu = this.openExtrasMenu.bind(this)
-
-    
   }
 
   async componentDidMount() {
     const cert_generated = await getConfigOption('cert_generated')
-
-    getConfig().then((config) => {
-      if (config.game_install_path === '') {
-        this.setState({
-          isGamePathSet: false,
-        });
-      } else {
-        this.setState({
-          isGamePathSet: true,
-        });
-      }
-    });
 
     if (!cert_generated) {
       // Generate the certificate
@@ -194,7 +178,6 @@ export class Main extends React.Component<IProps, IState> {
       })
     }, 1000)
   }
-
   async openExtrasMenu(playGame: () => void) {
     this.setState({
       extrasOpen: true,
@@ -202,9 +185,18 @@ export class Main extends React.Component<IProps, IState> {
     })
   }
 
-  render() {
-    const { isGamePathSet } = this.state;
+  async componentDidUpdate() {
+    const game_path = await getConfigOption('game_install_path')
 
+    // if(game_path === '') {
+    //   this.setState({
+    //     isGamePathSet: false,
+    //   })
+    //   console.log(`${this.state.isGamePathSet}, ${game_path}`)
+    // } 
+    // infinite loop here, fix this.
+  }
+  render() {
     return (
       <>
         <TopBar>
@@ -239,12 +231,10 @@ export class Main extends React.Component<IProps, IState> {
             <img src={gameBtn} alt="game" />
           </div> */}
         </TopBar>
-
         <Notification show={!!this.state.notification}>{this.state.notification}</Notification>
-
+        <GamePathNotify isGamePathSet={this.state.isGamePathSet} />
 
         <RightBar />
-
         <NewsSection />
 
         {
@@ -255,8 +245,6 @@ export class Main extends React.Component<IProps, IState> {
             </ExtrasMenu>
           )
         }
-        {this.state.isGamePathSet ? (<></>) : (<GamePathNotify />)}
-
         {
           // Mini downloads section
           this.state.miniDownloadsOpen ? (
