@@ -11,30 +11,31 @@
     "files_extracting": "Fichiers en cours d'extraction: "
   },
   "options": {
-    "enabled": "active",
-    "disabled": "desactiver",
+    "enabled": "Activé",
+    "disabled": "Désractivé",
     "game_path": "Définir le chemin d'installation du jeu",
     "game_command": "Commande de lancement du jeu",
-    "game_executable": "definir l'executable du jeu",
+    "game_executable": "Définir l'executable du jeu",
     "recover_rsa": "Récupération d'urgence des RSA",
-    "grasscutter_jar": "definir le Jar Grasscutter",
-    "toggle_encryption": "activer l'encryption",
+    "grasscutter_jar": "Définir le Jar Grasscutter",
+    "toggle_encryption": "Activer l'encryption",
     "install_certificate": "Installer le certificat du proxy",
-    "java_path": "definir un chemin java personnalise",
+    "java_path": "Définir un chemin java personnalise",
     "grasscutter_with_game": "Lancer Grasscutter automatiquement avec le jeu",
     "language": "Choisir la langue",
-    "background": "definir un arriere plan personnalise (lien ou fichier image)",
-    "theme": "definir un theme",
-    "patch_rsa": "Corriger automatiquement les RSA",
-    "use_proxy": "Utiliser un proxy interne",
+    "background": "Définir un arriere plan personnalisé (lien ou fichier image)",
+    "theme": "Définir un theme",
+    "patch_rsa": "Patcher automatiquement les clés RSA",
+    "use_proxy": "Utiliser le proxy interne",
     "wipe_login": "Effacer le cache de connexion",
-    "horny_mode": "Mode excitation",
+    "horny_mode": "Mode horny",
     "auto_mongodb": "Démarrer automatiquement MongoDB",
     "un_elevated": "Exécuter le jeu sans élévation (pas d'administrateur)"
   },
   "downloads": {
     "grasscutter_fullbuild": "Telecharger Grasscutter tout-en-un",
     "grasscutter_fullquest": "Télécharger les Quêtes tout-en-un",
+<<<<<<< HEAD
     "grasscutter_stable_data": "Telecharger les donnees de Grasscutter (version stable)",
     "grasscutter_latest_data": "Telecharger les donnees de Grasscutter (derniere version)",
     "grasscutter_stable_data_update": "Mettre a jour les donnees de Grasscutter (version stable)",
@@ -44,39 +45,60 @@
     "grasscutter_unstable_update": "Mettre a jour Grasscutter (version stable)",
     "grasscutter_latest_update": "Mettre a jour Grasscutter (derniere version)",
     "resources": "Telecharger les ressources logicielles de Grasscutter",
+=======
+    "grasscutter_stable_data": "Télécharger les donnees de Grasscutter (version stable)",
+    "grasscutter_latest_data": "Télécharger les donnees de Grasscutter (derniere version)",
+    "grasscutter_stable_data_update": "Mettre à jour les données de Grasscutter (version stable)",
+    "grasscutter_latest_data_update": "Mettre à jour les données de Grasscutter (derniere version)",
+    "grasscutter_unstable": "Télécharger Grasscutter (version stable)",
+    "grasscutter_latest": "Télécharger Grasscutter (derniere version)",
+    "grasscutter_unstable_update": "Mettre à jour Grasscutter (version stable)",
+    "grasscutter_latest_update": "Mettre à jour Grasscutter (derniere version)",
+    "resources": "Telecharger les ressources de Grasscutter",
+>>>>>>> 44dc9bd7f256c090ed53f39b4b44da2ce6ad32c1
     "aio_header": "Telechargements tout-en-un:",
-    "individual_header": "Telechargements de pièces individuelles:",
+    "individual_header": "Telechargements individuels:",
     "mods_header": "Mods:",
     "migoto": "Telecharger GIMI 3dmigoto"
   },
   "download_status": {
-    "downloading": "Telechargement",
+    "downloading": "Téléchargement",
     "extracting": "Extraction",
     "error": "Erreur",
-    "finished": "Termine",
-    "stopped": "Arrete"
+    "finished": "Terminé",
+    "stopped": "Arrêté"
   },
   "components": {
-    "select_file": "choisir fichier ou dossier...",
-    "select_folder": "choisir dossier...",
-    "download": "Telecharger",
+    "select_file": "Choisir un fichier ou un dossier...",
+    "select_folder": "Choisir un dossier...",
+    "download": "Télécharger",
     "delete": "Supprimer",
     "install": "Installer"
   },
   "news": {
-    "latest_commits": "Recents Commits",
-    "latest_version": "Derniere version"
+    "latest_commits": "Commits récents",
+    "latest_version": "Dernière version"
   },
   "help": {
-    "port_help_text": "Assurez-vous que c'est le port serveur Dispatch, et non le port du serveur de jeu. C'est presque toujours '433'.",
-    "game_help_text": "Vous n'avez pas besoin d'une copie differente du jeu pour jouer avec Grasscutter. Cela est ou pour retrograder en 2.6 ou si vous n'avez pas le jeu d'installe",
-    "gc_stable_jar": "Telecharger le dernier build stable de Grasscutter, ce qui inclut le fichier jar et les fichiers de donnees",
-    "gc_fullbuild": "Téléchargez un build complet de Grasscutter, incluant le repo, le jar et les ressources. Il est entièrement configuré et ne nécessite aucun autre téléchargement à partir de ce menu.",
-    "gc_dev_jar": "Telecharger le dernier build en development de Grasscutter, ce qui inclut le fichier jar et les fichiers de donnees",
-    "gc_stable_data": "Telecharger le dernier build stable de Grasscutter, ce qui n'inclut pasle fichier jar. Cela est utile pour mettre a jour",
-    "gc_dev_data": "Telecharger le dernier build en development de Grasscutter, ce qui n'inclut pasle fichier jar. Cela est utile pour mettre a jour",
+    "port_help_text": "Assurez-vous que c'est le port du serveur de Dispatch, et non le port du serveur de jeu. C'est presque toujours '433'.",
+    "game_help_text": "Il n'y a pas besoin d'une copie differente du jeu pour jouer avec Grasscutter. C'est utile pour downgrade en 2.6 ou si vous n'avez pas le jeu d'installe",
+    "gc_stable_jar": "Télécharge le dernier build stable de Grasscutter, ce qui inclut le fichier jar et les fichiers de données",
+    "gc_fullbuild": "Télécharge un build complet de Grasscutter, incluant le repo, le jar et les ressources. Il est entièrement configuré et ne nécessite aucun autre téléchargement à partir de ce menu.",
+    "gc_dev_jar": "Télécharge le dernier build de development de Grasscutter, ce qui inclut le fichier jar et les fichiers de données",
+    "gc_stable_data": "Télécharge le dernier build stable de Grasscutter, ce qui n'inclut pasle fichier jar. Cela est utile pour mettre a jour",
+    "gc_dev_data": "Télécharge le dernier build de development de Grasscutter, ce qui n'inclut pasle fichier jar. Cela est utile pour mettre a jour",
     "resources": "Les ressources sont aussi necessaires pour lancer un serveur Grasscutter. Ce bouton deviendra gris si vous avez deja un fichier ressources avec les donnees dedans.",
-    "add_delay": "Définir un délai dans le chargeur de 3dmigoto ! \nCela devrait résoudre les problèmes de chargement, mais ajoutera un petit délai au chargement de 3dmigoto lors du lancement du jeu. \nVous pouvez maintenant lancer le jeu avec 3dmigoto.",
+    "add_delay": "Définit le délai du chargement de 3dmigoto ! \nCela devrait résoudre les problèmes de chargement, mais ajoutera un petit délai au chargement de 3dmigoto lors du lancement du jeu. \nVous pouvez maintenant lancer le jeu avec 3dmigoto.",
+    "use_proxy": "Active le proxy interne de Cultivation. Il faut activer cette option si un logiciel tel que Fiddler n'est pas installé.",
+    "patch_rsa": "Patch et dépatche les clés RSA du jeu automatiquement. A moins de jouer avec d'anciennes versons ou des versions non officielles (3.0 ou plus ancien), cette option doit être activée.",
     "migoto": "Pour importer des modèles depuis GameBanana"
+  },
+  "swag": {
+    "akebi_name": "Akebi",
+    "migoto_name": "Migoto",
+    "reshade_name": "Reshade",
+    "akebi": "Définir l'exécutable d'Akebid'aAcrepi",
+    "migoto": "Définir l'exécutable de 3DMigoto",
+    "reshade": "Définir l'injecteur de Reshade"
   }
 }

@@ -1,0 +1,11 @@
+.GameInstallNotify {
+    display: flex;
+    justify-content: center;
+    background-color: rgb(39, 39, 39);
+    color: white;
+}
+
+#pointer {
+    position: absolute;
+    right: 85px;
+}
