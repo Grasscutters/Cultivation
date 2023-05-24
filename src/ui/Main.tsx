@@ -190,30 +190,19 @@ export class Main extends React.Component<IProps, IState> {
     })
   }
 
-
-
   async componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>) {
     const game_path = await getConfigOption('game_install_path')
 
     //if previous state is not equal the current one - update the game_install_path to be the current game path
-    if(prevState.game_install_path != game_path) {
+    if (prevState.game_install_path != game_path) {
       this.setState({
-        game_install_path: game_path
+        game_install_path: game_path,
       })
 
-      //
-      if(this.state.game_install_path === '') {
-        this.setState({
-          isGamePathSet: false,
-        })
-      } else {
-        this.setState({
-          isGamePathSet: true,
-        })
-      }
+      this.state.game_install_path === ''
+        ? this.setState({ isGamePathSet: false })
+        : this.setState({ isGamePathSet: true })
     }
-
-
   }
 
   render() {
