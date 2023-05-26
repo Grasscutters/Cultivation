@@ -13,6 +13,7 @@ import Game from './components/menu/Game'
 import RightBar from './components/RightBar'
 import { ExtrasMenu } from './components/menu/ExtrasMenu'
 import Notification from './components/common/Notification'
+import GamePathNotify from './components/menu/GamePathNotify'
 
 import { getConfigOption, setConfigOption } from '../utils/configuration'
 import { invoke } from '@tauri-apps/api'
@@ -42,6 +43,8 @@ interface IState {
   migotoSet: boolean
   playGame: (exe?: string, proc_name?: string) => void
   notification: React.ReactElement | null
+  isGamePathSet: boolean
+  game_install_path: string
 }
 
 export class Main extends React.Component<IProps, IState> {
@@ -59,6 +62,8 @@ export class Main extends React.Component<IProps, IState> {
         alert('Error launching game')
       },
       notification: null,
+      isGamePathSet: false,
+      game_install_path: '',
     }
 
     listen('lang_error', (payload) => {
@@ -122,7 +127,12 @@ export class Main extends React.Component<IProps, IState> {
   }
 
   async componentDidMount() {
+    const game_path = await getConfigOption('game_install_path')
     const cert_generated = await getConfigOption('cert_generated')
+
+    this.setState({
+      game_install_path: game_path,
+    })
 
     this.setState({
       migotoSet: !!(await getConfigOption('migoto_path')),
@@ -185,6 +195,21 @@ export class Main extends React.Component<IProps, IState> {
     })
   }
 
+  async componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>) {
+    const game_path = await getConfigOption('game_install_path')
+
+    //if previous state is not equal the current one - update the game_install_path to be the current game path
+    if (prevState.game_install_path != game_path) {
+      this.setState({
+        game_install_path: game_path,
+      })
+
+      this.state.game_install_path === ''
+        ? this.setState({ isGamePathSet: false })
+        : this.setState({ isGamePathSet: true })
+    }
+  }
+
   render() {
     return (
       <>
@@ -222,6 +247,8 @@ export class Main extends React.Component<IProps, IState> {
         </TopBar>
 
         <Notification show={!!this.state.notification}>{this.state.notification}</Notification>
+
+        {this.state.isGamePathSet ? <></> : <GamePathNotify />}
 
         <RightBar />
 
