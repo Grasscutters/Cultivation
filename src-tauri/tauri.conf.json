@@ -53,7 +53,11 @@
       }
     },
     "security": {
+<<<<<<< HEAD
+      "csp": "default-src 'self'; img-src 'self'; img-src https://* asset: https://asset.localhost; media-src https://* asset: https://asset.localhost"
+=======
       "csp": "default-src 'self'; img-src 'self'; img-src https://* asset: https://asset.localhost; media-src https://* asset: https://asset.localhost; style-src-elem https://* asset https://asset.localhost; script-src-elem https://* asset https://asset.localhost;"
+>>>>>>> 44dc9bd7f256c090ed53f39b4b44da2ce6ad32c1
     },
     "updater": {
       "active": false,

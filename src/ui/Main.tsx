@@ -30,297 +30,296 @@ import downBtn from '../resources/icons/download.svg'
 import wrenchBtn from '../resources/icons/wrench.svg'
 
 interface IProps {
-  downloadHandler: DownloadHandler
+    downloadHandler: DownloadHandler
 }
 
 interface IState {
-  isDownloading: boolean
-  optionsOpen: boolean
-  miniDownloadsOpen: boolean
-  downloadsOpen: boolean
-  gameDownloadsOpen: boolean
-  extrasOpen: boolean
-  migotoSet: boolean
-  playGame: (exe?: string, proc_name?: string) => void
-  notification: React.ReactElement | null
-  isGamePathSet: boolean
-  game_install_path: string
+    isDownloading: boolean
+    optionsOpen: boolean
+    miniDownloadsOpen: boolean
+    downloadsOpen: boolean
+    gameDownloadsOpen: boolean
+    extrasOpen: boolean
+    migotoSet: boolean
+    playGame: (exe?: string, proc_name?: string) => void
+    notification: React.ReactElement | null
+    isGamePathSet: boolean
+    game_install_path: string
 }
 
 export class Main extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
-    this.state = {
-      isDownloading: false,
-      optionsOpen: false,
-      miniDownloadsOpen: false,
-      downloadsOpen: false,
-      gameDownloadsOpen: false,
-      extrasOpen: false,
-      migotoSet: false,
-      playGame: () => {
-        alert('Error launching game')
-      },
-      notification: null,
-      isGamePathSet: false,
-      game_install_path: '',
-    }
-
-    listen('lang_error', (payload) => {
-      console.log(payload)
-    })
-
-    listen('jar_extracted', ({ payload }: { payload: string }) => {
-      setConfigOption('grasscutter_path', payload)
-    })
-
-    listen('migoto_extracted', ({ payload }: { payload: string }) => {
-      setConfigOption('migoto_path', payload)
-    })
-
-    // Emitted for rsa replacing-purposes
-    listen('game_closed', async () => {
-      const wasPatched = await getConfigOption('patch_rsa')
-
-      if (wasPatched) {
-        const unpatched = await unpatchGame()
-
-        if (unpatched) {
-          alert(`Could not unpatch game! (Delete version.dll in your game folder)`)
+    constructor(props: IProps) {
+        super(props)
+        this.state = {
+            isDownloading: false,
+            optionsOpen: false,
+            miniDownloadsOpen: false,
+            downloadsOpen: false,
+            gameDownloadsOpen: false,
+            extrasOpen: false,
+            migotoSet: false,
+            playGame: () => {
+                alert('Error launching game')
+            },
+            notification: null,
+            isGamePathSet: false,
+            game_install_path: '',
         }
-      }
-    })
 
-    listen('migoto_set', async () => {
-      this.setState({
-        migotoSet: !!(await getConfigOption('migoto_path')),
-      })
-
-      window.location.reload()
-    })
-
-    // Emitted for automatic processes
-    listen('grasscutter_closed', async () => {
-      const autoService = await getConfigOption('auto_mongodb')
-
-      if (autoService) {
-        await invoke('stop_service', { service: 'MongoDB' })
-      }
-    })
-
-    let min = false
-
-    // periodically check if we need to min/max based on whether the game is open
-    setInterval(async () => {
-      const gameOpen = await invoke('is_game_running')
-
-      if (gameOpen && !min) {
-        appWindow.minimize()
-        min = true
-      } else if (!gameOpen && min) {
-        appWindow.unminimize()
-        min = false
-      }
-    }, 1000)
-
-    this.openExtrasMenu = this.openExtrasMenu.bind(this)
-  }
-
-  async componentDidMount() {
-    const game_path = await getConfigOption('game_install_path')
-    const cert_generated = await getConfigOption('cert_generated')
-
-    this.setState({
-      game_install_path: game_path,
-    })
-
-    this.setState({
-      migotoSet: !!(await getConfigOption('migoto_path')),
-    })
-
-    if (!cert_generated) {
-      // Generate the certificate
-      await invoke('generate_ca_files', {
-        path: (await dataDir()) + 'cultivation',
-      })
-
-      await setConfigOption('cert_generated', true)
-    }
-
-    // Ensure old configs are updated to use RSA
-    const updatedConfig = await getConfigOption('patch_rsa')
-    await setConfigOption('patch_rsa', updatedConfig)
-
-    // Get latest version and compare to this version
-    const latestVersion: {
-      tag_name: string
-      link: string
-    } = await invoke('get_latest_release')
-    const tagName = latestVersion?.tag_name.replace(/[^\d.]/g, '')
-
-    // Check if tagName is different than current version
-    if (tagName && tagName !== (await getVersion())) {
-      // Display notification of new release
-      this.setState({
-        notification: (
-          <>
-            Cultivation{' '}
-            <a href="#" onClick={() => invoke('open_in_browser', { url: latestVersion.link })}>
-              {latestVersion?.tag_name}
-            </a>{' '}
-            is now available!
-          </>
-        ),
-      })
-
-      setTimeout(() => {
-        this.setState({
-          notification: null,
+        listen('lang_error', (payload) => {
+            console.log(payload)
         })
-      }, 6000)
+
+        listen('jar_extracted', ({ payload }: { payload: string }) => {
+            setConfigOption('grasscutter_path', payload)
+        })
+
+        listen('migoto_extracted', ({ payload }: { payload: string }) => {
+            setConfigOption('migoto_path', payload)
+        })
+
+        // Emitted for rsa replacing-purposes
+        listen('game_closed', async () => {
+            const wasPatched = await getConfigOption('patch_rsa')
+
+            if (wasPatched) {
+                const unpatched = await unpatchGame()
+
+                if (unpatched) {
+                    alert(`Could not unpatch game! (Delete version.dll in your game folder)`)
+                }
+            }
+        })
+
+        listen('migoto_set', async () => {
+            this.setState({
+                migotoSet: !!(await getConfigOption('migoto_path')),
+            })
+
+            window.location.reload()
+        })
+
+        // Emitted for automatic processes
+        listen('grasscutter_closed', async () => {
+            const autoService = await getConfigOption('auto_mongodb')
+
+            if (autoService) {
+                await invoke('stop_service', { service: 'MongoDB' })
+            }
+        })
+
+        let min = false
+
+        // periodically check if we need to min/max based on whether the game is open
+        setInterval(async () => {
+            const gameOpen = await invoke('is_game_running')
+
+            if (gameOpen && !min) {
+                appWindow.minimize()
+                min = true
+            } else if (!gameOpen && min) {
+                appWindow.unminimize()
+                min = false
+            }
+        }, 1000)
+
+        this.openExtrasMenu = this.openExtrasMenu.bind(this)
     }
 
-    // Period check to only show progress bar when downloading files
-    setInterval(() => {
-      this.setState({
-        isDownloading: this.props.downloadHandler.getDownloads().filter((d) => d.status !== 'finished')?.length > 0,
-      })
-    }, 1000)
-  }
+    async componentDidMount() {
+        const game_path = await getConfigOption('game_install_path')
+        const cert_generated = await getConfigOption('cert_generated')
 
-  async openExtrasMenu(playGame: () => void) {
-    this.setState({
-      extrasOpen: true,
-      playGame,
-    })
-  }
+        this.setState({
+            game_install_path: game_path,
+        })
 
-  async componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>) {
-    const game_path = await getConfigOption('game_install_path')
+        this.setState({
+            migotoSet: !!(await getConfigOption('migoto_path')),
+        })
 
-    //if previous state is not equal the current one - update the game_install_path to be the current game path
-    if (prevState.game_install_path != game_path) {
-      this.setState({
-        game_install_path: game_path,
-      })
+        if (!cert_generated) {
+            // Generate the certificate
+            await invoke('generate_ca_files', {
+                path: (await dataDir()) + 'cultivation',
+            })
 
-      this.state.game_install_path === ''
-        ? this.setState({ isGamePathSet: false })
-        : this.setState({ isGamePathSet: true })
+            await setConfigOption('cert_generated', true)
+        }
+
+        // Ensure old configs are updated to use RSA
+        const updatedConfig = await getConfigOption('patch_rsa')
+        await setConfigOption('patch_rsa', updatedConfig)
+
+        // Get latest version and compare to this version
+        const latestVersion: {
+            tag_name: string
+            link: string
+        } = await invoke('get_latest_release')
+        const tagName = latestVersion?.tag_name.replace(/[^\d.]/g, '')
+
+        // Check if tagName is different than current version
+        if (tagName && tagName !== (await getVersion())) {
+            // Display notification of new release
+            this.setState({
+                notification: (
+                    <>
+                        Cultivation{' '}
+                        <a href="#" onClick={() => invoke('open_in_browser', { url: latestVersion.link })}>
+                            {latestVersion?.tag_name}
+                        </a>{' '}
+                        is now available!
+                    </>
+                ),
+            })
+
+            setTimeout(() => {
+                this.setState({
+                    notification: null,
+                })
+            }, 6000)
+        }
+
+        // Period check to only show progress bar when downloading files
+        setInterval(() => {
+            this.setState({
+                isDownloading:
+                    this.props.downloadHandler.getDownloads().filter((d) => d.status !== 'finished')?.length > 0,
+            })
+        }, 1000)
     }
-  }
+    async openExtrasMenu(playGame: () => void) {
+        this.setState({
+            extrasOpen: true,
+            playGame,
+        })
+    }
 
-  render() {
-    return (
-      <>
-        <TopBar>
-          <div
-            id="settingsBtn"
-            onClick={() => this.setState({ optionsOpen: !this.state.optionsOpen })}
-            className="TopButton"
-          >
-            <img src={cogBtn} alt="settings" />
-          </div>
-          <div
-            id="downloadsBtn"
-            className="TopButton"
-            onClick={() => this.setState({ downloadsOpen: !this.state.downloadsOpen })}
-          >
-            <img src={downBtn} alt="downloads" />
-          </div>
-          {this.state.migotoSet && (
-            <div
-              id="modsBtn"
-              onClick={() => {
-                // Create and dispatch a custom "openMods" event
-                const event = new CustomEvent('changePage', { detail: 'modding' })
-                window.dispatchEvent(event)
-              }}
-              className="TopButton"
-            >
-              <img src={wrenchBtn} alt="mods" />
-            </div>
-          )}
-          {/* <div id="gameBtn" className="TopButton" onClick={() => this.setState({ gameDownloadsOpen: !this.state.gameDownloadsOpen })}>
+    async componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>) {
+        const game_path = await getConfigOption('game_install_path')
+
+        //if previous state is not equal the current one - update the game_install_path to be the current game path
+        if (prevState.game_install_path != game_path) {
+            this.setState({
+                game_install_path: game_path,
+            })
+
+            this.state.game_install_path === ''
+                ? this.setState({ isGamePathSet: false })
+                : this.setState({ isGamePathSet: true })
+        }
+    }
+
+    render() {
+        return (
+            <>
+                <TopBar>
+                    <div
+                        id="settingsBtn"
+                        onClick={() => this.setState({ optionsOpen: !this.state.optionsOpen })}
+                        className="TopButton"
+                    >
+                        <img src={cogBtn} alt="settings" />
+                    </div>
+                    <div
+                        id="downloadsBtn"
+                        className="TopButton"
+                        onClick={() => this.setState({ downloadsOpen: !this.state.downloadsOpen })}
+                    >
+                        <img src={downBtn} alt="downloads" />
+                    </div>
+                    {this.state.migotoSet && (
+                        <div
+                            id="modsBtn"
+                            onClick={() => {
+                                // Create and dispatch a custom "openMods" event
+                                const event = new CustomEvent('changePage', { detail: 'modding' })
+                                window.dispatchEvent(event)
+                            }}
+                            className="TopButton"
+                        >
+                            <img src={wrenchBtn} alt="mods" />
+                        </div>
+                    )}
+                    {/* <div id="gameBtn" className="TopButton" onClick={() => this.setState({ gameDownloadsOpen: !this.state.gameDownloadsOpen })}>
             <img src={gameBtn} alt="game" />
           </div> */}
-        </TopBar>
+                </TopBar>
+                <Notification show={!!this.state.notification}>{this.state.notification}</Notification>
 
-        <Notification show={!!this.state.notification}>{this.state.notification}</Notification>
-        
-        {this.state.isGamePathSet ? <></> : <GamePathNotify />}
+                {this.state.isGamePathSet ? <></> : <GamePathNotify />}
 
-        <RightBar />
+                <RightBar />
+                <NewsSection />
 
-        <NewsSection />
+                {
+                    // Extras section
+                    this.state.extrasOpen && (
+                        <ExtrasMenu closeFn={() => this.setState({ extrasOpen: false })} playGame={this.state.playGame}>
+                            Yo
+                        </ExtrasMenu>
+                    )
+                }
+                {
+                    // Mini downloads section
+                    this.state.miniDownloadsOpen ? (
+                        <div className="MiniDownloads" id="miniDownloadContainer">
+                            <MiniDialog
+                                title="Downloads"
+                                closeFn={() => {
+                                    this.setState({ miniDownloadsOpen: false })
+                                }}
+                            >
+                                <DownloadList downloadManager={this.props.downloadHandler} />
+                            </MiniDialog>
+                            <div className="arrow-down"></div>
+                        </div>
+                    ) : null
+                }
 
-        {
-          // Extras section
-          this.state.extrasOpen && (
-            <ExtrasMenu closeFn={() => this.setState({ extrasOpen: false })} playGame={this.state.playGame}>
-              Yo
-            </ExtrasMenu>
-          )
-        }
+                {
+                    // Download menu
+                    this.state.downloadsOpen ? (
+                        <Downloads
+                            downloadManager={this.props.downloadHandler}
+                            closeFn={() => this.setState({ downloadsOpen: false })}
+                        />
+                    ) : null
+                }
 
-        {
-          // Mini downloads section
-          this.state.miniDownloadsOpen ? (
-            <div className="MiniDownloads" id="miniDownloadContainer">
-              <MiniDialog
-                title="Downloads"
-                closeFn={() => {
-                  this.setState({ miniDownloadsOpen: false })
-                }}
-              >
-                <DownloadList downloadManager={this.props.downloadHandler} />
-              </MiniDialog>
-              <div className="arrow-down"></div>
-            </div>
-          ) : null
-        }
+                {
+                    // Options menu
+                    this.state.optionsOpen ? (
+                        <Options
+                            downloadManager={this.props.downloadHandler}
+                            closeFn={() => this.setState({ optionsOpen: !this.state.optionsOpen })}
+                        />
+                    ) : null
+                }
 
-        {
-          // Download menu
-          this.state.downloadsOpen ? (
-            <Downloads
-              downloadManager={this.props.downloadHandler}
-              closeFn={() => this.setState({ downloadsOpen: false })}
-            />
-          ) : null
-        }
+                {
+                    // Game downloads menu
+                    this.state.gameDownloadsOpen ? (
+                        <Game
+                            downloadManager={this.props.downloadHandler}
+                            closeFn={() => this.setState({ gameDownloadsOpen: false })}
+                        />
+                    ) : null
+                }
 
-        {
-          // Options menu
-          this.state.optionsOpen ? (
-            <Options
-              downloadManager={this.props.downloadHandler}
-              closeFn={() => this.setState({ optionsOpen: !this.state.optionsOpen })}
-            />
-          ) : null
-        }
+                <div className="BottomSection" id="bottomSectionContainer">
+                    <ServerLaunchSection openExtras={this.openExtrasMenu} />
 
-        {
-          // Game downloads menu
-          this.state.gameDownloadsOpen ? (
-            <Game
-              downloadManager={this.props.downloadHandler}
-              closeFn={() => this.setState({ gameDownloadsOpen: false })}
-            />
-          ) : null
-        }
-
-        <div className="BottomSection" id="bottomSectionContainer">
-          <ServerLaunchSection openExtras={this.openExtrasMenu} />
-
-          <div
-            id="DownloadProgress"
-            onClick={() => this.setState({ miniDownloadsOpen: !this.state.miniDownloadsOpen })}
-          >
-            {this.state.isDownloading ? <MainProgressBar downloadManager={this.props.downloadHandler} /> : null}
-          </div>
-        </div>
-      </>
-    )
-  }
+                    <div
+                        id="DownloadProgress"
+                        onClick={() => this.setState({ miniDownloadsOpen: !this.state.miniDownloadsOpen })}
+                    >
+                        {this.state.isDownloading ? (
+                            <MainProgressBar downloadManager={this.props.downloadHandler} />
+                        ) : null}
+                    </div>
+                </div>
+            </>
+        )
+    }
 }

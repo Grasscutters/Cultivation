@@ -2,3 +2,6 @@ node_modules/
 src-tauri/resources/
 src-tauri/target/
 src-tauri/WixTools/
+# Ignore artifacts:
+build
+coverage
