@@ -202,8 +202,6 @@ export class Main extends React.Component<IProps, IState> {
     const game_exists: boolean = (await invoke('dir_exists', {
       path: game_path,
     })) as boolean
-      path: game_path,
-    })) as boolean)
 
     // Set no game path so the user understands it doesn't exist there
     if (!game_exists) {
