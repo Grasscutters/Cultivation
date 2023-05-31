@@ -62,7 +62,7 @@ export class Main extends React.Component<IProps, IState> {
         alert('Error launching game')
       },
       notification: null,
-      isGamePathSet: false,
+      isGamePathSet: true,
       game_install_path: '',
     }
 
