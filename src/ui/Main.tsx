@@ -199,7 +199,9 @@ export class Main extends React.Component<IProps, IState> {
     const game_path = await getConfigOption('game_install_path')
 
     // Check if game exists at set location
-    const game_exists: boolean = ((await invoke('dir_exists', {
+    const game_exists: boolean = (await invoke('dir_exists', {
+      path: game_path,
+    })) as boolean
       path: game_path,
     })) as boolean)
 
