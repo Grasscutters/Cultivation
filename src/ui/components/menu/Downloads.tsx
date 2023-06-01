@@ -19,7 +19,7 @@ const STABLE_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archiv
 const DEV_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/development.zip'
 const UNSTABLE_DOWNLOAD = 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/unstable/Grasscutter.zip'
 const DEV_DOWNLOAD = 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/development/Grasscutter.zip'
-const RESOURCES_DOWNLOAD = 'https://gitlab.com/YuukiPS/GC-Resources/-/archive/3.6/GC-Resources-3.6.zip' // Use Yuuki res as grasscutter crepe res are broken
+const RESOURCES_DOWNLOAD = 'https://gitlab.com/api/v4/projects/35984297/repository/archive.zip' // Use Yuuki res as grasscutter crepe res are broken
 const MIGOTO_DOWNLOAD =
   'https://github.com/SilentNightSound/GI-Model-Importer/releases/download/V7.0/3dmigoto-GIMI-for-playing-mods.zip'
 
