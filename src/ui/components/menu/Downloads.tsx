@@ -13,8 +13,7 @@ import { invoke } from '@tauri-apps/api'
 import { listen } from '@tauri-apps/api/event'
 import HelpButton from '../common/HelpButton'
 
-const FULL_BUILD_DOWNLOAD = 'https://github.com/NotThorny/Grasscutter/releases/download/culti-aio/GrasscutterCulti.zip' // Change to link that can be updated without modifying here
-const FULL_QUEST_DOWNLOAD = 'https://github.com/NotThorny/Grasscutter/releases/download/culti-aio/GrasscutterQuests.zip'
+const FULL_BUILD_DOWNLOAD = 'https://github.com/NotThorny/Grasscutter/releases/download/culti-aio/GrasscutterCulti.zip'
 const STABLE_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/stable.zip'
 const DEV_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/development.zip'
 const UNSTABLE_DOWNLOAD = 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/unstable/Grasscutter.zip'
@@ -56,7 +55,6 @@ export default class Downloads extends React.Component<IProps, IState> {
 
     this.getGrasscutterFolder = this.getGrasscutterFolder.bind(this)
     this.downloadGrasscutterFullBuild = this.downloadGrasscutterFullBuild.bind(this)
-    this.downloadGrasscutterFullQuest = this.downloadGrasscutterFullQuest.bind(this)
     this.downloadGrasscutterStableRepo = this.downloadGrasscutterStableRepo.bind(this)
     this.downloadGrasscutterDevRepo = this.downloadGrasscutterDevRepo.bind(this)
     this.downloadGrasscutterUnstable = this.downloadGrasscutterUnstable.bind(this)
@@ -137,16 +135,6 @@ export default class Downloads extends React.Component<IProps, IState> {
     const folder = await this.getGrasscutterFolder()
     this.props.downloadManager.addDownload(FULL_BUILD_DOWNLOAD, folder + '\\GrasscutterCulti.zip', async () => {
       await unzip(folder + '\\GrasscutterCulti.zip', folder + '\\', true)
-      this.toggleButtons()
-    })
-
-    this.toggleButtons()
-  }
-
-  async downloadGrasscutterFullQuest() {
-    const folder = await this.getGrasscutterFolder()
-    this.props.downloadManager.addDownload(FULL_QUEST_DOWNLOAD, folder + '\\GrasscutterQuests.zip', async () => {
-      await unzip(folder + '\\GrasscutterQuests.zip', folder + '\\', true)
       this.toggleButtons()
     })
 
@@ -279,22 +267,6 @@ export default class Downloads extends React.Component<IProps, IState> {
             </BigButton>
           </div>
         </div>
-        <div className="DownloadMenuSection" id="downloadMenuContainerGCFullQuest">
-          <div className="DownloadLabel" id="downloadMenuLabelGCFullQuest">
-            <Tr text={'downloads.grasscutter_fullquest'} />
-            <HelpButton contents="help.gc_fullbuild" />
-          </div>
-          <div className="DownloadValue" id="downloadMenuButtonGCFullQuest">
-            <BigButton
-              disabled={this.state.grasscutter_downloading}
-              onClick={this.downloadGrasscutterFullQuest}
-              id="grasscutterFullBuildBtn"
-            >
-              <Tr text="components.download" />
-            </BigButton>
-          </div>
-        </div>
-
         <Divider />
 
         <div className="HeaderText" id="downloadMenuIndividualHeader">

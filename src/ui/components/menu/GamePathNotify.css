@@ -5,6 +5,10 @@
   color: white;
 }
 
+.GameInstallNotify span {
+  padding: 10px 0;
+}
+
 #pointer {
   position: absolute;
   right: 85px;
