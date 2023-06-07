@@ -157,7 +157,7 @@ fn main() -> Result<(), ArgsError> {
     println!("You running as a non-elevated user. Some stuff will almost definitely not work.");
     println!("===============================================================================");
 
-    reopen_as_admin();
+    //reopen_as_admin();
   }
 
   // Setup datadir/cultivation just in case something went funky and it wasn't made

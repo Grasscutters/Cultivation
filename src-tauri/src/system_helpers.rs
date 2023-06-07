@@ -1,7 +1,7 @@
-use duct::cmd;
 use ini::Ini;
 use std::ffi::OsStr;
 use std::path::PathBuf;
+use std::process::Command;
 
 #[cfg(windows)]
 use {
@@ -60,7 +60,10 @@ pub fn run_command(program: &str, args: Vec<&str>, relative: Option<bool>) {
       std::env::set_current_dir(&path_buf).unwrap();
     }
 
-    cmd(prog, args).run().unwrap();
+    // Run the command
+    let mut command = Command::new(&prog);
+    command.args(&args);
+    command.spawn().unwrap();
 
     // Restore the original working directory
     std::env::set_current_dir(cwd).unwrap();

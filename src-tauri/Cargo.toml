@@ -44,7 +44,6 @@ once_cell = "1.13.0"
 
 # Program opener.
 open = "3.0.2"
-duct = "0.13.5"
 
 # Services
 windows-service = "0.6.0"
