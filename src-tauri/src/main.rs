@@ -230,12 +230,11 @@ fn main() -> Result<(), ArgsError> {
         gamebanana::list_submissions,
         gamebanana::list_mods
       ])
-      .on_window_event(|event| match event.event() {
-        tauri::WindowEvent::CloseRequested { api, .. } => {
+      .on_window_event(|event| {
+        if let tauri::WindowEvent::CloseRequested { .. } = event.event() {
           // Ensure all proxy stuff is handled
           disconnect();
         }
-        _ => {}
       })
       .run(tauri::generate_context!())
       .expect("error while running tauri application");

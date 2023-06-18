@@ -42,6 +42,7 @@ interface IState {
   swag: boolean
   platform: string
   un_elevated: boolean
+  redirect_more: boolean
 
   // Swag stuff
   akebi_path: string
@@ -72,6 +73,7 @@ export default class Options extends React.Component<IProps, IState> {
       auto_mongodb: false,
       platform: '',
       un_elevated: false,
+      redirect_more: false,
 
       // Swag stuff
       akebi_path: '',
@@ -123,6 +125,7 @@ export default class Options extends React.Component<IProps, IState> {
       auto_mongodb: config.auto_mongodb || false,
       platform,
       un_elevated: config.un_elevated || false,
+      redirect_more: config.redirect_more || false,
 
       // Swag stuff
       akebi_path: config.akebi_path || '',
@@ -385,6 +388,18 @@ export default class Options extends React.Component<IProps, IState> {
               onChange={() => this.toggleOption('auto_mongodb')}
               checked={this.state?.auto_mongodb}
               id="autoMongodb"
+            />
+          </div>
+        </div>
+        <div className="OptionSection" id="menuOptionsContainerRedirect">
+          <div className="OptionLabel" id="menuOptionsLabelRedirect">
+            <Tr text="options.redirect_more" />
+          </div>
+          <div className="OptionValue" id="menuOptionsCheckboxRedirect">
+            <Checkbox
+              onChange={() => this.toggleOption('redirect_more')}
+              checked={this.state?.redirect_more}
+              id="RedirectMore"
             />
           </div>
         </div>

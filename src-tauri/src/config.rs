@@ -26,6 +26,7 @@ pub struct Configuration {
   pub horny_mode: Option<bool>,
   pub auto_mongodb: Option<bool>,
   pub un_elevated: Option<bool>,
+  pub redirect_more: Option<bool>,
 }
 
 pub fn config_path() -> PathBuf {

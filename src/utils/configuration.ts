@@ -26,6 +26,7 @@ let defaultConfig: Configuration
     horny_mode: false,
     auto_mongodb: false,
     un_elevated: false,
+    redirect_more: false,
   }
 })()
 
@@ -55,6 +56,7 @@ export interface Configuration {
   swag_mode?: boolean
   auto_mongodb: boolean
   un_elevated: boolean
+  redirect_more: boolean
 
   // Swag stuff
   akebi_path?: string
