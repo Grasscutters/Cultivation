@@ -8,7 +8,8 @@
     "ip_placeholder": "IP地址...",
     "port_placeholder": "通訊埠...",
     "files_downloading": "檔案下載中：",
-    "files_extracting": "檔案解壓縮中："
+    "files_extracting": "檔案解壓縮中：",
+    "game_path_notify": "找不到遊戲路徑，記得在設置裡設置！"
   },
   "options": {
     "enabled": "已啟用",

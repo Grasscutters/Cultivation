@@ -8,7 +8,8 @@
     "ip_placeholder": "Server Address...",
     "port_placeholder": "Poort...",
     "files_downloading": "Bestanden Aan Downloaden: ",
-    "files_extracting": "Bestanden Uitpakken: "
+    "files_extracting": "Bestanden Uitpakken: ",
+    "game_path_notify": "Spelpad niet gevonden, denk eraan dit in te stellen in instellingen!"
   },
   "options": {
     "enabled": "Ingeschakeld",

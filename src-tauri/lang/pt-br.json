@@ -8,7 +8,8 @@
     "ip_placeholder": "Endereço do Servidor...",
     "port_placeholder": "Porta...",
     "files_downloading": "Baixando Arquivos: ",
-    "files_extracting": "Extraindo Arquivos: "
+    "files_extracting": "Extraindo Arquivos: ",
+    "game_path_notify": "Caminho do jogo não encontrado, lembre-se de defini-lo nas configurações!"
   },
   "options": {
     "enabled": "Habilitado",

@@ -8,7 +8,8 @@
     "ip_placeholder": "Dirección del servidor...",
     "port_placeholder": "Puerto...",
     "files_downloading": "Archivos Descargandose: ",
-    "files_extracting": "Archivos Extrayendose: "
+    "files_extracting": "Archivos Extrayendose: ",
+    "game_path_notify": "Ruta de juego no encontrada, ¡recuerda configurarla en ajustes!"
   },
   "options": {
     "enabled": "Activado",

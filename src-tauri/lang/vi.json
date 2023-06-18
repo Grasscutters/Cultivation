@@ -8,7 +8,8 @@
     "ip_placeholder": "Địa chỉ máy chủ...",
     "port_placeholder": "Cổng...",
     "files_downloading": "Đang tải tập tin: ",
-    "files_extracting": "Đang giải nén tập tin: "
+    "files_extracting": "Đang giải nén tập tin: ",
+    "game_path_notify": "Không tìm thấy đường dẫn trò chơi, hãy nhớ đặt nó trong cài đặt!"
   },
   "options": {
     "enabled": "Bật",

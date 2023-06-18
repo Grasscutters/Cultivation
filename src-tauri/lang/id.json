@@ -7,7 +7,8 @@
     "ip_placeholder": "Alamat Server...",
     "port_placeholder": "Port...",
     "files_downloading": "Mendownload File Yang Diperlukan: ",
-    "files_extracting": "MengExtract File: "
+    "files_extracting": "MengExtract File: ",
+    "game_path_notify": "Jalur permainan tidak ditemukan, ingatlah untuk mengaturnya dalam pengaturan!"
   },
   "options": {
     "enabled": "Diaktifkan",
