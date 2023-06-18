@@ -31,7 +31,8 @@
     "wipe_login": "Tẩy sạch cache đăng nhập",
     "horny_mode": "Chế độ hứng tình",
     "auto_mongodb": "Tự động khởi động MongoDB",
-    "un_elevated": "Chạy trò chơi không nâng cao (không có quản trị viên)"
+    "un_elevated": "Chạy trò chơi không nâng cao (không có quản trị viên)",
+    "redirect_more": "Đồng thời chuyển hướng các trò chơi MHY khác"
   },
   "downloads": {
     "grasscutter_fullbuild": "Tải Grasscutter tất cả trong một",

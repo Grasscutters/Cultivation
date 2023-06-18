@@ -30,7 +30,8 @@
     "wipe_login": "Menghapus Cache Login",
     "horny_mode": "Mode Terangsang",
     "auto_mongodb": "Mulai MongoDB secara otomatis",
-    "un_elevated": "Jalankan game yang tidak ditinggikan (tanpa admin)"
+    "un_elevated": "Jalankan game yang tidak ditinggikan (tanpa admin)",
+    "redirect_more": "Juga mengarahkan ulang game MHY lainnya"
   },
   "downloads": {
     "grasscutter_fullbuild": "Sedang Mendownload Grasscutter Semua Dalam Satu",

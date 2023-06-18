@@ -70,6 +70,7 @@ impl HttpHandler for ProxyHandler {
           || uri.contains("bhsr.com")
           || uri.contains("bh3.com")
           || uri.contains("honkaiimpact3.com")
+          || uri.contains("zenlesszonezero.com")
         {
           // Handle CONNECTs
           if req.method().as_str() == "CONNECT" {
