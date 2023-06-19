@@ -9,7 +9,7 @@
     "port_placeholder": "Port...",
     "files_downloading": "Files Downloading: ",
     "files_extracting": "Files Extracting: ",
-    "game_path_notify": "Game path not found, remember to set it in !"
+    "game_path_notify": "Game path not found, remember to set it in settings!"
   },
   "options": {
     "enabled": "Enabled",
@@ -31,7 +31,8 @@
     "wipe_login": "Wipe Login Cache",
     "horny_mode": "Horny Mode",
     "auto_mongodb": "Automatically Start MongoDB",
-    "un_elevated": "Run the game non-elevated (no admin)"
+    "un_elevated": "Run the game non-elevated (no admin)",
+    "redirect_more": "Also redirect other MHY games"
   },
   "downloads": {
     "grasscutter_fullbuild": "Download Grasscutter All-in-One",

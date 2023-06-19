@@ -7,7 +7,8 @@
     "ip_placeholder": "Alamat Server...",
     "port_placeholder": "Port...",
     "files_downloading": "Mendownload File Yang Diperlukan: ",
-    "files_extracting": "MengExtract File: "
+    "files_extracting": "MengExtract File: ",
+    "game_path_notify": "Jalur permainan tidak ditemukan, ingatlah untuk mengaturnya dalam pengaturan!"
   },
   "options": {
     "enabled": "Diaktifkan",
@@ -29,7 +30,8 @@
     "wipe_login": "Menghapus Cache Login",
     "horny_mode": "Mode Terangsang",
     "auto_mongodb": "Mulai MongoDB secara otomatis",
-    "un_elevated": "Jalankan game yang tidak ditinggikan (tanpa admin)"
+    "un_elevated": "Jalankan game yang tidak ditinggikan (tanpa admin)",
+    "redirect_more": "Juga mengarahkan ulang game MHY lainnya"
   },
   "downloads": {
     "grasscutter_fullbuild": "Sedang Mendownload Grasscutter Semua Dalam Satu",

@@ -8,7 +8,8 @@
     "ip_placeholder": "Adresse du serveur...",
     "port_placeholder": "Port...",
     "files_downloading": "Fichiers en cours de telechargement: ",
-    "files_extracting": "Fichiers en cours d'extraction: "
+    "files_extracting": "Fichiers en cours d'extraction: ",
+    "game_path_notify": "Chemin d'accès au jeu non trouvé, n'oubliez pas de le définir dans les options !"
   },
   "options": {
     "enabled": "Activé",
@@ -30,7 +31,8 @@
     "wipe_login": "Effacer le cache de connexion",
     "horny_mode": "Mode horny",
     "auto_mongodb": "Démarrer automatiquement MongoDB",
-    "un_elevated": "Exécuter le jeu sans élévation (pas d'administrateur)"
+    "un_elevated": "Exécuter le jeu sans élévation (pas d'administrateur)",
+    "redirect_more": "Réorienter également les autres jeux MHY"
   },
   "downloads": {
     "grasscutter_fullbuild": "Telecharger Grasscutter tout-en-un",

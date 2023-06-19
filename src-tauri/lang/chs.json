@@ -8,7 +8,8 @@
     "ip_placeholder": "IP 地址...",
     "port_placeholder": "端口...",
     "files_downloading": "文件下载中：",
-    "files_extracting": "文件解压中："
+    "files_extracting": "文件解压中：",
+    "game_path_notify": "未找到游戏路径，请记得在设置中进行设置"
   },
   "options": {
     "enabled": "已启用",
@@ -30,7 +31,8 @@
     "wipe_login": "清除登录缓存",
     "horny_mode": "Horny 模式",
     "auto_mongodb": "自动启动 MongoDB",
-    "un_elevated": "非提升运行游戏（无管理员）"
+    "un_elevated": "非提升运行游戏（无管理员）",
+    "redirect_more": "还可以重定向其他MHY游戏"
   },
   "downloads": {
     "grasscutter_fullbuild": "下载 Grasscutter 一体化",

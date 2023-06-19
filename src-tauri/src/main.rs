@@ -49,6 +49,7 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
   args.flag("h", "help", "Print various CLI args");
   args.flag("p", "proxy", "Start the proxy server");
   args.flag("G", "launch-game", "Launch the game");
+  args.flag("o", "other-redirects", "Redirect other certain anime games");
   args.flag(
     "A",
     "no-admin",
@@ -142,6 +143,10 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
     pathbuf.push("cultivation");
     pathbuf.push("ca");
 
+    if args.value_of("other_redirects")? {
+      proxy::set_redirect_more();
+    }
+
     connect(8035, pathbuf.to_str().unwrap().to_string()).await;
   }
 
@@ -207,6 +212,7 @@ fn main() -> Result<(), ArgsError> {
         system_helpers::run_un_elevated,
         proxy::set_proxy_addr,
         proxy::generate_ca_files,
+        proxy::set_redirect_more,
         release::get_latest_release,
         unzip::unzip,
         file_helpers::rename,
@@ -230,12 +236,11 @@ fn main() -> Result<(), ArgsError> {
         gamebanana::list_submissions,
         gamebanana::list_mods
       ])
-      .on_window_event(|event| match event.event() {
-        tauri::WindowEvent::CloseRequested { api, .. } => {
+      .on_window_event(|event| {
+        if let tauri::WindowEvent::CloseRequested { .. } = event.event() {
           // Ensure all proxy stuff is handled
           disconnect();
         }
-        _ => {}
       })
       .run(tauri::generate_context!())
       .expect("error while running tauri application");

@@ -3,6 +3,7 @@
  * https://github.com/omjadas/hudsucker/blob/main/examples/log.rs
  */
 
+use crate::config::get_config;
 #[cfg(target_os = "linux")]
 use crate::system_helpers::run_command;
 
@@ -35,6 +36,7 @@ async fn shutdown_signal() {
 
 // Global ver for getting server address.
 static SERVER: Lazy<Mutex<String>> = Lazy::new(|| Mutex::new("http://localhost:443".to_string()));
+static REDIRECT_MORE: Lazy<Mutex<bool>> = Lazy::new(|| Mutex::new(false));
 
 #[derive(Clone)]
 struct ProxyHandler;
@@ -51,6 +53,11 @@ pub fn set_proxy_addr(addr: String) {
   println!("Set server to {}", SERVER.lock().unwrap());
 }
 
+#[tauri::command]
+pub fn set_redirect_more() {
+  *REDIRECT_MORE.lock().unwrap() = true;
+}
+
 #[async_trait]
 impl HttpHandler for ProxyHandler {
   async fn handle_request(
@@ -60,24 +67,93 @@ impl HttpHandler for ProxyHandler {
   ) -> RequestOrResponse {
     let uri = req.uri().to_string();
 
-    if uri.contains("hoyoverse.com") || uri.contains("mihoyo.com") || uri.contains("yuanshen.com") {
-      // Handle CONNECTs
-      if req.method().as_str() == "CONNECT" {
-        let builder = Response::builder()
-          .header("DecryptEndpoint", "Created")
-          .status(StatusCode::OK);
-        let res = builder.body(()).unwrap();
+    let mut more = get_config().redirect_more;
 
-        // Respond to CONNECT
-        *res.body()
-      } else {
-        let uri_path_and_query = req.uri().path_and_query().unwrap().as_str();
-        // Create new URI.
-        let new_uri =
-          Uri::from_str(format!("{}{}", SERVER.lock().unwrap(), uri_path_and_query).as_str())
-            .unwrap();
-        // Set request URI to the new one.
-        *req.uri_mut() = new_uri;
+    if *REDIRECT_MORE.lock().unwrap() {
+      more = Some(true);
+    }
+
+    match more {
+      Some(true) => {
+        if uri.contains("hoyoverse.com")
+          || uri.contains("mihoyo.com")
+          || uri.contains("yuanshen.com")
+          || uri.contains("starrails.com")
+          || uri.contains("bhsr.com")
+          || uri.contains("bh3.com")
+          || uri.contains("honkaiimpact3.com")
+          || uri.contains("zenlesszonezero.com")
+        {
+          // Handle CONNECTs
+          if req.method().as_str() == "CONNECT" {
+            let builder = Response::builder()
+              .header("DecryptEndpoint", "Created")
+              .status(StatusCode::OK);
+            let res = builder.body(()).unwrap();
+
+            // Respond to CONNECT
+            *res.body()
+          } else {
+            let uri_path_and_query = req.uri().path_and_query().unwrap().as_str();
+            // Create new URI.
+            let new_uri =
+              Uri::from_str(format!("{}{}", SERVER.lock().unwrap(), uri_path_and_query).as_str())
+                .unwrap();
+            // Set request URI to the new one.
+            *req.uri_mut() = new_uri;
+          }
+        }
+      }
+      Some(false) => {
+        if uri.contains("hoyoverse.com")
+          || uri.contains("mihoyo.com")
+          || uri.contains("yuanshen.com")
+        {
+          // Handle CONNECTs
+          if req.method().as_str() == "CONNECT" {
+            let builder = Response::builder()
+              .header("DecryptEndpoint", "Created")
+              .status(StatusCode::OK);
+            let res = builder.body(()).unwrap();
+
+            // Respond to CONNECT
+            *res.body()
+          } else {
+            let uri_path_and_query = req.uri().path_and_query().unwrap().as_str();
+            // Create new URI.
+            let new_uri =
+              Uri::from_str(format!("{}{}", SERVER.lock().unwrap(), uri_path_and_query).as_str())
+                .unwrap();
+            // Set request URI to the new one.
+            *req.uri_mut() = new_uri;
+          }
+        }
+      }
+      // Use default as fallback
+      None => {
+        if uri.contains("hoyoverse.com")
+          || uri.contains("mihoyo.com")
+          || uri.contains("yuanshen.com")
+        {
+          // Handle CONNECTs
+          if req.method().as_str() == "CONNECT" {
+            let builder = Response::builder()
+              .header("DecryptEndpoint", "Created")
+              .status(StatusCode::OK);
+            let res = builder.body(()).unwrap();
+
+            // Respond to CONNECT
+            *res.body()
+          } else {
+            let uri_path_and_query = req.uri().path_and_query().unwrap().as_str();
+            // Create new URI.
+            let new_uri =
+              Uri::from_str(format!("{}{}", SERVER.lock().unwrap(), uri_path_and_query).as_str())
+                .unwrap();
+            // Set request URI to the new one.
+            *req.uri_mut() = new_uri;
+          }
+        }
       }
     }
 

@@ -8,7 +8,8 @@
     "ip_placeholder": "서버 주소",
     "port_placeholder": "포트",
     "files_downloading": "파일 다운로드 중: ",
-    "files_extracting": "파일 추출 중: "
+    "files_extracting": "파일 추출 중: ",
+    "game_path_notify": "게임 경로를 찾을 수 없습니다. 설정에서 설정하는 것을 잊지 마세요!"
   },
   "options": {
     "enabled": "활성",
@@ -30,7 +31,8 @@
     "wipe_login": "로그인 캐시 지우기",
     "horny_mode": "Horny 모드",
     "auto_mongodb": "MongoDB 자동 시작",
-    "un_elevated": "게임 비상승 실행(관리자 없음)"
+    "un_elevated": "게임 비상승 실행(관리자 없음)",
+    "redirect_more": "다른 MHY 게임도 리디렉션"
   },
   "downloads": {
     "grasscutter_fullbuild": "올인원 Grasscutter 다운로드",

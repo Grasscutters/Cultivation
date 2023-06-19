@@ -8,7 +8,8 @@
     "ip_placeholder": "Dirección del servidor...",
     "port_placeholder": "Puerto...",
     "files_downloading": "Archivos Descargandose: ",
-    "files_extracting": "Archivos Extrayendose: "
+    "files_extracting": "Archivos Extrayendose: ",
+    "game_path_notify": "Ruta de juego no encontrada, ¡recuerda configurarla en ajustes!"
   },
   "options": {
     "enabled": "Activado",
@@ -30,7 +31,8 @@
     "wipe_login": "Borrar caché de inicio de sesión",
     "horny_mode": "Modo cachondo",
     "auto_mongodb": "Iniciar automáticamente MongoDB",
-    "un_elevated": "Ejecutar el juego no elevado (no admin)"
+    "un_elevated": "Ejecutar el juego no elevado (no admin)",
+    "redirect_more": "También redirigir otros juegos MHY"
   },
   "downloads": {
     "grasscutter_fullbuild": "Descargar Datos todo en uno de Grasscutter",

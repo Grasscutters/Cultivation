@@ -8,7 +8,8 @@
     "ip_placeholder": "Айпи адрес...",
     "port_placeholder": "Порт...",
     "files_downloading": "Файлов скачано: ",
-    "files_extracting": "Извлечено файлов: "
+    "files_extracting": "Извлечено файлов: ",
+    "game_path_notify": "Путь к игре не найден, не забудьте установить его в настройках!"
   },
   "options": {
     "enabled": "Включено",
@@ -29,7 +30,8 @@
     "wipe_login": "Очистить кэш входа в систему",
     "horny_mode": "роговой режим",
     "auto_mongodb": "Автоматически запускать MongoDB",
-    "un_elevated": "Запустите игру в неэлегантном режиме (без администратора)"
+    "un_elevated": "Запустите игру в неэлегантном режиме (без администратора)",
+    "redirect_more": "Также перенаправьте другие игры MHY"
   },
   "downloads": {
     "grasscutter_fullbuild": "Скачать все в одном Grasscutter",

@@ -8,7 +8,8 @@
     "ip_placeholder": "Server Address...",
     "port_placeholder": "Poort...",
     "files_downloading": "Bestanden Aan Downloaden: ",
-    "files_extracting": "Bestanden Uitpakken: "
+    "files_extracting": "Bestanden Uitpakken: ",
+    "game_path_notify": "Spelpad niet gevonden, denk eraan dit in te stellen in instellingen!"
   },
   "options": {
     "enabled": "Ingeschakeld",
@@ -29,7 +30,8 @@
     "wipe_login": "Login cache wissen",
     "horny_mode": "Geile modus",
     "auto_mongodb": "Start automatisch MongoDB",
-    "un_elevated": "Voer het spel uit zonder hoogtevrees (geen admin)"
+    "un_elevated": "Voer het spel uit zonder hoogtevrees (geen admin)",
+    "redirect_more": "Richt ook andere MHY-spellen"
   },
   "downloads": {
     "grasscutter_fullbuild": "Grasscutter Alles-in-één Downloaden",

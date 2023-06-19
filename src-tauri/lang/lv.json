@@ -8,7 +8,8 @@
     "ip_placeholder": "Servera Adrese...",
     "port_placeholder": "Ports...",
     "files_downloading": "Failu Lejupielāde: ",
-    "files_extracting": "Failu Izvilkšana: "
+    "files_extracting": "Failu Izvilkšana: ",
+    "game_path_notify": "Spēles ceļš nav atrasts, atcerieties to iestatījumos!"
   },
   "options": {
     "enabled": "Iespējots",
@@ -28,7 +29,8 @@
     "wipe_login": "Noslaucīt pieteikšanās kešatmiņu",
     "horny_mode": "Uzbudināts režīms",
     "auto_mongodb": "Automātiski startējiet MongoDB",
-    "un_elevated": "Palaist spēli bez paaugstinājuma (bez administratora)"
+    "un_elevated": "Palaist spēli bez paaugstinājuma (bez administratora)",
+    "redirect_more": "Arī novirzīt citas MHY spēles"
   },
   "downloads": {
     "grasscutter_fullbuild": "Lejupielādējiet Grasscutter viss vienā",
