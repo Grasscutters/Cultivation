@@ -36,6 +36,7 @@ async fn shutdown_signal() {
 
 // Global ver for getting server address.
 static SERVER: Lazy<Mutex<String>> = Lazy::new(|| Mutex::new("http://localhost:443".to_string()));
+static REDIRECT_MORE: Lazy<Mutex<bool>> = Lazy::new(|| Mutex::new(false));
 
 #[derive(Clone)]
 struct ProxyHandler;
@@ -52,6 +53,11 @@ pub fn set_proxy_addr(addr: String) {
   println!("Set server to {}", SERVER.lock().unwrap());
 }
 
+#[tauri::command]
+pub fn set_redirect_more() {
+  *REDIRECT_MORE.lock().unwrap() = true;
+}
+
 #[async_trait]
 impl HttpHandler for ProxyHandler {
   async fn handle_request(
@@ -61,7 +67,13 @@ impl HttpHandler for ProxyHandler {
   ) -> RequestOrResponse {
     let uri = req.uri().to_string();
 
-    match get_config().redirect_more {
+    let mut more = get_config().redirect_more;
+
+    if *REDIRECT_MORE.lock().unwrap() {
+      more = Some(true);
+    }
+
+    match more {
       Some(true) => {
         if uri.contains("hoyoverse.com")
           || uri.contains("mihoyo.com")
