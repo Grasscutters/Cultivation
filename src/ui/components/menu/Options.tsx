@@ -240,7 +240,7 @@ export default class Options extends React.Component<IProps, IState> {
 
     if (!isUrl) {
       const filename = value.replace(/\\/g, '/').split('/').pop()
-      const localBgPath = ((await dataDir()) as string).replace(/\\/g, '/')
+      const localBgPath = (await dataDir()).replace(/\\/g, '/')
 
       await setConfigOption('custom_background', `${localBgPath}/cultivation/bg/${filename}`)
 
