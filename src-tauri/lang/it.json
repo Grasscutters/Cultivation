@@ -1,0 +1,97 @@
+{
+  "lang_name": "Italian",
+  "main": {
+    "title": "Cultivation",
+    "launch_button": "Avvia",
+    "gc_enable": "Connettiti a Grasscutter",
+    "https_enable": "Usa HTTPS",
+    "ip_placeholder": "Indirizzo Del Server...",
+    "port_placeholder": "Porta...",
+    "files_downloading": "File in Download: ",
+    "files_extracting": "File in Estrazione: ",
+    "game_path_notify": "Percorso del gioco non trovato, ricordati di impostarlo nelle impostazioni!"
+  },
+  "options": {
+    "enabled": "Abilitato",
+    "disabled": "Disabilitato",
+    "game_path": "Imposta percorso di installazione del gioco",
+    "game_command": "Commando d'avvio del gioco",
+    "game_executable": "Imposta l'executable del gioco",
+    "recover_rsa": "Eliminazione d'emergenza dell'RSA",
+    "grasscutter_jar": "Imposta il file JAR di Grasscutter",
+    "toggle_encryption": "Cittografia",
+    "install_certificate": "Installa il Certificato del Proxy",
+    "java_path": "Imposta il percorso personalizzato di Java",
+    "grasscutter_with_game": "Avvia automaticamente Grasscutter con il gioco",
+    "language": "Imposta lingua",
+    "background": "Imposta sfondo personalizzato (link o immagine)",
+    "theme": "Imposta tema",
+    "patch_rsa": "Patch RSA automaticamente",
+    "use_proxy": "Usa Proxy Interno",
+    "wipe_login": "Cancella la cache dell'accesso",
+    "horny_mode": "Modalità Horny",
+    "auto_mongodb": "Avvia Automaticamente MongoDB",
+    "un_elevated": "Avvia il gioco non-elevato (non admin)",
+    "redirect_more": "Reindirizza anche altri giochi MHY"
+  },
+  "downloads": {
+    "grasscutter_fullbuild": "Scarica Grasscutter Tutto-in-Uno",
+    "grasscutter_fullquest": "Scarica Questing Tutto-in-Uno",
+    "grasscutter_stable_data": "Scarica i dati di Grasscutter Stabili",
+    "grasscutter_latest_data": "Scarica i dati di Grasscutter Più Recenti",
+    "grasscutter_stable_data_update": "Aggiorna i dati di Grasscutter Stabili",
+    "grasscutter_latest_data_update": "Aggiorna i dati di Grasscutter Più Recenti",
+    "grasscutter_unstable": "Scarica Grasscutter Questing",
+    "grasscutter_latest": "Scarica Grasscutter Più Recente",
+    "grasscutter_unstable_update": "Aggiorna Grasscutter Questing",
+    "grasscutter_latest_update": "Aggiorna Grasscutter più Recente",
+    "resources": "Scarica le Risorse di Grasscutter",
+    "game": "Scarica il gioco",
+    "aio_header": "Tutto-in-Uno Download:",
+    "individual_header": "Download individuali:",
+    "mods_header": "Mod:",
+    "migoto": "Scarica GIMI 3dmigoto"
+  },
+  "download_status": {
+    "downloading": "Scaricando",
+    "extracting": "Estraendo",
+    "error": "Errore",
+    "finished": "Completato",
+    "stopped": "Interrotto"
+  },
+  "components": {
+    "select_file": "Seleziona file o cartella...",
+    "select_folder": "Seleziona cartella...",
+    "download": "Scarica",
+    "delete": "Cancella",
+    "install": "Installa"
+  },
+  "news": {
+    "latest_commits": "Commit Recenti",
+    "latest_version": "Ultima Versione"
+  },
+  "help": {
+    "port_help_text": "Assicurati che questa sia la porta del server Dispatch, non la porta del server di gioco. È quasi sempre '443'.",
+    "game_help_text": "Non ti serve una copia separata per giocare con Grasscutter. Questo è per fare il downgrade a 2.6 o se non hai il gioco installato.",
+    "gc_stable_jar": "Scarica la build stabile di Grasscutter più recente, che include il file jar e i dati.",
+    "gc_fullbuild": "Scarica la build completa di Grasscutter più recente, che include repo, jar e risorse. È completamente configurato e non richiede altri download da questo menu.",
+    "gc_dev_jar": "Scarica la build in sviluppo di Grasscutter più recente, che include il file jar e i dati.",
+    "gc_stable_data": "Scarica i dati della build stabile di Grasscutter più recente, che non include il file jar. È utile per aggiornare.",
+    "gc_dev_data": "Scarica i dati della build in sviluppo di Grasscutter più recente, che non include il file jar. È utile per aggiornare.",
+    "encryption": "Di solito questo dovrebbe essere disabilitato.",
+    "resources": "Queste sono anche necessari per eseguire un server Grasscutter. Questo bottone è grigio se hai una cartella delle risorse esistente con contenuto all'interno.",
+    "emergency_rsa": "In caso qualcosa è andato storto, forza l'eliminazione dell'RSA.",
+    "use_proxy": "Usa il proxy interno di Cultivation. Dovresti averlo attivato a meno che tu non usi qualcosa come Fiddler.",
+    "patch_rsa": "Patch e unpatch l'RSA del gioco automaticamente. A meno che tu non usi versioni vecchie/non ufficiali del gioco (3.0 e precedenti), questo dovrebbe essere attivato.",
+    "add_delay": "Imposta il ritardo nel caricatore 3dmigoto! \nQuesto dovrebbe risolvere i problemi di caricamento, ma aggiungerà un piccolo ritardo al caricamento di 3dmigoto all'avvio del gioco. \nOra puoi avviare il gioco con 3dmigoto di nuovo.",
+    "migoto": "For importing models from GameBanana"
+  },
+  "swag": {
+    "akebi_name": "Akebi",
+    "migoto_name": "Migoto",
+    "reshade_name": "Reshade",
+    "akebi": "Imposta l'Executable di Akebi/Acrepi",
+    "migoto": "Imposta l'Executable di 3DMigoto",
+    "reshade": "Imposta l'Injector di Reshade"
+  }
+}
