@@ -84,7 +84,7 @@
     "use_proxy": "Usa il proxy interno di Cultivation. Dovresti averlo attivato a meno che tu non usi qualcosa come Fiddler.",
     "patch_rsa": "Patch e unpatch l'RSA del gioco automaticamente. A meno che tu non usi versioni vecchie/non ufficiali del gioco (3.0 e precedenti), questo dovrebbe essere attivato.",
     "add_delay": "Imposta il ritardo nel caricatore 3dmigoto! \nQuesto dovrebbe risolvere i problemi di caricamento, ma aggiungerà un piccolo ritardo al caricamento di 3dmigoto all'avvio del gioco. \nOra puoi avviare il gioco con 3dmigoto di nuovo.",
-    "migoto": "For importing models from GameBanana"
+    "migoto": "Per importare modelli da GameBanana"
   },
   "swag": {
     "akebi_name": "Akebi",
