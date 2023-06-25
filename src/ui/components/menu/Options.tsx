@@ -152,7 +152,9 @@ export default class Options extends React.Component<IProps, IState> {
 
     // If setting any other game, automatically set to redirect more
     if (!value.toLowerCase().includes('genshin' || 'yuanshen')) {
-      this.toggleOption('redirect_more')
+      if (!this.state.redirect_more) {
+        this.toggleOption('redirect_more')
+      }
     }
 
     this.setState({
