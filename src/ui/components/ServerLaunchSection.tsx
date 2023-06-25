@@ -119,7 +119,11 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
 
     // Connect to proxy
     if (config.toggle_grasscutter) {
-      if (config.patch_rsa) {
+      const game_exe = await getGameExecutable()
+
+      const patchable = game_exe?.toLowerCase().includes('genshin' || 'yuanshen')
+
+      if (config.patch_rsa && patchable) {
         const gameVersion = await getGameVersion()
         console.log(gameVersion)
 
@@ -147,8 +151,6 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
           return
         }
       }
-
-      const game_exe = await getGameExecutable()
 
       // Save last connected server and port
       await setConfigOption('last_ip', this.state.ip)
