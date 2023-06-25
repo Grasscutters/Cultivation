@@ -171,7 +171,26 @@ impl HttpHandler for ProxyHandler {
   async fn should_intercept(&mut self, _ctx: &HttpContext, _req: &Request<Body>) -> bool {
     let uri = _req.uri().to_string();
 
-    uri.contains("hoyoverse.com") || uri.contains("mihoyo.com") || uri.contains("yuanshen.com")
+    let more = get_config().redirect_more;
+
+    match more {
+      Some(true) => {
+        uri.contains("hoyoverse.com")
+          || uri.contains("mihoyo.com")
+          || uri.contains("yuanshen.com")
+          || uri.contains("starrails.com")
+          || uri.contains("bhsr.com")
+          || uri.contains("bh3.com")
+          || uri.contains("honkaiimpact3.com")
+          || uri.contains("zenlesszonezero.com")
+      }
+      Some(false) => {
+        uri.contains("hoyoverse.com") || uri.contains("mihoyo.com") || uri.contains("yuanshen.com")
+      }
+      None => {
+        uri.contains("hoyoverse.com") || uri.contains("mihoyo.com") || uri.contains("yuanshen.com")
+      }
+    }
   }
 }
 
