@@ -1,0 +1,97 @@
+{
+  "lang_name": "Polski",
+  "main": {
+    "title": "Cultivation",
+    "launch_button": "Uruchom",
+    "gc_enable": "Połącz z Grasscutter",
+    "https_enable": "Używaj HTTPS",
+    "ip_placeholder": "Adres Serwera...",
+    "port_placeholder": "Port...",
+    "files_downloading": "Pobierane pliki: ",
+    "files_extracting": "Wypakowywane pliki: ",
+    "game_path_notify": "Ścieżka gry nie znaleziona. Pamiętaj by ustawić ją w ustawieniach!"
+  },
+  "options": {
+    "enabled": "Włączone",
+    "disabled": "Wyłączone",
+    "game_path": "Ustaw ścieżkę instalacji gry",
+    "game_command": "Komenda uruchamiania gry",
+    "game_executable": "Ustaw plik wykonywalny gry",
+    "recover_rsa": "Awaryjne usunięcie patcha RSA",
+    "grasscutter_jar": "Ustaw plik JAR Grasscuttera",
+    "toggle_encryption": "Włącz szyfrowanie",
+    "install_certificate": "Zainstaluj certyfikat proxy",
+    "java_path": "Ustaw własną ścieżkę Javy",
+    "grasscutter_with_game": "Automatycznie uruchom Grasscutter z grą",
+    "language": "Wybierz Język",
+    "background": "Ustaw własne tło (link lub plik graficzny)",
+    "theme": "Ustaw motyw",
+    "patch_rsa": "Automatycznie patchuj RSA",
+    "use_proxy": "Używaj wewnętrznego Proxy",
+    "wipe_login": "Wyczyść pamięć podręczną logowania",
+    "horny_mode": "Tryb 34",
+    "auto_mongodb": "Automatycznie uruchamiaj MongoDB",
+    "un_elevated": "Uruchamiaj grę bez uprawnień administratora/roota",
+    "redirect_more": "Przekieruj też inne gry MHY"
+  },
+  "downloads": {
+    "grasscutter_fullbuild": "Pobierz Grasscutter (wszystko w jednym)",
+    "grasscutter_fullquest": "Pobierz Questing (wszystko w jednym)",
+    "grasscutter_stable_data": "Pobierz stabilne dane Grasscuttera",
+    "grasscutter_latest_data": "Pobierz najnowsze dane Grasscuttera",
+    "grasscutter_stable_data_update": "Zaaktualizuj stabilne dane Grasscuttera",
+    "grasscutter_latest_data_update": "Zaaktualizuj najnowsze dane Grasscuttera",
+    "grasscutter_unstable": "Pobierz Grasscutter Questing",
+    "grasscutter_latest": "Pobierz Grasscutter Latest",
+    "grasscutter_unstable_update": "Zaaktualizuj Grasscutter Questing",
+    "grasscutter_latest_update": "Zaaktualizuj Grasscutter Latest",
+    "resources": "Pobierz zasoby Grasscuttera",
+    "game": "Pobierz grę",
+    "aio_header": "Grupowe pobierania:",
+    "individual_header": "Pojedyńcze pobierania:",
+    "mods_header": "Mody:",
+    "migoto": "Pobierz GIMI 3dmigoto"
+  },
+  "download_status": {
+    "downloading": "Pobieranie",
+    "extracting": "Wypakowywanie",
+    "error": "Błąd",
+    "finished": "Zakończono",
+    "stopped": "Zatrzymano"
+  },
+  "components": {
+    "select_file": "Wybierz plik lub folder...",
+    "select_folder": "Wybierz folder...",
+    "download": "Pobierz",
+    "delete": "Usuń",
+    "install": "Zainstaluj"
+  },
+  "news": {
+    "latest_commits": "Ostatnie Commity",
+    "latest_version": "Najnowsza Wersja"
+  },
+  "help": {
+    "port_help_text": "Upewnij się, że to jest port serwera Dispatch, a nie port serwera gry. To prawie zawsze '443'.",
+    "game_help_text": "Nie potrzebujesz osobnej kopii gry, żeby używać Grasscuttera. To służy do deaktualizowania do wersji 2.6 albo jeśli nie masz zainstalowanej gry.",
+    "gc_stable_jar": "Pobierz ostatni stabilny build Grasscuttera, który nie zawiera pliku jar i plików danych.",
+    "gc_fullbuild": "Pobierz pełen build Grasscuttera, wliczając repo, plik jar i zasoby. Jest w pełni ustawiony i nie wymaga żadnych innych pobierań z tego menu.",
+    "gc_dev_jar": "Pobierz najnowszy deweloperski build Grasscuttera, który nie zawiera pliku jar i plików danych.",
+    "gc_stable_data": "Pobierz ostatnie stabilne pliki danych Grasscuttera, które nie zawierają pliku jar. Ta opcja jest przydatna do aktualizowania.",
+    "gc_dev_data": "Pobierz najnowsze deweloperskie pliki danych Grasscuttera, które nie zawierają pliku jar. Ta opcja jest przydatna do aktualizowania.",
+    "encryption": "To zazwyczaj powinno być wyłączone.",
+    "resources": "One są potrzebne do uruchomienia serwera Grasscutter. Ten przycisk będzie szary, jeśli już będziesz miałx folder z zasobami",
+    "emergency_rsa": "Jeżeli coś poszło nie tak, wymuś usunięcie patcha RSA.",
+    "use_proxy": "Używaj wewnętrznego proxy Cultivation. To powinno być włączone, chyba że używasz czegoś jak np. Fiddler",
+    "patch_rsa": "Patchuj i odpatchuj RSA gry automatycznie. Jeżeli nie grasz w starą lub nieoficjalną wersję (3.0 lub starszą), to powinno być włączone.",
+    "add_delay": "Ustaw opóźnienie 3dmigoto loadera! \nTo powinno naprawić problemy z ładowaniem, ale doda małe opóźnienie do czasu ładowania 3dmigoto do gry. \nTeraz możecie uruchamiać grę z 3dmigoto.",
+    "migoto": "Do importowania modeli z GameBanana"
+  },
+  "swag": {
+    "akebi_name": "Akebi",
+    "migoto_name": "Migoto",
+    "reshade_name": "Reshade",
+    "akebi": "Ustaw plik wykonywalny Akebi/Acrepi",
+    "migoto": "Ustaw plik wykonywalny 3DMigoto",
+    "reshade": "Ustaw Reshade Injector"
+  }
+}
