@@ -99,10 +99,13 @@ export default class Options extends React.Component<IProps, IState> {
     const languages = await getLanguages()
     const platform: string = await invoke('get_platform')
 
-    // Remove jar from path
-    const path = config.grasscutter_path.replace(/\\/g, '/')
-    const folderPath = path.substring(0, path.lastIndexOf('/'))
-    const encEnabled = await server.encryptionEnabled(folderPath + '/config.json')
+    let encEnabled
+    if (config.grasscutter_path) {
+      // Remove jar from path
+      const path = config.grasscutter_path.replace(/\\/g, '/')
+      const folderPath = path.substring(0, path.lastIndexOf('/'))
+      encEnabled = await server.encryptionEnabled(folderPath + '/config.json')
+    }
 
     console.log(platform)
 
