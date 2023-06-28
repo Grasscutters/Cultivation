@@ -166,7 +166,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
           addr: (this.state.httpsEnabled ? 'https' : 'http') + '://' + this.state.ip + ':' + this.state.port,
         })
         // Connect to proxy
-        await invoke('connect', { port: 8365, certificatePath: (await dataDir()) + '\\cultivation\\ca' })
+        await invoke('connect', { port: 8365, certificatePath: (await dataDir()) + 'cultivation/ca' })
       }
 
       // Open server as well if the options are set

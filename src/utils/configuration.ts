@@ -118,7 +118,7 @@ async function readConfigFile() {
     await fs.createDir(local + 'cultivation').catch((e) => console.log(e))
   }
 
-  const innerDirs = await fs.readDir(local + '/cultivation')
+  const innerDirs = await fs.readDir(local + 'cultivation')
 
   // Create grasscutter dir for potential installation
   if (!innerDirs.find((fileOrDir) => fileOrDir?.name === 'grasscutter')) {

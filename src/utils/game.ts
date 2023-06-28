@@ -45,7 +45,7 @@ export async function getGameDataFolder() {
     return null
   }
 
-  return (await getGameFolder()) + '\\' + gameExec.replace('.exe', '_Data')
+  return (await getGameFolder()) + '/' + gameExec.replace('.exe', '_Data')
 }
 
 export async function getGameVersion() {
@@ -57,7 +57,7 @@ export async function getGameVersion() {
 
   const settings = JSON.parse(
     await invoke('read_file', {
-      path: GameData + '\\StreamingAssets\\asb_settings.json',
+      path: GameData + '/StreamingAssets/asb_settings.json',
     })
   )
 

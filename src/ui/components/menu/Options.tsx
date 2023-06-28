@@ -99,10 +99,13 @@ export default class Options extends React.Component<IProps, IState> {
     const languages = await getLanguages()
     const platform: string = await invoke('get_platform')
 
-    // Remove jar from path
-    const path = config.grasscutter_path.replace(/\\/g, '/')
-    const folderPath = path.substring(0, path.lastIndexOf('/'))
-    const encEnabled = await server.encryptionEnabled(folderPath + '/config.json')
+    let encEnabled
+    if (config.grasscutter_path) {
+      // Remove jar from path
+      const path = config.grasscutter_path.replace(/\\/g, '/')
+      const folderPath = path.substring(0, path.lastIndexOf('/'))
+      encEnabled = await server.encryptionEnabled(folderPath + '/config.json')
+    }
 
     console.log(platform)
 
@@ -240,7 +243,7 @@ export default class Options extends React.Component<IProps, IState> {
 
     if (!isUrl) {
       const filename = value.replace(/\\/g, '/').split('/').pop()
-      const localBgPath = ((await dataDir()) as string).replace(/\\/g, '/')
+      const localBgPath = (await dataDir()).replace(/\\/g, '/')
 
       await setConfigOption('custom_background', `${localBgPath}/cultivation/bg/${filename}`)
 

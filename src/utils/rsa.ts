@@ -3,11 +3,11 @@ import { getGameFolder } from './game'
 // Patch file from: https://github.com/34736384/RSAPatch/
 
 export async function patchGame() {
-  const patchPath = (await invoke('install_location')) + '\\patch\\version.dll'
+  const patchPath = (await invoke('install_location')) + '/patch/version.dll'
   // Are we already patched with mhypbase? If so, that's fine, just continue as normal
   const gameIsPatched = await invoke('are_files_identical', {
     path1: patchPath,
-    path2: (await getGameRSAPath()) + '\\mhypbase.dll',
+    path2: (await getGameRSAPath()) + '/mhypbase.dll',
   })
 
   // Tell user they won't be unpatched with manual mhypbase patch
@@ -33,7 +33,7 @@ export async function patchGame() {
 export async function unpatchGame() {
   // Just delete patch since it's not replacing any existing file
   const deleted = await invoke('delete_file', {
-    path: (await getGameRSAPath()) + '\\version.dll',
+    path: (await getGameRSAPath()) + '/version.dll',
   })
 
   return deleted
