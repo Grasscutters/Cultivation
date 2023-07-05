@@ -22,6 +22,12 @@ use crate::admin::reopen_as_admin;
 #[cfg(target_os = "windows")]
 use system_helpers::is_elevated;
 
+#[cfg(target_os = "linux")]
+use std::{
+  thread::{sleep, JoinHandle},
+  time::{Duration, Instant},
+};
+
 mod admin;
 mod config;
 mod downloader;
@@ -38,6 +44,9 @@ mod web;
 static WATCH_GAME_PROCESS: Lazy<Mutex<String>> = Lazy::new(|| Mutex::new(String::new()));
 static WATCH_GRASSCUTTER_PROCESS: Lazy<Mutex<String>> = Lazy::new(|| Mutex::new(String::new()));
 static GC_PID: std::sync::Mutex<usize> = Mutex::new(696969);
+
+#[cfg(target_os = "linux")]
+pub static AAGL_THREAD: Lazy<Mutex<Option<JoinHandle<()>>>> = Lazy::new(|| Mutex::new(None));
 
 fn try_flush() {
   std::io::stdout().flush().unwrap_or(())
@@ -270,6 +279,7 @@ fn is_game_running() -> bool {
   !proc.is_empty()
 }
 
+#[cfg(target_os = "windows")]
 #[tauri::command]
 fn enable_process_watcher(window: tauri::Window, process: String) {
   *WATCH_GAME_PROCESS.lock().unwrap() = process;
@@ -314,6 +324,41 @@ fn enable_process_watcher(window: tauri::Window, process: String) {
     }
   });
 }
+
+// The library takes care of it
+#[cfg(target_os = "linux")]
+#[tauri::command]
+fn enable_process_watcher(window: tauri::Window, process: String) {
+  drop(process);
+  thread::spawn(move || {
+    let end_time = Instant::now() + Duration::from_secs(60);
+    let game_thread = loop {
+      let mut lock = AAGL_THREAD.lock().unwrap();
+      if lock.is_some() {
+        break lock.take().unwrap();
+      }
+      drop(lock);
+      if end_time < Instant::now() {
+        // If more than 60 seconds pass something has gone wrong
+        println!("Waiting for game thread timed out");
+        return;
+      }
+      // Otherwhise wait in order to not use too many CPU cycles
+      sleep(Duration::from_millis(128));
+    };
+    game_thread.join().unwrap();
+    println!("Game closed");
+
+    *WATCH_GAME_PROCESS.lock().unwrap() = "".to_string();
+    disconnect();
+
+    window.emit("game_closed", &()).unwrap();
+  });
+}
+
+#[cfg(target_os = "macos")]
+#[tauri::command]
+fn enable_process_watcher(window: tauri::Window, process: String) {}
 
 #[tauri::command]
 fn is_grasscutter_running() -> bool {

@@ -431,6 +431,16 @@ export default class Options extends React.Component<IProps, IState> {
             </BigButton>
           </div>
         </div>
+        {this.state.platform === 'linux' && (
+          <>
+            <Divider />
+            <div className="OptionSection" id="menuOptionsContainerCheckAAGL">
+              <div className="OptionLabel" id="menuOptionsLabelCheckAAGL">
+                <Tr text="options.check_aagl" />
+              </div>
+            </div>
+          </>
+        )}
         {this.state.swag && (
           <>
             <Divider />

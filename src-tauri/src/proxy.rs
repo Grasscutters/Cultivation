@@ -26,6 +26,9 @@ use tauri::{api::path::data_dir, http::Uri};
 #[cfg(windows)]
 use registry::{Data, Hive, Security};
 
+#[cfg(target_os = "linux")]
+use anime_launcher_sdk::{config::ConfigExt, genshin::config::Config};
+
 async fn shutdown_signal() {
   tokio::signal::ctrl_c()
     .await
@@ -281,24 +284,23 @@ pub fn connect_to_proxy(proxy_port: u16) {
   println!("Connected to the proxy.");
 }
 
-#[cfg(unix)]
+#[cfg(target_os = "linux")]
 pub fn connect_to_proxy(proxy_port: u16) {
-  // Edit /etc/environment to set $http_proxy and $https_proxy
-  let mut env_file = match fs::read_to_string("/etc/environment") {
-    Ok(f) => f,
-    Err(e) => {
-      println!("Error opening /etc/environment: {}", e);
-      return;
-    }
-  };
-
-  // Append the proxy configuration.
-  // We will not remove the current proxy config if it exists, so we can just remove these last lines when we disconnect
-  env_file += format!("\nhttps_proxy=127.0.0.1:{}", proxy_port).as_str();
-  env_file += format!("\nhttp_proxy=127.0.0.1:{}", proxy_port).as_str();
-
-  // Save
-  fs::write("/etc/environment", env_file).unwrap();
+  let mut config = Config::get().unwrap();
+  let proxy_addr = format!("127.0.0.1:{}", proxy_port);
+  if !config.game.environment.contains_key("http_proxy") {
+    config
+      .game
+      .environment
+      .insert("http_proxy".to_string(), proxy_addr.clone());
+  }
+  if !config.game.environment.contains_key("https_proxy") {
+    config
+      .game
+      .environment
+      .insert("https_proxy".to_string(), proxy_addr);
+  }
+  Config::update(config);
 }
 
 #[cfg(target_od = "macos")]
@@ -327,21 +329,14 @@ pub fn disconnect_from_proxy() {
 
 #[cfg(target_os = "linux")]
 pub fn disconnect_from_proxy() {
-  println!("Re-writing environment variables");
-
-  let regexp = regex::Regex::new(
-    // This has to be specific as possible or we risk fuckin up their environment LOL
-    r"(https|http)_proxy=.*127.0.0.1:.*",
-  )
-  .unwrap();
-  let environment = &fs::read_to_string("/etc/environment").expect("Failed to open environment");
-
-  let new_environment = regexp.replace_all(environment, "").to_string();
-
-  // Write new environment
-  fs::write("/etc/environment", new_environment.trim_end()).expect(
-    "Could not write environment, remove proxy declarations manually if they are still set",
-  );
+  let mut config = Config::get().unwrap();
+  if config.game.environment.contains_key("http_proxy") {
+    config.game.environment.remove("http_proxy");
+  }
+  if config.game.environment.contains_key("https_proxy") {
+    config.game.environment.remove("https_proxy");
+  }
+  Config::update(config);
 }
 
 #[cfg(target_os = "macos")]

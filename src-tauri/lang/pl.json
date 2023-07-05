@@ -32,7 +32,8 @@
     "horny_mode": "Tryb 34",
     "auto_mongodb": "Automatycznie uruchamiaj MongoDB",
     "un_elevated": "Uruchamiaj grę bez uprawnień administratora/roota",
-    "redirect_more": "Przekieruj też inne gry MHY"
+    "redirect_more": "Przekieruj też inne gry MHY",
+    "check_aagl": "Więcej opcji znajdziesz w drugim launcherze"
   },
   "downloads": {
     "grasscutter_fullbuild": "Pobierz Grasscutter (wszystko w jednym)",
