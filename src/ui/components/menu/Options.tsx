@@ -15,7 +15,6 @@ import BigButton from '../common/BigButton'
 import DownloadHandler from '../../../utils/download'
 import * as meta from '../../../utils/rsa'
 import HelpButton from '../common/HelpButton'
-import TextInput from '../common/TextInput'
 import SmallButton from '../common/SmallButton'
 
 interface IProps {
@@ -325,25 +324,14 @@ export default class Options extends React.Component<IProps, IState> {
   render() {
     return (
       <Menu closeFn={this.props.closeFn} className="Options" heading="Options">
-        {!this.state.platform || this.state.platform === 'windows' ? (
-          <div className="OptionSection" id="menuOptionsContainerGamePath">
-            <div className="OptionLabel" id="menuOptionsLabelGamePath">
-              <Tr text="options.game_path" />
-            </div>
-            <div className="OptionValue" id="menuOptionsDirGamePath">
-              <DirInput onChange={this.setGameExecutable} value={this.state?.game_install_path} extensions={['exe']} />
-            </div>
+        <div className="OptionSection" id="menuOptionsContainerGamePath">
+          <div className="OptionLabel" id="menuOptionsLabelGamePath">
+            <Tr text="options.game_path" />
           </div>
-        ) : (
-          <div className="OptionSection" id="menuOptionsContainerGameCommand">
-            <div className="OptionLabel" id="menuOptionsLabelGameCommand">
-              <Tr text="options.game_command" />
-            </div>
-            <div className="OptionValue" id="menuOptionsGameCommand">
-              <TextInput />
-            </div>
+          <div className="OptionValue" id="menuOptionsDirGamePath">
+            <DirInput onChange={this.setGameExecutable} value={this.state?.game_install_path} extensions={['exe']} />
           </div>
-        )}
+        </div>
         <div className="OptionSection" id="menuOptionsContainermetaDownload">
           <div className="OptionLabel" id="menuOptionsLabelmetaDownload">
             <Tr text="options.recover_rsa" />
