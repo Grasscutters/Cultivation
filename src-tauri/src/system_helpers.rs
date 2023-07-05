@@ -119,10 +119,28 @@ pub fn open_in_browser(url: String) {
 pub fn install_location() -> String {
   let mut exe_path = std::env::current_exe().unwrap();
 
-  // Get the path to the executable.
-  exe_path.pop();
+  #[cfg(windows)]
+  {
+    // Get the path to the executable.
+    exe_path.pop();
 
-  return exe_path.to_str().unwrap().to_string();
+    return exe_path.to_str().unwrap().to_string();
+  }
+  #[cfg(target_os = "linux")]
+  {
+    let bin_name = exe_path.file_name().unwrap().to_str().unwrap().to_string();
+    exe_path.pop();
+    if exe_path.starts_with("/usr/bin") {
+      let mut path = PathBuf::from("/usr/lib");
+      path.push(bin_name);
+      path
+    } else {
+      exe_path
+    }
+    .to_str()
+    .unwrap()
+    .to_string()
+  }
 }
 
 #[tauri::command]
