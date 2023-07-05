@@ -18,8 +18,5 @@ pub fn reopen_as_admin() {
   exit(0);
 }
 
-#[cfg(target_os = "linux")]
-pub fn reopen_as_admin() {}
-
 #[cfg(target_os = "macos")]
 pub fn reopen_as_admin() {}

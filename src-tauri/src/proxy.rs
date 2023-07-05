@@ -4,8 +4,6 @@
  */
 
 use crate::config::get_config;
-#[cfg(target_os = "linux")]
-use crate::system_helpers::run_command;
 
 use once_cell::sync::Lazy;
 use std::{path::PathBuf, str::FromStr, sync::Mutex};
@@ -449,19 +447,9 @@ pub fn install_ca_files(cert_path: &Path) {
   println!("Installed certificate.");
 }
 
-// If this is borked on non-debian platforms, so be it
 #[cfg(target_os = "linux")]
-pub fn install_ca_files(cert_path: &Path) {
-  let usr_certs = PathBuf::from("/usr/local/share/ca-certificates");
-  let usr_cert_path = usr_certs.join("cultivation.crt");
-
-  // Create dir if it doesn't exist
-  fs::create_dir_all(&usr_certs).expect("Unable to create local certificate directory");
-
-  fs::copy(cert_path, usr_cert_path).expect("Unable to copy cert to local certificate directory");
-  run_command("update-ca-certificates", vec![], None);
-
-  println!("Installed certificate.");
+pub fn install_ca_files(_cert_path: &Path) {
+  println!("install_ca_files is not implemented");
 }
 
 #[cfg(not(any(windows, target_os = "macos", target_os = "linux")))]
