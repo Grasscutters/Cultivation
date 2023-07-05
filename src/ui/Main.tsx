@@ -4,7 +4,7 @@ import React from 'react'
 import TopBar from './components/TopBar'
 import ServerLaunchSection from './components/ServerLaunchSection'
 import MainProgressBar from './components/common/MainProgressBar'
-import Options from './components/menu/Options'
+import Options, { GrasscutterElevation } from './components/menu/Options'
 import MiniDialog from './components/MiniDialog'
 import DownloadList from './components/common/DownloadList'
 import Downloads from './components/menu/Downloads'
@@ -15,7 +15,7 @@ import { ExtrasMenu } from './components/menu/ExtrasMenu'
 import Notification from './components/common/Notification'
 import GamePathNotify from './components/menu/GamePathNotify'
 
-import { getConfigOption, setConfigOption } from '../utils/configuration'
+import { getConfig, getConfigOption, setConfigOption } from '../utils/configuration'
 import { invoke } from '@tauri-apps/api'
 import { getVersion } from '@tauri-apps/api/app'
 import { listen } from '@tauri-apps/api/event'
@@ -102,9 +102,27 @@ export class Main extends React.Component<IProps, IState> {
     // Emitted for automatic processes
     listen('grasscutter_closed', async () => {
       const autoService = await getConfigOption('auto_mongodb')
+      const config = await getConfig()
 
       if (autoService) {
         await invoke('stop_service', { service: 'MongoDB' })
+      }
+
+      if ((await invoke('get_platform')) === 'linux') {
+        switch (config.grasscutter_elevation) {
+          case GrasscutterElevation.None:
+            break
+
+          case GrasscutterElevation.Capability:
+            await invoke('jvm_remove_cap', {
+              javaPath: config.java_path,
+            })
+            break
+
+          default:
+            console.error('Invalid grasscutter_elevation')
+            break
+        }
       }
     })
 

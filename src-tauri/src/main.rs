@@ -222,6 +222,8 @@ fn main() -> Result<(), ArgsError> {
         system_helpers::wipe_registry,
         system_helpers::get_platform,
         system_helpers::run_un_elevated,
+        system_helpers::jvm_add_cap,
+        system_helpers::jvm_remove_cap,
         patch::patch_game,
         patch::unpatch_game,
         proxy::set_proxy_addr,

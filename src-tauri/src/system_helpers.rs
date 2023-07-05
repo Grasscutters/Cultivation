@@ -486,3 +486,63 @@ pub fn is_elevated() -> bool {
 pub fn get_platform() -> &'static str {
   std::env::consts::OS
 }
+
+#[cfg(not(target_os = "linux"))]
+#[tauri::command]
+pub async fn jvm_add_cap(_java_path: String) -> bool {
+  panic!("Not implemented");
+}
+
+#[cfg(not(target_os = "linux"))]
+#[tauri::command]
+pub async fn jvm_remove_cap(_java_path: String) -> bool {
+  panic!("Not implemented");
+}
+
+#[cfg(target_os = "linux")]
+#[tauri::command]
+pub async fn jvm_add_cap(java_path: String) -> bool {
+  let mut java_bin = if java_path.is_empty() {
+    which::which("java").expect("Java is not installed")
+  } else {
+    PathBuf::from(&java_path)
+  };
+  while java_bin.is_symlink() {
+    java_bin = java_bin.read_link().unwrap()
+  }
+  println!("Removing cap on {:?}", &java_bin);
+  let status = Command::new("pkexec")
+    .arg("setcap")
+    .arg("CAP_NET_BIND_SERVICE=+eip")
+    .arg(java_bin)
+    .status();
+  if status.is_err() {
+    return false;
+  }
+  let status = status.unwrap();
+  status.success()
+}
+
+#[cfg(target_os = "linux")]
+#[tauri::command]
+pub async fn jvm_remove_cap(java_path: String) -> bool {
+  let mut java_bin = if java_path.is_empty() {
+    which::which("java").expect("Java is not installed")
+  } else {
+    PathBuf::from(&java_path)
+  };
+  while java_bin.is_symlink() {
+    java_bin = java_bin.read_link().unwrap()
+  }
+  println!("Setting cap on {:?}", &java_bin);
+  let status = Command::new("pkexec")
+    .arg("setcap")
+    .arg("-r")
+    .arg(java_bin)
+    .status();
+  if status.is_err() {
+    return false;
+  }
+  let status = status.unwrap();
+  status.success()
+}

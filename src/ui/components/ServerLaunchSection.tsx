@@ -12,6 +12,7 @@ import Plus from '../../resources/icons/plus.svg'
 
 import './ServerLaunchSection.css'
 import { dataDir } from '@tauri-apps/api/path'
+import { GrasscutterElevation } from './menu/Options'
 import { getGameExecutable, getGameVersion, getGrasscutterJar } from '../../utils/game'
 import { patchGame, unpatchGame } from '../../utils/rsa'
 import { listen } from '@tauri-apps/api/event'
@@ -210,11 +211,12 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
 
     if (!config.grasscutter_path) return alert('Grasscutter not installed or set!')
 
+    const grasscutter_jar = await getGrasscutterJar()
+    await invoke('enable_grasscutter_watcher', {
+      process: proc_name || grasscutter_jar,
+    })
+
     if (config.auto_mongodb) {
-      const grasscutter_jar = await getGrasscutterJar()
-      await invoke('enable_grasscutter_watcher', {
-        process: proc_name || grasscutter_jar,
-      })
       // Check if MongoDB is running and start it if not
       invoke('service_status', { service: 'MongoDB' })
     }
@@ -225,6 +227,23 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       jarFolder = jarFolder.substring(0, config.grasscutter_path.lastIndexOf('/'))
     } else {
       jarFolder = jarFolder.substring(0, config.grasscutter_path.lastIndexOf('\\'))
+    }
+
+    if ((await invoke('get_platform')) === 'linux') {
+      switch (config.grasscutter_elevation) {
+        case GrasscutterElevation.None:
+          break
+
+        case GrasscutterElevation.Capability:
+          await invoke('jvm_add_cap', {
+            javaPath: config.java_path,
+          })
+          break
+
+        default:
+          console.error('Invalid grasscutter_elevation')
+          break
+      }
     }
 
     // Launch the jar

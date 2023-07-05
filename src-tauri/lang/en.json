@@ -33,7 +33,8 @@
     "auto_mongodb": "Automatically Start MongoDB",
     "un_elevated": "Run the game non-elevated (no admin)",
     "redirect_more": "Also redirect other MHY games",
-    "check_aagl": "For more options, check the other launcher"
+    "check_aagl": "For more options, check the other launcher",
+    "grasscutter_elevation": "Method of running GC on restricted ports"
   },
   "downloads": {
     "grasscutter_fullbuild": "Download Grasscutter All-in-One",
@@ -85,7 +86,8 @@
     "use_proxy": "Use the Cultivation internal proxy. You should have this enabled unless you use something like Fiddler",
     "patch_rsa": "Patch and unpatch your game RSA automatically. Unless playing with old/non-official versions (3.0 and older), this should be enabled.",
     "add_delay": "Set delay in 3dmigoto loader! \nThis should fix loading issues, but will add a small delay to when 3dmigoto is loaded upon launching the game. \nYou can now launch with 3dmigoto again.",
-    "migoto": "For importing models from GameBanana"
+    "migoto": "For importing models from GameBanana",
+    "grasscutter_elevation_help_text": "The method used to allow Grasscutter to bind port 443 (which is not allowed for regular users on Linux)\nAvailable methods:\n  Capability - grant the Java Virtual Machine the capability to bind ports below 1024. This also allows all other programs running on that JVM to bind these ports.\n  Root - run GC as root. This also allows the GC server, its plugins and the JVM to do pretty much anything, including sending your nudes to the NSA, CIA, and the alphabet boys.\n  None - for no method. This requires you to change the GC Dispatch port."
   },
   "swag": {
     "akebi_name": "Akebi",

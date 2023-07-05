@@ -17,6 +17,12 @@ import * as meta from '../../../utils/rsa'
 import HelpButton from '../common/HelpButton'
 import SmallButton from '../common/SmallButton'
 
+export enum GrasscutterElevation {
+  None = 'None',
+  Capability = 'Capability',
+  Root = 'Root',
+}
+
 interface IProps {
   closeFn: () => void
   downloadManager: DownloadHandler
@@ -42,6 +48,9 @@ interface IState {
   platform: string
   un_elevated: boolean
   redirect_more: boolean
+
+  // Linux stuff
+  grasscutter_elevation: string
 
   // Swag stuff
   akebi_path: string
@@ -73,6 +82,9 @@ export default class Options extends React.Component<IProps, IState> {
       platform: '',
       un_elevated: false,
       redirect_more: false,
+
+      // Linux stuff
+      grasscutter_elevation: GrasscutterElevation.None,
 
       // Swag stuff
       akebi_path: '',
@@ -128,6 +140,9 @@ export default class Options extends React.Component<IProps, IState> {
       platform,
       un_elevated: config.un_elevated || false,
       redirect_more: config.redirect_more || false,
+
+      // Linux stuff
+      grasscutter_elevation: config.grasscutter_elevation || GrasscutterElevation.None,
 
       // Swag stuff
       akebi_path: config.akebi_path || '',
@@ -294,6 +309,14 @@ export default class Options extends React.Component<IProps, IState> {
     })
   }
 
+  async setGCElevation(value: string) {
+    setConfigOption('grasscutter_elevation', value)
+
+    this.setState({
+      grasscutter_elevation: value,
+    })
+  }
+
   async removeRSA() {
     await meta.unpatchGame()
   }
@@ -434,6 +457,25 @@ export default class Options extends React.Component<IProps, IState> {
         {this.state.platform === 'linux' && (
           <>
             <Divider />
+            <div className="OptionSection" id="menuOptionsContainerGCElevation">
+              <div className="OptionLabel" id="menuOptionsLabelGCElevation">
+                <Tr text="options.grasscutter_elevation" />
+                <HelpButton contents="help.grasscutter_elevation_help_text" />
+              </div>
+              <select
+                value={this.state.grasscutter_elevation}
+                id="menuOptionsSelectGCElevation"
+                onChange={(event) => {
+                  this.setGCElevation(event.target.value)
+                }}
+              >
+                {Object.keys(GrasscutterElevation).map((t) => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
+              </select>
+            </div>
             <div className="OptionSection" id="menuOptionsContainerCheckAAGL">
               <div className="OptionLabel" id="menuOptionsLabelCheckAAGL">
                 <Tr text="options.check_aagl" />

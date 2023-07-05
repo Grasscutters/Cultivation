@@ -932,6 +932,7 @@ dependencies = [
  "tokio-tungstenite 0.17.2",
  "tracing",
  "unrar",
+ "which",
  "windows-service",
  "zip 0.6.2",
  "zip-extract",
@@ -5320,6 +5321,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d743fdedc5c64377b5fc2bc036b01c7fd642205a0d96356034ae3404d49eb7fb"
 dependencies = [
  "cc",
+]
+
+[[package]]
+name = "which"
+version = "4.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2441c784c52b289a054b7201fc93253e288f094e2f4be9058343127c4226a269"
+dependencies = [
+ "either",
+ "libc",
+ "once_cell",
 ]
 
 [[package]]
