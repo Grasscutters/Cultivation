@@ -11,14 +11,16 @@ use proxy::set_proxy_addr;
 use std::fs;
 use std::io::Write;
 use std::{collections::HashMap, sync::Mutex};
-use system_helpers::is_elevated;
 use tauri::api::path::data_dir;
 use tauri::async_runtime::block_on;
 
 use std::thread;
 use sysinfo::{Pid, ProcessExt, System, SystemExt};
 
+#[cfg(target_os = "windows")]
 use crate::admin::reopen_as_admin;
+#[cfg(target_os = "windows")]
+use system_helpers::is_elevated;
 
 mod admin;
 mod config;
@@ -157,6 +159,7 @@ fn main() -> Result<(), ArgsError> {
   let args: Vec<String> = std::env::args().collect();
   let parsed_args = block_on(parse_args(&args)).unwrap();
 
+  #[cfg(target_os = "windows")]
   if !is_elevated() && !parsed_args.value_of("no-admin")? {
     println!("===============================================================================");
     println!("You running as a non-elevated user. Some stuff will almost definitely not work.");
