@@ -10,12 +10,49 @@ use {
   windows_service::service_manager::{ServiceManager, ServiceManagerAccess},
 };
 
+#[cfg(unix)]
+use std::env::var;
+#[cfg(unix)]
+use std::path::Path;
+
 #[cfg(target_os = "linux")]
 use crate::AAGL_THREAD;
 #[cfg(target_os = "linux")]
 use anime_launcher_sdk::genshin::game;
 #[cfg(target_os = "linux")]
 use std::thread;
+
+#[cfg(unix)]
+fn guess_user_terminal() -> String {
+  // Guess user's terminal emulator
+  // https://superuser.com/questions/1153988/find-the-default-terminal-emulator
+  // TODO: Find a better way to do this
+  let term_var = var("TERMINAL");
+  if let Ok(term) = term_var {
+    return term;
+  }
+  let path_var = var("PATH").unwrap_or("/usr/bin".to_string());
+  let path_var: Vec<&str> = path_var.split(':').collect();
+  for term in &[
+    "x-terminal-emulator", // Debian specific
+    "konsole",
+    "gnome-terminal",
+    "st",
+    "urxvt",
+  ] {
+    // Check every single path in $PATH
+    for path in &path_var {
+      let bin = format!("{}/{}", path, term);
+      let bin_path = Path::new(&bin);
+      if bin_path.exists() {
+        return bin;
+      }
+    }
+  }
+  eprintln!("Could not guess default terminal. Try setting the $TERMINAL environment variable.");
+  // If everything fails, default to xterm
+  "xterm".to_string()
+}
 
 #[tauri::command]
 pub fn run_program(path: String, args: Option<String>) {
@@ -96,6 +133,7 @@ pub fn run_jar(path: String, execute_in: String, java_path: String) {
   println!("Launching .jar with command: {}", &command);
 
   // Open the program from the specified path.
+  #[cfg(windows)]
   match open::with(
     format!("/k cd /D \"{}\" & {}", &execute_in, &command),
     "C:\\Windows\\System32\\cmd.exe",
@@ -103,6 +141,23 @@ pub fn run_jar(path: String, execute_in: String, java_path: String) {
     Ok(_) => (),
     Err(e) => println!("Failed to open jar ({} from {}): {}", &path, &execute_in, e),
   };
+  #[cfg(unix)]
+  thread::spawn(move || {
+    match Command::new(guess_user_terminal())
+      .arg("-e")
+      .arg(command)
+      .current_dir(execute_in.clone())
+      .spawn()
+    {
+      Ok(mut handler) => {
+        // Prevent creation of zombie processes
+        handler
+          .wait()
+          .expect("Grasscutter exited with non-zero exit code");
+      }
+      Err(e) => println!("Failed to open jar ({} from {}): {}", &path, &execute_in, e),
+    }
+  });
 }
 
 #[cfg(target_os = "windows")]
