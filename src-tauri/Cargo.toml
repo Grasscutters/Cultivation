@@ -23,6 +23,7 @@ registry = "1.2.1"
 sudo = "0.6.0"
 
 [target.'cfg(target_os = "linux")'.dependencies]
+anyhow = "1.0.58"
 which = "4.4"
 
 [dependencies]
