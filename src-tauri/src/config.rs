@@ -27,6 +27,7 @@ pub struct Configuration {
   pub auto_mongodb: Option<bool>,
   pub un_elevated: Option<bool>,
   pub redirect_more: Option<bool>,
+  pub migoto_path: Option<String>,
 }
 
 pub fn config_path() -> PathBuf {

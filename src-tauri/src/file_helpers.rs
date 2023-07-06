@@ -53,6 +53,16 @@ pub fn dir_delete(path: &str) {
 }
 
 #[tauri::command]
+pub fn dir_move(from: &str, to: &str) -> bool {
+  if let Err(e) = fs::rename(from, to) {
+    println!("Error moving {:?} to {:?}: {}", from, to, e);
+    false
+  } else {
+    true
+  }
+}
+
+#[tauri::command]
 pub fn are_files_identical(path1: &str, path2: &str) -> bool {
   diff(path1, path2)
 }

@@ -47,6 +47,8 @@ static GC_PID: std::sync::Mutex<usize> = Mutex::new(696969);
 
 #[cfg(target_os = "linux")]
 pub static AAGL_THREAD: Lazy<Mutex<Option<JoinHandle<()>>>> = Lazy::new(|| Mutex::new(None));
+#[cfg(target_os = "linux")]
+static GIMI_STATUS: Lazy<Mutex<Option<bool>>> = Lazy::new(|| Mutex::new(None));
 
 fn try_flush() {
   std::io::stdout().flush().unwrap_or(())
@@ -237,6 +239,7 @@ fn main() -> Result<(), ArgsError> {
         file_helpers::dir_exists,
         file_helpers::dir_is_empty,
         file_helpers::dir_delete,
+        file_helpers::dir_move,
         file_helpers::copy_file,
         file_helpers::copy_file_with_new_name,
         file_helpers::delete_file,

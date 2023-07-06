@@ -1,6 +1,8 @@
+use flate2::read::GzDecoder;
 use std::fs::{read_dir, File};
 use std::path;
 use std::thread;
+use tar::Archive as TarArchive;
 use unrar::archive::Archive;
 
 #[tauri::command]
@@ -72,6 +74,9 @@ pub fn unzip(
 
       let archive = Archive::new(zipfile.clone());
       name = archive.list().unwrap().next().unwrap().unwrap().filename;
+    } else if zipfile.ends_with(".tar.gz") {
+      success = extract_tar_gz(&zipfile, &f, &full_path, top_level.unwrap_or(true));
+      name = String::from("3dmigoto");
     } else if zipfile.ends_with(".7z") {
       success = extract_7z(&zipfile, &f, &full_path, top_level.unwrap_or(true));
 
@@ -147,6 +152,16 @@ pub fn unzip(
       }
     };
   });
+}
+
+fn extract_tar_gz(targzfile: &str, f: &File, full_path: &path::Path, _top_level: bool) -> bool {
+  let tar = GzDecoder::new(f);
+  let mut archive = TarArchive::new(tar);
+  if let Err(e) = archive.unpack(full_path) {
+    println!("Failed to extract tar.gz file {}: {}", targzfile, e);
+    return false;
+  }
+  true
 }
 
 fn extract_rar(rarfile: &str, _f: &File, full_path: &path::Path, _top_level: bool) -> bool {

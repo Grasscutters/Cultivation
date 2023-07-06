@@ -10,7 +10,7 @@ import './Downloads.css'
 import Divider from './Divider'
 import { getConfigOption } from '../../../utils/configuration'
 import { invoke } from '@tauri-apps/api'
-import { listen } from '@tauri-apps/api/event'
+import { emit, listen } from '@tauri-apps/api/event'
 import HelpButton from '../common/HelpButton'
 
 const FULL_BUILD_DOWNLOAD = 'https://github.com/NotThorny/Grasscutter/releases/download/culti-aio/GrasscutterCulti.zip'
@@ -21,6 +21,9 @@ const DEV_DOWNLOAD = 'https://nightly.link/Grasscutters/Grasscutter/workflows/bu
 const RESOURCES_DOWNLOAD = 'https://gitlab.com/api/v4/projects/35984297/repository/archive.zip' // Use Yuuki res as grasscutter crepe res are broken
 const MIGOTO_DOWNLOAD =
   'https://github.com/SilentNightSound/GI-Model-Importer/releases/download/V7.0/3dmigoto-GIMI-for-playing-mods.zip'
+// Based on V6.0
+const MIGOTO_LINUX_DOWNLOAD =
+  'https://github.com/MrLGamer/GIMI-for-Linux/releases/download/V1.0/linux-3dmigoto-GIMI-playing.tar.gz'
 
 interface IProps {
   closeFn: () => void
@@ -216,15 +219,40 @@ export default class Downloads extends React.Component<IProps, IState> {
   }
 
   async downloadMigoto() {
-    const folder = (await this.getCultivationFolder()) + '/3dmigoto'
-    await invoke('dir_create', {
-      path: folder,
-    })
+    const culti_folder = await this.getCultivationFolder()
+    const folder = culti_folder + '/3dmigoto'
 
-    this.props.downloadManager.addDownload(MIGOTO_DOWNLOAD, folder + '/GIMI-3dmigoto.zip', async () => {
-      await unzip(folder + '/GIMI-3dmigoto.zip', folder + '/', true)
-      this.toggleButtons()
-    })
+    if ((await invoke('get_platform')) === 'linux') {
+      await invoke('dir_create', {
+        path: culti_folder + '/unzipped',
+      })
+
+      this.props.downloadManager.addDownload(
+        MIGOTO_LINUX_DOWNLOAD,
+        culti_folder + '/GIMI-3dmigoto.tar.gz',
+        async () => {
+          await unzip(culti_folder + '/GIMI-3dmigoto.tar.gz', culti_folder + '/unzipped', true)
+          await invoke('dir_move', {
+            from: culti_folder + '/unzipped/linux-3dmigoto-GIMI-playing/3dmigoto',
+            to: culti_folder + '/3dmigoto',
+          })
+          await invoke('dir_delete', {
+            path: culti_folder + '/unzipped',
+          })
+          await emit('migoto_extracted', culti_folder + '/3dmigoto/d3d11.dll')
+          this.toggleButtons()
+        }
+      )
+    } else {
+      await invoke('dir_create', {
+        path: folder,
+      })
+
+      this.props.downloadManager.addDownload(MIGOTO_DOWNLOAD, folder + '/GIMI-3dmigoto.zip', async () => {
+        await unzip(folder + '/GIMI-3dmigoto.zip', folder + '/', true)
+        this.toggleButtons()
+      })
+    }
 
     this.toggleButtons()
   }
