@@ -479,18 +479,20 @@ export default class Options extends React.Component<IProps, IState> {
             />
           </div>
         </div>
-        <div className="OptionSection" id="menuOptionsContainerUEGame">
-          <div className="OptionLabel" id="menuOptionsLabelUEGame">
-            <Tr text="options.un_elevated" />
+        {this.state.platform !== 'linux' && (
+          <div className="OptionSection" id="menuOptionsContainerUEGame">
+            <div className="OptionLabel" id="menuOptionsLabelUEGame">
+              <Tr text="options.un_elevated" />
+            </div>
+            <div className="OptionValue" id="menuOptionsCheckboxUEGame">
+              <Checkbox
+                onChange={() => this.toggleOption('un_elevated')}
+                checked={this.state?.un_elevated}
+                id="unElevatedGame"
+              />
+            </div>
           </div>
-          <div className="OptionValue" id="menuOptionsCheckboxUEGame">
-            <Checkbox
-              onChange={() => this.toggleOption('un_elevated')}
-              checked={this.state?.un_elevated}
-              id="unElevatedGame"
-            />
-          </div>
-        </div>
+        )}
         {this.state.swag ? (
           <div className="OptionSection" id="menuOptionsContainerHorny">
             <div className="OptionLabel" id="menuOptionsLabelHorny">
