@@ -229,6 +229,8 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       jarFolder = jarFolder.substring(0, config.grasscutter_path.lastIndexOf('\\'))
     }
 
+    let cmd = 'run_jar'
+
     if ((await invoke('get_platform')) === 'linux') {
       switch (config.grasscutter_elevation) {
         case GrasscutterElevation.None:
@@ -240,6 +242,10 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
           })
           break
 
+        case GrasscutterElevation.Root:
+          cmd = 'run_jar_root'
+          break
+
         default:
           console.error('Invalid grasscutter_elevation')
           break
@@ -247,7 +253,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     }
 
     // Launch the jar
-    await invoke('run_jar', {
+    await invoke(cmd, {
       path: config.grasscutter_path,
       executeIn: jarFolder,
       javaPath: config.java_path || '',

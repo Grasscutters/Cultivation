@@ -59,8 +59,33 @@ fn guess_user_terminal() -> String {
 }
 
 #[cfg(target_os = "linux")]
+fn rawstrcmd(cmd: &Command) -> String {
+  format!("{:?}", cmd)
+}
+
+#[cfg(target_os = "linux")]
 fn strcmd(cmd: &Command) -> String {
-  format!("bash -c {:?}", format!("{:?}", cmd))
+  format!("bash -c {:?}", rawstrcmd(cmd))
+}
+
+#[cfg(target_os = "linux")]
+pub trait AsRoot {
+  fn as_root(&self) -> Self;
+  fn as_root_gui(&self) -> Self;
+}
+
+#[cfg(target_os = "linux")]
+impl AsRoot for Command {
+  fn as_root(&self) -> Self {
+    let mut cmd = Command::new("sudo");
+    cmd.arg("--").arg("bash").arg("-c").arg(rawstrcmd(self));
+    cmd
+  }
+  fn as_root_gui(&self) -> Self {
+    let mut cmd = Command::new("pkexec");
+    cmd.arg("bash").arg("-c").arg(rawstrcmd(self));
+    cmd
+  }
 }
 
 #[cfg(target_os = "linux")]
@@ -179,6 +204,38 @@ pub fn run_jar(path: String, execute_in: String, java_path: String) {
       .current_dir(execute_in.clone())
       .spawn()
     {
+      Ok(mut handler) => {
+        // Prevent creation of zombie processes
+        handler
+          .wait()
+          .expect("Grasscutter exited with non-zero exit code");
+      }
+      Err(e) => println!("Failed to open jar ({} from {}): {}", &path, &execute_in, e),
+    }
+  });
+}
+
+#[cfg(target_os = "windows")]
+#[tauri::command]
+pub fn run_jar_root(path: String, execute_in: String, java_path: String) {
+  panic!("Not implemented");
+}
+
+#[cfg(target_os = "linux")]
+#[tauri::command]
+pub fn run_jar_root(path: String, execute_in: String, java_path: String) {
+  let mut command = if java_path.is_empty() {
+    Command::new("java")
+  } else {
+    Command::new(java_path)
+  };
+  command.arg("-jar").arg(&path).current_dir(&execute_in);
+
+  println!("Launching .jar with command: {}", strcmd(&command));
+
+  // Open the program from the specified path.
+  thread::spawn(move || {
+    match command.as_root_gui().in_terminal().spawn() {
       Ok(mut handler) => {
         // Prevent creation of zombie processes
         handler

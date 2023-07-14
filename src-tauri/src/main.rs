@@ -214,6 +214,7 @@ fn main() -> Result<(), ArgsError> {
         system_helpers::service_status,
         system_helpers::stop_service,
         system_helpers::run_jar,
+        system_helpers::run_jar_root,
         system_helpers::open_in_browser,
         system_helpers::install_location,
         system_helpers::is_elevated,
