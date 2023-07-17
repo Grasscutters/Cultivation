@@ -109,6 +109,35 @@ impl InTerminalEmulator for Command {
   }
 }
 
+#[cfg(target_os = "linux")]
+pub trait ItsFineReallyResult {
+  fn unwrap_its_fine_really(&mut self, msg: &str) -> anyhow::Result<()>;
+}
+
+#[cfg(target_os = "linux")]
+impl ItsFineReallyResult for std::io::Result<std::process::Child> {
+  fn unwrap_its_fine_really(&mut self, msg: &str) -> anyhow::Result<()> {
+    // std::io::Error is incompatible with anyhow::Result
+    let Ok(cmd) = self.as_mut() else {
+      let error = self.as_mut().unwrap_err();
+      println!("{}: {}", msg, &error);
+      return Err(anyhow::anyhow!("{}: {}", msg, error));
+    };
+    let res = cmd.wait();
+    let Ok(res) = res else {
+      let error = res.unwrap_err();
+      println!("{}: {}", msg, &error);
+      return Err(anyhow::anyhow!("{}: {}", msg, error));
+    };
+    if !res.success() {
+      println!("{}: {}", msg, res);
+      Err(anyhow::anyhow!("{}: {}", msg, res))
+    } else {
+      Ok(())
+    }
+  }
+}
+
 #[tauri::command]
 pub fn run_program(path: String, args: Option<String>) {
   // Without unwrap_or, this can crash when UAC prompt is denied
@@ -342,27 +371,14 @@ pub fn run_un_elevated(path: String, args: Option<String>) {
   if path.extension().unwrap() == "exe" {
     let path = path.to_owned().clone();
     thread::spawn(move || {
-      match aagl_wine_run(&path, args)
+      let _ = aagl_wine_run(&path, args)
         .current_dir(path.parent().unwrap())
         .in_terminal()
         .spawn()
-      {
-        Ok(mut child) => {
-          let exit_code = child.wait().unwrap();
-          if !exit_code.success() {
-            println!(
-              "Failed to open program ({}): {}",
-              path.to_str().unwrap(),
-              exit_code
-            )
-          }
-        }
-        Err(e) => println!(
-          "Failed to open program ({}): {}",
-          path.to_str().unwrap(),
-          e
-        ),
-      }
+        .unwrap_its_fine_really(&format!(
+          "Failed to open program ({})",
+          path.to_str().unwrap()
+        ));
     });
   }
   println!(
@@ -658,21 +674,7 @@ pub fn wipe_registry(exec_name: String) {
     "/v",
     "MIHOYOSDK_ADL_PROD_OVERSEA_h1158948810",
   ]);
-  let child = cmd.spawn();
-  match child {
-    Ok(mut child) => {
-      let exit_code = child.wait();
-      if exit_code.is_err() {
-        println!("Error wiping registry: {}", exit_code.unwrap_err());
-        return;
-      }
-      let exit_code = exit_code.unwrap();
-      if !exit_code.success() {
-        println!("Error wiping registry: {}", exit_code)
-      }
-    }
-    Err(e) => println!("Error wiping registry: {}", e),
-  }
+  let _ = cmd.spawn().unwrap_its_fine_really("Error wiping registry");
 }
 
 #[cfg(target_os = "macos")]
