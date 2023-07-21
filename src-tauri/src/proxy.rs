@@ -27,7 +27,11 @@ use tauri::{api::path::data_dir, http::Uri};
 use registry::{Data, Hive, Security};
 
 #[cfg(target_os = "linux")]
+use crate::system_helpers::{AsRoot, ItsFineReallyResult};
+#[cfg(target_os = "linux")]
 use anime_launcher_sdk::{config::ConfigExt, genshin::config::Config};
+#[cfg(target_os = "linux")]
+use std::{fs::File, io::Write, process::Command};
 
 async fn shutdown_signal() {
   tokio::signal::ctrl_c()
@@ -443,8 +447,74 @@ pub fn install_ca_files(cert_path: &Path) {
 }
 
 #[cfg(target_os = "linux")]
-pub fn install_ca_files(_cert_path: &Path) {
-  println!("install_ca_files is not implemented");
+pub fn install_ca_files(cert_path: &Path) {
+  let platform = os_type::current_platform();
+  use os_type::OSType::*;
+  // TODO: Add more distros
+  match &platform.os_type {
+    // Debian-based
+    Debian | Ubuntu | Kali => {
+      let usr_certs = PathBuf::from("/usr/local/share/ca-certificates");
+      let usr_cert_path = usr_certs.join("cultivation.crt");
+
+      // We want to execute multiple commands, but we don't want multiple pkexec prompts
+      // so we have to use a script
+      let script = Path::new("/tmp/cultivation-inject-ca-cert.sh");
+      let mut scriptf = File::create(script).unwrap();
+      #[cfg(debug_assertions)]
+      let setflags = "xe";
+      #[cfg(not(debug_assertions))]
+      let setflags = "e";
+      write!(
+        scriptf,
+        r#"#!/usr/bin/env bash
+set -{}
+CERT="{}"
+CERT_DIR="{}"
+CERT_TARGET="{}"
+# Create dir if it doesn't exist
+if ! [[ -d "$CERT_DIR" ]]; then
+  mkdir -v "$CERT_DIR"
+fi
+cp -v "$CERT" "$CERT_TARGET"
+update-ca-certificates
+"#,
+        setflags,
+        cert_path.to_str().unwrap(),
+        usr_certs.to_str().unwrap(),
+        usr_cert_path.to_str().unwrap()
+      )
+      .unwrap();
+      scriptf.flush().unwrap();
+      drop(scriptf);
+      let _ = Command::new("bash")
+        .arg(script)
+        .as_root_gui()
+        .spawn()
+        .unwrap_its_fine_really("Unable to install certificate");
+      if let Err(e) = fs::remove_file(script) {
+        println!("Unable to remove certificate install script: {}", e);
+      };
+    }
+    // RedHat-based
+    //Redhat | CentOS |
+    // Arch-based
+    Arch | Manjaro => {
+      let _ = Command::new("trust")
+        .arg("anchor")
+        .arg("--store")
+        .arg(cert_path)
+        .as_root_gui()
+        .spawn()
+        .unwrap_its_fine_really("Unable to install certificate");
+    }
+    OSX => unreachable!(),
+    _ => {
+      println!("Unsupported Linux distribution.");
+      return;
+    }
+  }
+  println!("Installed certificate.");
 }
 
 #[cfg(not(any(windows, target_os = "macos", target_os = "linux")))]
