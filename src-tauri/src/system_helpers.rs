@@ -185,7 +185,13 @@ pub fn run_command(program: &str, args: Vec<&str>, relative: Option<bool>) {
   // Commands should not block (this is for the reshade injector mostly)
   std::thread::spawn(move || {
     // Save the current working directory
+    #[cfg(target_os = "windows")]
     let cwd = std::env::current_dir().unwrap();
+    #[cfg(target_os = "windows")]
+    let mut command = Command::new(&prog);
+
+    #[cfg(target_os = "linux")]
+    let mut command = aagl_wine_command(&prog);
 
     if relative.unwrap_or(false) {
       // Set the new working directory to the path before the executable
@@ -193,16 +199,29 @@ pub fn run_command(program: &str, args: Vec<&str>, relative: Option<bool>) {
       path_buf.pop();
 
       // Set new working directory
+      #[cfg(target_os = "windows")]
       std::env::set_current_dir(&path_buf).unwrap();
+
+      #[cfg(target_os = "linux")]
+      command.current_dir(path_buf);
     }
 
-    // Run the command
-    let mut command = Command::new(&prog);
     command.args(&args);
-    command.spawn().unwrap();
 
-    // Restore the original working directory
-    std::env::set_current_dir(cwd).unwrap();
+    // Run the command
+    #[cfg(target_os = "windows")]
+    {
+      command.spawn().unwrap();
+
+      // Restore the original working directory
+      std::env::set_current_dir(cwd).unwrap();
+    };
+
+    #[cfg(target_os = "linux")]
+    let _ = command
+      .in_terminal()
+      .spawn()
+      .unwrap_its_fine_really(&format!("Failed to run {:?}", prog));
   });
 }
 
@@ -294,7 +313,7 @@ pub fn run_un_elevated(path: String, args: Option<String>) {
 }
 
 #[cfg(target_os = "linux")]
-fn aagl_wine_run<P: AsRef<Path>>(path: P, args: Option<String>) -> Command {
+fn aagl_wine_command<P: AsRef<Path>>(path: P) -> Command {
   let config = Config::get().unwrap();
   let wine = config.get_selected_wine().unwrap().unwrap();
   let wine_run = wine
@@ -321,10 +340,6 @@ fn aagl_wine_run<P: AsRef<Path>>(path: P, args: Option<String>) -> Command {
   };
   let mut cmd = Command::new(&wined.binary);
   cmd.arg(path.as_ref()).envs(wined.get_envs()).envs(env);
-  if let Some(args) = args {
-    let mut args: Vec<String> = args.split(' ').map(|x| x.to_string()).collect();
-    cmd.args(&mut args);
-  };
   cmd
 }
 
@@ -558,8 +573,14 @@ pub fn run_un_elevated(path: String, args: Option<String>) {
   // Run exe with wine
   if path.extension().unwrap() == "exe" {
     let path = path.to_owned().clone();
+    let args = if let Some(args) = args {
+      args.split(' ').map(|x| x.to_string()).collect()
+    } else {
+      vec![]
+    };
     thread::spawn(move || {
-      let _ = aagl_wine_run(&path, args)
+      let _ = aagl_wine_command(&path)
+        .args(args)
         .current_dir(path.parent().unwrap())
         .in_terminal()
         .spawn()
@@ -854,7 +875,7 @@ pub fn stop_service(service: String) -> bool {
 pub fn wipe_registry(exec_name: String) {
   println!("Wiping registry");
   let regpath = format!("HKCU\\Software\\miHoYo\\{}", exec_name);
-  let mut cmd = aagl_wine_run("reg", None);
+  let mut cmd = aagl_wine_command("reg");
   cmd.args([
     "DELETE",
     &regpath,
