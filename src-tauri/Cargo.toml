@@ -25,6 +25,7 @@ sudo = "0.6.0"
 [target.'cfg(target_os = "linux")'.dependencies]
 anyhow = "1.0.58"
 os_type = "2.6"
+term-detect = "0.1.4"
 which = "4.4"
 
 [dependencies]

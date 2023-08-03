@@ -12,8 +12,6 @@ use {
 };
 
 #[cfg(unix)]
-use std::env::var;
-#[cfg(unix)]
 use std::path::Path;
 
 #[cfg(target_os = "linux")]
@@ -26,32 +24,13 @@ use anime_launcher_sdk::{
 #[cfg(target_os = "linux")]
 use std::{process::Stdio, thread};
 
-#[cfg(unix)]
+#[cfg(target_os = "linux")]
 fn guess_user_terminal() -> String {
   // Guess user's terminal emulator
   // https://superuser.com/questions/1153988/find-the-default-terminal-emulator
-  // TODO: Find a better way to do this
-  let term_var = var("TERMINAL");
-  if let Ok(term) = term_var {
-    return term;
-  }
-  let path_var = var("PATH").unwrap_or("/usr/bin".to_string());
-  let path_var: Vec<&str> = path_var.split(':').collect();
-  for term in &[
-    "x-terminal-emulator", // Debian specific
-    "konsole",
-    "gnome-terminal",
-    "st",
-    "urxvt",
-  ] {
-    // Check every single path in $PATH
-    for path in &path_var {
-      let bin = format!("{}/{}", path, term);
-      let bin_path = Path::new(&bin);
-      if bin_path.exists() {
-        return bin;
-      }
-    }
+  // Logic moved to crate `term-detect`
+  if let Ok(term) = term_detect::get_terminal() {
+    return term.0;
   }
   eprintln!("Could not guess default terminal. Try setting the $TERMINAL environment variable.");
   // If everything fails, default to xterm
