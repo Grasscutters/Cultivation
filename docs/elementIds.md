@@ -89,6 +89,9 @@ This does not include commonly used components (buttons, divider lines, commit a
 | `#menuOptionsContainerBG`            | Container for Background option                                 |
 | `#menuOptionsLabelBG`                | Label for background option                                     |
 | `#menuOptionsDirBG`                  | Container for background url/local path option                  |
+| `#menuOptionsContainerUseThemeBG`    | Container for forcing theme background option                   |
+| `#menuOptionsLabelUseThemeBG`        | Label for forcing theme background option                       |
+| `#menuOptionsUseThemeBG`             | Toggle forcing theme background button container                |
 | `#menuOptionsContainerLang`          | Container for language change option                            |
 | `#menuOptionsLabelLang`              | Label for language change option                                |
 | `#menuOptionsSelectLang`             | Container for language change select menu                       |

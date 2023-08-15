@@ -33,6 +33,7 @@ interface IState {
   bg_url_or_path: string
   themes: string[]
   theme: string
+  use_theme_background: boolean
   encryption: boolean
   patch_rsa: boolean
   use_internal_proxy: boolean
@@ -64,6 +65,7 @@ export default class Options extends React.Component<IProps, IState> {
       bg_url_or_path: '',
       themes: ['default'],
       theme: '',
+      use_theme_background: false,
       encryption: false,
       patch_rsa: false,
       use_internal_proxy: false,
@@ -119,6 +121,7 @@ export default class Options extends React.Component<IProps, IState> {
       bg_url_or_path: config.custom_background || '',
       themes: (await getThemeList()).map((t) => t.name),
       theme: config.theme || 'default',
+      use_theme_background: config.use_theme_background || false,
       encryption: encEnabled || false,
       patch_rsa: config.patch_rsa || false,
       use_internal_proxy: config.use_internal_proxy || false,
@@ -535,6 +538,19 @@ export default class Options extends React.Component<IProps, IState> {
                 </option>
               ))}
             </select>
+          </div>
+        </div>
+
+        <div className="OptionSection" id="menuOptionsContainerUseThemeBG">
+          <div className="OptionLabel" id="menuOptionsLabelUseThemeBG">
+            <Tr text="options.use_theme_background" />
+          </div>
+          <div className="OptionValue" id="menuOptionsUseThemeBG">
+            <Checkbox
+              onChange={() => this.toggleOption('use_theme_background')}
+              checked={this.state?.use_theme_background}
+              id="useThemeBG"
+            />
           </div>
         </div>
 

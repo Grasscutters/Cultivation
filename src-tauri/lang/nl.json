@@ -24,6 +24,7 @@
     "grasscutter_with_game": "Start Automatisch Grasscutter Met Spel",
     "language": "Selecteer Taal",
     "background": "Aangepaste Achtergrond Instellen (link of afbeeldingsbestand)",
+    "use_theme_background": "Gebruik de achtergrond geleverd door het geselecteerde thema",
     "theme": "Thema instellen",
     "patch_rsa": "RSA Automatisch Bijwerken",
     "use_proxy": "Gebruik Interne Proxy",

@@ -25,6 +25,7 @@
     "grasscutter_with_game": "Lancer Grasscutter automatiquement avec le jeu",
     "language": "Choisir la langue",
     "background": "Définir un arriere plan personnalisé (lien ou fichier image)",
+    "use_theme_background": "Utiliser l'arrière-plan fourni par le thème sélectionné",
     "theme": "Définir un theme",
     "patch_rsa": "Patcher automatiquement les clés RSA",
     "use_proxy": "Utiliser le proxy interne",

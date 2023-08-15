@@ -25,6 +25,7 @@
     "grasscutter_with_game": "게임에서 자동으로 그래스커터 실행",
     "language": "언어 선택",
     "background": "사용자 지정 배경 설정(링크 또는 이미지 파일)",
+    "use_theme_background": "선택한 테마에서 제공하는 배경 사용",
     "theme": "테마 설정",
     "patch_rsa": "RSA 패치 자동 적용",
     "use_proxy": "내부 프록시 사용",

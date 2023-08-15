@@ -25,6 +25,7 @@
     "grasscutter_with_game": "Iniciar automaticamente o Grasscutter com o Jogo",
     "language": "Selecionar Idioma",
     "background": "Definir Fundo Customizado (link ou arquivo de imagem)",
+    "use_theme_background": "Use o plano de fundo fornecido pelo tema selecionado",
     "theme": "Definir Tema",
     "patch_rsa": "Automaticamente Corrigir RSA",
     "use_proxy": "Usar Proxy Interno",

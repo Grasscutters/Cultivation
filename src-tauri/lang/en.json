@@ -25,6 +25,7 @@
     "grasscutter_with_game": "Automatically launch Grasscutter with game",
     "language": "Select Language",
     "background": "Set Custom Background (link or image file)",
+    "use_theme_background": "Use the background supplied by selected theme",
     "theme": "Set Theme",
     "patch_rsa": "Automatically Patch RSA",
     "use_proxy": "Use Internal Proxy",

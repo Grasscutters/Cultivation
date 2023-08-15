@@ -24,6 +24,7 @@
     "grasscutter_with_game": "Grasscutter automatisch mit dem Spiel starten",
     "language": "Sprache auswählen",
     "background": "Benutzerdefinierten Hintergrund festlegen (link oder bild)",
+    "use_theme_background": "Verwenden Sie den vom ausgewählten Thema bereitgestellten Hintergrund",
     "theme": "Theme auswählen",
     "patch_rsa": "RSA automatisch patchen",
     "use_proxy": "Gebruik interne proxy",

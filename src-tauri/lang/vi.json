@@ -25,6 +25,7 @@
     "grasscutter_with_game": "Tự động chạy Grasscutter cùng với game",
     "language": "Ngôn ngữ",
     "background": "Hình nền tùy chỉnh (liên kết hoặc tập tin hình ảnh)",
+    "use_theme_background": "Sử dụng nền được cung cấp bởi chủ đề đã chọn",
     "theme": "Giao diện",
     "patch_rsa": "Tự động vá RSA",
     "use_proxy": "Sử dụng proxy nội bộ",
