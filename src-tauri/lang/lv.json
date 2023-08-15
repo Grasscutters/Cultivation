@@ -23,6 +23,7 @@
     "grasscutter_with_game": "Automātiski palaidiet Grasscutter ar spēli",
     "language": "Izvēlēties valodu",
     "background": "Iestatīt pielāgotu fonu (saite vai attēla fails)",
+    "use_theme_background": "Izmantojiet atlasītā motīva nodrošināto fonu",
     "theme": "Iestatīt tēmu",
     "patch_rsa": "Automātiski ielāpot RSA",
     "use_proxy": "Izmantot iekšējo starpniekserveri",

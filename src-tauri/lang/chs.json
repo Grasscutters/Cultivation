@@ -25,6 +25,7 @@
     "grasscutter_with_game": "随游戏自动启动 Grasscutter",
     "language": "选择语言",
     "background": "设置自定义背景（链接或文件）",
+    "use_theme_background": "使用所选主题提供的背景",
     "theme": "设置主题",
     "patch_rsa": "自动修改RSA",
     "use_proxy": "使用内置代理",

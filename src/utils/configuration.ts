@@ -16,6 +16,7 @@ let defaultConfig: Configuration
     last_port: '443',
     language: 'en',
     custom_background: '',
+    use_theme_background: false,
     cert_generated: false,
     theme: 'default',
     https_enabled: false,
@@ -45,6 +46,7 @@ export interface Configuration {
   last_port: string
   language: string
   custom_background: string
+  use_theme_background: boolean
   cert_generated: boolean
   theme: string
   https_enabled: boolean

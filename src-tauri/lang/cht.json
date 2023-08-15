@@ -25,6 +25,7 @@
     "grasscutter_with_game": "伴隨遊戲一起啟動Grasscutter",
     "language": "語言",
     "background": "選擇自定義背景（網址或檔案）",
+    "use_theme_background": "使用所選主題提供的背景",
     "theme": "選擇主題",
     "patch_rsa": "自動修補RSA",
     "use_proxy": "使用內建代理伺服器",

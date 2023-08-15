@@ -24,6 +24,7 @@
     "grasscutter_with_game": "Otomatis Menjalankan Grasscutter Dengan Game",
     "language": "Pilih Bahasa",
     "background": "Atur Kustom Latar Belakang (link atau gambar file)",
+    "use_theme_background": "Gunakan latar belakang yang disediakan oleh tema yang dipilih",
     "theme": "Atur Tema",
     "patch_rsa": "Automatically Patch RSA",
     "use_proxy": "Gunakan Proxy Internal",
