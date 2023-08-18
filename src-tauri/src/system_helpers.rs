@@ -10,6 +10,13 @@ use {
   windows_service::service_manager::{ServiceManager, ServiceManagerAccess},
 };
 
+#[cfg(target_os = "linux")]
+use crate::AAGL_THREAD;
+#[cfg(target_os = "linux")]
+use anime_launcher_sdk::genshin::game;
+#[cfg(target_os = "linux")]
+use std::thread;
+
 #[tauri::command]
 pub fn run_program(path: String, args: Option<String>) {
   // Without unwrap_or, this can crash when UAC prompt is denied
@@ -22,6 +29,7 @@ pub fn run_program(path: String, args: Option<String>) {
   };
 }
 
+#[cfg(target_os = "windows")]
 #[tauri::command]
 pub fn run_program_relative(path: String, args: Option<String>) {
   // Save the current working directory
@@ -39,6 +47,13 @@ pub fn run_program_relative(path: String, args: Option<String>) {
 
   // Restore the original working directory
   std::env::set_current_dir(cwd).unwrap();
+}
+
+#[cfg(target_os = "linux")]
+#[tauri::command]
+pub fn run_program_relative(path: String, args: Option<String>) {
+  // This program should not run as root
+  run_un_elevated(path, args)
 }
 
 #[tauri::command]
@@ -90,6 +105,7 @@ pub fn run_jar(path: String, execute_in: String, java_path: String) {
   };
 }
 
+#[cfg(target_os = "windows")]
 #[tauri::command]
 pub fn run_un_elevated(path: String, args: Option<String>) {
   // Open the program non-elevated.
@@ -104,6 +120,20 @@ pub fn run_un_elevated(path: String, args: Option<String>) {
     Ok(_) => (),
     Err(e) => println!("Failed to open program ({}): {}", &path, e),
   };
+}
+
+#[cfg(target_os = "linux")]
+#[tauri::command]
+pub fn run_un_elevated(path: String, args: Option<String>) {
+  drop(path);
+  drop(args);
+  let t = thread::spawn(|| {
+    game::run().expect("doo doo");
+  });
+  {
+    let mut l = AAGL_THREAD.lock().unwrap();
+    l.replace(t);
+  }
 }
 
 #[tauri::command]
