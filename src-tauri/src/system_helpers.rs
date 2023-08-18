@@ -15,7 +15,8 @@ use {
 use crate::AAGL_THREAD;
 #[cfg(target_os = "linux")]
 use anime_launcher_sdk::{
-  config::ConfigExt, genshin::config::Config, genshin::game, wincompatlib::prelude::*,
+  config::ConfigExt, genshin::config::Config, genshin::game, genshin::states::LauncherState,
+  wincompatlib::prelude::*,
 };
 #[cfg(target_os = "linux")]
 use std::{path::Path, process::Stdio, thread};
@@ -304,6 +305,25 @@ pub fn run_un_elevated(path: String, args: Option<String>) {
     || exec_name == ["Gen", "shin", "Impact", ".exe"].join("").as_str()
   {
     let game_thread = thread::spawn(|| {
+      'statechk: {
+        let state = LauncherState::get_from_config(|_| {});
+        let Ok(state) = state else {
+          println!("Failed to get state: {}", state.unwrap_err());
+          break 'statechk;
+        };
+        use anime_launcher_sdk::genshin::states::LauncherState::*;
+        match state {
+          FolderMigrationRequired { from, .. } => Err(format!(
+            "A folder migration is required ({:?} needs to be moved)",
+            from
+          )),
+          WineNotInstalled => Err("Wine is not installed".to_string()),
+          PrefixNotExists => Err("The Wine prefix does not exist".to_string()),
+          GameNotInstalled(_) => Err("The game is not installed".to_string()),
+          _ => Ok(()),
+        }
+        .expect("Can't launch game. Check the other launcher.");
+      }
       if let Err(e) = game::run() {
         println!("An error occurred while running the game: {}", e);
       }
