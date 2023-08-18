@@ -599,7 +599,23 @@ pub fn stop_service(service: String) -> bool {
     .is_ok()
 }
 
-#[cfg(unix)]
+#[cfg(target_os = "linux")]
+#[tauri::command]
+pub fn wipe_registry(exec_name: String) {
+  println!("Wiping registry");
+  let regpath = format!("HKCU\\Software\\miHoYo\\{}", exec_name);
+  let mut cmd = aagl_wine_run("reg", None);
+  cmd.args([
+    "DELETE",
+    &regpath,
+    "/f",
+    "/v",
+    "MIHOYOSDK_ADL_PROD_OVERSEA_h1158948810",
+  ]);
+  let _ = cmd.spawn_its_fine_really("Error wiping registry");
+}
+
+#[cfg(target_os = "macos")]
 #[tauri::command]
 pub fn wipe_registry(_exec_name: String) {}
 
