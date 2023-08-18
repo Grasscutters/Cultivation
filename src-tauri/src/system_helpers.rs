@@ -1,8 +1,9 @@
 use ini::Ini;
-use std::ffi::OsStr;
 use std::path::PathBuf;
 use std::process::Command;
 
+#[cfg(windows)]
+use std::ffi::OsStr;
 #[cfg(windows)]
 use {
   registry::{Data, Hive, Security},
@@ -15,7 +16,7 @@ use crate::AAGL_THREAD;
 #[cfg(target_os = "linux")]
 use anime_launcher_sdk::genshin::game;
 #[cfg(target_os = "linux")]
-use std::thread;
+use std::{process::Stdio, thread};
 #[cfg(target_os = "linux")]
 use term_detect::get_terminal;
 
@@ -27,6 +28,29 @@ fn guess_user_terminal() -> String {
   eprintln!("Could not guess default terminal. Try setting the $TERMINAL environment variable.");
   // If everything fails, default to xterm
   "xterm".to_string()
+}
+
+#[cfg(target_os = "linux")]
+pub trait SpawnItsFineReally {
+  fn spawn_its_fine_really(&mut self, msg: &str) -> anyhow::Result<()>;
+}
+
+#[cfg(target_os = "linux")]
+impl SpawnItsFineReally for Command {
+  fn spawn_its_fine_really(&mut self, msg: &str) -> anyhow::Result<()> {
+    let res = self.status();
+    let Ok(status) = res else {
+      let error = res.unwrap_err();
+      println!("{}: {}", msg, &error);
+      return Err(error.into());
+    };
+    if !status.success() {
+      println!("{}: {}", msg, status);
+      Err(anyhow::anyhow!("{}: {}", msg, status))
+    } else {
+      Ok(())
+    }
+  }
 }
 
 #[tauri::command]
@@ -326,9 +350,41 @@ pub fn service_status(service: String) -> bool {
   }
 }
 
-#[cfg(unix)]
+#[cfg(target_os = "linux")]
+fn to_linux_service_name(service: &str) -> Option<String> {
+  Some(format!(
+    "{}.service",
+    match service {
+      "MongoDB" => "mongod",
+      _ => return None,
+    }
+  ))
+}
+
+#[cfg(target_os = "linux")]
 #[tauri::command]
-pub fn service_status(_service: String) {}
+pub fn service_status(service: String) -> bool {
+  // Change Windows service name into Linux service name
+  let service_lnx = to_linux_service_name(&service);
+  if service_lnx.is_none() {
+    return false;
+  }
+  let service_lnx = service_lnx.unwrap();
+  let status = Command::new("systemctl")
+    .arg("is-active")
+    .arg(service_lnx)
+    .stdout(Stdio::null())
+    .status();
+  if status.is_err() {
+    return false;
+  }
+  let status = status.unwrap().success();
+  if status {
+    status
+  } else {
+    start_service(service)
+  }
+}
 
 #[cfg(windows)]
 #[tauri::command]
@@ -349,10 +405,20 @@ pub fn start_service(service: String) -> bool {
   true
 }
 
-#[cfg(unix)]
+#[cfg(target_os = "linux")]
 #[tauri::command]
-pub fn start_service(_service: String) {
-  let _started = OsStr::new("Started service!");
+pub fn start_service(service: String) -> bool {
+  println!("Starting service: {}", service);
+  let service_lnx = to_linux_service_name(&service);
+  if service_lnx.is_none() {
+    return false;
+  }
+  let service_lnx = service_lnx.unwrap();
+  Command::new("systemctl")
+    .arg("start")
+    .arg(service_lnx)
+    .spawn_its_fine_really(&format!("Failed to stop service {}", service))
+    .is_ok()
 }
 
 #[cfg(windows)]
@@ -374,9 +440,21 @@ pub fn stop_service(service: String) -> bool {
   true
 }
 
-#[cfg(unix)]
+#[cfg(target_os = "linux")]
 #[tauri::command]
-pub fn stop_service(_service: String) {}
+pub fn stop_service(service: String) -> bool {
+  println!("Stopping service: {}", service);
+  let service_lnx = to_linux_service_name(&service);
+  if service_lnx.is_none() {
+    return false;
+  }
+  let service_lnx = service_lnx.unwrap();
+  Command::new("systemctl")
+    .arg("stop")
+    .arg(service_lnx)
+    .spawn_its_fine_really(&format!("Failed to start service {}", service))
+    .is_ok()
+}
 
 #[cfg(unix)]
 #[tauri::command]

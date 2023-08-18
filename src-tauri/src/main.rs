@@ -411,7 +411,6 @@ fn restart_grasscutter(_window: tauri::Window) {
   }
 }
 
-#[cfg(windows)]
 #[tauri::command]
 fn enable_grasscutter_watcher(window: tauri::Window, process: String) {
   let grasscutter_name = process.clone();
@@ -470,13 +469,6 @@ fn enable_grasscutter_watcher(window: tauri::Window, process: String) {
       }
     }
   });
-}
-
-#[cfg(unix)]
-#[tauri::command]
-fn enable_grasscutter_watcher(_window: tauri::Window, _process: String) {
-  let gc_pid = Pid::from(696969);
-  *GC_PID.lock().unwrap() = gc_pid.into();
 }
 
 #[tauri::command]

@@ -909,6 +909,7 @@ name = "cultivation"
 version = "1.1.1"
 dependencies = [
  "anime-launcher-sdk",
+ "anyhow",
  "args",
  "cc",
  "ctrlc",

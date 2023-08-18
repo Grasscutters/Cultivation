@@ -216,7 +216,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
         process: proc_name || grasscutter_jar,
       })
       // Check if MongoDB is running and start it if not
-      await invoke('service_status', { service: 'MongoDB' })
+      invoke('service_status', { service: 'MongoDB' })
     }
 
     let jarFolder = config.grasscutter_path
