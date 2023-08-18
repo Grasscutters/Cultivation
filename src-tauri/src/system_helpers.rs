@@ -14,9 +14,11 @@ use {
 #[cfg(target_os = "linux")]
 use crate::AAGL_THREAD;
 #[cfg(target_os = "linux")]
-use anime_launcher_sdk::genshin::game;
+use anime_launcher_sdk::{
+  config::ConfigExt, genshin::config::Config, genshin::game, wincompatlib::prelude::*,
+};
 #[cfg(target_os = "linux")]
-use std::{process::Stdio, thread};
+use std::{path::Path, process::Stdio, thread};
 #[cfg(target_os = "linux")]
 use term_detect::get_terminal;
 
@@ -259,17 +261,76 @@ pub fn run_un_elevated(path: String, args: Option<String>) {
 }
 
 #[cfg(target_os = "linux")]
+fn aagl_wine_run<P: AsRef<Path>>(path: P, args: Option<String>) -> Command {
+  let config = Config::get().unwrap();
+  let wine = config.get_selected_wine().unwrap().unwrap();
+  let wine_run = wine
+    .to_wine(
+      config.components.path,
+      Some(config.game.wine.builds.join(&wine.name)),
+    )
+    .with_prefix(config.game.wine.prefix)
+    .with_loader(WineLoader::Current)
+    .with_arch(WineArch::Win64);
+  let env: Vec<(String, String)> = config
+    .game
+    .wine
+    .sync
+    .get_env_vars()
+    .clone()
+    .into_iter()
+    .map(|(k, v)| (k.to_string(), v.to_string()))
+    .collect();
+  use anime_launcher_sdk::components::wine::UnifiedWine::*;
+  let wined = match wine_run {
+    Default(wine) => wine,
+    Proton(proton) => proton.wine().clone(),
+  };
+  let mut cmd = Command::new(&wined.binary);
+  cmd.arg(path.as_ref()).envs(wined.get_envs()).envs(env);
+  if let Some(args) = args {
+    let mut args: Vec<String> = args.split(' ').map(|x| x.to_string()).collect();
+    cmd.args(&mut args);
+  };
+  cmd
+}
+
+#[cfg(target_os = "linux")]
 #[tauri::command]
 pub fn run_un_elevated(path: String, args: Option<String>) {
-  drop(path);
-  drop(args);
-  let t = thread::spawn(|| {
-    game::run().expect("doo doo");
-  });
+  let path = Path::new(&path);
+  let exec_name = path.file_name().unwrap().to_str().unwrap();
+  if exec_name == ["Yuan", "Shen", ".exe"].join("").as_str()
+    || exec_name == ["Gen", "shin", "Impact", ".exe"].join("").as_str()
   {
-    let mut l = AAGL_THREAD.lock().unwrap();
-    l.replace(t);
+    let game_thread = thread::spawn(|| {
+      if let Err(e) = game::run() {
+        println!("An error occurred while running the game: {}", e);
+      }
+    });
+    {
+      let mut game_thead_lock = AAGL_THREAD.lock().unwrap();
+      game_thead_lock.replace(game_thread);
+    }
+    return;
   }
+  // Run exe with wine
+  if path.extension().unwrap() == "exe" {
+    let path = path.to_owned().clone();
+    thread::spawn(move || {
+      let _ = aagl_wine_run(&path, args)
+        .current_dir(path.parent().unwrap())
+        .in_terminal()
+        .spawn_its_fine_really(&format!(
+          "Failed to open program ({})",
+          path.to_str().unwrap()
+        ));
+    });
+  }
+  println!(
+    "Can't run {:?}. Running this type of file is not supported yet.",
+    path
+  );
 }
 
 #[tauri::command]
