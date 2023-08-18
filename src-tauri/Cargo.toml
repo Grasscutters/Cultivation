@@ -22,6 +22,9 @@ registry = "1.2.1"
 [target.'cfg(unix)'.dependencies]
 sudo = "0.6.0"
 
+[target.'cfg(target_os = "linux")'.dependencies]
+term-detect = "0.1.7"
+
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
 tauri = { version = "1.0.9", features = ["api-all"] }

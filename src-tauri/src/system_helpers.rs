@@ -16,6 +16,18 @@ use crate::AAGL_THREAD;
 use anime_launcher_sdk::genshin::game;
 #[cfg(target_os = "linux")]
 use std::thread;
+#[cfg(target_os = "linux")]
+use term_detect::get_terminal;
+
+#[cfg(target_os = "linux")]
+fn guess_user_terminal() -> String {
+  if let Ok(term) = get_terminal() {
+    return term.0;
+  }
+  eprintln!("Could not guess default terminal. Try setting the $TERMINAL environment variable.");
+  // If everything fails, default to xterm
+  "xterm".to_string()
+}
 
 #[tauri::command]
 pub fn run_program(path: String, args: Option<String>) {
@@ -96,6 +108,7 @@ pub fn run_jar(path: String, execute_in: String, java_path: String) {
   println!("Launching .jar with command: {}", &command);
 
   // Open the program from the specified path.
+  #[cfg(not(target_os = "linux"))]
   match open::with(
     format!("/k cd /D \"{}\" & {}", &execute_in, &command),
     "C:\\Windows\\System32\\cmd.exe",
@@ -103,6 +116,23 @@ pub fn run_jar(path: String, execute_in: String, java_path: String) {
     Ok(_) => (),
     Err(e) => println!("Failed to open jar ({} from {}): {}", &path, &execute_in, e),
   };
+  #[cfg(target_os = "linux")]
+  thread::spawn(move || {
+    match Command::new(guess_user_terminal())
+      .arg("-e")
+      .arg(command)
+      .current_dir(execute_in.clone())
+      .spawn()
+    {
+      Ok(mut handler) => {
+        // Prevent creation of zombie processes
+        handler
+          .wait()
+          .expect("Grasscutter exited with non-zero exit code");
+      }
+      Err(e) => println!("Failed to open jar ({} from {}): {}", &path, &execute_in, e),
+    }
+  });
 }
 
 #[cfg(target_os = "windows")]
