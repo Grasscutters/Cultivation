@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use std::string::String;
 
 // Config may not exist, or may be old, so it's okay if these are optional
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Default)]
 pub struct Configuration {
   pub toggle_grasscutter: Option<bool>,
   pub game_install_path: Option<String>,
@@ -41,7 +41,7 @@ pub fn config_path() -> PathBuf {
 pub fn get_config() -> Configuration {
   let path = config_path();
   let config = std::fs::read_to_string(path).unwrap_or("{}".to_string());
-  let config: Configuration = serde_json::from_str(&config).unwrap();
+  let config: Configuration = serde_json::from_str(&config).unwrap_or_default();
 
   config
 }
