@@ -4,8 +4,6 @@
  */
 
 use crate::config::get_config;
-#[cfg(target_os = "linux")]
-use crate::system_helpers::run_command;
 
 use once_cell::sync::Lazy;
 use std::{path::PathBuf, str::FromStr, sync::Mutex};
@@ -27,6 +25,13 @@ use tauri::{api::path::data_dir, http::Uri};
 
 #[cfg(windows)]
 use registry::{Data, Hive, Security};
+
+#[cfg(target_os = "linux")]
+use crate::system_helpers::{AsRoot, SpawnItsFineReally};
+#[cfg(target_os = "linux")]
+use anime_launcher_sdk::{config::ConfigExt, genshin::config::Config};
+#[cfg(target_os = "linux")]
+use std::{fs::File, io::Write, process::Command};
 
 async fn shutdown_signal() {
   tokio::signal::ctrl_c()
@@ -283,24 +288,23 @@ pub fn connect_to_proxy(proxy_port: u16) {
   println!("Connected to the proxy.");
 }
 
-#[cfg(unix)]
+#[cfg(target_os = "linux")]
 pub fn connect_to_proxy(proxy_port: u16) {
-  // Edit /etc/environment to set $http_proxy and $https_proxy
-  let mut env_file = match fs::read_to_string("/etc/environment") {
-    Ok(f) => f,
-    Err(e) => {
-      println!("Error opening /etc/environment: {}", e);
-      return;
-    }
-  };
-
-  // Append the proxy configuration.
-  // We will not remove the current proxy config if it exists, so we can just remove these last lines when we disconnect
-  env_file += format!("\nhttps_proxy=127.0.0.1:{}", proxy_port).as_str();
-  env_file += format!("\nhttp_proxy=127.0.0.1:{}", proxy_port).as_str();
-
-  // Save
-  fs::write("/etc/environment", env_file).unwrap();
+  let mut config = Config::get().unwrap();
+  let proxy_addr = format!("127.0.0.1:{}", proxy_port);
+  if !config.game.environment.contains_key("http_proxy") {
+    config
+      .game
+      .environment
+      .insert("http_proxy".to_string(), proxy_addr.clone());
+  }
+  if !config.game.environment.contains_key("https_proxy") {
+    config
+      .game
+      .environment
+      .insert("https_proxy".to_string(), proxy_addr);
+  }
+  Config::update(config);
 }
 
 #[cfg(target_od = "macos")]
@@ -329,21 +333,14 @@ pub fn disconnect_from_proxy() {
 
 #[cfg(target_os = "linux")]
 pub fn disconnect_from_proxy() {
-  println!("Re-writing environment variables");
-
-  let regexp = regex::Regex::new(
-    // This has to be specific as possible or we risk fuckin up their environment LOL
-    r"(https|http)_proxy=.*127.0.0.1:.*",
-  )
-  .unwrap();
-  let environment = &fs::read_to_string("/etc/environment").expect("Failed to open environment");
-
-  let new_environment = regexp.replace_all(environment, "").to_string();
-
-  // Write new environment
-  fs::write("/etc/environment", new_environment.trim_end()).expect(
-    "Could not write environment, remove proxy declarations manually if they are still set",
-  );
+  let mut config = Config::get().unwrap();
+  if config.game.environment.contains_key("http_proxy") {
+    config.game.environment.remove("http_proxy");
+  }
+  if config.game.environment.contains_key("https_proxy") {
+    config.game.environment.remove("https_proxy");
+  }
+  Config::update(config);
 }
 
 #[cfg(target_os = "macos")]
@@ -449,18 +446,72 @@ pub fn install_ca_files(cert_path: &Path) {
   println!("Installed certificate.");
 }
 
-// If this is borked on non-debian platforms, so be it
 #[cfg(target_os = "linux")]
 pub fn install_ca_files(cert_path: &Path) {
-  let usr_certs = PathBuf::from("/usr/local/share/ca-certificates");
-  let usr_cert_path = usr_certs.join("cultivation.crt");
+  let platform = os_type::current_platform();
+  use os_type::OSType::*;
+  // TODO: Add more distros
+  match &platform.os_type {
+    // Debian-based
+    Debian | Ubuntu | Kali => {
+      let usr_certs = PathBuf::from("/usr/local/share/ca-certificates");
+      let usr_cert_path = usr_certs.join("cultivation.crt");
 
-  // Create dir if it doesn't exist
-  fs::create_dir_all(&usr_certs).expect("Unable to create local certificate directory");
-
-  fs::copy(cert_path, usr_cert_path).expect("Unable to copy cert to local certificate directory");
-  run_command("update-ca-certificates", vec![], None);
-
+      // We want to execute multiple commands, but we don't want multiple pkexec prompts
+      // so we have to use a script
+      let script = Path::new("/tmp/cultivation-inject-ca-cert.sh");
+      let mut scriptf = File::create(script).unwrap();
+      #[cfg(debug_assertions)]
+      let setflags = "xe";
+      #[cfg(not(debug_assertions))]
+      let setflags = "e";
+      write!(
+        scriptf,
+        r#"#!/usr/bin/env bash
+set -{}
+CERT="{}"
+CERT_DIR="{}"
+CERT_TARGET="{}"
+# Create dir if it doesn't exist
+if ! [[ -d "$CERT_DIR" ]]; then
+  mkdir -v "$CERT_DIR"
+fi
+cp -v "$CERT" "$CERT_TARGET"
+update-ca-certificates
+"#,
+        setflags,
+        cert_path.to_str().unwrap(),
+        usr_certs.to_str().unwrap(),
+        usr_cert_path.to_str().unwrap()
+      )
+      .unwrap();
+      scriptf.flush().unwrap();
+      drop(scriptf);
+      let _ = Command::new("bash")
+        .arg(script)
+        .as_root_gui()
+        .spawn_its_fine_really("Unable to install certificate");
+      if let Err(e) = fs::remove_file(script) {
+        println!("Unable to remove certificate install script: {}", e);
+      };
+    }
+    // RedHat-based
+    //Redhat | CentOS |
+    // Arch-based
+    Arch | Manjaro => {
+      let _ = Command::new("trust")
+        .arg("anchor")
+        .arg("--store")
+        .arg(cert_path)
+        .as_root_gui()
+        .spawn_its_fine_really("Unable to install certificate");
+    }
+    OSX => unreachable!(),
+    _ => {
+      println!("Unsupported Linux distribution.");
+      return;
+    }
+  }
   println!("Installed certificate.");
 }
 

@@ -11,14 +11,22 @@ use proxy::set_proxy_addr;
 use std::fs;
 use std::io::Write;
 use std::{collections::HashMap, sync::Mutex};
-use system_helpers::is_elevated;
 use tauri::api::path::data_dir;
 use tauri::async_runtime::block_on;
 
 use std::thread;
 use sysinfo::{Pid, ProcessExt, System, SystemExt};
 
+#[cfg(target_os = "windows")]
 use crate::admin::reopen_as_admin;
+#[cfg(target_os = "windows")]
+use system_helpers::is_elevated;
+
+#[cfg(target_os = "linux")]
+use std::{
+  thread::{sleep, JoinHandle},
+  time::{Duration, Instant},
+};
 
 mod admin;
 mod config;
@@ -36,6 +44,9 @@ mod web;
 static WATCH_GAME_PROCESS: Lazy<Mutex<String>> = Lazy::new(|| Mutex::new(String::new()));
 static WATCH_GRASSCUTTER_PROCESS: Lazy<Mutex<String>> = Lazy::new(|| Mutex::new(String::new()));
 static GC_PID: std::sync::Mutex<usize> = Mutex::new(696969);
+
+#[cfg(target_os = "linux")]
+pub static AAGL_THREAD: Lazy<Mutex<Option<JoinHandle<()>>>> = Lazy::new(|| Mutex::new(None));
 
 fn try_flush() {
   std::io::stdout().flush().unwrap_or(())
@@ -157,6 +168,7 @@ fn main() -> Result<(), ArgsError> {
   let args: Vec<String> = std::env::args().collect();
   let parsed_args = block_on(parse_args(&args)).unwrap();
 
+  #[cfg(target_os = "windows")]
   if !is_elevated() && !parsed_args.value_of("no-admin")? {
     println!("===============================================================================");
     println!("You running as a non-elevated user. Some stuff will almost definitely not work.");
@@ -202,6 +214,7 @@ fn main() -> Result<(), ArgsError> {
         system_helpers::service_status,
         system_helpers::stop_service,
         system_helpers::run_jar,
+        system_helpers::run_jar_root,
         system_helpers::open_in_browser,
         system_helpers::install_location,
         system_helpers::is_elevated,
@@ -210,6 +223,10 @@ fn main() -> Result<(), ArgsError> {
         system_helpers::wipe_registry,
         system_helpers::get_platform,
         system_helpers::run_un_elevated,
+        system_helpers::jvm_add_cap,
+        system_helpers::jvm_remove_cap,
+        patch::patch_game,
+        patch::unpatch_game,
         proxy::set_proxy_addr,
         proxy::generate_ca_files,
         proxy::set_redirect_more,
@@ -267,6 +284,7 @@ fn is_game_running() -> bool {
   !proc.is_empty()
 }
 
+#[cfg(target_os = "windows")]
 #[tauri::command]
 fn enable_process_watcher(window: tauri::Window, process: String) {
   *WATCH_GAME_PROCESS.lock().unwrap() = process;
@@ -311,6 +329,41 @@ fn enable_process_watcher(window: tauri::Window, process: String) {
     }
   });
 }
+
+// The library takes care of it
+#[cfg(target_os = "linux")]
+#[tauri::command]
+fn enable_process_watcher(window: tauri::Window, process: String) {
+  drop(process);
+  thread::spawn(move || {
+    let end_time = Instant::now() + Duration::from_secs(60);
+    let game_thread = loop {
+      let mut lock = AAGL_THREAD.lock().unwrap();
+      if lock.is_some() {
+        break lock.take().unwrap();
+      }
+      drop(lock);
+      if end_time < Instant::now() {
+        // If more than 60 seconds pass something has gone wrong
+        println!("Waiting for game thread timed out");
+        return;
+      }
+      // Otherwhise wait in order to not use too many CPU cycles
+      sleep(Duration::from_millis(128));
+    };
+    game_thread.join().unwrap();
+    println!("Game closed");
+
+    *WATCH_GAME_PROCESS.lock().unwrap() = "".to_string();
+    disconnect();
+
+    window.emit("game_closed", &()).unwrap();
+  });
+}
+
+#[cfg(target_os = "macos")]
+#[tauri::command]
+fn enable_process_watcher(window: tauri::Window, process: String) {}
 
 #[tauri::command]
 fn is_grasscutter_running() -> bool {
@@ -361,7 +414,6 @@ fn restart_grasscutter(_window: tauri::Window) {
   }
 }
 
-#[cfg(windows)]
 #[tauri::command]
 fn enable_grasscutter_watcher(window: tauri::Window, process: String) {
   let grasscutter_name = process.clone();
@@ -420,13 +472,6 @@ fn enable_grasscutter_watcher(window: tauri::Window, process: String) {
       }
     }
   });
-}
-
-#[cfg(unix)]
-#[tauri::command]
-fn enable_grasscutter_watcher(_window: tauri::Window, _process: String) {
-  let gc_pid = Pid::from(696969);
-  *GC_PID.lock().unwrap() = gc_pid.into();
 }
 
 #[tauri::command]

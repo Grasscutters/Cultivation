@@ -33,7 +33,9 @@
     "horny_mode": "Tryb 34",
     "auto_mongodb": "Automatycznie uruchamiaj MongoDB",
     "un_elevated": "Uruchamiaj grę bez uprawnień administratora/roota",
-    "redirect_more": "Przekieruj też inne gry MHY"
+    "redirect_more": "Przekieruj też inne gry MHY",
+    "check_aagl": "Więcej opcji znajdziesz w drugim launcherze",
+    "grasscutter_elevation": "Sposób uruchomienia GC na ograniczonym porcie"
   },
   "downloads": {
     "grasscutter_fullbuild": "Pobierz Grasscutter (wszystko w jednym)",
@@ -85,7 +87,8 @@
     "use_proxy": "Używaj wewnętrznego proxy Cultivation. To powinno być włączone, chyba że używasz czegoś jak np. Fiddler",
     "patch_rsa": "Patchuj i odpatchuj RSA gry automatycznie. Jeżeli nie grasz w starą lub nieoficjalną wersję (3.0 lub starszą), to powinno być włączone.",
     "add_delay": "Ustaw opóźnienie 3dmigoto loadera! \nTo powinno naprawić problemy z ładowaniem, ale doda małe opóźnienie do czasu ładowania 3dmigoto do gry. \nTeraz możecie uruchamiać grę z 3dmigoto.",
-    "migoto": "Do importowania modeli z GameBanana"
+    "migoto": "Do importowania modeli z GameBanana",
+    "grasscutter_elevation_help_text": "Metoda używana przez Grasscuttera do zbindowania portu 443 (co nie jest dozwolone dla zywkłych użytkowników w Linuxie)\nDostępne metody:\n  Capability - daje wirtualnej maszynie Javy możliwość zbindowania portów poniżej 1024. To też pozwala wszystkim innym programom odpalonym na tej maszynie JVM zbindować te porty.\n  Root - uruchamia GC jako root. To pozwala serwerowi GC, jego pluginom i maszynie JVM zrobić praktycznie wszystko, wliczając w to wysyłanie twoich nudesów do ABW, CBŚ, i innych trzyliterowych służb.\n  None - czyli żadna metoda. Ta opcja wymaga zmiana portu Dispatch serwera GC."
   },
   "swag": {
     "akebi_name": "Akebi",

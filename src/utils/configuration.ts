@@ -28,6 +28,9 @@ let defaultConfig: Configuration
     auto_mongodb: false,
     un_elevated: false,
     redirect_more: false,
+
+    // Linux stuff
+    grasscutter_elevation: 'None',
   }
 })()
 
@@ -59,6 +62,9 @@ export interface Configuration {
   auto_mongodb: boolean
   un_elevated: boolean
   redirect_more: boolean
+
+  // Linux stuff
+  grasscutter_elevation: string
 
   // Swag stuff
   akebi_path?: string

@@ -22,6 +22,12 @@ registry = "1.2.1"
 [target.'cfg(unix)'.dependencies]
 sudo = "0.6.0"
 
+[target.'cfg(target_os = "linux")'.dependencies]
+anyhow = "1.0.58"
+os_type = "2.6"
+term-detect = "0.1.7"
+which = "4.4"
+
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
 tauri = { version = "1.0.9", features = ["api-all"] }
@@ -53,7 +59,7 @@ serde_json = "1"
 
 # Dependencies for the HTTP(S) proxy.
 http = "0.2"
-hudsucker = "0.19.1"
+hudsucker = "0.19.2"
 tracing = "0.1.21"
 tokio-rustls = "0.23.0"
 tokio-tungstenite = "0.17.0"
@@ -70,6 +76,12 @@ regex = "1"
 file_diff = "1.0.0"
 rust-ini = "0.18.0"
 ctrlc = "3.2.3"
+
+[target.'cfg(target_os = "linux")'.dependencies.anime-launcher-sdk]
+git = "https://github.com/an-anime-team/anime-launcher-sdk.git"
+tag = "1.11.1"
+default-features = false
+features = ["all", "genshin"]
 
 [features]
 # by default Tauri runs in production mode
