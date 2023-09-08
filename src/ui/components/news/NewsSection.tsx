@@ -124,7 +124,7 @@ export default class NewsSection extends React.Component<IProps, IState> {
       case 'latest_version':
         news = (
           <tr>
-            <td>Latest version: Grasscutter 1.5.0 - Cultivation 1.1.1</td>
+            <td>Latest version: Grasscutter 1.7.0 - Cultivation 1.2.0</td>
           </tr>
         )
         break
