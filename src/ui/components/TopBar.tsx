@@ -1,12 +1,14 @@
 import React from 'react'
-import { app } from '@tauri-apps/api'
+import { app, invoke } from '@tauri-apps/api'
 import { appWindow } from '@tauri-apps/api/window'
 import { getConfig, setConfigOption } from '../../utils/configuration'
 import Tr from '../../utils/language'
+import { confirm } from '@tauri-apps/api/dialog'
 
 import './TopBar.css'
 import closeIcon from '../../resources/icons/close.svg'
 import minIcon from '../../resources/icons/min.svg'
+import { unpatchGame } from '../../utils/rsa'
 
 interface IProps {
   children?: React.ReactNode | React.ReactNode[]
@@ -36,7 +38,19 @@ export default class TopBar extends React.Component<IProps, IState> {
     this.setState({ version })
   }
 
-  handleClose() {
+  async handleClose() {
+    if (await invoke('is_game_running')) {
+      const confirmed = await confirm(
+        'Game is running. You WILL NOT be unpatched. Would you like to exit?',
+        'WARNING!!'
+      )
+      if (!confirmed) {
+        return
+      }
+    }
+
+    await invoke('disconnect')
+    unpatchGame()
     appWindow.close()
   }
 
