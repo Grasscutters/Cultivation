@@ -16,6 +16,7 @@ import DownloadHandler from '../../../utils/download'
 import * as meta from '../../../utils/rsa'
 import HelpButton from '../common/HelpButton'
 import SmallButton from '../common/SmallButton'
+import { confirm } from '@tauri-apps/api/dialog'
 
 export enum GrasscutterElevation {
   None = 'None',
@@ -290,6 +291,17 @@ export default class Options extends React.Component<IProps, IState> {
     // Remove jar from path
     const path = config.grasscutter_path.replace(/\\/g, '/')
     const folderPath = path.substring(0, path.lastIndexOf('/'))
+
+    if (!(await server.encryptionEnabled(folderPath + '/config.json'))) {
+      if (
+        !(await confirm(
+          'Cultivation requires encryption DISABLED to connect and play locally. \n\n Are you sure you want to enable encryption?',
+          'Warning!'
+        ))
+      ) {
+        return
+      }
+    }
 
     await server.toggleEncryption(folderPath + '/config.json')
 
