@@ -16,6 +16,7 @@ import { GrasscutterElevation } from './menu/Options'
 import { getGameExecutable, getGameVersion, getGrasscutterJar } from '../../utils/game'
 import { patchGame, unpatchGame } from '../../utils/rsa'
 import { listen } from '@tauri-apps/api/event'
+import { confirm } from '@tauri-apps/api/dialog'
 
 interface IProps {
   openExtras: (playGame: () => void) => void
@@ -116,6 +117,24 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     if (!(await getGameExecutable())) {
       alert('Game executable not set!')
       return
+    }
+
+    // Check for HTTPS on local
+    if (this.state.httpsEnabled) {
+      if (this.state.ip == 'localhost') {
+        if (
+          await confirm(
+            "Oops! HTTPS is enabled but you're connecting to localhost! \nHTTPS MUST be disabled for localhost. \n\nWould you like to disable HTTPS and continue?",
+            { title: 'WARNING!!', type: 'warning' }
+          )
+        ) {
+          this.toggleHttps()
+        } else {
+          if (!(await confirm('You have chosen to keep HTTPS enabled! \n\nYOU WILL ERROR ON LOGIN.'))) {
+            return
+          }
+        }
+      }
     }
 
     // Connect to proxy

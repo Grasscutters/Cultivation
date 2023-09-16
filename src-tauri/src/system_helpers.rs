@@ -214,7 +214,7 @@ pub fn run_jar(path: String, execute_in: String, java_path: String) {
 
 #[cfg(not(target_os = "linux"))]
 #[tauri::command]
-pub fn run_jar_root(path: String, execute_in: String, java_path: String) {
+pub fn run_jar_root(_path: String, _execute_in: String, _java_path: String) {
   panic!("Not implemented");
 }
 
