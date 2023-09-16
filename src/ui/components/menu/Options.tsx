@@ -103,6 +103,7 @@ export default class Options extends React.Component<IProps, IState> {
     this.setCustomBackground = this.setCustomBackground.bind(this)
     this.toggleEncryption = this.toggleEncryption.bind(this)
     this.removeRSA = this.removeRSA.bind(this)
+    this.deleteWebCache = this.deleteWebCache.bind(this)
     this.addMigotoDelay = this.addMigotoDelay.bind(this)
     this.toggleUnElevatedGame = this.toggleUnElevatedGame.bind(this)
   }
@@ -334,6 +335,18 @@ export default class Options extends React.Component<IProps, IState> {
     await invoke('generate_ca_files', {
       path: (await dataDir()) + 'cultivation',
     })
+  }
+
+  async deleteWebCache() {
+    alert('Cultivation may freeze for a moment while this occurs!')
+
+    // Get webCaches folder path
+    const pathArr = this.state.game_install_path.replace(/\\/g, '/').split('/')
+    pathArr.pop()
+    const path = pathArr.join('/') + '/GenshinImpact_Data/webCaches'
+
+    // Delete the folder
+    await invoke('dir_delete', { path: path })
   }
 
   async toggleOption(opt: keyof Configuration) {
@@ -644,6 +657,19 @@ export default class Options extends React.Component<IProps, IState> {
                 </option>
               ))}
             </select>
+          </div>
+        </div>
+
+        <Divider />
+
+        <div className="OptionSection" id="menuOptionsContainerAdvanced">
+          <div className="OptionLabel" id="menuOptionsLabelWebCache">
+            <Tr text="options.web_cache" />
+          </div>
+          <div className="OptionValue" id="menuOptionsButtondeleteWebcache">
+            <BigButton onClick={this.deleteWebCache} id="deleteWebcache">
+              <Tr text="components.delete" />
+            </BigButton>
           </div>
         </div>
       </Menu>
