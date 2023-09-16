@@ -344,9 +344,11 @@ export default class Options extends React.Component<IProps, IState> {
     const pathArr = this.state.game_install_path.replace(/\\/g, '/').split('/')
     pathArr.pop()
     const path = pathArr.join('/') + '/GenshinImpact_Data/webCaches'
+    const path2 = pathArr.join('/') + '/Yuanshen_Data/webCaches'
 
     // Delete the folder
     await invoke('dir_delete', { path: path })
+    await invoke('dir_delete', { path: path2 })
   }
 
   async toggleOption(opt: keyof Configuration) {
