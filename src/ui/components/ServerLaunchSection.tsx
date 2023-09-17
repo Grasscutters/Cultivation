@@ -41,7 +41,6 @@ interface IState {
   migotoSet: boolean
 
   unElevated: boolean
-  launchArgs: string
 }
 
 export default class ServerLaunchSection extends React.Component<IProps, IState> {
@@ -65,7 +64,6 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       akebiSet: false,
       migotoSet: false,
       unElevated: false,
-      launchArgs: '',
     }
 
     this.toggleGrasscutter = this.toggleGrasscutter.bind(this)
@@ -97,7 +95,6 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       akebiSet: config.akebi_path !== '',
       migotoSet: config.migoto_path !== '',
       unElevated: config.un_elevated || false,
-      launchArgs: config.launch_args || '',
     })
   }
 

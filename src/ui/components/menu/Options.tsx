@@ -706,7 +706,7 @@ export default class Options extends React.Component<IProps, IState> {
             key="launch_args"
             placeholder={'-arg=value'}
             onChange={this.setLaunchArgs}
-            initalValue={this.state.launch_args}
+            initalValue={this.state?.launch_args}
           />
         </div>
       </Menu>
