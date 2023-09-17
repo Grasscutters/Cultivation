@@ -35,7 +35,9 @@
     "un_elevated": "Uruchamiaj grę bez uprawnień administratora/roota",
     "redirect_more": "Przekieruj też inne gry MHY",
     "check_aagl": "Więcej opcji znajdziesz w drugim launcherze",
-    "grasscutter_elevation": "Sposób uruchomienia GC na ograniczonym porcie"
+    "grasscutter_elevation": "Sposób uruchomienia GC na ograniczonym porcie",
+    "web_cache": "Usuń folder webCaches",
+    "launch_args": "Launch Args"
   },
   "downloads": {
     "grasscutter_fullbuild": "Pobierz Grasscutter (wszystko w jednym)",

@@ -33,7 +33,9 @@
     "horny_mode": "Horny 모드",
     "auto_mongodb": "MongoDB 자동 시작",
     "un_elevated": "게임 비상승 실행(관리자 없음)",
-    "redirect_more": "다른 MHY 게임도 리디렉션"
+    "redirect_more": "다른 MHY 게임도 리디렉션",
+    "web_cache": "webCaches 폴더 삭제",
+    "launch_args": "Launch Args"
   },
   "downloads": {
     "grasscutter_fullbuild": "올인원 Grasscutter 다운로드",

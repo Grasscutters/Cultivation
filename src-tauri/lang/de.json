@@ -35,7 +35,9 @@
     "un_elevated": "Spiel ohne Administratorrechte ausführen",
     "redirect_more": "Auch andere miHoYo-Spiele umleiten",
     "check_aagl": "Für weitere Optionen, schaue weiter",
-    "grasscutter_elevation": "Methode zur Ausführung von GC auf eingeschränkten Ports"
+    "grasscutter_elevation": "Methode zur Ausführung von GC auf eingeschränkten Ports",
+    "web_cache": "WebCaches-Ordner löschen",
+    "launch_args": "Launch Args"
   },
   "downloads": {
     "grasscutter_fullbuild": "Grasscutter All-in-One herunterladen",

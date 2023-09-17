@@ -33,7 +33,9 @@
     "horny_mode": "Horny 模式",
     "auto_mongodb": "自动启动 MongoDB",
     "un_elevated": "非提升运行游戏（无管理员）",
-    "redirect_more": "还可以重定向其他MHY游戏"
+    "redirect_more": "还可以重定向其他MHY游戏",
+    "web_cache": "删除 webCaches 文件夹",
+    "launch_args": "Launch Args"
   },
   "downloads": {
     "grasscutter_fullbuild": "下载 Grasscutter 一体化",

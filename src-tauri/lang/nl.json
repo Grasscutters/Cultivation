@@ -32,7 +32,9 @@
     "horny_mode": "Geile modus",
     "auto_mongodb": "Start automatisch MongoDB",
     "un_elevated": "Voer het spel uit zonder hoogtevrees (geen admin)",
-    "redirect_more": "Richt ook andere MHY-spellen"
+    "redirect_more": "Richt ook andere MHY-spellen",
+    "web_cache": "Verwijder de webCaches-map",
+    "launch_args": "Launch Args"
   },
   "downloads": {
     "grasscutter_fullbuild": "Grasscutter Alles-in-één Downloaden",

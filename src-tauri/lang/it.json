@@ -33,7 +33,9 @@
     "horny_mode": "Modalità Horny",
     "auto_mongodb": "Avvia Automaticamente MongoDB",
     "un_elevated": "Avvia il gioco non-elevato (non admin)",
-    "redirect_more": "Reindirizza anche altri giochi MHY"
+    "redirect_more": "Reindirizza anche altri giochi MHY",
+    "web_cache": "Elimina la cartella webCaches",
+    "launch_args": "Launch Args"
   },
   "downloads": {
     "grasscutter_fullbuild": "Scarica Grasscutter Tutto-in-Uno",
