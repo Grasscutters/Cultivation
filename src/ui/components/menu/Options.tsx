@@ -17,6 +17,7 @@ import * as meta from '../../../utils/rsa'
 import HelpButton from '../common/HelpButton'
 import SmallButton from '../common/SmallButton'
 import { confirm } from '@tauri-apps/api/dialog'
+import TextInput from '../common/TextInput'
 
 export enum GrasscutterElevation {
   None = 'None',
@@ -50,6 +51,7 @@ interface IState {
   platform: string
   un_elevated: boolean
   redirect_more: boolean
+  launch_args: string
 
   // Linux stuff
   grasscutter_elevation: string
@@ -85,6 +87,7 @@ export default class Options extends React.Component<IProps, IState> {
       platform: '',
       un_elevated: false,
       redirect_more: false,
+      launch_args: '',
 
       // Linux stuff
       grasscutter_elevation: GrasscutterElevation.None,
@@ -107,6 +110,7 @@ export default class Options extends React.Component<IProps, IState> {
     this.deleteWebCache = this.deleteWebCache.bind(this)
     this.addMigotoDelay = this.addMigotoDelay.bind(this)
     this.toggleUnElevatedGame = this.toggleUnElevatedGame.bind(this)
+    this.setLaunchArgs = this.setLaunchArgs.bind(this)
   }
 
   async componentDidMount() {
@@ -145,6 +149,7 @@ export default class Options extends React.Component<IProps, IState> {
       platform,
       un_elevated: config.un_elevated || false,
       redirect_more: config.redirect_more || false,
+      launch_args: config.launch_args || '',
 
       // Linux stuff
       grasscutter_elevation: config.grasscutter_elevation || GrasscutterElevation.None,
@@ -371,6 +376,14 @@ export default class Options extends React.Component<IProps, IState> {
     // @ts-expect-error shut up bitch
     this.setState({
       [opt]: changedVal,
+    })
+  }
+
+  async setLaunchArgs(value: string) {
+    await setConfigOption('launch_args', value)
+
+    this.setState({
+      launch_args: value,
     })
   }
 
@@ -685,6 +698,16 @@ export default class Options extends React.Component<IProps, IState> {
               <Tr text="components.delete" />
             </BigButton>
           </div>
+          <div className="OptionLabel" id="menuOptionsLaunchArgs">
+            <Tr text="options.launch_args" />
+          </div>
+          <TextInput
+            id="launch_args"
+            key="launch_args"
+            placeholder={'-arg=value'}
+            onChange={this.setLaunchArgs}
+            initalValue={this.state.launch_args}
+          />
         </div>
       </Menu>
     )

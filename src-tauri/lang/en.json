@@ -36,7 +36,8 @@
     "redirect_more": "Also redirect other MHY games",
     "check_aagl": "For more options, check the other launcher",
     "grasscutter_elevation": "Method of running GC on restricted ports",
-    "web_cache": "Delete webCaches folder"
+    "web_cache": "Delete webCaches folder",
+    "launch_args": "Launch Args"
   },
   "downloads": {
     "grasscutter_fullbuild": "Download Grasscutter All-in-One",
