@@ -111,6 +111,8 @@ export default class Options extends React.Component<IProps, IState> {
     this.addMigotoDelay = this.addMigotoDelay.bind(this)
     this.toggleUnElevatedGame = this.toggleUnElevatedGame.bind(this)
     this.setLaunchArgs = this.setLaunchArgs.bind(this)
+
+    this.forceUpdate()
   }
 
   async componentDidMount() {
@@ -149,7 +151,7 @@ export default class Options extends React.Component<IProps, IState> {
       platform,
       un_elevated: config.un_elevated || false,
       redirect_more: config.redirect_more || false,
-      launch_args: config.launch_args || '',
+      launch_args: config.launch_args,
 
       // Linux stuff
       grasscutter_elevation: config.grasscutter_elevation || GrasscutterElevation.None,
@@ -706,7 +708,7 @@ export default class Options extends React.Component<IProps, IState> {
             key="launch_args"
             placeholder={'-arg=value'}
             onChange={this.setLaunchArgs}
-            initalValue={this.state?.launch_args}
+            value={this.state.launch_args}
           />
         </div>
       </Menu>
