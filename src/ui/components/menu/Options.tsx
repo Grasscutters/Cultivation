@@ -111,8 +111,6 @@ export default class Options extends React.Component<IProps, IState> {
     this.addMigotoDelay = this.addMigotoDelay.bind(this)
     this.toggleUnElevatedGame = this.toggleUnElevatedGame.bind(this)
     this.setLaunchArgs = this.setLaunchArgs.bind(this)
-
-    this.forceUpdate()
   }
 
   async componentDidMount() {
