@@ -16,6 +16,7 @@ import { GrasscutterElevation } from './menu/Options'
 import { getGameExecutable, getGameVersion, getGrasscutterJar } from '../../utils/game'
 import { patchGame, unpatchGame } from '../../utils/rsa'
 import { listen } from '@tauri-apps/api/event'
+import { confirm } from '@tauri-apps/api/dialog'
 
 interface IProps {
   openExtras: (playGame: () => void) => void
@@ -118,6 +119,24 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       return
     }
 
+    // Check for HTTPS on local
+    if (this.state.httpsEnabled) {
+      if (this.state.ip == 'localhost') {
+        if (
+          await confirm(
+            "Oops! HTTPS is enabled but you're connecting to localhost! \nHTTPS MUST be disabled for localhost. \n\nWould you like to disable HTTPS and continue?",
+            { title: 'WARNING!!', type: 'warning' }
+          )
+        ) {
+          this.toggleHttps()
+        } else {
+          if (!(await confirm('You have chosen to keep HTTPS enabled! \n\nYOU WILL ERROR ON LOGIN.'))) {
+            return
+          }
+        }
+      }
+    }
+
     // Connect to proxy
     if (config.toggle_grasscutter) {
       const game_exe = await getGameExecutable()
@@ -195,9 +214,13 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       if (config.un_elevated) {
         await invoke('run_un_elevated', {
           path: config.game_install_path,
+          args: config.launch_args,
         })
       } else {
-        await invoke('run_program_relative', { path: exe || config.game_install_path })
+        await invoke('run_program_relative', {
+          path: exe || config.game_install_path,
+          args: config.launch_args,
+        })
       }
     else alert('Game not found! At: ' + (exe || config.game_install_path))
   }

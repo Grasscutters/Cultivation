@@ -28,6 +28,7 @@ let defaultConfig: Configuration
     auto_mongodb: false,
     un_elevated: false,
     redirect_more: false,
+    launch_args: '',
 
     // Linux stuff
     grasscutter_elevation: 'None',
@@ -62,6 +63,7 @@ export interface Configuration {
   auto_mongodb: boolean
   un_elevated: boolean
   redirect_more: boolean
+  launch_args: string
 
   // Linux stuff
   grasscutter_elevation: string

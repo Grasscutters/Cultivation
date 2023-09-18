@@ -16,6 +16,8 @@ import DownloadHandler from '../../../utils/download'
 import * as meta from '../../../utils/rsa'
 import HelpButton from '../common/HelpButton'
 import SmallButton from '../common/SmallButton'
+import { confirm } from '@tauri-apps/api/dialog'
+import TextInput from '../common/TextInput'
 
 export enum GrasscutterElevation {
   None = 'None',
@@ -49,6 +51,7 @@ interface IState {
   platform: string
   un_elevated: boolean
   redirect_more: boolean
+  launch_args: string
 
   // Linux stuff
   grasscutter_elevation: string
@@ -84,6 +87,7 @@ export default class Options extends React.Component<IProps, IState> {
       platform: '',
       un_elevated: false,
       redirect_more: false,
+      launch_args: '',
 
       // Linux stuff
       grasscutter_elevation: GrasscutterElevation.None,
@@ -103,8 +107,10 @@ export default class Options extends React.Component<IProps, IState> {
     this.setCustomBackground = this.setCustomBackground.bind(this)
     this.toggleEncryption = this.toggleEncryption.bind(this)
     this.removeRSA = this.removeRSA.bind(this)
+    this.deleteWebCache = this.deleteWebCache.bind(this)
     this.addMigotoDelay = this.addMigotoDelay.bind(this)
     this.toggleUnElevatedGame = this.toggleUnElevatedGame.bind(this)
+    this.setLaunchArgs = this.setLaunchArgs.bind(this)
   }
 
   async componentDidMount() {
@@ -143,6 +149,7 @@ export default class Options extends React.Component<IProps, IState> {
       platform,
       un_elevated: config.un_elevated || false,
       redirect_more: config.redirect_more || false,
+      launch_args: config.launch_args,
 
       // Linux stuff
       grasscutter_elevation: config.grasscutter_elevation || GrasscutterElevation.None,
@@ -290,6 +297,17 @@ export default class Options extends React.Component<IProps, IState> {
     const path = config.grasscutter_path.replace(/\\/g, '/')
     const folderPath = path.substring(0, path.lastIndexOf('/'))
 
+    if (!(await server.encryptionEnabled(folderPath + '/config.json'))) {
+      if (
+        !(await confirm(
+          'Cultivation requires encryption DISABLED to connect and play locally. \n\n Are you sure you want to enable encryption?',
+          'Warning!'
+        ))
+      ) {
+        return
+      }
+    }
+
     await server.toggleEncryption(folderPath + '/config.json')
 
     this.setState({
@@ -336,6 +354,20 @@ export default class Options extends React.Component<IProps, IState> {
     })
   }
 
+  async deleteWebCache() {
+    alert('Cultivation may freeze for a moment while this occurs!')
+
+    // Get webCaches folder path
+    const pathArr = this.state.game_install_path.replace(/\\/g, '/').split('/')
+    pathArr.pop()
+    const path = pathArr.join('/') + '/GenshinImpact_Data/webCaches'
+    const path2 = pathArr.join('/') + '/Yuanshen_Data/webCaches'
+
+    // Delete the folder
+    await invoke('dir_delete', { path: path })
+    await invoke('dir_delete', { path: path2 })
+  }
+
   async toggleOption(opt: keyof Configuration) {
     const changedVal = !(await getConfigOption(opt))
 
@@ -344,6 +376,14 @@ export default class Options extends React.Component<IProps, IState> {
     // @ts-expect-error shut up bitch
     this.setState({
       [opt]: changedVal,
+    })
+  }
+
+  async setLaunchArgs(value: string) {
+    await setConfigOption('launch_args', value)
+
+    this.setState({
+      launch_args: value,
     })
   }
 
@@ -645,6 +685,29 @@ export default class Options extends React.Component<IProps, IState> {
               ))}
             </select>
           </div>
+        </div>
+
+        <Divider />
+
+        <div className="OptionSection" id="menuOptionsContainerAdvanced">
+          <div className="OptionLabel" id="menuOptionsLabelWebCache">
+            <Tr text="options.web_cache" />
+          </div>
+          <div className="OptionValue" id="menuOptionsButtondeleteWebcache">
+            <BigButton onClick={this.deleteWebCache} id="deleteWebcache">
+              <Tr text="components.delete" />
+            </BigButton>
+          </div>
+          <div className="OptionLabel" id="menuOptionsLaunchArgs">
+            <Tr text="options.launch_args" />
+          </div>
+          <TextInput
+            id="launch_args"
+            key="launch_args"
+            placeholder={'-arg=value'}
+            onChange={this.setLaunchArgs}
+            value={this.state.launch_args}
+          />
         </div>
       </Menu>
     )

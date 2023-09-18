@@ -32,7 +32,9 @@
     "horny_mode": "роговой режим",
     "auto_mongodb": "Автоматически запускать MongoDB",
     "un_elevated": "Запустите игру в неэлегантном режиме (без администратора)",
-    "redirect_more": "Также перенаправьте другие игры MHY"
+    "redirect_more": "Также перенаправьте другие игры MHY",
+    "web_cache": "Удалить папку webCaches",
+    "launch_args": "Launch Args"
   },
   "downloads": {
     "grasscutter_fullbuild": "Скачать все в одном Grasscutter",
