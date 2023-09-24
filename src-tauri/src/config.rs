@@ -28,6 +28,8 @@ pub struct Configuration {
   pub auto_mongodb: Option<bool>,
   pub un_elevated: Option<bool>,
   pub redirect_more: Option<bool>,
+  pub launch_args: Option<String>,
+  pub offline_mode: Option<bool>,
 }
 
 pub fn config_path() -> PathBuf {
