@@ -75,37 +75,37 @@ Please allow the Cultivation window to pop back up once you have quit out of the
 
 ### Setup
 
-- Install [NodeJS >12](https://nodejs.org/en/)
-- Install [yarn](https://classic.yarnpkg.com/lang/en/docs/install) (cry about it `npm` lovers)
+- Install [NodeJS >18](https://nodejs.org/en/)
+- Install [pnpm](https://pnpm.io/installation) (cry about it `yarn` lovers)
 - Install [Rust](https://www.rust-lang.org/tools/install)
-- `yarn install`
-- `yarn tauri dev`
+- `pnpm install`
+- `pnpm tauri dev`
 
 ### Building
 
 For a release build,
 
-- `yarn build`
+- `pnpm build`
 
 For a debug build,
 
-- `yarn build --debug`
+- `pnpm build --debug`
 
 ### Code Formatting and Linting
 
 Formatting:
 
-- `yarn format`
+- `pnpm format`
 
 Check Lints, fix (some) lints:
 
-- `yarn lint`, `yarn lint:fix`
+- `pnpm lint`, `pnpm lint:fix`
 
 ### Generating Update Artifacts
 
 - Add the `TAURI_PRIVATE_KEY` as an environment variable with a path to your private key.
 - Add the `TAURI_KEY_PASSWORD` as an environment variable with the password for your private key.
-- `yarn build`
+- `pnpm build`
 
 The update will be at `src-tauri/target/(release|debug)/msi/Cultivation_X.X.X_x64_xx-XX.msi.zip`
 
@@ -115,10 +115,7 @@ A full theming reference can be found [here!](/THEMES.md)
 
 # Screenshots
 
-![image](https://user-images.githubusercontent.com/107363768/221495236-ca1e2f2e-0f85-4765-a5f3-8bdcea299612.png)
-![image](https://user-images.githubusercontent.com/107363768/221495246-ea309640-f866-4f50-bda8-f9d916380f92.png)
-![image](https://user-images.githubusercontent.com/107363768/221495249-5a1aac39-9e8a-4244-9642-72c2e7be8a69.png)
-![image](https://user-images.githubusercontent.com/107363768/221495254-ffbfc24e-ef5d-4e72-9068-a02132381dcc.png)
+TODO
 
 ## Credits
 

@@ -16,7 +16,6 @@ tauri-build = { version = "1.0.0-rc.8", features = [] }
 cc = "1.0"
 
 [target.'cfg(windows)'.dependencies]
-is_elevated = "0.1.2"
 registry = "1.2.1"
 
 [target.'cfg(unix)'.dependencies]
@@ -45,9 +44,6 @@ unrar = "0.4.4"
 zip = "0.6.2"
 sevenz-rust = "0.2.9"
 
-# For creating a "global" downloads list.
-once_cell = "1.13.0"
-
 # Program opener.
 open = "3.0.2"
 
@@ -62,7 +58,6 @@ http = "0.2"
 hudsucker = "0.19.2"
 tracing = "0.1.21"
 tokio-rustls = "0.23.0"
-tokio-tungstenite = "0.17.0"
 tokio = { version = "1.20.4", features = ["signal"] }
 rustls-pemfile = "1.0.0"
 reqwest = { version = "0.11.3", features = ["stream"] }
@@ -73,7 +68,6 @@ rcgen = { version = "0.9", features = ["x509-parser"] }
 regex = "1"
 
 # other
-file_diff = "1.0.0"
 rust-ini = "0.18.0"
 ctrlc = "3.2.3"
 
