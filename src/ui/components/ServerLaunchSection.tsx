@@ -217,10 +217,16 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
           args: config.launch_args,
         })
       } else {
-        await invoke('run_program_relative', {
-          path: exe || config.game_install_path,
-          args: config.launch_args,
-        })
+        if (config.launch_args.length < 1) {
+          // Run relative when there are no args
+          await invoke('run_program_relative', { path: exe || config.game_install_path })
+        } else {
+          // Run directly when there are args
+          await invoke('run_program', {
+            path: exe || config.game_install_path,
+            args: config.launch_args,
+          })
+        }
       }
     else alert('Game not found! At: ' + (exe || config.game_install_path))
   }
