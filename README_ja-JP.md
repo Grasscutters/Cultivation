@@ -118,7 +118,7 @@ MSIインストーラーをダウンロードして開き、インストール�
 ## クレジット
 
 - [SpikeHD](https://github.com/SpikeHD): オリジナルである **GrassClipper** を製作し、Cultivationの素晴らしいUIを作成
-- [KingRainbow44](https://github.com/KingRainbow44): scratchからプロキシデーモンを作成し、Cultivationへ統合
+- [KingRainbow44](https://github.com/KingRainbow44): ゼロからプロキシデーモンを作成し、Cultivationへ統合
 - [Benj](https://github.com/4Benj): クライアントのパッチに関するアシスタント
 - [lilmayofuksu](https://github.com/lilmayofuksu): クライアントのパッチに関するアシスタント
 - [Tauri](https://tauri.app): 素晴らしく軽量でシンプルなデスクトップアプリケーションフレームワーク・ライブラリを提供
