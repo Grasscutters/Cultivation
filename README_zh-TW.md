@@ -1,4 +1,4 @@
-[EN](README.md) | [简中](README_zh-CN.md) | 繁中
+[EN](README.md) | [简中](README_zh-CN.md) | 繁中 | [日本語](README_ja-JP.md)
 
 # 客戶端修補通知
 

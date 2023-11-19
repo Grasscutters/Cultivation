@@ -1,4 +1,4 @@
-EN | [简中](README_zh-CN.md) | [繁中](README_zh-TW.md) |
+EN | [简中](README_zh-CN.md) | [繁中](README_zh-TW.md) | [日本語](README_ja-JP.md)
 
 # Cultivation
 
@@ -6,7 +6,7 @@ A game launcher designed to easily proxy traffic from anime game to private serv
 
 # Table Of Contents
 
-- [Client Patching Notice](#client-patching-notice)
+- [Client Patching Notice - RSA](#client-patching-notice---rsa)
 - [Download](#download)
 - [Setup](#setup)
 - [Troubleshooting](#troubleshooting)
