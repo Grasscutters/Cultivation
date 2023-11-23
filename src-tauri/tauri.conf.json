@@ -15,6 +15,9 @@
       "shell": {
         "all": false,
         "open": true
+      },
+      "window": {
+        "startDragging": true
       }
     },
     "bundle": {
@@ -36,6 +39,7 @@
       {
         "fullscreen": false,
         "resizable": true,
+        "decorations": false,
         "title": "Cultivation",
         "width": 1280,
         "height": 730
