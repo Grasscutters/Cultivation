@@ -45,6 +45,7 @@ interface IState {
   notification: React.ReactElement | null
   isGamePathSet: boolean
   game_install_path: string
+  platform: string
 }
 
 export class Main extends React.Component<IProps, IState> {
@@ -64,6 +65,7 @@ export class Main extends React.Component<IProps, IState> {
       notification: null,
       isGamePathSet: true,
       game_install_path: '',
+      platform: '',
     }
 
     listen('lang_error', (payload) => {
@@ -156,6 +158,10 @@ export class Main extends React.Component<IProps, IState> {
       migotoSet: !!(await getConfigOption('migoto_path')),
     })
 
+    this.setState({
+      platform: await invoke('get_platform'),
+    })
+
     if (!cert_generated) {
       // Generate the certificate
       await invoke('generate_ca_files', {
@@ -222,7 +228,7 @@ export class Main extends React.Component<IProps, IState> {
     })) as boolean
 
     // Set no game path so the user understands it doesn't exist there
-    if (!game_exists) {
+    if (!game_exists && this.state.platform === 'windows') {
       setConfigOption('game_install_path', '')
     }
 
