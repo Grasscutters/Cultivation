@@ -182,35 +182,33 @@ export class Main extends React.Component<IProps, IState> {
     // Update launch args to allow launching when updating from old versions
     await setConfigOption('launch_args', await getConfigOption('launch_args'))
 
-    if (!(await getConfigOption('offline_mode'))) {
-      // Get latest version and compare to this version
-      const latestVersion: {
-        tag_name: string
-        link: string
-      } = await invoke('get_latest_release')
-      const tagName = latestVersion?.tag_name.replace(/[^\d.]/g, '')
+    // Get latest version and compare to this version
+    const latestVersion: {
+      tag_name: string
+      link: string
+    } = await invoke('get_latest_release')
+    const tagName = latestVersion?.tag_name.replace(/[^\d.]/g, '')
 
-      // Check if tagName is different than current version
-      if (tagName && tagName !== (await getVersion())) {
-        // Display notification of new release
+    // Check if tagName is different than current version
+    if (tagName && tagName !== (await getVersion())) {
+      // Display notification of new release
+      this.setState({
+        notification: (
+          <>
+            Cultivation{' '}
+            <a href="#" onClick={() => invoke('open_in_browser', { url: latestVersion.link })}>
+              {latestVersion?.tag_name}
+            </a>{' '}
+            is now available!
+          </>
+        ),
+      })
+
+      setTimeout(() => {
         this.setState({
-          notification: (
-            <>
-              Cultivation{' '}
-              <a href="#" onClick={() => invoke('open_in_browser', { url: latestVersion.link })}>
-                {latestVersion?.tag_name}
-              </a>{' '}
-              is now available!
-            </>
-          ),
+          notification: null,
         })
-
-        setTimeout(() => {
-          this.setState({
-            notification: null,
-          })
-        }, 6000)
-      }
+      }, 6000)
     }
 
     // Period check to only show progress bar when downloading files
