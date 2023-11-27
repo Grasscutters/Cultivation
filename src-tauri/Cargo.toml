@@ -1,10 +1,10 @@
 [package]
 name = "cultivation"
-version = "0.0.0"
-description = "A Tauri App"
-authors = ["you"]
-license = ""
-repository = ""
+version = "2.0.0"
+description = "Anime game launcher"
+authors = ["KingRainbow44", "SpikeHD"]
+license = "MIT"
+repository = "https://github.com/Grasscutters/Cultivation"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

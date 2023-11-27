@@ -36,9 +36,9 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "cultivation",
-        "width": 800,
-        "height": 600
+        "title": "Cultivation",
+        "width": 1280,
+        "height": 730
       }
     ]
   }
