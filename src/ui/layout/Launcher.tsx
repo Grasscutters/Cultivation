@@ -1,17 +1,14 @@
 import NewsFeed from "@components/NewsFeed.tsx";
 import InfoBoard from "@components/InfoBoard.tsx";
-import { Button } from "@fluentui/react-components";
 
-function Launcher() {
+interface Props {}
+
+function Launcher(_props: Props) {
     return (
         <div className={"App_Body"}>
             <div>
                 <NewsFeed />
                 <InfoBoard />
-
-                <Button>
-
-                </Button>
             </div>
 
             <div>
