@@ -10,10 +10,8 @@
     "tauri": "tauri"
   },
   "dependencies": {
-    "react": "npm:@preact/compat",
-    "react-dom": "npm:@preact/compat",
-    "@fluentui/react-components": "^9.41.0",
     "@tauri-apps/api": "^1.5.1",
+    "color.js": "^1.2.0",
     "preact": "^10.16.0",
     "react-icons": "^4.12.0",
     "react-router-dom": "^6.20.0",

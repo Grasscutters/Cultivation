@@ -28,9 +28,7 @@
       "@ui/*": ["src/ui/*"],
       "@css/*": ["src/ui/css/*"],
       "@components/*": ["src/ui/components/*"],
-      "@backend/*": ["src/backend/*"],
-      "react": ["./node_modules/preact/compat/"],
-      "react-dom": ["./node_modules/preact/compat/"]
+      "@backend/*": ["src/backend/*"]
     },
   },
   "include": ["src"],
