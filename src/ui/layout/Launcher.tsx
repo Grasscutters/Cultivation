@@ -1,21 +1,22 @@
 import NewsFeed from "@components/NewsFeed.tsx";
 import InfoBoard from "@components/InfoBoard.tsx";
-import { Button } from "@fluentui/react-components";
 
 function Launcher() {
     return (
-        <div className={"App_Body"}>
+        <div class={"Launcher_Announcements"}>
             <div>
                 <NewsFeed />
                 <InfoBoard />
-
-                <Button>
-
-                </Button>
             </div>
 
             <div>
+                <div class={"Launcher_Links"}>
 
+                </div>
+
+                <div class={"Launcher_QuickSettings"}>
+
+                </div>
             </div>
         </div>
     );

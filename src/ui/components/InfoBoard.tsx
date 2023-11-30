@@ -1,6 +1,6 @@
 function InfoBoard() {
     return (
-        <div className={"InfoBoard"}>
+        <div class={"InfoBoard"}>
 
         </div>
     );
