@@ -1,13 +1,16 @@
 import { useEffect, useState } from "preact/hooks";
 
+import useSettings from "@backend/stores/settings.ts";
+
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 import { invoke } from "@tauri-apps/api";
+import { fetch } from "@tauri-apps/api/http";
 import { exists } from "@tauri-apps/api/fs";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 
-import { LauncherResponse, StoreWrite } from "@backend/types.ts";
+import { LauncherResponse, StoreWrite, SupportedGames } from "@backend/types.ts";
 import { AppDataPath, LauncherUrls } from "@app/constants.ts";
 
 export type GameDataStore = {
@@ -52,8 +55,8 @@ export const useStarRailStore = create<GameDataStore>()(
  */
 export async function fetchLatestBackground(set: StoreWrite, serviceUrl: string): Promise<void> {
     // Fetch the launcher data.
-    const launcherData = await fetch(serviceUrl, { cache: "force-cache" });
-    const responseData = await launcherData.json() as LauncherResponse;
+    const launcherData = await fetch<LauncherResponse>(serviceUrl);
+    const responseData = launcherData.data;
 
     // Check if the background exists on the system.
     const backgroundUrl = responseData.data.adv.background;
@@ -86,7 +89,9 @@ export async function getBackgroundFile(hash: string): Promise<string> {
  * React hook which returns the URL of the locally cached background image.
  */
 export function useBackground() {
-    const { backgroundHash, fetchLatestBackground } = useGenshinStore();
+    const { selectedGame } = useSettings();
+    const { backgroundHash, fetchLatestBackground } =
+        selectedGame == SupportedGames.GenshinImpact ? useGenshinStore() : useStarRailStore();
     const [background, setBackground] = useState<string | null>(null);
 
     useEffect(() => {

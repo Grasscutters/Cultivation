@@ -67,3 +67,8 @@ export enum PostType {
     Activity = "POST_TYPE_ACTIVITY",
     Announcement = "POST_TYPE_ANNOUNCE"
 }
+
+export enum SupportedGames {
+    GenshinImpact = "genshin_impact",
+    StarRail = "starrail"
+}
