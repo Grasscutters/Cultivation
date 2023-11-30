@@ -1,4 +1,5 @@
-import { Route, Routes } from "react-router-dom";
+import Router, { Route } from "preact-router";
+
 
 import TopBar from "@components/TopBar.tsx";
 import Launcher from "@ui/layout/Launcher.tsx";
@@ -12,9 +13,9 @@ function App() {
         <div class={"App"}>
             <TopBar />
 
-            <Routes>
-                <Route path={PageRoutes.HOME} element={<Launcher />} />
-            </Routes>
+            <Router>
+                <Route path={PageRoutes.HOME} component={Launcher} />
+            </Router>
         </div>
     );
 }
