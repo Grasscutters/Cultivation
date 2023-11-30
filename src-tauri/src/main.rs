@@ -2,6 +2,8 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use std::fs::create_dir;
+use tauri::Manager;
+use window_shadows::set_shadow;
 
 mod http;
 
@@ -21,6 +23,12 @@ fn main() {
                 create_dir(background_directory.as_path())
                     .expect("Failed to create app data directory");
             }
+
+            // Enable window shadows.
+            let main_window = app.get_window("main")
+                .expect("Unable to fetch Tauri window.");
+            #[cfg(any(windows, target_os = "macos"))]
+            set_shadow(&main_window, true).unwrap();
 
             Ok(())
         })
