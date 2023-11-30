@@ -1,0 +1,6 @@
+.TopBar {
+    @apply flex flex-row justify-between items-center w-full;
+    @apply bg-gray-900 pl-4 pr-4;
+
+    height: 40px;
+}
