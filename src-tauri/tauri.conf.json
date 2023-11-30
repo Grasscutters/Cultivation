@@ -19,6 +19,9 @@
         "asset": true,
         "assetScope": ["$DATA", "$DATA/io.grasscutter.cultivation", "$DATA/io.grasscutter.cultivation/**"]
       },
+      "http": {
+        "scope": ["https://*.*/**"]
+      },
       "all": true
     },
     "bundle": {
