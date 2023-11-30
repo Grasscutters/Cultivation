@@ -3,9 +3,17 @@
 @tailwind utilities;
 
 body {
+    @apply w-full h-screen;
+
     margin: 0;
     outline: 0;
     padding: 0;
+
+    overflow: hidden;
+}
+
+.App {
+    @apply w-full h-screen;
 }
 
 p {
