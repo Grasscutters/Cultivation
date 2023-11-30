@@ -7,23 +7,24 @@
   },
   "package": {
     "productName": "Cultivation",
-    "version": "0.0.0"
+    "version": "0.1.0"
   },
   "tauri": {
     "allowlist": {
-      "all": false,
-      "shell": {
-        "all": false,
-        "open": true
+      "fs": {
+        "scope": ["$DATA", "$DATA/io.grasscutter.cultivation", "$DATA/io.grasscutter.cultivation/**"]
       },
-      "window": {
-        "startDragging": true
-      }
+      "protocol": {
+        "all": true,
+        "asset": true,
+        "assetScope": ["$DATA", "$DATA/io.grasscutter.cultivation", "$DATA/io.grasscutter.cultivation/**"]
+      },
+      "all": true
     },
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.tauri.dev",
+      "identifier": "io.grasscutter.cultivation",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
