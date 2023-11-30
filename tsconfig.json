@@ -19,7 +19,19 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    /* Path aliases */
+    "baseUrl": ".",
+    "paths": {
+      "@app/*": ["src/*"],
+      "@ui/*": ["src/ui/*"],
+      "@css/*": ["src/ui/css/*"],
+      "@components/*": ["src/ui/components/*"],
+      "@backend/*": ["src/backend/*"],
+      "react": ["./node_modules/preact/compat/"],
+      "react-dom": ["./node_modules/preact/compat/"]
+    },
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
