@@ -10,6 +10,8 @@ import { fetch } from "@tauri-apps/api/http";
 import { exists } from "@tauri-apps/api/fs";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 
+import { prominent } from "color.js";
+
 import { LauncherResponse, StoreWrite, SupportedGames } from "@backend/types.ts";
 import { AppDataPath, LauncherUrls } from "@app/constants.ts";
 
@@ -85,24 +87,36 @@ export async function getBackgroundFile(hash: string): Promise<string> {
     return convertFileSrc(`${AppDataPath}/bg/${hash}.png`);
 }
 
+type BackgroundData = {
+    url: string;
+    colors: string[];
+}
+
 /**
  * React hook which returns the URL of the locally cached background image.
  */
-export function useBackground() {
+export function useBackground(): BackgroundData {
     const { selectedGame } = useSettings();
     const { backgroundHash, fetchLatestBackground } =
         selectedGame == SupportedGames.GenshinImpact ? useGenshinStore() : useStarRailStore();
     const [background, setBackground] = useState<string | null>(null);
+    const [colorPalette, setColorPalette] = useState<string[] | null>(null);
 
     useEffect(() => {
         (async () => {
             if (backgroundHash != "") {
-                setBackground(await getBackgroundFile(backgroundHash));
+                const filePath = await getBackgroundFile(backgroundHash);
+                setBackground(filePath);
+                setColorPalette(await prominent(filePath,
+                    { amount: 5, format: "hex" }) as string[]);
             } else {
                 fetchLatestBackground();
             }
         })();
     }, [backgroundHash, fetchLatestBackground]);
 
-    return background;
+    return {
+        url: background ?? "",
+        colors: colorPalette ?? []
+    };
 }

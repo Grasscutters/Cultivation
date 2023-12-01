@@ -13,7 +13,7 @@ body {
 }
 
 .App {
-    @apply w-full h-screen;
+    @apply w-full h-screen bg-no-repeat bg-contain;
 }
 
 p {

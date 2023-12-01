@@ -16,10 +16,10 @@ function App() {
     return (
         <div class={"App"}
              style={{
-                 backgroundImage: `url(${background})`
+                 backgroundImage: `url(${background.url})`
              }}
         >
-            <TopBar />
+            <TopBar color={background.colors[2]} />
 
             <Router>
                 <Route path={PageRoutes.HOME} component={Launcher} />
