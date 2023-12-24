@@ -1,0 +1,103 @@
+{
+  "lang_name": "日本語",
+  "main": {
+    "title": "Cultivation",
+    "launch_button": "起動",
+    "gc_enable": "Grasscutterに接続",
+    "https_enable": "HTTPS接続を使用",
+    "ip_placeholder": "サーバーアドレス...",
+    "port_placeholder": "ポート...",
+    "files_downloading": "ファイルをダウンロード中: ",
+    "files_extracting": "ファイルを展開中: ",
+    "game_path_notify": "ゲームのパスが見つかりません!"
+  },
+  "options": {
+    "enabled": "有効",
+    "disabled": "無効",
+    "game_path": "ゲームのインストールパスを設定",
+    "game_command": "ゲームの実行コマンド",
+    "game_executable": "ゲームの実行ファイルパスを設定",
+    "recover_rsa": "RSAを強制削除",
+    "grasscutter_jar": "Grasscutter jarファイルを設定",
+    "toggle_encryption": "暗号化の有無",
+    "install_certificate": "プロキシの証明書をインストール",
+    "java_path": "カスタムJavaパスを設定",
+    "grasscutter_with_game": "ゲーム起動時にGrasscutterを自動起動",
+    "language": "言語を設定",
+    "background": "カスタムの背景を設定 (画像ファイルまたはリンク)",
+    "use_theme_background": "選択したテーマが提供する背景を使用",
+    "theme": "テーマを設定",
+    "patch_rsa": "自動的にRSAにパッチを適用",
+    "use_proxy": "内部プロキシを使用",
+    "wipe_login": "ログインキャッシュを削除",
+    "horny_mode": "Hornyモード",
+    "auto_mongodb": "MongoDBを自動起動",
+    "un_elevated": "昇格せずにゲームを実行 (非管理者権限)",
+    "redirect_more": "他のmhyゲームもリダイレクト",
+    "check_aagl": "その他のオプションは、他のランチャーをチェックしてください",
+    "grasscutter_elevation": "制限されたポートでのGCの実行方法",
+    "web_cache": "webCachesフォルダを削除",
+    "launch_args": "Launch Args"
+  },
+  "downloads": {
+    "grasscutter_fullbuild": "Grasscutter All-in-Oneをダウンロード",
+    "grasscutter_fullquest": "Questing All-in-Oneをダウンロード",
+    "grasscutter_stable_data": "Grasscutter安定版データファイルをダウンロード",
+    "grasscutter_latest_data": "Grasscutter最新版データファイルをダウンロード",
+    "grasscutter_stable_data_update": "Grasscutter安定版データファイルをアップデート",
+    "grasscutter_latest_data_update": "Grasscutter最新版データファイルをアップデート",
+    "grasscutter_unstable": "Grasscutter Questingをダウンロード",
+    "grasscutter_latest": "Grasscutter最新版をダウンロード",
+    "grasscutter_unstable_update": "Grasscutter Questingをアップデート",
+    "grasscutter_latest_update": "Grasscutter最新版をアップデート",
+    "resources": "Grasscutter Resourcesをダウンロード",
+    "game": "ゲームをダウンロード",
+    "aio_header": "All-in-Oneダウンロード:",
+    "individual_header": "個別ダウンロード:",
+    "mods_header": "Mod:",
+    "migoto": "GIMI 3Dmigotoをダウンロード"
+  },
+  "download_status": {
+    "downloading": "ダウンロード中",
+    "extracting": "展開中",
+    "error": "エラー",
+    "finished": "完了しました",
+    "stopped": "停止しました"
+  },
+  "components": {
+    "select_file": "ファイルまたはフォルダーを選択...",
+    "select_folder": "フォルダーを選択...",
+    "download": "ダウンロード",
+    "delete": "削除",
+    "install": "インストール"
+  },
+  "news": {
+    "latest_commits": "最新のコミット",
+    "latest_version": "最新のバージョン"
+  },
+  "help": {
+    "port_help_text": "ゲームサーバーのポートではなく、Dispatchサーバーのポートです。これは大抵'443'です。",
+    "game_help_text": "Grasscutterでプレイするために別のコピーを使用する必要はありません。これは、ゲームがインストールされていない場合か、ver 2.6にダウングレードするためにあります。",
+    "gc_stable_jar": "Grasscutterの現時点での安定版 (jarファイルとデータファイルを含む) をダウンロードします。",
+    "gc_fullbuild": "repo、jar、resourcesを含む完全なGrasscutterビルドをダウンロードします。これは完全にセットアップされており、他のダウンロードを行う必要はありません。",
+    "gc_dev_jar": "Grasscutterの現時点での最新版 (jarファイルとデータファイルを含む) をダウンロードします。",
+    "gc_stable_data": "Grasscutterの現時点での安定版データファイルをダウンロードします。jarファイルは含まれません。アップデートのために使用します。",
+    "gc_dev_data": "Grasscutterの現時点での最新版データファイルをダウンロードします。jarファイルは含まれません。アップデートのために使用します。",
+    "encryption": "これは通常は無効にするべきです。",
+    "resources": "これはGrasscutterサーバーを実行するために必要です。既存のresourcesフォルダ内にファイルがある場合、このボタンはグレーアウトします。",
+    "emergency_rsa": "何か問題が起きた場合に、RSAパッチを強制的に削除します。",
+    "use_proxy": "Cultivationの内部プロキシを使用します。Fiddlerのような外部のプロキシを使わない限り、これを有効にしておく必要があります。",
+    "patch_rsa": "ゲームのRSAに自動的にパッチを適用/解除します。古い(ver 3.0以前)又は非公式のバージョンでプレイしない限り、これは有効にしておくべきです。",
+    "add_delay": "3Dmigoto Loaderに遅延を設定しました!\nこれはロード時の問題を解決しますが、ゲーム起動時に3Dmigotoがロードされる際に遅延が発生します。\nもう一度3Dmigotoを使用して起動できます。",
+    "migoto": "GameBananaからモデルをインポートするために使用します。",
+    "grasscutter_elevation_help_text": "Grasscutterがポート443をバインド(Linuxでは一般ユーザーは許可されていません)できるようにするための方法を指定します。\n利用可能な方法:\n「Capability」1024以下のポートをバインドする権限をJava仮想マシンに与えます。これは、そのJVM上で実行されている他のすべてのプログラムがこれらのポートをバインドできるようになることを意味します。\n「Root」Grasscutterをrootとして実行します。これは、GCサーバー、そのプラグイン、およびJVMが制限なくほとんど何でもできるようになることを意味します。\n「None」なし。この場合、GrasscutterのDispatchポートを変更する必要があります。"
+  },
+  "swag": {
+    "akebi_name": "Akebi",
+    "migoto_name": "3Dmigoto",
+    "reshade_name": "Reshade",
+    "akebi": "Akebi実行ファイルを設定",
+    "migoto": "3Dmigoto実行ファイルを設定",
+    "reshade": "Reshadeインジェクターを設定"
+  }
+}
