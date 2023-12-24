@@ -45,6 +45,7 @@ interface IState {
   notification: React.ReactElement | null
   isGamePathSet: boolean
   game_install_path: string
+  platform: string
 }
 
 export class Main extends React.Component<IProps, IState> {
@@ -64,6 +65,7 @@ export class Main extends React.Component<IProps, IState> {
       notification: null,
       isGamePathSet: true,
       game_install_path: '',
+      platform: '',
     }
 
     listen('lang_error', (payload) => {
@@ -152,8 +154,16 @@ export class Main extends React.Component<IProps, IState> {
       game_install_path: game_path,
     })
 
+    if (this.state.game_install_path === '') {
+      this.setState({ isGamePathSet: false })
+    }
+
     this.setState({
       migotoSet: !!(await getConfigOption('migoto_path')),
+    })
+
+    this.setState({
+      platform: await invoke('get_platform'),
     })
 
     if (!cert_generated) {
@@ -168,6 +178,9 @@ export class Main extends React.Component<IProps, IState> {
     // Ensure old configs are updated to use RSA
     const updatedConfig = await getConfigOption('patch_rsa')
     await setConfigOption('patch_rsa', updatedConfig)
+
+    // Update launch args to allow launching when updating from old versions
+    await setConfigOption('launch_args', await getConfigOption('launch_args'))
 
     // Get latest version and compare to this version
     const latestVersion: {
@@ -222,7 +235,7 @@ export class Main extends React.Component<IProps, IState> {
     })) as boolean
 
     // Set no game path so the user understands it doesn't exist there
-    if (!game_exists) {
+    if (!game_exists && this.state.platform === 'windows') {
       setConfigOption('game_install_path', '')
     }
 
@@ -323,7 +336,10 @@ export class Main extends React.Component<IProps, IState> {
           this.state.optionsOpen ? (
             <Options
               downloadManager={this.props.downloadHandler}
-              closeFn={() => this.setState({ optionsOpen: !this.state.optionsOpen })}
+              closeFn={async () => {
+                this.setState({ optionsOpen: !this.state.optionsOpen })
+                this.setState({ migotoSet: !!(await getConfigOption('migoto_path')) })
+              }}
             />
           ) : null
         }
