@@ -160,11 +160,7 @@ pub async fn patch_game(newer_game: bool, version: String) -> bool {
       String::from("Astrolabe.dll"),
     );
 
-    if replaced50 {
-      return true;
-    } else {
-      return false;
-    }
+    return replaced50;
   }
 
   // Copy the patch to game files

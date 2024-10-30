@@ -115,7 +115,7 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
 
   if args.value_of("launch-game")? {
     let game_path = config.game_install_path;
-    let game_args: String = args.value_of("game-args").unwrap_or(String::new());
+    let game_args: String = args.value_of("game-args").unwrap_or_default();
 
     if game_path.is_some() {
       if args.value_of("non-elevated-game")? {

@@ -463,14 +463,16 @@ pub fn wipe_registry(exec_name: String) {
     Err(e) => println!("Error wiping registry: {}", e),
   }
 
-  let hsr_settings =
-    match Hive::CurrentUser.open(format!("Software\\Cognosphere\\Star Rail"), Security::Write) {
-      Ok(s) => s,
-      Err(e) => {
-        println!("Error getting registry setting: {}", e);
-        return;
-      }
-    };
+  let hsr_settings = match Hive::CurrentUser.open(
+    "Software\\Cognosphere\\Star Rail".to_string(),
+    Security::Write,
+  ) {
+    Ok(s) => s,
+    Err(e) => {
+      println!("Error getting registry setting: {}", e);
+      return;
+    }
+  };
 
   match hsr_settings.set_value(
     "MIHOYOSDK_ADL_PROD_OVERSEA_h1158948810",
