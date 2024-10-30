@@ -44,6 +44,7 @@ fn strcmd(cmd: &Command) -> String {
 }
 
 #[cfg(target_os = "linux")]
+#[allow(dead_code)]
 pub trait AsRoot {
   fn as_root(&self) -> Self;
   fn as_root_gui(&self) -> Self;
@@ -64,6 +65,7 @@ impl AsRoot for Command {
 }
 
 #[cfg(target_os = "linux")]
+#[allow(dead_code)]
 trait InTerminalEmulator {
   fn in_terminal(&self) -> Self;
   fn in_terminal_noclose(&self) -> Self;
