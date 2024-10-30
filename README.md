@@ -25,7 +25,7 @@ For game versions 3.1 and above, Cultivation automatically makes a small patch t
 
 # Download
 
-[Find release builds here!](/releases)
+[Find release builds here!](https://github.com/Grasscutters/Cultivation/releases)
 
 Download and open the MSI, and once installed, run Cultivation as administrator. Refer below for more [detailed setup instructions](#setup).
 
