@@ -498,7 +498,7 @@ pub fn service_status(service: String) -> bool {
     }
   };
   let status_result = my_service.query_status();
-  if let Ok(..) = status_result {
+  if status_result.is_ok() {
     let status = status_result.unwrap();
     println!("{} service status: {:?}", service, status.current_state);
     if status.current_state == Stopped {

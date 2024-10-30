@@ -36,8 +36,8 @@ pub(crate) async fn valid_url(url: String) -> bool {
     .await
     .ok();
 
-  if response.is_some() {
-    return response.unwrap().status().as_str() == "200";
+  if let Some(thing) = response {
+    return thing.status().as_str() == "200";
   } else {
     false
   }
