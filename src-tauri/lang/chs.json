@@ -35,11 +35,13 @@
     "un_elevated": "非提升运行游戏（无管理员）",
     "redirect_more": "还可以重定向其他MHY游戏",
     "web_cache": "删除 webCaches 文件夹",
-    "launch_args": "Launch Args"
+    "launch_args": "启动参数",
+    "offline_mode": "离线模式",
+    "fix_res": "修复登录超时"
   },
   "downloads": {
     "grasscutter_fullbuild": "下载 Grasscutter 一体化",
-    "grasscutter_fullquest": "下载 Quest 一体化",
+    "grasscutter_fullquest": "下载 5.0 一体化",
     "grasscutter_stable_data": "下载 Grasscutter 稳定版数据",
     "grasscutter_latest_data": "下载 Grasscutter 开发版数据",
     "grasscutter_stable_data_update": "更新 Grasscutter 稳定版数据",
@@ -67,7 +69,8 @@
     "select_folder": "选择文件夹...",
     "download": "下载",
     "delete": "删除",
-    "install": "安装"
+    "install": "安装",
+    "fix": "Fix"
   },
   "news": {
     "latest_commits": "最近提交",

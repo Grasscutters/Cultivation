@@ -29,6 +29,8 @@ let defaultConfig: Configuration
     un_elevated: false,
     redirect_more: false,
     launch_args: '',
+    offline_mode: false,
+    newer_game: false,
 
     // Linux stuff
     grasscutter_elevation: 'None',
@@ -64,6 +66,8 @@ export interface Configuration {
   un_elevated: boolean
   redirect_more: boolean
   launch_args: string
+  offline_mode: boolean
+  newer_game: boolean
 
   // Linux stuff
   grasscutter_elevation: string
@@ -128,7 +132,7 @@ async function readConfigFile() {
     await fs.createDir(local + 'cultivation').catch((e) => console.log(e))
   }
 
-  const innerDirs = await fs.readDir(local + 'cultivation')
+  const innerDirs = await fs.readDir(local + '/cultivation')
 
   // Create grasscutter dir for potential installation
   if (!innerDirs.find((fileOrDir) => fileOrDir?.name === 'grasscutter')) {

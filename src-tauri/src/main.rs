@@ -108,14 +108,14 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
     std::process::exit(0);
   }
 
+  // Patch if needed
+  if args.value_of("patch")? {
+    patch::patch_game(false, 0.to_string()).await;
+  }
+
   if args.value_of("launch-game")? {
     let game_path = config.game_install_path;
     let game_args: String = args.value_of("game-args").unwrap_or_default();
-
-    // Patch if needed
-    if args.value_of("patch")? {
-      patch::patch_game().await;
-    }
 
     if game_path.is_some() {
       if args.value_of("non-elevated-game")? {
@@ -154,8 +154,8 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
     pathbuf.push("cultivation");
     pathbuf.push("ca");
 
-    if args.value_of("other_redirects")? {
-      proxy::set_redirect_more();
+    if args.value_of("other-redirects")? {
+      // proxy::set_redirect_more(); // Unused
     }
 
     connect(8035, pathbuf.to_str().unwrap().to_string()).await;
@@ -218,7 +218,6 @@ fn main() -> Result<(), ArgsError> {
         system_helpers::open_in_browser,
         system_helpers::install_location,
         system_helpers::is_elevated,
-        system_helpers::set_migoto_target,
         system_helpers::set_migoto_delay,
         system_helpers::wipe_registry,
         system_helpers::get_platform,
@@ -229,7 +228,6 @@ fn main() -> Result<(), ArgsError> {
         patch::unpatch_game,
         proxy::set_proxy_addr,
         proxy::generate_ca_files,
-        proxy::set_redirect_more,
         release::get_latest_release,
         unzip::unzip,
         file_helpers::rename,
@@ -243,6 +241,7 @@ fn main() -> Result<(), ArgsError> {
         file_helpers::are_files_identical,
         file_helpers::read_file,
         file_helpers::write_file,
+        file_helpers::does_file_exist,
         downloader::download_file,
         downloader::stop_download,
         lang::get_lang,
@@ -297,7 +296,7 @@ fn enable_process_watcher(window: tauri::Window, process: String) {
 
   thread::spawn(move || {
     // Initial sleep for 8 seconds, since running 20 different injectors or whatever can take a while
-    std::thread::sleep(std::time::Duration::from_secs(10));
+    std::thread::sleep(std::time::Duration::from_secs(60));
 
     let mut system = System::new_all();
 
@@ -336,7 +335,7 @@ fn enable_process_watcher(window: tauri::Window, process: String) {
 fn enable_process_watcher(window: tauri::Window, process: String) {
   drop(process);
   thread::spawn(move || {
-    let end_time = Instant::now() + Duration::from_secs(60);
+    let end_time = Instant::now() + Duration::from_secs(90);
     let game_thread = loop {
       let mut lock = AAGL_THREAD.lock().unwrap();
       if lock.is_some() {

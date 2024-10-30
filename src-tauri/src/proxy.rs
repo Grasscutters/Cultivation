@@ -3,8 +3,6 @@
  * https://github.com/omjadas/hudsucker/blob/main/examples/log.rs
  */
 
-use crate::config::get_config;
-
 use once_cell::sync::Lazy;
 use std::{path::PathBuf, str::FromStr, sync::Mutex};
 
@@ -41,8 +39,6 @@ async fn shutdown_signal() {
 
 // Global ver for getting server address.
 static SERVER: Lazy<Mutex<String>> = Lazy::new(|| Mutex::new("http://localhost:443".to_string()));
-static REDIRECT_MORE: Lazy<Mutex<bool>> = Lazy::new(|| Mutex::new(false));
-
 #[derive(Clone)]
 struct ProxyHandler;
 
@@ -58,11 +54,6 @@ pub fn set_proxy_addr(addr: String) {
   println!("Set server to {}", SERVER.lock().unwrap());
 }
 
-#[tauri::command]
-pub fn set_redirect_more() {
-  *REDIRECT_MORE.lock().unwrap() = true;
-}
-
 #[async_trait]
 impl HttpHandler for ProxyHandler {
   async fn handle_request(
@@ -72,93 +63,33 @@ impl HttpHandler for ProxyHandler {
   ) -> RequestOrResponse {
     let uri = req.uri().to_string();
 
-    let mut more = get_config().redirect_more;
+    if uri.contains("hoyoverse.com")
+      || uri.contains("mihoyo.com")
+      || uri.contains("yuanshen.com")
+      || uri.ends_with(".yuanshen.com:12401")
+      || uri.contains("starrails.com")
+      || uri.contains("bhsr.com")
+      || uri.contains("bh3.com")
+      || uri.contains("honkaiimpact3.com")
+      || uri.contains("zenlesszonezero.com")
+    {
+      // Handle CONNECTs
+      if req.method().as_str() == "CONNECT" {
+        let builder = Response::builder()
+          .header("DecryptEndpoint", "Created")
+          .status(StatusCode::OK);
+        let res = builder.body(()).unwrap();
 
-    if *REDIRECT_MORE.lock().unwrap() {
-      more = Some(true);
-    }
-
-    match more {
-      Some(true) => {
-        if uri.contains("hoyoverse.com")
-          || uri.contains("mihoyo.com")
-          || uri.contains("yuanshen.com")
-          || uri.contains("starrails.com")
-          || uri.contains("bhsr.com")
-          || uri.contains("bh3.com")
-          || uri.contains("honkaiimpact3.com")
-          || uri.contains("zenlesszonezero.com")
-        {
-          // Handle CONNECTs
-          if req.method().as_str() == "CONNECT" {
-            let builder = Response::builder()
-              .header("DecryptEndpoint", "Created")
-              .status(StatusCode::OK);
-            let res = builder.body(()).unwrap();
-
-            // Respond to CONNECT
-            *res.body()
-          } else {
-            let uri_path_and_query = req.uri().path_and_query().unwrap().as_str();
-            // Create new URI.
-            let new_uri =
-              Uri::from_str(format!("{}{}", SERVER.lock().unwrap(), uri_path_and_query).as_str())
-                .unwrap();
-            // Set request URI to the new one.
-            *req.uri_mut() = new_uri;
-          }
-        }
-      }
-      Some(false) => {
-        if uri.contains("hoyoverse.com")
-          || uri.contains("mihoyo.com")
-          || uri.contains("yuanshen.com")
-        {
-          // Handle CONNECTs
-          if req.method().as_str() == "CONNECT" {
-            let builder = Response::builder()
-              .header("DecryptEndpoint", "Created")
-              .status(StatusCode::OK);
-            let res = builder.body(()).unwrap();
-
-            // Respond to CONNECT
-            *res.body()
-          } else {
-            let uri_path_and_query = req.uri().path_and_query().unwrap().as_str();
-            // Create new URI.
-            let new_uri =
-              Uri::from_str(format!("{}{}", SERVER.lock().unwrap(), uri_path_and_query).as_str())
-                .unwrap();
-            // Set request URI to the new one.
-            *req.uri_mut() = new_uri;
-          }
-        }
-      }
-      // Use default as fallback
-      None => {
-        if uri.contains("hoyoverse.com")
-          || uri.contains("mihoyo.com")
-          || uri.contains("yuanshen.com")
-        {
-          // Handle CONNECTs
-          if req.method().as_str() == "CONNECT" {
-            let builder = Response::builder()
-              .header("DecryptEndpoint", "Created")
-              .status(StatusCode::OK);
-            let res = builder.body(()).unwrap();
-
-            // Respond to CONNECT
-            *res.body()
-          } else {
-            let uri_path_and_query = req.uri().path_and_query().unwrap().as_str();
-            // Create new URI.
-            let new_uri =
-              Uri::from_str(format!("{}{}", SERVER.lock().unwrap(), uri_path_and_query).as_str())
-                .unwrap();
-            // Set request URI to the new one.
-            *req.uri_mut() = new_uri;
-          }
-        }
+        // Respond to CONNECT
+        *res.body()
+      } else {
+        let uri_path_and_query = req.uri().path_and_query().unwrap().as_str();
+        // Create new URI.
+        let new_uri =
+          Uri::from_str(format!("{}{}", SERVER.lock().unwrap(), uri_path_and_query).as_str())
+            .unwrap();
+        // Set request URI to the new one.
+        *req.uri_mut() = new_uri;
       }
     }
 
@@ -176,26 +107,14 @@ impl HttpHandler for ProxyHandler {
   async fn should_intercept(&mut self, _ctx: &HttpContext, _req: &Request<Body>) -> bool {
     let uri = _req.uri().to_string();
 
-    let more = get_config().redirect_more;
-
-    match more {
-      Some(true) => {
-        uri.contains("hoyoverse.com")
-          || uri.contains("mihoyo.com")
-          || uri.contains("yuanshen.com")
-          || uri.contains("starrails.com")
-          || uri.contains("bhsr.com")
-          || uri.contains("bh3.com")
-          || uri.contains("honkaiimpact3.com")
-          || uri.contains("zenlesszonezero.com")
-      }
-      Some(false) => {
-        uri.contains("hoyoverse.com") || uri.contains("mihoyo.com") || uri.contains("yuanshen.com")
-      }
-      None => {
-        uri.contains("hoyoverse.com") || uri.contains("mihoyo.com") || uri.contains("yuanshen.com")
-      }
-    }
+    uri.contains("hoyoverse.com")
+      || uri.contains("mihoyo.com")
+      || uri.contains("yuanshen.com")
+      || uri.contains("starrails.com")
+      || uri.contains("bhsr.com")
+      || uri.contains("bh3.com")
+      || uri.contains("honkaiimpact3.com")
+      || uri.contains("zenlesszonezero.com")
   }
 }
 
@@ -307,7 +226,7 @@ pub fn connect_to_proxy(proxy_port: u16) {
   Config::update(config);
 }
 
-#[cfg(target_od = "macos")]
+#[cfg(target_os = "macos")]
 pub fn connect_to_proxy(_proxy_port: u16) {
   println!("No Mac support yet. Someone mail me a Macbook and I will do it B)")
 }

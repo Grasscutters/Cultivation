@@ -25,7 +25,7 @@ For game versions 3.1 and above, Cultivation automatically makes a small patch t
 
 # Download
 
-[Find release builds here!](https://github.com/Grasscutters/Cultivation/releases)
+[Find release builds here!](/releases)
 
 Download and open the MSI, and once installed, run Cultivation as administrator. Refer below for more [detailed setup instructions](#setup).
 
@@ -46,15 +46,15 @@ Download and open the MSI, and once installed, run Cultivation as administrator.
   - If you use multiple Java versions, you can set the Java path to your Java 17 installation (only required if you are running your own server)
 - Decide if you want to download your own server, or just join a public one
   - If joining a public one, you're done. Just click "Connect with Grasscutter" and input the address and port. You do not have to continue these instructions.
-    - If you are getting System Error, or 4214, ask the [Discord support channels](https://discord.gg/grasscutter)
+    - If you are getting System Error, or 4214, ask the [Discord support channels](https://discord.gg/T5vZU6UyeG)
 - Open the "Downloads" menu (top right)
-  - Download "Grasscutter All-in-One" (top of the list)
+  - Download "Grasscutter All-in-One" (select **one** of the AIOs that matches the version you want)
 - Once that is done, click the icon next to "Launch"
 - To play on your new server:
   - Click "Connect with Grasscutter"
   - Input `localhost` as the address, and `443` as the port
   - Ensure HTTPS is disabled
-- Any generic "I am getting XYZ error!" should go in the [Discord support channels](https://discord.gg/grasscutter)
+- Any generic "I am getting XYZ error!" should go in the [Discord support channels](https://discord.gg/T5vZU6UyeG)
 - Any specific Cultivation issues should go in [the issues section](/issues)
 - Any Grasscutter server related issues should go in [the Grasscutter issues section](https://github.com/Grasscutters/Grasscutter)
 

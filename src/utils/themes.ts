@@ -40,7 +40,7 @@ const defaultTheme = {
 export async function getThemeList() {
   // Do some invoke to backend to get the theme list
   const themes = (await invoke('get_theme_list', {
-    dataDir: `${await dataDir()}cultivation`,
+    dataDir: `${await dataDir()}/cultivation`,
   })) as BackendThemeList[]
   const list: ThemeList[] = [
     // ALWAYS include default theme

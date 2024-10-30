@@ -34,11 +34,13 @@
     "un_elevated": "Voer het spel uit zonder hoogtevrees (geen admin)",
     "redirect_more": "Richt ook andere MHY-spellen",
     "web_cache": "Verwijder de webCaches-map",
-    "launch_args": "Launch Args"
+    "launch_args": "Args starten",
+    "offline_mode": "Offline Modus",
+    "fix_res": "Time-out inloggen verhelpen"
   },
   "downloads": {
     "grasscutter_fullbuild": "Grasscutter Alles-in-één Downloaden",
-    "grasscutter_fullquest": "Alles-in-één zoeken downloaden",
+    "grasscutter_fullquest": "Alles-in-één 5.0 downloaden",
     "grasscutter_stable_data": "Download Stabiele Gegevens Van Grasscutter",
     "grasscutter_latest_data": "Download De Nieuwste Gegevens Van Grasscutter",
     "grasscutter_stable_data_update": "Stabiele gegevens Van Grasscutter bijwerken",
@@ -66,7 +68,8 @@
     "select_folder": "Select folder...",
     "download": "Download",
     "delete": "Verwijder",
-    "install": "Install"
+    "install": "Install",
+    "fix": "Fix"
   },
   "news": {
     "latest_commits": "Recente Opdrachten",

@@ -50,8 +50,90 @@ struct WhatToUnpach {
 
 #[cfg(windows)]
 #[tauri::command]
-pub async fn patch_game() -> bool {
-  let patch_path = PathBuf::from(system_helpers::install_location()).join("patch/version.dll");
+pub async fn patch_game(newer_game: bool, version: String) -> bool {
+  let mut patch_path;
+  // Altpatch first - Now using as hoyonet switch
+  if newer_game {
+    let alt_patch_path = PathBuf::from(system_helpers::install_location()).join("altpatch");
+
+    // Should handle overwriting backup with new version backup later
+    let backup_path = PathBuf::from(system_helpers::install_location())
+      .join("altpatch/original-mihoyonet.dll")
+      .to_str()
+      .unwrap()
+      .to_string();
+    let backup_exists = file_helpers::does_file_exist(&backup_path);
+
+    if !backup_exists {
+      let backup = file_helpers::copy_file_with_new_name(
+        get_game_rsa_path().await.unwrap()
+          + &String::from("/GenshinImpact_Data/Plugins/mihoyonet.dll"),
+        alt_patch_path.clone().to_str().unwrap().to_string(),
+        String::from("original-mihoyonet.dll"),
+      );
+
+      if !backup {
+        println!("Unable to backup file!");
+      }
+    }
+
+    patch_path = PathBuf::from(system_helpers::install_location()).join("altpatch/mihoyonet.dll");
+    // Copy the other part of patch to game files
+    let alt_replaced = file_helpers::copy_file_with_new_name(
+      patch_path.clone().to_str().unwrap().to_string(),
+      get_game_rsa_path().await.unwrap() + &String::from("/GenshinImpact_Data/Plugins"),
+      String::from("mihoyonet.dll"),
+    );
+
+    if !alt_replaced {
+      return false;
+    }
+
+    /***  For replacing old backup file with new one, for example when version changes
+     *    Currently replaces when it shouldn't. Will figure it out when it matters
+     *                                                                                   ***/
+    // else {
+    //   // Check if game file matches backup
+    //   let matching_alt_backup = file_helpers::are_files_identical(
+    //     &backup_path.clone(),
+    //     PathBuf::from(get_game_rsa_path().await.unwrap())
+    //       .join("/GenshinImpact_Data/Plugins/mihoyonet.dll")
+    //       .to_str()
+    //       .unwrap(),
+    //   );
+
+    //   let is_alt_patched = file_helpers::are_files_identical(
+    //     PathBuf::from(system_helpers::install_location()).join("altpatch/mihoyonet.dll").to_str().unwrap(),
+    //     PathBuf::from(get_game_rsa_path().await.unwrap())
+    //       .join("/GenshinImpact_Data/Plugins/mihoyonet.dll")
+    //       .to_str()
+    //       .unwrap(),
+    //   );
+
+    //   // Check if already alt patched
+    //   if !matching_alt_backup {
+    //     // Copy new backup if it is not patched
+    //     if !is_alt_patched {
+    //       file_helpers::copy_file_with_new_name(
+    //         get_game_rsa_path().await.unwrap() + &String::from("/GenshinImpact_Data/Plugins/mihoyonet.dll"),
+    //         alt_patch_path.clone().to_str().unwrap().to_string(),
+    //         String::from("original-mihoyonet.dll"),
+    //       );
+    //     }
+    //   }
+    // }
+  }
+
+  // Standard patch
+  patch_path = PathBuf::from(system_helpers::install_location()).join("patch/version.dll");
+
+  let i_ver = version.parse::<i32>().unwrap();
+
+  // For newer than 4.0, use specific patch files
+  if i_ver > 40 {
+    let patch_version = format!("patch/{version}version.dll");
+    patch_path = PathBuf::from(system_helpers::install_location()).join(patch_version);
+  }
 
   // Are we already patched with mhypbase? If so, that's fine, just continue as normal
   let game_is_patched = file_helpers::are_files_identical(
@@ -70,6 +152,17 @@ pub async fn patch_game() -> bool {
     return true;
   }
 
+  // For 5.0 and up
+  if i_ver > 49 {
+    let replaced50 = file_helpers::copy_file_with_new_name(
+      patch_path.clone().to_str().unwrap().to_string(),
+      get_game_rsa_path().await.unwrap(),
+      String::from("Astrolabe.dll"),
+    );
+
+    return replaced50;
+  }
+
   // Copy the patch to game files
   let replaced = file_helpers::copy_file_with_new_name(
     patch_path.clone().to_str().unwrap().to_string(),
@@ -86,7 +179,7 @@ pub async fn patch_game() -> bool {
 
 #[cfg(target_os = "linux")]
 #[tauri::command]
-pub async fn patch_game() -> bool {
+pub async fn patch_game(_newer_game: bool, _version: String) -> bool {
   let mut patch_state_mutex = PATCH_STATE.lock().await;
   if patch_state_mutex.is_some() {
     println!("Game already patched!");
@@ -169,6 +262,36 @@ pub async fn unpatch_game() -> bool {
       .unwrap()
       .to_string(),
   );
+
+  file_helpers::delete_file(
+    PathBuf::from(get_game_rsa_path().await.unwrap())
+      .join("Astrolabe.dll")
+      .to_str()
+      .unwrap()
+      .to_string(),
+  );
+
+  let core_patch_path = PathBuf::from(system_helpers::install_location());
+  let patch_path = core_patch_path.clone().join("altpatch/mihoyonet.dll");
+  let backup_path = core_patch_path
+    .clone()
+    .join("altpatch/original-mihoyonet.dll");
+
+  let is_alt_patched = file_helpers::are_files_identical(
+    patch_path.clone().to_str().unwrap(),
+    PathBuf::from(get_game_rsa_path().await.unwrap())
+      .join("GenshinImpact_Data/Plugins/mihoyonet.dll")
+      .to_str()
+      .unwrap(),
+  );
+
+  if is_alt_patched {
+    file_helpers::copy_file_with_new_name(
+      backup_path.clone().to_str().unwrap().to_string(),
+      get_game_rsa_path().await.unwrap() + &String::from("/GenshinImpact_Data/Plugins"),
+      String::from("mihoyonet.dll"),
+    );
+  }
 
   deleted
 }

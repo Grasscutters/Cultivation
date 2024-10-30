@@ -35,11 +35,13 @@
     "un_elevated": "Ejecutar el juego sin permisos de administrador",
     "redirect_more": "También redirigir otros juegos MHY",
     "web_cache": "Eliminar la carpeta webCaches",
-    "launch_args": "Launch Args"
+    "launch_args": "Args de lanzamiento",
+    "offline_mode": "Modo sin conexión",
+    "fix_res": "Reparar el tiempo de espera"
   },
   "downloads": {
     "grasscutter_fullbuild": "Descargar datos todo en uno de Grasscutter",
-    "grasscutter_fullquest": "Descargar datos todo en uno de Questing",
+    "grasscutter_fullquest": "Descargar datos todo en uno de 5.0",
     "grasscutter_stable_data": "Descargar datos Estables de Grasscutter",
     "grasscutter_latest_data": "Descargar datos más Recientes de Grasscutter",
     "grasscutter_stable_data_update": "Actualizar datos estables de Grasscutter",
@@ -67,7 +69,8 @@
     "select_folder": "Seleccionar la carpeta",
     "download": "Descargar",
     "delete": "Borrar",
-    "install": "Instalar"
+    "install": "Instalar",
+    "fix": "Fix"
   },
   "news": {
     "latest_commits": "Commits recientes",

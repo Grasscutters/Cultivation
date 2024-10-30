@@ -16,8 +16,11 @@ import DownloadHandler from '../../../utils/download'
 import * as meta from '../../../utils/rsa'
 import HelpButton from '../common/HelpButton'
 import SmallButton from '../common/SmallButton'
-import { confirm } from '@tauri-apps/api/dialog'
+import { ask, confirm } from '@tauri-apps/api/dialog'
 import TextInput from '../common/TextInput'
+import { unzip } from '../../../utils/zipUtils'
+import { getGameExecutable } from '../../../utils/game'
+import { emit } from '@tauri-apps/api/event'
 
 export enum GrasscutterElevation {
   None = 'None',
@@ -52,6 +55,8 @@ interface IState {
   un_elevated: boolean
   redirect_more: boolean
   launch_args: string
+  offline_mode: boolean
+  newer_game: boolean
 
   // Linux stuff
   grasscutter_elevation: string
@@ -88,6 +93,8 @@ export default class Options extends React.Component<IProps, IState> {
       un_elevated: false,
       redirect_more: false,
       launch_args: '',
+      offline_mode: false,
+      newer_game: false,
 
       // Linux stuff
       grasscutter_elevation: GrasscutterElevation.None,
@@ -118,13 +125,10 @@ export default class Options extends React.Component<IProps, IState> {
     const languages = await getLanguages()
     const platform: string = await invoke('get_platform')
 
-    let encEnabled
-    if (config.grasscutter_path) {
-      // Remove jar from path
-      const path = config.grasscutter_path.replace(/\\/g, '/')
-      const folderPath = path.substring(0, path.lastIndexOf('/'))
-      encEnabled = await server.encryptionEnabled(folderPath + '/config.json')
-    }
+    // Remove jar from path
+    const path = config.grasscutter_path.replace(/\\/g, '/')
+    const folderPath = path.substring(0, path.lastIndexOf('/'))
+    const encEnabled = await server.encryptionEnabled(folderPath + '/config.json')
 
     console.log(platform)
 
@@ -150,6 +154,8 @@ export default class Options extends React.Component<IProps, IState> {
       un_elevated: config.un_elevated || false,
       redirect_more: config.redirect_more || false,
       launch_args: config.launch_args,
+      offline_mode: config.offline_mode || false,
+      newer_game: config.newer_game || false,
 
       // Linux stuff
       grasscutter_elevation: config.grasscutter_elevation || GrasscutterElevation.None,
@@ -163,22 +169,28 @@ export default class Options extends React.Component<IProps, IState> {
     this.forceUpdate()
   }
 
-  setGameExecutable(value: string) {
-    setConfigOption('game_install_path', value)
+  async setGameExecutable(value: string) {
+    await setConfigOption('game_install_path', value)
 
     // I hope this stops people setting launcher.exe because oml it's annoying
-    if (value.endsWith('launcher.exe')) {
+    if (value.endsWith('launcher.exe') || value.endsWith('.lnk')) {
       const pathArr = value.replace(/\\/g, '/').split('/')
       pathArr.pop()
       const path = pathArr.join('/') + '/Genshin Impact Game/'
 
-      alert(
-        `You have set your game execuatable to "launcher.exe". You should not do this. Your game executable is located in:\n\n${path}`
-      )
+      if (value.endsWith('.lnk')) {
+        alert(
+          'You have set your game executable to a shortcut. You should not do this. Your patching will not work, and your proxy may shut off unexpectedly.'
+        )
+      } else {
+        alert(
+          `You have set your game execuatable to "launcher.exe". You should not do this. Your game executable is located in:\n\n${path}`
+        )
+      }
     }
 
     // If setting any other game, automatically set to redirect more
-    if (!value.toLowerCase().includes('genshin' || 'yuanshen')) {
+    if (!value.toLowerCase().includes('genshin') || !value.toLowerCase().includes('yuanshen')) {
       if (!this.state.redirect_more) {
         this.toggleOption('redirect_more')
       }
@@ -187,26 +199,24 @@ export default class Options extends React.Component<IProps, IState> {
     this.setState({
       game_install_path: value,
     })
+
+    emit('set_game', { game_path: value })
   }
 
   async setGrasscutterJar(value: string) {
     setConfigOption('grasscutter_path', value)
-
-    this.setState({
-      grasscutter_path: value,
-    })
-
     const config = await getConfig()
     const path = config.grasscutter_path.replace(/\\/g, '/')
     const folderPath = path.substring(0, path.lastIndexOf('/'))
     const encEnabled = await server.encryptionEnabled(folderPath + '/config.json')
 
-    // Update encryption button when setting new jar
     this.setState({
+      grasscutter_path: value,
       encryption: encEnabled,
     })
 
-    window.location.reload()
+    // Encryption refuses to re-render w/o reload unless updated twice
+    this.forceUpdateEncyption()
   }
 
   setJavaPath(value: string) {
@@ -267,7 +277,7 @@ export default class Options extends React.Component<IProps, IState> {
 
     if (!isUrl) {
       const filename = value.replace(/\\/g, '/').split('/').pop()
-      const localBgPath = (await dataDir()).replace(/\\/g, '/')
+      const localBgPath = ((await dataDir()) as string).replace(/\\/g, '/')
 
       await setConfigOption('custom_background', `${localBgPath}/cultivation/bg/${filename}`)
 
@@ -282,6 +292,16 @@ export default class Options extends React.Component<IProps, IState> {
       await setConfigOption('custom_background', value)
       window.location.reload()
     }
+  }
+
+  async forceUpdateEncyption() {
+    const config = await getConfig()
+    const path = config.grasscutter_path.replace(/\\/g, '/')
+    const folderPath = path.substring(0, path.lastIndexOf('/'))
+
+    this.setState({
+      encryption: await server.encryptionEnabled(folderPath + '/config.json'),
+    })
   }
 
   async toggleEncryption() {
@@ -343,6 +363,15 @@ export default class Options extends React.Component<IProps, IState> {
   }
 
   async addMigotoDelay() {
+    if (
+      !(await ask(
+        'Set delay for 3dmigoto loader? This is specifically made for GIMI v6 and earlier. Using it on latest GIMI or SRMI will cause issues!!! \n\nWould you like to continue?',
+        { title: 'GIMI Delay', type: 'warning' }
+      ))
+    ) {
+      return
+    }
+
     invoke('set_migoto_delay', {
       migotoPath: this.state.migoto_path,
     })
@@ -355,6 +384,15 @@ export default class Options extends React.Component<IProps, IState> {
   }
 
   async deleteWebCache() {
+    if (await ask('Would you like to clear login cache? Yes to clear login cache. No to clear web cache.')) {
+      await invoke('wipe_registry', {
+        // The exe is always PascalCase so we can get the dir using regex
+        execName: (await getGameExecutable())?.split('.exe')[0].replace(/([a-z\d])([A-Z])/g, '$1 $2'),
+      })
+      alert('Cleared login cache!')
+      return
+    }
+
     alert('Cultivation may freeze for a moment while this occurs!')
 
     // Get webCaches folder path
@@ -364,8 +402,70 @@ export default class Options extends React.Component<IProps, IState> {
     const path2 = pathArr.join('/') + '/Yuanshen_Data/webCaches'
 
     // Delete the folder
-    await invoke('dir_delete', { path: path })
-    await invoke('dir_delete', { path: path2 })
+    if (await invoke('dir_exists', { path: path })) {
+      await invoke('dir_delete', { path: path })
+    }
+    if (await invoke('dir_exists', { path: path2 })) {
+      await invoke('dir_delete', { path: path2 })
+    }
+  }
+
+  async fixRes() {
+    const config = await getConfig()
+
+    const path = config.grasscutter_path.replace(/\\/g, '/')
+    let folderPath = path.substring(0, path.lastIndexOf('/'))
+
+    // Set to default if not set
+    if (!path || path === '') {
+      const appdata = await dataDir()
+      folderPath = appdata + 'cultivation\\grasscutter'
+    }
+
+    if (path.includes('/')) {
+      folderPath = path.substring(0, path.lastIndexOf('/'))
+    } else {
+      folderPath = path.substring(0, path.lastIndexOf('\\'))
+    }
+
+    // Check if Grasscutter path exists
+    if (folderPath.length < 1) {
+      alert('Grasscutter not installed or not set! This option can only work when it is installed.')
+      return
+    }
+
+    // Check if resources zip exists
+    if (
+      !(await invoke('dir_exists', {
+        path: folderPath + '\\GC-Resources-4.0.zip',
+      }))
+    ) {
+      alert('Resources are already unzipped or do not exist! Ensure your resources zip is named "GC-Resources-4.0.zip"')
+      return
+    }
+
+    alert(
+      'This may fix white screen issues on login! Please be patient while extraction occurs, it may take some time (5-10 minutes). \n\n !! You will be alerted when it is done !!'
+    )
+
+    // Unzip resources
+    await unzip(folderPath + '\\GC-Resources-4.0.zip', folderPath + '\\', true)
+    // Rename folder to resources
+    invoke('rename', {
+      path: folderPath + '\\Resources',
+      newName: 'resources',
+    })
+
+    // Update config.json to read from folder
+    await server.changeResourcePath(folderPath + '/config.json')
+
+    // Check if Grasscutter is running, and restart if so to apply changes
+    if (await invoke('is_grasscutter_running')) {
+      alert('Automatically restarting Grasscutter for changes to apply!')
+      await invoke('restart_grasscutter')
+    }
+
+    alert('Resource fixing finished! Please launch the server again and try playing.')
   }
 
   async toggleOption(opt: keyof Configuration) {
@@ -542,7 +642,7 @@ export default class Options extends React.Component<IProps, IState> {
                 <Tr text="swag.migoto" />
               </div>
               <div className="OptionValue" id="menuOptionsDirMigoto">
-                <SmallButton onClick={this.addMigotoDelay} id="migotoDelay" contents="help.add_delay"></SmallButton>
+                <SmallButton onClick={this.addMigotoDelay} id="migotoDelay"></SmallButton>
                 <DirInput onChange={this.setMigoto} value={this.state?.migoto_path} extensions={['exe']} />
               </div>
             </div>
@@ -599,6 +699,31 @@ export default class Options extends React.Component<IProps, IState> {
             </div>
           </div>
         ) : null}
+        <div className="OptionSection" id="menuOptionsContainerOffline">
+          <div className="OptionLabel" id="menuOptionsLabelOffline">
+            <Tr text="options.offline_mode" />
+          </div>
+          <div className="OptionValue" id="menuOptionsCheckboxOffline">
+            <Checkbox
+              onChange={() => this.toggleOption('offline_mode')}
+              checked={this.state?.offline_mode}
+              id="offlineMode"
+            />
+          </div>
+        </div>
+
+        <div className="OptionSection" id="menuOptionsContainerNewerGame">
+          <div className="OptionLabel" id="menuOptionsLabelNewerGame">
+            <Tr text="Patch Mihoyonet" />
+          </div>
+          <div className="OptionValue" id="menuOptionsCheckboxNewerGame">
+            <Checkbox
+              onChange={() => this.toggleOption('newer_game')}
+              checked={this.state?.newer_game}
+              id="newerGame"
+            />
+          </div>
+        </div>
 
         <Divider />
 
@@ -708,6 +833,15 @@ export default class Options extends React.Component<IProps, IState> {
             onChange={this.setLaunchArgs}
             value={this.state.launch_args}
           />
+        </div>
+
+        <div className="OptionLabel" id="menuOptionsLabelFixRes">
+          <Tr text="options.fix_res" />
+        </div>
+        <div className="OptionValue" id="menuOptionsButtonfixRes">
+          <BigButton onClick={this.fixRes} id="fixRes">
+            <Tr text="components.fix" />
+          </BigButton>
         </div>
       </Menu>
     )

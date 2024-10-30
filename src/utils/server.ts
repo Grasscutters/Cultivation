@@ -40,5 +40,32 @@ export async function encryptionEnabled(path: string) {
     return false
   }
 
-  return serverConf.server.http.encryption.useEncryption
+  if ('server' in serverConf) {
+    return serverConf.server.http.encryption.useEncryption
+  }
+
+  return false
+}
+
+export async function changeResourcePath(path: string) {
+  let serverConf
+
+  try {
+    serverConf = JSON.parse(
+      await invoke('read_file', {
+        path,
+      })
+    )
+  } catch (e) {
+    console.log(`Server config at ${path} not found or invalid. Be sure to run the server at least once to generate it`)
+    return
+  }
+
+  serverConf.folderStructure.resources = './resources/'
+
+  // Write file
+  await invoke('write_file', {
+    path,
+    contents: JSON.stringify(serverConf, null, 2),
+  })
 }

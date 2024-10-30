@@ -37,11 +37,13 @@
     "check_aagl": "For more options, check the other launcher",
     "grasscutter_elevation": "Method of running GC on restricted ports",
     "web_cache": "Delete webCaches folder",
-    "launch_args": "Launch Args"
+    "launch_args": "Launch Args",
+    "offline_mode": "Offline Mode",
+    "fix_res": "Fix Login Timeout"
   },
   "downloads": {
     "grasscutter_fullbuild": "Download Grasscutter All-in-One",
-    "grasscutter_fullquest": "Download Questing All-in-One",
+    "grasscutter_fullquest": "Download 5.0 All-in-One",
     "grasscutter_stable_data": "Download Grasscutter Stable Data",
     "grasscutter_latest_data": "Download Grasscutter Latest Data",
     "grasscutter_stable_data_update": "Update Grasscutter Stable Data",
@@ -69,7 +71,8 @@
     "select_folder": "Select folder...",
     "download": "Download",
     "delete": "Delete",
-    "install": "Install"
+    "install": "Install",
+    "fix": "Fix"
   },
   "news": {
     "latest_commits": "Recent Commits",
@@ -96,7 +99,7 @@
     "akebi_name": "Akebi",
     "migoto_name": "Migoto",
     "reshade_name": "Reshade",
-    "akebi": "Set Akebi/Acrepi Executable",
+    "akebi": "Set Akebi/Other Cheat Executable",
     "migoto": "Set 3DMigoto Executable",
     "reshade": "Set Reshade Injector"
   }

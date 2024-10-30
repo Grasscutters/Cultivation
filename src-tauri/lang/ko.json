@@ -35,11 +35,13 @@
     "un_elevated": "게임 비상승 실행(관리자 없음)",
     "redirect_more": "다른 MHY 게임도 리디렉션",
     "web_cache": "webCaches 폴더 삭제",
-    "launch_args": "Launch Args"
+    "launch_args": "실행 인수",
+    "offline_mode": "오프라인 모드",
+    "fix_res": "로그인 시간 초과 수정"
   },
   "downloads": {
     "grasscutter_fullbuild": "올인원 Grasscutter 다운로드",
-    "grasscutter_fullquest": "퀘스트 올인원 다운로드",
+    "grasscutter_fullquest": "5.0 올인원 다운로드",
     "grasscutter_stable_data": "안정적인 데이터 다운로드",
     "grasscutter_latest_data": "최신 데이터 다운로드",
     "grasscutter_stable_data_update": "안정적 데이터 업데이트",
@@ -67,7 +69,8 @@
     "select_folder": "폴더 선택...",
     "download": "다운로드",
     "delete": "삭제",
-    "install": "설치"
+    "install": "설치",
+    "fix": "Fix"
   },
   "news": {
     "latest_commits": "공지 사항",
