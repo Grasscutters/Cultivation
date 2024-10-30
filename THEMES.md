@@ -8,7 +8,7 @@
 
 Themes support entirely custom JS and CSS, enabling you to potentially change every single thing about Cultivation with relative ease.
 
-You can refer to the example theme [found here.](https://cdn.discordapp.com/attachments/992943872479084614/992993575652565002/Example.zip)
+You can refer to the example theme [found here.](https://github.com/Grasscutters/Cultivation/blob/main/docs/ExampleTheme.zip)
 
 You will need CSS and JS experience if you want to do anything cool.
 
