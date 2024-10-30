@@ -17,7 +17,7 @@ interface IState {
 }
 
 const downloadHandler = new DownloadHandler()
-const DEFAULT_BG = 'https://api.grasscutter.io/cultivation/bgfile'
+const WEB_BG = 'https://api.grasscutter.io/cultivation/bgfile'
 
 class App extends React.Component<Readonly<unknown>, IState> {
   constructor(props: Readonly<unknown>) {
@@ -25,7 +25,7 @@ class App extends React.Component<Readonly<unknown>, IState> {
 
     this.state = {
       page: 'main',
-      bgFile: DEFAULT_BG,
+      bgFile: FALLBACK_BG,
     }
   }
 
@@ -39,8 +39,9 @@ class App extends React.Component<Readonly<unknown>, IState> {
 
     // Get custom bg AFTER theme is loaded !! important !!
     const custom_bg = await getConfigOption('custom_background')
+    const offline_mode = await getConfigOption('offline_mode')
 
-    if (custom_bg) {
+    if (custom_bg || offline_mode) {
       const isUrl = /^http(s)?:\/\//gm.test(custom_bg)
 
       if (!isUrl) {
@@ -50,7 +51,7 @@ class App extends React.Component<Readonly<unknown>, IState> {
 
         this.setState(
           {
-            bgFile: isValid ? convertFileSrc(custom_bg) : DEFAULT_BG,
+            bgFile: isValid ? convertFileSrc(custom_bg) : FALLBACK_BG,
           },
           this.forceUpdate
         )
@@ -62,7 +63,7 @@ class App extends React.Component<Readonly<unknown>, IState> {
 
         this.setState(
           {
-            bgFile: isValid ? custom_bg : DEFAULT_BG,
+            bgFile: isValid ? custom_bg : FALLBACK_BG,
           },
           this.forceUpdate
         )
@@ -70,12 +71,12 @@ class App extends React.Component<Readonly<unknown>, IState> {
     } else {
       // Check if api bg is accessible
       const isDefaultValid = await invoke('valid_url', {
-        url: DEFAULT_BG,
+        url: WEB_BG,
       })
 
       this.setState(
         {
-          bgFile: isDefaultValid ? DEFAULT_BG : FALLBACK_BG,
+          bgFile: isDefaultValid ? WEB_BG : FALLBACK_BG,
         },
         this.forceUpdate
       )
@@ -86,6 +87,7 @@ class App extends React.Component<Readonly<unknown>, IState> {
         // @ts-expect-error - TS doesn't like our custom event
         page: e.detail,
       })
+      this.forceUpdate
     })
   }
 

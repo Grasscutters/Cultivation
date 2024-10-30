@@ -37,11 +37,13 @@
     "check_aagl": "Więcej opcji znajdziesz w drugim launcherze",
     "grasscutter_elevation": "Sposób uruchomienia GC na ograniczonym porcie",
     "web_cache": "Usuń folder webCaches",
-    "launch_args": "Launch Args"
+    "launch_args": "Argumenty uruchamiania",
+    "offline_mode": "Tryb offline",
+    "fix_res": "Napraw limit czasu logowania"
   },
   "downloads": {
     "grasscutter_fullbuild": "Pobierz Grasscutter (wszystko w jednym)",
-    "grasscutter_fullquest": "Pobierz Questing (wszystko w jednym)",
+    "grasscutter_fullquest": "Pobierz 5.0 (wszystko w jednym)",
     "grasscutter_stable_data": "Pobierz stabilne dane Grasscuttera",
     "grasscutter_latest_data": "Pobierz najnowsze dane Grasscuttera",
     "grasscutter_stable_data_update": "Zaaktualizuj stabilne dane Grasscuttera",
@@ -69,7 +71,8 @@
     "select_folder": "Wybierz folder...",
     "download": "Pobierz",
     "delete": "Usuń",
-    "install": "Zainstaluj"
+    "install": "Zainstaluj",
+    "fix": "Fix"
   },
   "news": {
     "latest_commits": "Ostatnie Commity",

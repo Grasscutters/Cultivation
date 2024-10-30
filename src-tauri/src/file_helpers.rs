@@ -1,6 +1,6 @@
 use file_diff::diff;
 use std::fs;
-use std::io::{Read, Write};
+use std::io::{Read, Seek, SeekFrom, Write};
 use std::path::PathBuf;
 
 #[tauri::command]
@@ -55,6 +55,11 @@ pub fn dir_delete(path: &str) {
 #[tauri::command]
 pub fn are_files_identical(path1: &str, path2: &str) -> bool {
   diff(path1, path2)
+}
+
+#[tauri::command]
+pub fn does_file_exist(path1: &str) -> bool {
+  fs::metadata(path1).is_ok()
 }
 
 #[tauri::command]
@@ -127,21 +132,46 @@ pub fn delete_file(path: String) -> bool {
 #[tauri::command]
 pub fn read_file(path: String) -> String {
   let path_buf = PathBuf::from(&path);
-
-  let mut file = match fs::File::open(path_buf) {
-    Ok(file) => file,
-    Err(e) => {
-      println!("Failed to open file {}: {}", &path, e);
-      if path.contains("config") {
-        // Server.ts won't print the error so handle the message here for the user
-        println!("Server config not found or invalid. Be sure to run the server at least once to generate it before making edits.");
-      }
-      return String::new(); // Send back error for handling by the caller
-    }
-  };
+  println!("Debug: Reading file of path {}", path.clone(),);
 
   let mut contents = String::new();
-  file.read_to_string(&mut contents).unwrap();
+
+  // Version data is 3 bytes long, 3 bytes in
+  let ext = path_buf.extension().unwrap();
+  if ext.eq("bytes") {
+    let offset_bytes = 3;
+    let num_bytes = 3;
+
+    let mut byte_file = match std::fs::File::open(path_buf) {
+      Ok(byte_file) => byte_file,
+      Err(e) => {
+        println!("{}", e);
+        return String::new();
+      }
+    };
+    byte_file
+      .seek(SeekFrom::Start(offset_bytes))
+      .unwrap_or_default();
+    let mut buf = vec![0; num_bytes];
+    byte_file.read_exact(&mut buf).unwrap_or_default();
+
+    contents = String::from_utf8_lossy(&buf).to_string();
+  } else {
+    let mut file = match fs::File::open(path_buf) {
+      Ok(file) => file,
+      Err(e) => {
+        if path.contains("config") {
+          // Server.ts won't print the error so handle the message here for the user
+          println!("Server config not found or invalid. Be sure to run the server at least once to generate it before making edits.");
+        } else {
+          println!("Failed to open file: {}", e);
+        }
+        return String::new(); // Send back error for handling by the caller
+      }
+    };
+
+    file.read_to_string(&mut contents).unwrap();
+  }
 
   contents
 }

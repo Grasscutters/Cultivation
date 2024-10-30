@@ -16,7 +16,6 @@ pub async fn get_latest_release() -> Release {
     .unwrap();
   let text = response.text().await.unwrap();
 
-  // This includes ip when github rate limits you, so avoid it for now to avoid leaks through screenshots
   //println!("Response: {}", text);
 
   // Parse "tag_name" from JSON

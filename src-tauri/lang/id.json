@@ -34,11 +34,13 @@
     "un_elevated": "Jalankan game yang tidak ditinggikan (tanpa admin)",
     "redirect_more": "Juga mengarahkan ulang game MHY lainnya",
     "web_cache": "Hapus folder webCaches",
-    "launch_args": "Launch Args"
+    "launch_args": "Luncurkan Args",
+    "offline_mode": "Mode Offline",
+    "fix_res": "Perbaiki batas waktu login"
   },
   "downloads": {
     "grasscutter_fullbuild": "Sedang Mendownload Grasscutter Semua Dalam Satu",
-    "grasscutter_fullquest": "Unduh pencarian semua dalam satu",
+    "grasscutter_fullquest": "Unduh 5.0 semua dalam satu",
     "grasscutter_stable_data": "Sedang Mendownload Grasscutter Versi Stabil",
     "grasscutter_latest_data": "Sedang Mendownload Grasscutter Data Terbaru",
     "grasscutter_stable_data_update": "Memperbaharui Grasscutter Data Stabil",
@@ -64,7 +66,8 @@
     "select_file": "Pilih File Atau Folder...",
     "select_folder": "Pilih Folder...",
     "download": "download",
-    "delete": "Menghapus"
+    "delete": "Menghapus",
+    "fix": "Fix"
   },
   "news": {
     "latest_commits": "Commit Terbaru",

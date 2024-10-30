@@ -17,9 +17,11 @@ import { getGameExecutable, getGameVersion, getGrasscutterJar } from '../../util
 import { patchGame, unpatchGame } from '../../utils/rsa'
 import { listen } from '@tauri-apps/api/event'
 import { confirm } from '@tauri-apps/api/dialog'
+import DownloadHandler from '../../utils/download'
 
 interface IProps {
   openExtras: (playGame: () => void) => void
+  downloadHandler: DownloadHandler
 }
 
 interface IState {
@@ -72,9 +74,14 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     this.setPort = this.setPort.bind(this)
     this.toggleHttps = this.toggleHttps.bind(this)
     this.launchServer = this.launchServer.bind(this)
+    this.setButtonLabel = this.setButtonLabel.bind(this)
 
     listen('start_grasscutter', async () => {
       this.launchServer()
+    })
+
+    listen('set_game', async () => {
+      this.setButtonLabel()
     })
   }
 
@@ -96,6 +103,8 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       migotoSet: config.migoto_path !== '',
       unElevated: config.un_elevated || false,
     })
+
+    this.setButtonLabel()
   }
 
   async toggleGrasscutter() {
@@ -140,8 +149,9 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     // Connect to proxy
     if (config.toggle_grasscutter) {
       const game_exe = await getGameExecutable()
+      let newerGame = false
 
-      const patchable = game_exe?.toLowerCase().includes('genshin' || 'yuanshen')
+      const patchable = game_exe?.toLowerCase().includes('yuanshen') || game_exe?.toLowerCase().includes('genshin')
 
       if (config.patch_rsa && patchable) {
         const gameVersion = await getGameVersion()
@@ -164,10 +174,58 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
           return
         }
 
-        const patched = await patchGame()
+        if (gameVersion?.major == 4 && gameVersion?.minor == 5) {
+          await confirm(
+            'Please use Cultivation version 1.4.0 for game version 4.5. You can find that here: https://github.com/NotThorny/Cultivation/releases/tag/1.4.0'
+          )
+          return
+        }
+
+        const versionString = gameVersion?.major.toString() + gameVersion?.minor.toString()
+
+        if ((gameVersion?.major == 4 && gameVersion?.minor > 5) || config.newer_game) {
+          newerGame = true
+
+          const path = (await invoke('install_location')) as string
+
+          const patchstring = '\\altpatch\\'
+          const altPatch = path + patchstring
+
+          const ALT_PATCH =
+            'https://autopatchhk.yuanshen.com/client_app/download/pc_zip/20231030132335_iOEfPMcbrXpiA8Ca/ScatteredFiles/GenshinImpact_Data/Plugins/mihoyonet.dll'
+          const pExists = (await invoke('dir_exists', {
+            path: altPatch,
+          })) as boolean
+
+          if (!pExists) {
+            await invoke('dir_create', {
+              path: altPatch,
+            })
+            this.props.downloadHandler.addDownload(ALT_PATCH, path + '/altpatch/mihoyonet.dll')
+            await confirm('Please wait for the download in the bottom left to disappear, then click yes')
+          }
+
+          /* For custom address patch only, used in 4.5 */
+          // let httpString = 'http://'
+          // if (this.state.httpsEnabled) {
+          //   httpString = 'https://'
+          // }
+          // config.launch_args = '-server=' + httpString + this.state.ip + ':' + this.state.port
+        }
+
+        const patched = await patchGame(newerGame, versionString)
 
         if (!patched) {
-          alert('Could not patch! Try launching again, or patching manually.')
+          alert(
+            "Could not patch! You're trying to launch a version that you don't have a patch for!" +
+              "\nEnsure you're using a valid game version, and have the patch for this version in your Cultivation install folder." +
+              '\n\nIf this means nothing to you, YOU HAVE THE WRONG GAME VERSION.' +
+              // Add game version due to overwhelming number of people saying they are using a version they are not using
+              '\n\nYOUR GAME VERSION: ' +
+              gameVersion?.major +
+              '.' +
+              gameVersion?.minor
+          )
           return
         }
       }
@@ -186,7 +244,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
           addr: (this.state.httpsEnabled ? 'https' : 'http') + '://' + this.state.ip + ':' + this.state.port,
         })
         // Connect to proxy
-        await invoke('connect', { port: 8365, certificatePath: (await dataDir()) + 'cultivation/ca' })
+        await invoke('connect', { port: 8365, certificatePath: (await dataDir()) + '\\cultivation\\ca' })
       }
 
       // Open server as well if the options are set
@@ -312,6 +370,19 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     })
 
     await saveConfig(config)
+  }
+
+  async setButtonLabel() {
+    const ver = await getGameVersion()
+    if (ver != null) {
+      this.setState({
+        buttonLabel: (await translate('main.launch_button')) + ' ' + ver?.major + '.' + ver?.minor,
+      })
+    } else {
+      this.setState({
+        buttonLabel: await translate('main.launch_button'),
+      })
+    }
   }
 
   render() {

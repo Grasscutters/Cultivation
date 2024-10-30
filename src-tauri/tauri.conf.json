@@ -1,5 +1,5 @@
 {
-  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
+  "$schema": "..\\node_modules/@tauri-apps/cli\\schema.json",
   "build": {
     "beforeDevCommand": "yarn start",
     "devPath": "http://localhost:3000",
@@ -7,7 +7,7 @@
   },
   "package": {
     "productName": "Cultivation",
-    "version": "1.2.0"
+    "version": "1.5.1"
   },
   "tauri": {
     "allowlist": {

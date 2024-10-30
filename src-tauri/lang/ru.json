@@ -34,11 +34,13 @@
     "un_elevated": "Запустите игру в неэлегантном режиме (без администратора)",
     "redirect_more": "Также перенаправьте другие игры MHY",
     "web_cache": "Удалить папку webCaches",
-    "launch_args": "Launch Args"
+    "launch_args": "Параметры запуска",
+    "offline_mode": "Автономный режим",
+    "fix_res": "Исправить таймаут входа в систему"
   },
   "downloads": {
     "grasscutter_fullbuild": "Скачать все в одном Grasscutter",
-    "grasscutter_fullquest": "Скачать квесты все в одном",
+    "grasscutter_fullquest": "Скачать 5.0 все в одном",
     "grasscutter_stable_data": "Скачать стабильные данные Grasscutter",
     "grasscutter_latest_data": "Скачать последние данные Grasscutter",
     "grasscutter_stable_data_update": "Обновить стабильные данные Grasscutter",
@@ -66,7 +68,8 @@
     "select_folder": "Выберите папку...",
     "download": "Скачать",
     "delete": "Удалить",
-    "install": "Установить"
+    "install": "Установить",
+    "fix": "Fix"
   },
   "news": {
     "latest_commits": "Последние коммиты",

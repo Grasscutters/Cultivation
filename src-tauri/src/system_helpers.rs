@@ -391,44 +391,6 @@ pub fn install_location() -> String {
 }
 
 #[tauri::command]
-pub fn set_migoto_target(window: tauri::Window, migoto_path: String) -> bool {
-  let mut migoto_pathbuf = PathBuf::from(migoto_path);
-
-  migoto_pathbuf.pop();
-  migoto_pathbuf.push("d3dx.ini");
-
-  let mut conf = match Ini::load_from_file(&migoto_pathbuf) {
-    Ok(c) => {
-      println!("Loaded migoto ini");
-      c
-    }
-    Err(e) => {
-      println!("Error loading migoto config: {}", e);
-      return false;
-    }
-  };
-
-  window.emit("migoto_set", &()).unwrap();
-
-  // Set options
-  conf
-    .with_section(Some("Loader"))
-    .set("target", "GenshinImpact.exe");
-
-  // Write file
-  match conf.write_to_file(&migoto_pathbuf) {
-    Ok(_) => {
-      println!("Wrote config!");
-      true
-    }
-    Err(e) => {
-      println!("Error writing config: {}", e);
-      false
-    }
-  }
-}
-
-#[tauri::command]
 pub fn set_migoto_delay(migoto_path: String) -> bool {
   let mut migoto_pathbuf = PathBuf::from(migoto_path);
 
@@ -448,9 +410,18 @@ pub fn set_migoto_delay(migoto_path: String) -> bool {
 
   // Set options
   conf.with_section(Some("Loader")).set("delay", "20");
+  conf
+    .with_section(Some("Include"))
+    .set("include", "ShaderFixes\\help.ini");
 
   // Write file
-  match conf.write_to_file(&migoto_pathbuf) {
+  match conf.write_to_file_opt(
+    &migoto_pathbuf,
+    ini::WriteOption {
+      escape_policy: (ini::EscapePolicy::Nothing),
+      line_separator: (ini::LineSeparator::SystemDefault),
+    },
+  ) {
     Ok(_) => {
       println!("Wrote delay!");
       true
@@ -477,6 +448,31 @@ pub fn wipe_registry(exec_name: String) {
 
   // Wipe login cache
   match settings.set_value(
+    "MIHOYOSDK_ADL_PROD_OVERSEA_h1158948810",
+    &Data::String("".parse().unwrap()),
+  ) {
+    Ok(_) => (),
+    Err(e) => println!("Error wiping registry: {}", e),
+  }
+
+  match settings.set_value(
+    "MIHOYOSDK_ADL_PROD_CN_h3123967166",
+    &Data::String("".parse().unwrap()),
+  ) {
+    Ok(_) => (),
+    Err(e) => println!("Error wiping registry: {}", e),
+  }
+
+  let hsr_settings =
+    match Hive::CurrentUser.open(format!("Software\\Cognosphere\\Star Rail"), Security::Write) {
+      Ok(s) => s,
+      Err(e) => {
+        println!("Error getting registry setting: {}", e);
+        return;
+      }
+    };
+
+  match hsr_settings.set_value(
     "MIHOYOSDK_ADL_PROD_OVERSEA_h1158948810",
     &Data::String("".parse().unwrap()),
   ) {

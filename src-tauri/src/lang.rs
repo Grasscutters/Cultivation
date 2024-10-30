@@ -28,12 +28,7 @@ pub async fn get_languages() -> std::collections::HashMap<String, String> {
   for entry in lang_files {
     let entry = entry.unwrap();
     let path = entry.path();
-    let filename = path
-      .file_name()
-      .unwrap_or_else(|| panic!("Failed to get filename from path: {:?}", path))
-      .to_str()
-      .unwrap_or_else(|| panic!("Failed to convert filename to string: {:?}", path))
-      .to_string();
+    let filename = path.file_name().unwrap().to_str().unwrap();
 
     let content = match std::fs::read_to_string(&path) {
       Ok(x) => x,

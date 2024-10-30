@@ -65,7 +65,7 @@ export default class Tr extends React.Component<IProps, IState> {
       })
     } else {
       this.setState({
-        translated_text: translation_obj[text] || '',
+        translated_text: translation_obj[text] || text,
       })
     }
   }

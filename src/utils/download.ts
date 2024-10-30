@@ -73,6 +73,11 @@ export default class DownloadHandler {
       const index = this.downloads.findIndex((download) => download.path === errorData.path)
       this.downloads[index].status = 'error'
       this.downloads[index].error = errorData.error
+
+      // Remove GIMI from list as fallback will replace it
+      if (errorData.path.includes('GIMI.zip')) {
+        this.downloads.splice(index, 1)
+      }
     })
 
     // Extraction events
@@ -92,6 +97,9 @@ export default class DownloadHandler {
       // Find the download that is not extracting and set it's status as such
       const index = this.downloads.findIndex((download) => download.path === obj.file)
       this.downloads[index].status = 'finished'
+
+      // Remove completed extraction from list
+      this.downloads.splice(index, 1)
     })
   }
 

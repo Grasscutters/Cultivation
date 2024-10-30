@@ -33,11 +33,13 @@
     "un_elevated": "Palaist spēli bez paaugstinājuma (bez administratora)",
     "redirect_more": "Arī novirzīt citas MHY spēles",
     "web_cache": "Dzēsiet mapi WebCaches",
-    "launch_args": "Launch Args"
+    "launch_args": "Palaišanas args",
+    "offline_mode": "Bezsaistes režīms",
+    "fix_res": "Fiksēt pieteikšanās laika"
   },
   "downloads": {
     "grasscutter_fullbuild": "Lejupielādējiet Grasscutter viss vienā",
-    "grasscutter_fullquest": "Lejupielādēt questing viss vienā",
+    "grasscutter_fullquest": "Lejupielādēt 5.0 viss vienā",
     "grasscutter_stable_data": "Lejupielādējiet Grasscutter stabilos datus",
     "grasscutter_latest_data": "Lejupielādējiet Grasscutter jaunākos datus",
     "grasscutter_stable_data_update": "Atjauniniet Grasscutter stabilos datus",
@@ -63,7 +65,8 @@
     "select_file": "Izvēlēties failu vai mapu...",
     "select_folder": "Izvēlēties mapu...",
     "download": "Lejupielādēt",
-    "delete": "Dzēst"
+    "delete": "Dzēst",
+    "fix": "Fix"
   },
   "news": {
     "latest_commits": "Nesen kommitus",

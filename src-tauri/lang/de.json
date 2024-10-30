@@ -37,11 +37,13 @@
     "check_aagl": "Für weitere Optionen, schaue weiter",
     "grasscutter_elevation": "Methode zur Ausführung von GC auf eingeschränkten Ports",
     "web_cache": "WebCaches-Ordner löschen",
-    "launch_args": "Launch Args"
+    "launch_args": "Start-Argumente",
+    "offline_mode": "Offline-Modus",
+    "fix_res": "Login-Zeitüberschreitung beheben"
   },
   "downloads": {
     "grasscutter_fullbuild": "Grasscutter All-in-One herunterladen",
-    "grasscutter_fullquest": "Questing All-in-One herunterladen",
+    "grasscutter_fullquest": "5.0 All-in-One herunterladen",
     "grasscutter_stable_data": "Stabile Grasscutter-Daten herunterladen",
     "grasscutter_latest_data": "Neueste Grasscutter-Daten herunterladen",
     "grasscutter_stable_data_update": "Stabile Grasscutter-Daten aktualisieren",
@@ -69,7 +71,8 @@
     "select_folder": "Ordner auswählen...",
     "download": "Herunterladen",
     "delete": "Löschen",
-    "install": "Installieren"
+    "install": "Installieren",
+    "fix": "Fix"
   },
   "news": {
     "latest_commits": "Neueste Commits",

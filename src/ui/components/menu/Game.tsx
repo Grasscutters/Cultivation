@@ -45,8 +45,8 @@ export default class Downloads extends React.Component<IProps, IState> {
 
   async downloadGame() {
     const folder = this.state.gameDownloadFolder
-    this.props.downloadManager.addDownload(GAME_DOWNLOAD, folder + '/game.zip', async () => {
-      await unzip(folder + '/game.zip', folder + '/', true)
+    this.props.downloadManager.addDownload(GAME_DOWNLOAD, folder + '\\game.zip', async () => {
+      await unzip(folder + '\\game.zip', folder + '\\', true)
       this.setState({
         gameDownloading: false,
       })
