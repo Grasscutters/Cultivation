@@ -109,25 +109,35 @@ export default class DownloadHandler {
 
   downloadingJar() {
     // Kinda hacky but it works
-    return this.downloads.some((d) => d.path.includes('grasscutter.zip') && d.status != ('finished' || 'error'))
+    return this.downloads.some(
+      (d) => d.path.includes('grasscutter.zip') && !(d.status.includes('finished') || d.status.includes('error'))
+    )
   }
 
   downloadingFullBuild() {
     // Kinda hacky but it works
-    return this.downloads.some((d) => d.path.includes('GrasscutterCulti') && d.status != ('finished' || 'error'))
+    return this.downloads.some(
+      (d) => d.path.includes('GrasscutterCulti') && !(d.status.includes('finished') || d.status.includes('error'))
+    )
   }
 
   downloadingResources() {
     // Kinda hacky but it works
-    return this.downloads.some((d) => d.path.includes('resources') && d.status != ('finished' || 'error'))
+    return this.downloads.some(
+      (d) => d.path.includes('resources') && !(d.status.includes('finished') || d.status.includes('error'))
+    )
   }
 
   downloadingRepo() {
-    return this.downloads.some((d) => d.path.includes('grasscutter_repo.zip') && d.status != ('finished' || 'error'))
+    return this.downloads.some(
+      (d) => d.path.includes('grasscutter_repo.zip') && !(d.status.includes('finished') || d.status.includes('error'))
+    )
   }
 
   downloadingMigoto() {
-    return this.downloads.some((d) => d.path.includes('3dmigoto') && d.status != ('finished' || 'error'))
+    return this.downloads.some(
+      (d) => d.path.includes('3dmigoto') && !(d.status.includes('finished') || d.status.includes('error'))
+    )
   }
 
   addDownload(url: string, path: string, onFinish?: () => void) {
