@@ -1,6 +1,6 @@
 [package]
 name = "cultivation"
-version = "1.5.1"
+version = "1.5.2"
 description = "A custom launcher for anime game."
 authors = ["KingRainbow44", "SpikeHD"]
 license = ""

@@ -959,7 +959,7 @@ checksum = "b365fabc795046672053e29c954733ec3b05e4be654ab130fe8f1f94d7051f35"
 
 [[package]]
 name = "cultivation"
-version = "1.5.1"
+version = "1.5.2"
 dependencies = [
  "anime-launcher-sdk",
  "anyhow",

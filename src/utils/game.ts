@@ -50,20 +50,34 @@ export async function getGameDataFolder() {
 
 export async function getGameVersion() {
   const GameData = await getGameDataFolder()
+  const platform = await invoke('get_platform')
 
   if (!GameData) {
     return null
   }
 
-  const hasAsb = await invoke('dir_exists', {
+  let hasAsb = await invoke('dir_exists', {
     path: GameData + '\\StreamingAssets\\asb_settings.json',
   })
 
+  if (platform != 'windows') {
+    hasAsb = await invoke('dir_exists', {
+      path: GameData + '/StreamingAssets/asb_settings.json',
+    })
+  }
+
   if (!hasAsb) {
     // For games that cannot determine game version
-    const otherGameVer: string = await invoke('read_file', {
+    let otherGameVer: string = await invoke('read_file', {
       path: GameData + '\\StreamingAssets\\BinaryVersion.bytes',
     })
+
+    if (platform != 'windows') {
+      otherGameVer = await invoke('read_file', {
+        path: GameData + '/StreamingAssets/BinaryVersion.bytes',
+      })
+    }
+
     const versionRaw = otherGameVer.split('.')
     const version = {
       major: parseInt(versionRaw[0]),
