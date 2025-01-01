@@ -143,7 +143,7 @@ export default class NewsSection extends React.Component<IProps, IState> {
           <tr>
             <td>
               Work in progress area! These numbers may be outdated, so please do not use them as reference. Latest
-              version: Grasscutter 1.7.4 - Cultivation 1.5.2
+              version: Grasscutter 1.7.4 - Cultivation 1.5.3
             </td>
           </tr>
         )
