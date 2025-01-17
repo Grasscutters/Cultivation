@@ -109,6 +109,18 @@ impl SpawnItsFineReally for Command {
 }
 
 #[tauri::command]
+pub fn run_program_args(path: String, args: Option<String>) {
+  match open::with(
+    format!("{}", args.unwrap_or_else(|| "".into())),
+    path.clone(),
+  ) {
+    Ok(_) => (),
+    Err(e) => println!("Failed to open program ({}): {}", &path, e),
+  };
+  return;
+}
+
+#[tauri::command]
 pub fn run_program(path: String, args: Option<String>) {
   // Without unwrap_or, this can crash when UAC prompt is denied
   match open::with(

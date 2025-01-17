@@ -69,7 +69,10 @@ export class ExtrasMenu extends React.Component<IProps, IState> {
 
     // This injects independent of the game
     if (this.state.launch_migoto) {
-      await this.launchMigoto()
+      if (await this.launchMigoto()) {
+        // Already launched the game (ie. via XXMI)
+        return
+      }
     }
 
     // This injects independent of the game
@@ -104,7 +107,17 @@ export class ExtrasMenu extends React.Component<IProps, IState> {
 
     if (!config.migoto_path) return alert('Migoto not installed or set!')
 
+    if (config.migoto_path?.toLowerCase().includes('xxmi')) {
+      // Get game exe from game path, so we can watch it
+      const pathArr = config.migoto_path.replace(/\\/g, '/').split('/')
+      const gameExec = pathArr[pathArr.length - 1]
+
+      this.props.playGame(config.migoto_path, gameExec)
+      return true
+    }
+
     await invoke('run_program_relative', { path: config.migoto_path })
+    return false
   }
 
   async launchReshade() {

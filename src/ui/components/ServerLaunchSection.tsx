@@ -278,6 +278,13 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
         if (config.launch_args.length < 1) {
           // Run relative when there are no args
           await invoke('run_program_relative', { path: exe || config.game_install_path })
+        }
+        // Handle XXMI
+        else if (proc_name?.toLowerCase().includes('xxmi')) {
+          await invoke('run_program_args', {
+            path: exe,
+            args: config.launch_args,
+          })
         } else {
           // Run directly when there are args
           await invoke('run_program', {
