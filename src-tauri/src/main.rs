@@ -209,6 +209,7 @@ fn main() -> Result<(), ArgsError> {
         get_theme_list,
         system_helpers::run_command,
         system_helpers::run_program,
+        system_helpers::run_program_args,
         system_helpers::run_program_relative,
         system_helpers::start_service,
         system_helpers::service_status,
