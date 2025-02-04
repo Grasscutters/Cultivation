@@ -16,7 +16,7 @@ import { ask } from '@tauri-apps/api/dialog'
 
 const FULL_BUILD_DOWNLOAD = 'https://github.com/NotThorny/Grasscutter/releases/download/culti-aio/GrasscutterCulti.zip' // Change to link that can be updated without modifying here
 const FULL_QUEST_DOWNLOAD = 'https://github.com/NotThorny/Grasscutter/releases/download/culti-aio/GrasscutterQuests.zip'
-const FULL_50_DOWNLOAD = 'https://github.com/NotThorny/Grasscutter/releases/download/culti-aio/GrasscutterLunaGC50.zip' // https://github.com/Kei-Luna/LunaGC_5.0.0
+const FULL_50_DOWNLOAD = 'https://github.com/NotThorny/Grasscutter/releases/download/culti-aio/GrasscutterLunaGC53.zip' // https://github.com/Kei-Luna/LunaGC_5.3.0
 const STABLE_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/stable.zip'
 const DEV_REPO_DOWNLOAD = 'https://github.com/Grasscutters/Grasscutter/archive/refs/heads/development.zip'
 const UNSTABLE_DOWNLOAD = 'https://nightly.link/Grasscutters/Grasscutter/workflows/build/unstable/Grasscutter.zip'
