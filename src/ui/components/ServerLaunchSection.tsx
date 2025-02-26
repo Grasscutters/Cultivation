@@ -149,7 +149,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     // Connect to proxy
     if (config.toggle_grasscutter) {
       const game_exe = await getGameExecutable()
-      let newerGame = false
+      const newerGame = false
 
       const patchable = game_exe?.toLowerCase().includes('yuanshen') || game_exe?.toLowerCase().includes('genshin')
 
@@ -183,35 +183,36 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
 
         const versionString = gameVersion?.major.toString() + gameVersion?.minor.toString()
 
-        if ((gameVersion?.major == 4 && gameVersion?.minor > 5) || config.newer_game) {
-          newerGame = true
+        // Keeps being misused, remove for now.
+        // if ((gameVersion?.major == 4 && gameVersion?.minor > 5) || config.newer_game) {
+        //   newerGame = true
 
-          const path = (await invoke('install_location')) as string
+        //   const path = (await invoke('install_location')) as string
 
-          const patchstring = '\\altpatch\\'
-          const altPatch = path + patchstring
+        //   const patchstring = '\\altpatch\\'
+        //   const altPatch = path + patchstring
 
-          const ALT_PATCH =
-            'https://autopatchhk.yuanshen.com/client_app/download/pc_zip/20231030132335_iOEfPMcbrXpiA8Ca/ScatteredFiles/GenshinImpact_Data/Plugins/mihoyonet.dll'
-          const pExists = (await invoke('dir_exists', {
-            path: altPatch,
-          })) as boolean
+        //   const ALT_PATCH =
+        //     'https://autopatchhk.yuanshen.com/client_app/download/pc_zip/20231030132335_iOEfPMcbrXpiA8Ca/ScatteredFiles/GenshinImpact_Data/Plugins/mihoyonet.dll'
+        //   const pExists = (await invoke('dir_exists', {
+        //     path: altPatch,
+        //   })) as boolean
 
-          if (!pExists) {
-            await invoke('dir_create', {
-              path: altPatch,
-            })
-            this.props.downloadHandler.addDownload(ALT_PATCH, path + '/altpatch/mihoyonet.dll')
-            await confirm('Please wait for the download in the bottom left to disappear, then click yes')
-          }
+        //   if (!pExists) {
+        //     await invoke('dir_create', {
+        //       path: altPatch,
+        //     })
+        //     this.props.downloadHandler.addDownload(ALT_PATCH, path + '/altpatch/mihoyonet.dll')
+        //     await confirm('Please wait for the download in the bottom left to disappear, then click yes')
+        //   }
 
-          /* For custom address patch only, used in 4.5 */
-          // let httpString = 'http://'
-          // if (this.state.httpsEnabled) {
-          //   httpString = 'https://'
-          // }
-          // config.launch_args = '-server=' + httpString + this.state.ip + ':' + this.state.port
-        }
+        //   /* For custom address patch only, used in 4.5 */
+        //   // let httpString = 'http://'
+        //   // if (this.state.httpsEnabled) {
+        //   //   httpString = 'https://'
+        //   // }
+        //   // config.launch_args = '-server=' + httpString + this.state.ip + ':' + this.state.port
+        // }
 
         const patched = await patchGame(newerGame, versionString)
 

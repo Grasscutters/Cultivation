@@ -50,79 +50,80 @@ struct WhatToUnpach {
 
 #[cfg(windows)]
 #[tauri::command]
-pub async fn patch_game(newer_game: bool, version: String) -> bool {
+pub async fn patch_game(_newer_game: bool, version: String) -> bool {
   let mut patch_path;
   // Altpatch first - Now using as hoyonet switch
-  if newer_game {
-    let alt_patch_path = PathBuf::from(system_helpers::install_location()).join("altpatch");
+  // People keep using this when they shouldn't, 99.8% of people will never need it. Just remove for now.
+  // if newer_game {
+  //   let alt_patch_path = PathBuf::from(system_helpers::install_location()).join("altpatch");
 
-    // Should handle overwriting backup with new version backup later
-    let backup_path = PathBuf::from(system_helpers::install_location())
-      .join("altpatch/original-mihoyonet.dll")
-      .to_str()
-      .unwrap()
-      .to_string();
-    let backup_exists = file_helpers::does_file_exist(&backup_path);
+  //   // Should handle overwriting backup with new version backup later
+  //   let backup_path = PathBuf::from(system_helpers::install_location())
+  //     .join("altpatch/original-mihoyonet.dll")
+  //     .to_str()
+  //     .unwrap()
+  //     .to_string();
+  //   let backup_exists = file_helpers::does_file_exist(&backup_path);
 
-    if !backup_exists {
-      let backup = file_helpers::copy_file_with_new_name(
-        get_game_rsa_path().await.unwrap()
-          + &String::from("/GenshinImpact_Data/Plugins/mihoyonet.dll"),
-        alt_patch_path.clone().to_str().unwrap().to_string(),
-        String::from("original-mihoyonet.dll"),
-      );
+  //   if !backup_exists {
+  //     let backup = file_helpers::copy_file_with_new_name(
+  //       get_game_rsa_path().await.unwrap()
+  //         + &String::from("/GenshinImpact_Data/Plugins/mihoyonet.dll"),
+  //       alt_patch_path.clone().to_str().unwrap().to_string(),
+  //       String::from("original-mihoyonet.dll"),
+  //     );
 
-      if !backup {
-        println!("Unable to backup file!");
-      }
-    }
+  //     if !backup {
+  //       println!("Unable to backup file!");
+  //     }
+  //   }
 
-    patch_path = PathBuf::from(system_helpers::install_location()).join("altpatch/mihoyonet.dll");
-    // Copy the other part of patch to game files
-    let alt_replaced = file_helpers::copy_file_with_new_name(
-      patch_path.clone().to_str().unwrap().to_string(),
-      get_game_rsa_path().await.unwrap() + &String::from("/GenshinImpact_Data/Plugins"),
-      String::from("mihoyonet.dll"),
-    );
+  //   patch_path = PathBuf::from(system_helpers::install_location()).join("altpatch/mihoyonet.dll");
+  //   // Copy the other part of patch to game files
+  //   let alt_replaced = file_helpers::copy_file_with_new_name(
+  //     patch_path.clone().to_str().unwrap().to_string(),
+  //     get_game_rsa_path().await.unwrap() + &String::from("/GenshinImpact_Data/Plugins"),
+  //     String::from("mihoyonet.dll"),
+  //   );
 
-    if !alt_replaced {
-      return false;
-    }
+  //   if !alt_replaced {
+  //     return false;
+  //   }
 
-    /***  For replacing old backup file with new one, for example when version changes
-     *    Currently replaces when it shouldn't. Will figure it out when it matters
-     *                                                                                   ***/
-    // else {
-    //   // Check if game file matches backup
-    //   let matching_alt_backup = file_helpers::are_files_identical(
-    //     &backup_path.clone(),
-    //     PathBuf::from(get_game_rsa_path().await.unwrap())
-    //       .join("/GenshinImpact_Data/Plugins/mihoyonet.dll")
-    //       .to_str()
-    //       .unwrap(),
-    //   );
+  /***  For replacing old backup file with new one, for example when version changes
+   *    Currently replaces when it shouldn't. Will figure it out when it matters
+   *                                                                                   ***/
+  // else {
+  //   // Check if game file matches backup
+  //   let matching_alt_backup = file_helpers::are_files_identical(
+  //     &backup_path.clone(),
+  //     PathBuf::from(get_game_rsa_path().await.unwrap())
+  //       .join("/GenshinImpact_Data/Plugins/mihoyonet.dll")
+  //       .to_str()
+  //       .unwrap(),
+  //   );
 
-    //   let is_alt_patched = file_helpers::are_files_identical(
-    //     PathBuf::from(system_helpers::install_location()).join("altpatch/mihoyonet.dll").to_str().unwrap(),
-    //     PathBuf::from(get_game_rsa_path().await.unwrap())
-    //       .join("/GenshinImpact_Data/Plugins/mihoyonet.dll")
-    //       .to_str()
-    //       .unwrap(),
-    //   );
+  //   let is_alt_patched = file_helpers::are_files_identical(
+  //     PathBuf::from(system_helpers::install_location()).join("altpatch/mihoyonet.dll").to_str().unwrap(),
+  //     PathBuf::from(get_game_rsa_path().await.unwrap())
+  //       .join("/GenshinImpact_Data/Plugins/mihoyonet.dll")
+  //       .to_str()
+  //       .unwrap(),
+  //   );
 
-    //   // Check if already alt patched
-    //   if !matching_alt_backup {
-    //     // Copy new backup if it is not patched
-    //     if !is_alt_patched {
-    //       file_helpers::copy_file_with_new_name(
-    //         get_game_rsa_path().await.unwrap() + &String::from("/GenshinImpact_Data/Plugins/mihoyonet.dll"),
-    //         alt_patch_path.clone().to_str().unwrap().to_string(),
-    //         String::from("original-mihoyonet.dll"),
-    //       );
-    //     }
-    //   }
-    // }
-  }
+  //   // Check if already alt patched
+  //   if !matching_alt_backup {
+  //     // Copy new backup if it is not patched
+  //     if !is_alt_patched {
+  //       file_helpers::copy_file_with_new_name(
+  //         get_game_rsa_path().await.unwrap() + &String::from("/GenshinImpact_Data/Plugins/mihoyonet.dll"),
+  //         alt_patch_path.clone().to_str().unwrap().to_string(),
+  //         String::from("original-mihoyonet.dll"),
+  //       );
+  //     }
+  //   }
+  // }
+  // }
 
   // Standard patch
   patch_path = PathBuf::from(system_helpers::install_location()).join("patch/version.dll");

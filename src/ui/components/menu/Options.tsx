@@ -712,7 +712,7 @@ export default class Options extends React.Component<IProps, IState> {
           </div>
         </div>
 
-        <div className="OptionSection" id="menuOptionsContainerNewerGame">
+        {/* <div className="OptionSection" id="menuOptionsContainerNewerGame">
           <div className="OptionLabel" id="menuOptionsLabelNewerGame">
             <Tr text="Patch Mihoyonet" />
           </div>
@@ -723,7 +723,7 @@ export default class Options extends React.Component<IProps, IState> {
               id="newerGame"
             />
           </div>
-        </div>
+        </div> */}
 
         <Divider />
 
