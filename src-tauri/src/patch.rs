@@ -153,8 +153,9 @@ pub async fn patch_game(_newer_game: bool, version: String) -> bool {
     return true;
   }
 
-  // For 5.0 and up
+  // For 5.0 and up use universal
   if i_ver > 49 {
+    patch_path = PathBuf::from(system_helpers::install_location()).join("patch/5version.dll");
     let replaced50 = file_helpers::copy_file_with_new_name(
       patch_path.clone().to_str().unwrap().to_string(),
       get_game_rsa_path().await.unwrap(),
