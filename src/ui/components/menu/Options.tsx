@@ -823,25 +823,32 @@ export default class Options extends React.Component<IProps, IState> {
               <Tr text="components.delete" />
             </BigButton>
           </div>
+        </div>
+
+        <div className="OptionSection" id="menuOptionsContainerLaunchArgs">
           <div className="OptionLabel" id="menuOptionsLaunchArgs">
             <Tr text="options.launch_args" />
           </div>
-          <TextInput
-            id="launch_args"
-            key="launch_args"
-            placeholder={'-arg=value'}
-            onChange={this.setLaunchArgs}
-            value={this.state.launch_args}
-          />
+          <div className="OptionValue" id="menuOptionsValueLaunchArgs">
+            <TextInput
+              id="launch_args"
+              key="launch_args"
+              placeholder={'-arg=value'}
+              onChange={this.setLaunchArgs}
+              value={this.state.launch_args}
+            />
+          </div>
         </div>
 
-        <div className="OptionLabel" id="menuOptionsLabelFixRes">
-          <Tr text="options.fix_res" />
-        </div>
-        <div className="OptionValue" id="menuOptionsButtonfixRes">
-          <BigButton onClick={this.fixRes} id="fixRes">
-            <Tr text="components.fix" />
-          </BigButton>
+        <div className="OptionSection" id="menuOptionsContainerFixRes">
+          <div className="OptionLabel" id="menuOptionsLabelFixRes">
+            <Tr text="options.fix_res" />
+          </div>
+          <div className="OptionValue" id="menuOptionsButtonfixRes">
+            <BigButton onClick={this.fixRes} id="fixRes">
+              <Tr text="components.fix" />
+            </BigButton>
+          </div>
         </div>
       </Menu>
     )

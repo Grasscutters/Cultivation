@@ -67,6 +67,7 @@
     "windows": [
       {
         "fullscreen": false,
+        "transparent": true,
         "height": 730,
         "resizable": true,
         "title": "Cultivation",
