@@ -1,10 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="256" height="256" viewBox="0 0 256 256" xml:space="preserve">
-<desc>Created with Fabric.js 1.7.22</desc>
-<defs>
-</defs>
-<g transform="translate(128 128) scale(0.72 0.72)" style="">
-	<g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(-175.05 -175.05) scale(3.89 3.89)" >
-	<path d="M 78.527 20.998 c -10.973 -8.229 -21.412 -8.001 -21.412 -8.001 l -1.067 1.219 c 12.954 3.962 18.973 9.677 18.973 9.677 c -7.925 -4.343 -15.697 -6.477 -22.936 -7.315 c -5.486 -0.61 -10.744 -0.457 -15.392 0.152 c -0.457 0 -0.838 0.076 -1.295 0.152 c -2.667 0.229 -9.144 1.219 -17.297 4.801 c -2.819 1.295 -4.496 2.21 -4.496 2.21 s 6.325 -6.02 20.04 -9.982 l -0.762 -0.914 c 0 0 -10.439 -0.229 -21.412 8.001 c 0 0 -10.973 19.888 -10.973 44.424 c 0 0 6.401 11.049 23.241 11.582 c 0 0 2.819 -3.429 5.105 -6.324 c -9.677 -2.896 -13.335 -8.991 -13.335 -8.991 s 0.762 0.533 2.134 1.295 c 0.076 0.076 0.152 0.152 0.305 0.229 c 0.229 0.152 0.457 0.229 0.686 0.381 c 1.905 1.067 3.81 1.905 5.563 2.591 c 3.124 1.219 6.858 2.438 11.201 3.276 c 5.715 1.067 12.42 1.448 19.735 0.076 c 3.581 -0.61 7.239 -1.676 11.049 -3.277 c 2.667 -0.991 5.639 -2.438 8.763 -4.496 c 0 0 -3.81 6.248 -13.792 9.068 c 2.286 2.896 5.029 6.172 5.029 6.172 C 83.023 76.47 89.5 65.422 89.5 65.422 C 89.5 40.886 78.527 20.998 78.527 20.998 z M 30.751 58.335 c -4.267 0 -7.772 -3.81 -7.772 -8.458 s 3.429 -8.458 7.772 -8.458 s 7.848 3.81 7.772 8.458 C 38.523 54.525 35.094 58.335 30.751 58.335 z M 58.563 58.335 c -4.267 0 -7.772 -3.81 -7.772 -8.458 s 3.429 -8.458 7.772 -8.458 s 7.772 3.81 7.772 8.458 S 62.907 58.335 58.563 58.335 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
-</g>
-</g>
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+	<title>discord</title>
+	<defs>
+		<image width="254" height="192" id="img1" href="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIGlkPSJEaXNjb3JkLUxvZ28iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDEyNi42NDQgOTYiPjxwYXRoIGlkPSJEaXNjb3JkLVN5bWJvbC1CbGFjayIgZD0iTTgxLjE1LDBjLTEuMjM3NiwyLjE5NzMtMi4zNDg5LDQuNDcwNC0zLjM1OTEsNi43OTQtOS41OTc1LTEuNDM5Ni0xOS4zNzE4LTEuNDM5Ni0yOC45OTQ1LDAtLjk4NS0yLjMyMzYtMi4xMjE2LTQuNTk2Ny0zLjM1OTEtNi43OTQtOS4wMTY2LDEuNTQwNy0xNy44MDU5LDQuMjQzMS0yNi4xNDA1LDguMDU2OEMyLjc3OSwzMi41MzA0LTEuNjkxNCw1Ni4zNzI1LjUzMTIsNzkuODg2M2M5LjY3MzIsNy4xNDc2LDIwLjUwODMsMTIuNjAzLDMyLjA1MDUsMTYuMDg4NCwyLjYwMTQtMy40ODU0LDQuODk5OC03LjE5ODEsNi44Njk4LTExLjA2MjMtMy43MzgtMS4zODkxLTcuMzQ5Ny0zLjEzMTgtMTAuODA5OC01LjE1MjMuOTA5Mi0uNjU2NywxLjc5MzItMS4zMzg2LDIuNjUxOS0xLjk5NTMsMjAuMjgxLDkuNTQ3LDQzLjc2OTYsOS41NDcsNjQuMDc1OCwwLC44NTg3LjcwNzIsMS43NDI3LDEuMzg5MSwyLjY1MTksMS45OTUzLTMuNDYwMSwyLjA0NTctNy4wNzE4LDMuNzYzMi0xMC44MzUsNS4xNzc2LDEuOTcsMy44NjQyLDQuMjY4Myw3LjU3NjksNi44Njk4LDExLjA2MjMsMTEuNTQxOS0zLjQ4NTQsMjIuMzc2OS04LjkxNTYsMzIuMDUwOS0xNi4wNjMxLDIuNjI2LTI3LjI3NzEtNC40OTYtNTAuOTE3Mi0xOC44MTctNzEuODU0OEM5OC45ODExLDQuMjY4NCw5MC4xOTE4LDEuNTY1OSw4MS4xNzUyLjA1MDVsLS4wMjUyLS4wNTA1Wk00Mi4yODAyLDY1LjQxNDRjLTYuMjM4MywwLTExLjQxNTktNS42NTc1LTExLjQxNTktMTIuNjUzNXM0Ljk3NTUtMTIuNjc4OCwxMS4zOTA3LTEyLjY3ODgsMTEuNTE2OSw1LjcwOCwxMS40MTU5LDEyLjY3ODhjLS4xMDEsNi45NzA4LTUuMDI2LDEyLjY1MzUtMTEuMzkwNywxMi42NTM1Wk04NC4zNTc2LDY1LjQxNDRjLTYuMjYzNywwLTExLjM5MDctNS42NTc1LTExLjM5MDctMTIuNjUzNXM0Ljk3NTUtMTIuNjc4OCwxMS4zOTA3LTEyLjY3ODgsMTEuNDkxNyw1LjcwOCwxMS4zOTA2LDEyLjY3ODhjLS4xMDEsNi45NzA4LTUuMDI2LDEyLjY1MzUtMTEuMzkwNiwxMi42NTM1WiIvPjwvc3ZnPg=="/>
+	</defs>
+	<style>
+	</style>
+	<g>
+		<g>
+		</g>
+		<use id="Discord-Symbol-Black" href="#img1" transform="matrix(.984,0,0,.984,3,33)"/>
+	</g>
 </svg>
