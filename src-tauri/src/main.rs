@@ -255,20 +255,25 @@ fn main() -> Result<(), ArgsError> {
         gamebanana::list_mods
       ])
       .setup(|app| {
-        let window = app.get_window("main").unwrap();
+          let window = app.get_window("main").unwrap();
 
-        // Get the primary monitor
-        if let Some(monitor) = window.primary_monitor().unwrap() {
-          let screen_size = monitor.size();
-          let window_size = window.outer_size().unwrap();
+          if let Some(monitor) = window.primary_monitor().unwrap() {
+              let screen_size = monitor.size();
+              let window_size = window.outer_size().unwrap();
 
-          // Calculate horizontal center and set Y to 0 (top)
-          let x = ((screen_size.width - window_size.width) / 2) as i32;
-          let y = 53; // Change to 20 if you want a small gap from the top
-
-          window.set_position(PhysicalPosition::new(x, y)).unwrap();
-        }
-        Ok(())
+              // Only center if window fits on screen!
+              let fits_on_screen = window_size.width <= screen_size.width && window_size.height <= screen_size.height;
+              if fits_on_screen {
+                  let x = ((screen_size.width - window_size.width) / 2) as i32;
+                  // Top center
+                  let y = 53; 
+                  window.set_position(tauri::PhysicalPosition::new(x, y)).unwrap();
+              } else {
+                  // Window is too large, just put it at (0,0)
+                  window.set_position(tauri::PhysicalPosition::new(0, 0)).unwrap();
+              }
+          }
+          Ok(())
       })
       .on_window_event(|event| {
         if let tauri::WindowEvent::CloseRequested { .. } = event.event() {
