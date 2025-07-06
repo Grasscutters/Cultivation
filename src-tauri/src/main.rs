@@ -13,7 +13,7 @@ use std::io::Write;
 use std::{collections::HashMap, sync::Mutex};
 use tauri::api::path::data_dir;
 use tauri::async_runtime::block_on;
-use tauri::{Manager, PhysicalPosition}; // Add this line
+use tauri::{Manager, PhysicalPosition};
 
 use std::thread;
 use sysinfo::{Pid, ProcessExt, System, SystemExt};
