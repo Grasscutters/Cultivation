@@ -13,7 +13,6 @@ use std::io::Write;
 use std::{collections::HashMap, sync::Mutex};
 use tauri::api::path::data_dir;
 use tauri::async_runtime::block_on;
-use tauri::{Manager, PhysicalPosition};
 
 use std::thread;
 use sysinfo::{Pid, ProcessExt, System, SystemExt};
@@ -254,27 +253,6 @@ fn main() -> Result<(), ArgsError> {
         gamebanana::list_submissions,
         gamebanana::list_mods
       ])
-      .setup(|app| {
-          let window = app.get_window("main").unwrap();
-
-          if let Some(monitor) = window.primary_monitor().unwrap() {
-              let screen_size = monitor.size();
-              let window_size = window.outer_size().unwrap();
-
-              // Only center if window fits on screen!
-              let fits_on_screen = window_size.width <= screen_size.width && window_size.height <= screen_size.height;
-              if fits_on_screen {
-                  let x = ((screen_size.width - window_size.width) / 2) as i32;
-                  // Top center
-                  let y = 53; 
-                  window.set_position(tauri::PhysicalPosition::new(x, y)).unwrap();
-              } else {
-                  // Window is too large, just put it at (0,0)
-                  window.set_position(tauri::PhysicalPosition::new(0, 0)).unwrap();
-              }
-          }
-          Ok(())
-      })
       .on_window_event(|event| {
         if let tauri::WindowEvent::CloseRequested { .. } = event.event() {
           // Ensure all proxy stuff is handled
