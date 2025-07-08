@@ -68,6 +68,7 @@
       {
         "fullscreen": false,
         "transparent": true,
+        "center": true,
         "height": 720,
         "resizable": true,
         "title": "Cultivation",
