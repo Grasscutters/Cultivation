@@ -1,13 +1,13 @@
 [package]
 name = "cultivation"
-version = "1.5.8"
+version = "1.6.0"
 description = "A custom launcher for anime game."
 authors = ["KingRainbow44", "SpikeHD"]
 license = ""
 repository = "https://github.com/Grasscutters/Cultivation.git"
 default-run = "cultivation"
 edition = "2021"
-rust-version = "1.58"
+rust-version = "1.57"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
