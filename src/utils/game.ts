@@ -1,110 +1,35 @@
 import { invoke } from '@tauri-apps/api'
-import { getConfig } from './configuration'
+import { basename, dirname, join } from '@tauri-apps/api/path'
+import { getConfigOption } from './configuration'
 
-export async function getGameExecutable() {
-  const config = await getConfig()
+// For god's sake i don't know why the game's EXECUTABLE is called game install PATH.
+// either game_install_dir or game_exectuable_path. not a mix of them :sob:
 
-  if (!config.game_install_path) {
-    return null
-  }
-
-  const pathArr = config.game_install_path.replace(/\\/g, '/').split('/')
-  return pathArr[pathArr.length - 1]
-}
-
-export async function getGrasscutterJar() {
-  const config = await getConfig()
-
-  if (!config.grasscutter_path) {
-    return null
-  }
-
-  const pathArr = config.grasscutter_path.replace(/\\/g, '/').split('/')
-  return pathArr[pathArr.length - 1]
-}
-
-export async function getGameFolder() {
-  const config = await getConfig()
-
-  if (!config.game_install_path) {
-    return null
-  }
-
-  const pathArr = config.game_install_path.replace(/\\/g, '/').split('/')
-  pathArr.pop()
-
-  const path = pathArr.join('/')
-
-  return path
-}
-
-export async function getGameDataFolder() {
-  const gameExec = await getGameExecutable()
-
-  if (!gameExec) {
-    return null
-  }
-
-  return (await getGameFolder()) + '\\' + gameExec.replace('.exe', '_Data')
-}
+// The following method is just an adapter to limit the scope of changes in this commit.
+// Ideally, all instances of these single, autonomous, disjointed methods should be replaced with methods in configuration.ts which are much nicer. (if named correctly)
+export const getGameExecutable = () => getConfigOption('game_install_path')
+export const getGrasscutterJar = () => getConfigOption('grasscutter_path')
 
 export async function getGameVersion() {
-  const GameData = await getGameDataFolder()
-  const platform = await invoke('get_platform')
-
-  if (!GameData) {
-    return null
-  }
-
-  let hasAsb = await invoke('dir_exists', {
-    path: GameData + '\\StreamingAssets\\asb_settings.json',
-  })
-
-  if (platform != 'windows') {
-    hasAsb = await invoke('dir_exists', {
-      path: GameData + '/StreamingAssets/asb_settings.json',
-    })
-  }
+  const execPath = await getConfigOption('game_install_path')
+  const rootPath = await dirname(execPath)
+  const baseName = (await basename(execPath)).split('.exe')[0]
+  const datapath = await join(rootPath, `${baseName}_Data`)
+  const asbPath = await join(datapath, 'StreamingAssets', 'asb_settings.json')
+  const hasAsb = await invoke<boolean>('dir_exists', { path: asbPath })
 
   if (!hasAsb) {
-    // For games that cannot determine game version
-    let otherGameVer: string = await invoke('read_file', {
-      path: GameData + '\\StreamingAssets\\BinaryVersion.bytes',
-    })
+    const versionFile = await join(datapath, 'StreamingAssets', 'BinaryVersion.bytes')
+    const rawVersion = await invoke<string>('read_file', { path: versionFile })
+    if (!rawVersion) return null
 
-    if (platform != 'windows') {
-      otherGameVer = await invoke('read_file', {
-        path: GameData + '/StreamingAssets/BinaryVersion.bytes',
-      })
-    }
-
-    const versionRaw = otherGameVer.split('.')
-    const version = {
-      major: parseInt(versionRaw[0]),
-      minor: parseInt(versionRaw[1]),
-      // This will probably never matter, just use major/minor. If needed, full version values are near EOF
-      release: 0,
-    }
-
-    if (otherGameVer == null || otherGameVer.length < 1) {
-      return null
-    }
-
-    return version
+    const [major, minor] = rawVersion.split('.').map(Number)
+    return { major, minor, release: 0 }
   }
 
-  const settings = JSON.parse(
-    await invoke('read_file', {
-      path: GameData + '\\StreamingAssets\\asb_settings.json',
-    })
-  )
+  const settings = JSON.parse(await invoke<string>('read_file', { path: asbPath }))
+  const [major, minorRelease] = settings.variance.split('.')
+  const [minor, release] = minorRelease.split('_').map(Number)
 
-  const versionRaw = settings.variance.split('.')
-  const version = {
-    major: parseInt(versionRaw[0]),
-    minor: parseInt(versionRaw[1].split('_')[0]),
-    release: parseInt(versionRaw[1].split('_')[1]),
-  }
-
-  return version
+  return { major: parseInt(major), minor, release }
 }
