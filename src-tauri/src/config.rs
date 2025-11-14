@@ -40,22 +40,22 @@ pub fn config_path(profile: String) -> PathBuf {
   if profile.as_str() == "default" {
     path.push("configuration.json");
   } else {
-    path.push("profile");
-    path.push(profile);
+    path.push("profiles");
+    path.push(profile + ".json");
   }
 
   path
 }
 
 pub fn get_config(profile_name: String) -> Configuration {
-  let path = config_path(profile_name);
+  let path = config_path(profile_name.clone());
   let config = std::fs::read_to_string(path).unwrap_or("{}".to_string());
   let config: Configuration = serde_json::from_str(&config).unwrap_or_default();
 
-  let default = String::from("default");
-  let prof = config.profile.as_ref().unwrap_or(&default);
-  if *prof != String::from("default") {
-    get_config(prof.clone());
+  //let default = String::from("default");
+  let prof = config.profile.clone().unwrap_or_default();
+  if prof != String::from("default") && prof != profile_name.clone() {
+    return get_config(prof.clone());
   }
 
   config
