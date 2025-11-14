@@ -349,7 +349,7 @@ pub async fn unpatch_game() -> bool {
 }
 
 pub async fn get_game_rsa_path() -> Option<String> {
-  let config = config::get_config();
+  let config = config::get_config(String::from("default"));
 
   config.game_install_path.as_ref()?;
 

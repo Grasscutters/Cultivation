@@ -4,7 +4,14 @@ import { dataDir } from '@tauri-apps/api/path'
 import DirInput from '../common/DirInput'
 import Menu from './Menu'
 import Tr, { getLanguages } from '../../../utils/language'
-import { setConfigOption, getConfig, getConfigOption, Configuration } from '../../../utils/configuration'
+import {
+  setConfigOption,
+  getConfig,
+  getConfigOption,
+  Configuration,
+  saveNewProfileConfig,
+  setProfileOption,
+} from '../../../utils/configuration'
 import Checkbox from '../common/Checkbox'
 import Divider from './Divider'
 import { getThemeList } from '../../../utils/themes'
@@ -57,6 +64,8 @@ interface IState {
   launch_args: string
   offline_mode: boolean
   newer_game: boolean
+  show_version: boolean
+  profile_name: string
 
   // Linux stuff
   grasscutter_elevation: string
@@ -95,6 +104,8 @@ export default class Options extends React.Component<IProps, IState> {
       launch_args: '',
       offline_mode: false,
       newer_game: false,
+      show_version: true,
+      profile_name: '',
 
       // Linux stuff
       grasscutter_elevation: GrasscutterElevation.None,
@@ -118,6 +129,9 @@ export default class Options extends React.Component<IProps, IState> {
     this.addMigotoDelay = this.addMigotoDelay.bind(this)
     this.toggleUnElevatedGame = this.toggleUnElevatedGame.bind(this)
     this.setLaunchArgs = this.setLaunchArgs.bind(this)
+    this.toggleShowVersion = this.toggleShowVersion.bind(this)
+    this.setProfileName = this.setProfileName.bind(this)
+    this.saveProfile = this.saveProfile.bind(this)
   }
 
   async componentDidMount() {
@@ -156,6 +170,7 @@ export default class Options extends React.Component<IProps, IState> {
       launch_args: config.launch_args,
       offline_mode: config.offline_mode || false,
       newer_game: config.newer_game || false,
+      show_version: config.show_version || false,
 
       // Linux stuff
       grasscutter_elevation: config.grasscutter_elevation || GrasscutterElevation.None,
@@ -350,6 +365,17 @@ export default class Options extends React.Component<IProps, IState> {
     })
   }
 
+  async toggleShowVersion() {
+    const changedVal = !(await getConfigOption('show_version'))
+    await setConfigOption('show_version', changedVal)
+
+    this.setState({
+      show_version: changedVal,
+    })
+
+    emit('set_config', { show_version: changedVal })
+  }
+
   async setGCElevation(value: string) {
     setConfigOption('grasscutter_elevation', value)
 
@@ -485,6 +511,28 @@ export default class Options extends React.Component<IProps, IState> {
     this.setState({
       launch_args: value,
     })
+  }
+
+  setProfileName(text: string) {
+    this.setState({
+      profile_name: text,
+    })
+  }
+
+  async saveProfile() {
+    if (this.state.profile_name == '') {
+      alert('No name set')
+      return
+    }
+
+    const config = await getConfig()
+    await saveNewProfileConfig(config, this.state.profile_name)
+    await setProfileOption('profile', this.state.profile_name)
+    this.setState({
+      profile_name: '',
+    })
+
+    window.location.reload()
   }
 
   render() {
@@ -659,6 +707,24 @@ export default class Options extends React.Component<IProps, IState> {
 
         <Divider />
 
+        <div className="OptionSection" id="profileConfigContainer">
+          <div className="OptionLabel" id="menuOptionsLabelProfile">
+            <Tr text="options.save_profile" />
+          </div>
+          <TextInput
+            id="profile_name"
+            key="profile_name"
+            placeholder={'Profile name...'}
+            onChange={this.setProfileName}
+            initalValue={''}
+          />
+          <BigButton onClick={this.saveProfile} id="saveProfile">
+            {'Save'}
+          </BigButton>
+        </div>
+
+        <Divider />
+
         <div className="OptionSection" id="menuOptionsContainerGCWGame">
           <div className="OptionLabel" id="menuOptionsLabelGCWDame">
             <Tr text="options.grasscutter_with_game" />
@@ -711,19 +777,14 @@ export default class Options extends React.Component<IProps, IState> {
             />
           </div>
         </div>
-
-        {/* <div className="OptionSection" id="menuOptionsContainerNewerGame">
-          <div className="OptionLabel" id="menuOptionsLabelNewerGame">
-            <Tr text="Patch Mihoyonet" />
+        <div className="OptionSection" id="menuOptionsContainerShowVer">
+          <div className="OptionLabel" id="menuOptionsLabelShowVer">
+            <Tr text="options.show_version" />
           </div>
-          <div className="OptionValue" id="menuOptionsCheckboxNewerGame">
-            <Checkbox
-              onChange={() => this.toggleOption('newer_game')}
-              checked={this.state?.newer_game}
-              id="newerGame"
-            />
+          <div className="OptionValue" id="menuOptionsButtonShowVer">
+            <Checkbox onChange={() => this.toggleShowVersion()} checked={this.state.show_version} id="showVer" />
           </div>
-        </div> */}
+        </div>
 
         <Divider />
 

@@ -1,6 +1,6 @@
 {
   "name": "cultivation",
-  "version": "1.6.3",
+  "version": "1.7.0",
   "private": true,
   "dependencies": {
     "@tauri-apps/api": "^1.0.0-rc.5",

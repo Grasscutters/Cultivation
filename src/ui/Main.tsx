@@ -170,6 +170,8 @@ export class Main extends React.Component<IProps, IState> {
     }
 
     // Ensure old configs are updated to use RSA
+    const updatedProfile = await getConfigOption('profile')
+    await setConfigOption('profile', updatedProfile)
     const updatedConfig = await getConfigOption('patch_rsa')
     await setConfigOption('patch_rsa', updatedConfig)
 

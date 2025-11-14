@@ -31,6 +31,8 @@ let defaultConfig: Configuration
     launch_args: '',
     offline_mode: false,
     newer_game: false,
+    show_version: true,
+    profile: 'default',
 
     // Linux stuff
     grasscutter_elevation: 'None',
@@ -68,6 +70,8 @@ export interface Configuration {
   launch_args: string
   offline_mode: boolean
   newer_game: boolean
+  show_version: boolean
+  profile: string
 
   // Linux stuff
   grasscutter_elevation: string
@@ -88,6 +92,15 @@ export async function setConfigOption<K extends keyof Configuration>(key: K, val
   config[key] = value
 
   await saveConfig(<Configuration>config)
+}
+
+export async function setProfileOption<K extends keyof Configuration>(key: K, value: Configuration[K]): Promise<void> {
+  const config = await getConfig()
+  config[key] = value
+  const defaultConfig = await getDefaultConfig()
+  defaultConfig[key] = value
+
+  await saveProfileConfig(<Configuration>defaultConfig)
 }
 
 export async function getConfigOption<K extends keyof Configuration>(key: K): Promise<Configuration[K]> {
@@ -113,16 +126,69 @@ export async function getConfig() {
   return parsed
 }
 
+export async function getDefaultConfig() {
+  const raw = await readDefaultConfigFile()
+  let parsed: Configuration = defaultConfig
+
+  try {
+    parsed = <Configuration>JSON.parse(raw)
+  } catch (e) {
+    // We could not open the file
+    console.log(e)
+  }
+
+  return parsed
+}
+
 export async function saveConfig(obj: Configuration) {
   const raw = JSON.stringify(obj)
 
   await writeConfigFile(raw)
 }
 
+export async function saveProfileConfig(obj: Configuration) {
+  const local = await dataDir()
+  const raw = JSON.stringify(obj)
+  const prevPath = configFilePath
+  configFilePath = local + 'cultivation/configuration.json'
+  await writeConfigFile(raw)
+
+  configFilePath = prevPath
+}
+
+export async function saveNewProfileConfig(obj: Configuration, prof: string) {
+  obj['profile'] = prof
+  const local = await dataDir()
+  const raw = JSON.stringify(obj)
+  configFilePath = local + 'cultivation/profiles/' + obj['profile'] + '.json'
+
+  const file: fs.FsTextFileOption = {
+    path: configFilePath,
+    contents: raw,
+  }
+
+  await fs.writeFile(file)
+}
+
 async function readConfigFile() {
   const local = await dataDir()
 
-  if (!configFilePath) configFilePath = local + 'cultivation/configuration.json'
+  if (!configFilePath) {
+    configFilePath = local + 'cultivation/configuration.json'
+  }
+
+  // Read existing config to get profile name
+  const raw = await fs.readTextFile(configFilePath)
+  const cfg = <Configuration>JSON.parse(raw)
+  // Switch file to config-specified profile
+  let pf = cfg['profile']
+  if (pf != 'default') {
+    const pff = pf
+    pf = 'profiles/' + pff + '.json'
+  } else {
+    pf = 'configuration.json'
+  }
+  configFilePath = local + 'cultivation/' + pf
 
   // Ensure Cultivation dir exists
   const dirs = await fs.readDir(local)
@@ -154,6 +220,12 @@ async function readConfigFile() {
   }
 
   // Finally, read the file
+  return await fs.readTextFile(configFilePath)
+}
+
+async function readDefaultConfigFile() {
+  const local = await dataDir()
+  configFilePath = local + 'cultivation/configuration.json'
   return await fs.readTextFile(configFilePath)
 }
 

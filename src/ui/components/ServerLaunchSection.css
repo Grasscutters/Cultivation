@@ -14,7 +14,7 @@
 }
 
 #playButton > div {
-  margin-bottom: 6px;
+  margin-bottom: 2px;
 }
 
 #playButton .BigButton {
@@ -26,8 +26,25 @@
 
 #serverControls {
   color: white;
-
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
   text-shadow: 1px 1px 8px black;
+}
+
+#menuOptionsContainerProfiles {
+  justify-self: right;
+  align-self: right;
+  padding-left: 8px;
+  width: min-content;
+}
+
+#serverControls select {
+  width: 150px;
+  height: 30px;
+  border: none;
+  border-bottom: 2px solid #cecece;
+  border-radius: 6px;
 }
 
 .BottomSection .CheckboxDisplay {

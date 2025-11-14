@@ -101,7 +101,7 @@ async fn parse_args(inp: &Vec<String>) -> Result<Args, ArgsError> {
 
   args.parse(inp).unwrap();
 
-  let config = config::get_config();
+  let config = config::get_config(String::from("default"));
 
   if args.value_of("help")? {
     println!("{}", args.full_usage());
@@ -207,6 +207,7 @@ fn main() -> Result<(), ArgsError> {
         is_grasscutter_running,
         restart_grasscutter,
         get_theme_list,
+        get_profile_list,
         system_helpers::run_command,
         system_helpers::run_program,
         system_helpers::run_program_args,
@@ -535,4 +536,21 @@ async fn get_theme_list(data_dir: String) -> Vec<HashMap<String, String>> {
   }
 
   themes
+}
+
+#[tauri::command]
+async fn get_profile_list(data_dir: String) -> Vec<String> {
+  let profile_loc = format!("{}/profiles", data_dir);
+
+  // Ensure folder exists
+  if !std::path::Path::new(&profile_loc).exists() {
+    std::fs::create_dir_all(&profile_loc).unwrap();
+  }
+
+  let mut p_list = Vec::new();
+  for entry in std::fs::read_dir(&profile_loc).unwrap() {
+    p_list.push(entry.unwrap().file_name().into_string().unwrap());
+  }
+
+  p_list
 }

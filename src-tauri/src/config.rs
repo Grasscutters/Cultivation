@@ -30,20 +30,33 @@ pub struct Configuration {
   pub redirect_more: Option<bool>,
   pub launch_args: Option<String>,
   pub offline_mode: Option<bool>,
+  pub show_version: Option<bool>,
+  pub profile: Option<String>,
 }
 
-pub fn config_path() -> PathBuf {
+pub fn config_path(profile: String) -> PathBuf {
   let mut path = tauri::api::path::data_dir().unwrap();
   path.push("cultivation");
-  path.push("configuration.json");
+  if profile.as_str() == "default" {
+    path.push("configuration.json");
+  } else {
+    path.push("profile");
+    path.push(profile);
+  }
 
   path
 }
 
-pub fn get_config() -> Configuration {
-  let path = config_path();
+pub fn get_config(profile_name: String) -> Configuration {
+  let path = config_path(profile_name);
   let config = std::fs::read_to_string(path).unwrap_or("{}".to_string());
   let config: Configuration = serde_json::from_str(&config).unwrap_or_default();
+
+  let default = String::from("default");
+  let prof = config.profile.as_ref().unwrap_or(&default);
+  if *prof != String::from("default") {
+    get_config(prof.clone());
+  }
 
   config
 }

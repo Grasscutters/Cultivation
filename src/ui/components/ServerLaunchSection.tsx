@@ -3,7 +3,7 @@ import Checkbox from './common/Checkbox'
 import BigButton from './common/BigButton'
 import TextInput from './common/TextInput'
 import HelpButton from './common/HelpButton'
-import { getConfig, saveConfig, setConfigOption } from '../../utils/configuration'
+import { getConfig, saveConfig, setConfigOption, setProfileOption } from '../../utils/configuration'
 import { translate } from '../../utils/language'
 import { invoke } from '@tauri-apps/api/tauri'
 
@@ -43,6 +43,8 @@ interface IState {
   migotoSet: boolean
 
   unElevated: boolean
+  profile: string
+  profiles: string[]
 }
 
 export default class ServerLaunchSection extends React.Component<IProps, IState> {
@@ -66,6 +68,8 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       akebiSet: false,
       migotoSet: false,
       unElevated: false,
+      profile: 'default',
+      profiles: ['default'],
     }
 
     this.toggleGrasscutter = this.toggleGrasscutter.bind(this)
@@ -75,6 +79,7 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     this.toggleHttps = this.toggleHttps.bind(this)
     this.launchServer = this.launchServer.bind(this)
     this.setButtonLabel = this.setButtonLabel.bind(this)
+    this.setProfile = this.setProfile.bind(this)
 
     listen('start_grasscutter', async () => {
       this.launchServer()
@@ -102,6 +107,8 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
       akebiSet: config.akebi_path !== '',
       migotoSet: config.migoto_path !== '',
       unElevated: config.un_elevated || false,
+      profile: config.profile || 'default',
+      profiles: (await this.getProfileList()).map((t) => t),
     })
 
     this.setButtonLabel()
@@ -393,6 +400,25 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
     }
   }
 
+  async setProfile(value: string) {
+    this.setState({ profile: value })
+    await setProfileOption('profile', value)
+    window.location.reload()
+  }
+
+  async getProfileList() {
+    const profiles: string[] = await invoke('get_profile_list', {
+      dataDir: `${await dataDir()}/cultivation`,
+    })
+    const list = ['default']
+
+    profiles.forEach((t) => {
+      list.push(t.split('.json')[0])
+    })
+
+    return list
+  }
+
   render() {
     return (
       <div id="playButton">
@@ -403,6 +429,23 @@ export default class ServerLaunchSection extends React.Component<IProps, IState>
             onChange={this.toggleGrasscutter}
             checked={this.state.grasscutterEnabled}
           />
+          <div className="OptionSection" id="menuOptionsContainerProfiles">
+            <div className="OptionValue" id="menuOptionsSelectProfiles">
+              <select
+                value={this.state.profile}
+                id="menuOptionsSelectMenuProfiles"
+                onChange={(event) => {
+                  this.setProfile(event.target.value)
+                }}
+              >
+                {this.state.profiles.map((t) => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
 
         {this.state.grasscutterEnabled && (
