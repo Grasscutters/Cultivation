@@ -182,7 +182,7 @@ async function readConfigFile() {
   const cfg = <Configuration>JSON.parse(raw)
   // Switch file to config-specified profile
   let pf = cfg['profile']
-  if (pf != 'default') {
+  if (pf && pf != 'default') {
     const pff = pf
     pf = 'profiles/' + pff + '.json'
   } else {
