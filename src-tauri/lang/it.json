@@ -37,7 +37,9 @@
     "web_cache": "Elimina la cartella webCaches",
     "launch_args": "Argomenti di lancio",
     "offline_mode": "Modalità Offline",
-    "fix_res": "Correggere il timeout dell'accesso"
+    "fix_res": "Correggere il timeout dell'accesso",
+    "show_version": "Mostra la versione del gioco sui pulsanti",
+    "save_profile": "Salva il profilo"
   },
   "downloads": {
     "grasscutter_fullbuild": "Scarica Grasscutter Tutto-in-Uno",

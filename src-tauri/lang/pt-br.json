@@ -37,7 +37,9 @@
     "web_cache": "Excluir pasta webCaches",
     "launch_args": "Argumentos de lançamento",
     "offline_mode": "Modo offline",
-    "fix_res": "Corrigir o tempo limite de login"
+    "fix_res": "Corrigir o tempo limite de login",
+    "show_version": "Versão do jogo exibida nos botões",
+    "save_profile": "Salvar perfil"
   },
   "downloads": {
     "grasscutter_fullbuild": "Baixar o Grasscutter Tudo-em-Um",

@@ -1,7 +1,7 @@
 {
   "lang_name": "Tiếng Việt",
   "main": {
-    "title": "Cultivation",
+    "title": "Cultivation: Thorny Edition",
     "launch_button": "Khởi Chạy",
     "gc_enable": "Kết nối qua Grasscutter",
     "https_enable": "Dùng HTTPS",
@@ -37,7 +37,9 @@
     "web_cache": "Xóa thư mục webCaches",
     "launch_args": "Khởi chạy đối số",
     "offline_mode": "Chế độ ngoại tuyến",
-    "fix_res": "Sửa lỗi hết thời gian đăng nhập"
+    "fix_res": "Sửa lỗi hết thời gian đăng nhập",
+    "show_version": "Hiển thị phiên bản trò chơi trên các nút",
+    "save_profile": "Lưu hồ sơ"
   },
   "downloads": {
     "grasscutter_fullbuild": "Tải Grasscutter tất cả trong một",

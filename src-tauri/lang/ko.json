@@ -1,7 +1,7 @@
 {
   "lang_name": "한국어",
   "main": {
-    "title": "Cultivation",
+    "title": "Cultivation: Thorny Edition",
     "launch_button": "게임 시작",
     "gc_enable": "Grasscutter 연결",
     "https_enable": "HTTPS 사용",
@@ -37,7 +37,9 @@
     "web_cache": "webCaches 폴더 삭제",
     "launch_args": "실행 인수",
     "offline_mode": "오프라인 모드",
-    "fix_res": "로그인 시간 초과 수정"
+    "fix_res": "로그인 시간 초과 수정",
+    "show_version": "버튼에 게임 버전 표시",
+    "save_profile": "프로필 저장"
   },
   "downloads": {
     "grasscutter_fullbuild": "올인원 Grasscutter 다운로드",

@@ -1,7 +1,7 @@
 {
   "lang_name": "日本語",
   "main": {
-    "title": "Cultivation",
+    "title": "Cultivation: Thorny Edition",
     "launch_button": "起動",
     "gc_enable": "Grasscutterに接続",
     "https_enable": "HTTPS接続を使用",
@@ -37,7 +37,9 @@
     "check_aagl": "その他のオプションは、他のランチャーをチェックしてください",
     "grasscutter_elevation": "制限されたポートでのGCの実行方法",
     "web_cache": "webCachesフォルダを削除",
-    "launch_args": "Launch Args"
+    "launch_args": "Launch Args",
+    "show_version": "ボタンにゲームバージョンを表示",
+    "save_profile": "プロフィールを保存"
   },
   "downloads": {
     "grasscutter_fullbuild": "Grasscutter All-in-Oneをダウンロード",

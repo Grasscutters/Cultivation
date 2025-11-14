@@ -1,7 +1,7 @@
 {
   "lang_name": "Latviešu",
   "main": {
-    "title": "Cultivation",
+    "title": "Cultivation: Thorny Edition",
     "launch_button": "Palaist",
     "gc_enable": "Savienot ar Grasscutter",
     "https_enable": "Izm. HTTPS",
@@ -35,7 +35,9 @@
     "web_cache": "Dzēsiet mapi WebCaches",
     "launch_args": "Palaišanas args",
     "offline_mode": "Bezsaistes režīms",
-    "fix_res": "Fiksēt pieteikšanās laika"
+    "fix_res": "Fiksēt pieteikšanās laika",
+    "show_version": "Pogās redzamā spēles versija",
+    "save_profile": "Saglabāt profilu"
   },
   "downloads": {
     "grasscutter_fullbuild": "Lejupielādējiet Grasscutter viss vienā",

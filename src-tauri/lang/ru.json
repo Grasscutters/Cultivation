@@ -1,7 +1,7 @@
 {
   "lang_name": "Русский",
   "main": {
-    "title": "Cultivation",
+    "title": "Cultivation: Thorny Edition",
     "launch_button": "Запустить",
     "gc_enable": "Подключиться с Grasscutter",
     "https_enable": "Исп. HTTPS",
@@ -36,7 +36,9 @@
     "web_cache": "Удалить папку webCaches",
     "launch_args": "Параметры запуска",
     "offline_mode": "Автономный режим",
-    "fix_res": "Исправить таймаут входа в систему"
+    "fix_res": "Исправить таймаут входа в систему",
+    "show_version": "Версия игры отображается на кнопках",
+    "save_profile": "Сохранить профиль"
   },
   "downloads": {
     "grasscutter_fullbuild": "Скачать все в одном Grasscutter",

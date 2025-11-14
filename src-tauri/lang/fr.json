@@ -1,7 +1,7 @@
 {
   "lang_name": "Francais",
   "main": {
-    "title": "Cultivation",
+    "title": "Cultivation: Thorny Edition",
     "launch_button": "Lancer",
     "gc_enable": "Se connecter avec Grasscutter",
     "https_enable": "Utiliser HTTPS",
@@ -37,7 +37,9 @@
     "web_cache": "Supprimer le dossier webCaches",
     "launch_args": "Arguments de lancement",
     "offline_mode": "Mode hors ligne",
-    "fix_res": "Réparation du login"
+    "fix_res": "Réparation du login",
+    "show_version": "Afficher la version du jeu sur les boutons",
+    "save_profile": "Enregistrer le profil"
   },
   "downloads": {
     "grasscutter_fullbuild": "Telecharger Grasscutter tout-en-un",
