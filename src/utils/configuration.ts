@@ -177,6 +177,19 @@ async function readConfigFile() {
     configFilePath = local + 'cultivation/configuration.json'
   }
 
+  const dataFiles = await fs.readDir(local + 'cultivation')
+
+  // Ensure config exists
+  if (!dataFiles.find((fileOrDir) => fileOrDir?.name === 'configuration.json')) {
+    // Create config file
+    const file: fs.FsTextFileOption = {
+      path: configFilePath,
+      contents: JSON.stringify(defaultConfig),
+    }
+
+    await fs.writeFile(file)
+  }
+
   // Read existing config to get profile name
   const raw = await fs.readTextFile(configFilePath)
   const cfg = <Configuration>JSON.parse(raw)
@@ -204,19 +217,6 @@ async function readConfigFile() {
   if (!innerDirs.find((fileOrDir) => fileOrDir?.name === 'grasscutter')) {
     // Create dir
     await fs.createDir(local + 'cultivation/grasscutter').catch((e) => console.log(e))
-  }
-
-  const dataFiles = await fs.readDir(local + 'cultivation')
-
-  // Ensure config exists
-  if (!dataFiles.find((fileOrDir) => fileOrDir?.name === 'configuration.json')) {
-    // Create config file
-    const file: fs.FsTextFileOption = {
-      path: configFilePath,
-      contents: JSON.stringify(defaultConfig),
-    }
-
-    await fs.writeFile(file)
   }
 
   // Finally, read the file
